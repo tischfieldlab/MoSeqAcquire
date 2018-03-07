@@ -1,0 +1,41 @@
+﻿<Window x:Class="MoSeqAcquire.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:toolkit="clr-namespace:Microsoft.Kinect.Toolkit;assembly=Microsoft.Kinect.Toolkit"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:kwpf="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers"
+        xmlns:local="clr-namespace:MoSeqAcquire"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+
+
+        <xcad:DockingManager Grid.Row="1" MaxHeight="425"
+                           AllowMixedOrientation="True"
+                           BorderBrush="Black"
+                           BorderThickness="1"
+                           Theme="{Binding ElementName=_themeCombo, Path=SelectedItem.Tag}">
+            <xcad:LayoutRoot x:Name="_layoutRoot">
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutAnchorablePane DockWidth="200">
+                        <xcad:LayoutAnchorable>
+                            <kwpf:KinectColorViewer />
+                        </xcad:LayoutAnchorable>
+                        <xcad:LayoutAnchorable>
+                            <kwpf:KinectDepthViewer />
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+        <toolkit:KinectSensorChooserUI x:Name="SensorChooserUI" IsListening="True"  HorizontalAlignment="Center" VerticalAlignment="Top" />
+    </Grid>
+</Window>

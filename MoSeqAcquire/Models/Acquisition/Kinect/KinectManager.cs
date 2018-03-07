@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using KinectManagement;
+using Microsoft.Kinect;
+using Kinect.Reactive;
+using System.Configuration;
+
+namespace MoSeqAcquire.Models.Acquisition.Kinect
+{
+    public class KinectManager : MediaSource
+    {
+        public KinectManager() : base()
+        {
+            this.Name = "Kinect";
+            
+            this.Config = (KinectConfig)ConfigurationManager.GetSection("mediaConfig/" + this.Name);
+        }
+
+        public override void Initalize()
+        {
+            foreach (var potentialSensor in KinectSensor.KinectSensors)
+            {
+                if (potentialSensor.Status == KinectStatus.Connected)
+                {
+                    this.Sensor = potentialSensor;
+                    break;
+                }
+            }
+
+            this.RegisterChannel(new KinectDepthChannel(this));
+            this.RegisterChannel(new KinectColorChannel(this));
+
+        }
+
+
+        public override void Start()
+        {
+            this.Sensor.ColorStream.Enable();
+            this.Sensor.DepthStream.Enable();
+            this.Sensor.AudioSource.Start();
+            this.Sensor.Start();
+            
+        }
+
+        public override void Stop()
+        {
+            
+        }  
+
+        public KinectSensor Sensor { get; set; }
+    }
+}
