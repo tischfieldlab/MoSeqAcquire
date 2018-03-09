@@ -32,7 +32,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             if (this.Sensor == null) { return false; }
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
-            this.Sensor.DepthStream.Range = DepthRange.
             return true;
         }
 

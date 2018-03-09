@@ -40,12 +40,12 @@ namespace MoSeqAcquire.Models.Acquisition
             object o = Activator.CreateInstance(makeme, new object[]{ Source, Channel });
             return (IBusChannel)o;
         }
-        public void Subscribe(Predicate<IBusChannel> Selector, Task Action) {
+        public void Subscribe<T>(Predicate<BusChannel<T>> Selector, ITargetBlock<ChannelFrame<T>> Action) {
             foreach(var c in this.__sources)
             {
-                if (Selector.Invoke(c))
+                if (Selector.Invoke(c as BusChannel<T>))
                 {
-                    
+                    (c as BusChannel<T>).Feed.LinkTo(Action);
                 }
             }
         }
