@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using KinectManagement;
 using Microsoft.Kinect;
-using Kinect.Reactive;
 using System.Configuration;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
@@ -19,7 +18,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Config = (KinectConfig)ConfigurationManager.GetSection("mediaConfig/" + this.Name);
         }
 
-        public override void Initalize()
+        public override bool Initalize()
         {
             foreach (var potentialSensor in KinectSensor.KinectSensors)
             {
@@ -30,9 +29,11 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                 }
             }
 
+            if (this.Sensor == null) { return false; }
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
-
+            this.Sensor.DepthStream.Range = DepthRange.
+            return true;
         }
 
 
@@ -40,7 +41,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             this.Sensor.ColorStream.Enable();
             this.Sensor.DepthStream.Enable();
-            this.Sensor.AudioSource.Start();
+            //this.Sensor.AudioSource.Start();
             this.Sensor.Start();
             
         }

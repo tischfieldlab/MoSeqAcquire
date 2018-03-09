@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
@@ -10,7 +11,7 @@ namespace MoSeqAcquire.Models.Acquisition
     {
         #region Singleton
         private static MediaBus __instance;
-        private MediaBus() { }
+        private MediaBus() { this.__sources = new List<IBusChannel>(); }
         public static MediaBus Instance
         {
             get
@@ -24,15 +25,46 @@ namespace MoSeqAcquire.Models.Acquisition
         }
         #endregion
 
-        protected List<MediaSource> __sources;
+        public List<IBusChannel> __sources;
         public void Publish(MediaSource Source) {
-            this.__sources.Add(Source);
+            foreach (var c in Source.Channels)
+            {
+                this.__sources.Add(this.MakeBusChannel(Source, c));
+            }
         }
-        public void Subscribe(Predicate<MediaSource> Selector, Task Action) {
-            this.__sources
-                .SelectMany()
-                .FindAll(Selector)
-                .se((ms) => { ms.Channels });
+        protected IBusChannel MakeBusChannel(MediaSource Source, IChannel Channel)
+        {
+            var d1 = typeof(BusChannel<>);
+            Type[] typeArgs = new Type[] { Channel.BufferType };
+            var makeme = d1.MakeGenericType(typeArgs);
+            object o = Activator.CreateInstance(makeme, new object[]{ Source, Channel });
+            return (IBusChannel)o;
         }
+        public void Subscribe(Predicate<IBusChannel> Selector, Task Action) {
+            foreach(var c in this.__sources)
+            {
+                if (Selector.Invoke(c))
+                {
+                    
+                }
+            }
+        }
+        
+    }
+    
+    public interface IBusChannel { }
+    public class BusChannel<T> : IBusChannel
+    {
+        public BusChannel(MediaSource Source, Channel<T> Channel)
+        {
+            this.Source = Source;
+            this.Channel = Channel;
+            var opts = new DataflowBlockOptions() { };
+            this.Feed = new BroadcastBlock<ChannelFrame<T>>(item => item, opts);
+            Channel.Buffer.LinkTo(this.Feed, new DataflowLinkOptions() { PropagateCompletion = true });
+        }
+        public MediaSource Source { get; }
+        public Channel<T> Channel { get; }
+        public BroadcastBlock<ChannelFrame<T>> Feed { get; }
     }
 }

@@ -8,13 +8,15 @@ using Microsoft.Kinect;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
-    public class KinectDepthChannel : KinectChannel<short[]>
+    public class KinectDepthChannel : KinectChannel<short>
     {
         public KinectDepthChannel(KinectManager Kinect) : base(Kinect)
         {
             this.Name = "Kinect Depth Channel";
             Kinect.Sensor.DepthFrameReady += this.Sensor_DepthFrameReady;
         }
+
+        public DepthImageStream InnerStream { get { return Kinect.Sensor.DepthStream; } }
 
 
         private void Sensor_DepthFrameReady(object sender, DepthImageFrameReadyEventArgs e)
@@ -34,7 +36,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
                     var pixelData = new short[imageFrame.PixelDataLength];
                     imageFrame.CopyPixelDataTo(pixelData);
-                    this.Buffer.Post(new ChannelFrame<short[]>(pixelData, meta));
+                    this.Buffer.Post(new ChannelFrame<short>(pixelData, meta));
                 }
             }
         }

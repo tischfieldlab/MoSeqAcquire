@@ -28,5 +28,4 @@ namespace MoSeqAcquire.Models.Acquisition
             this.ConfigChanged?.Invoke(args);
         }
     }
-    public abstract 
 }

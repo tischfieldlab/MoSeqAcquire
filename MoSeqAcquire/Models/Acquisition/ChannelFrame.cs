@@ -8,15 +8,15 @@ namespace MoSeqAcquire.Models.Acquisition
 {
     public class ChannelFrame<T>
     {
-        public ChannelFrame(T Data) : this(Data, new ChannelFrameMetadata())
+        public ChannelFrame(T[] Data) : this(Data, new ChannelFrameMetadata())
         {
         }
-        public ChannelFrame(T Data, ChannelFrameMetadata Metadata)
+        public ChannelFrame(T[] Data, ChannelFrameMetadata Metadata)
         {
             this.FrameData = Data;
             this.Metadata = Metadata;
         }
-        public T FrameData { get; protected set; }
+        public T[] FrameData { get; protected set; }
         public ChannelFrameMetadata Metadata { get; protected set; } 
 
     }

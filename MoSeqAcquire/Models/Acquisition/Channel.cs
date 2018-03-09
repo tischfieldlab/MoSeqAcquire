@@ -8,7 +8,9 @@ using System.Threading.Tasks.Dataflow;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    public interface IChannel { }
+    public interface IChannel {
+        Type BufferType { get; }
+    }
     public abstract class Channel<T> : IChannel
     {
         public Channel() {
@@ -17,6 +19,7 @@ namespace MoSeqAcquire.Models.Acquisition
             };
             this.Buffer = new BufferBlock<ChannelFrame<T>>(blockoptions);
         }
+        public Type BufferType { get { return typeof(T); } }
         public string Name { get; set; }
         public bool Enabled { get; set; }
         public ConfigurationSection Config { get; }

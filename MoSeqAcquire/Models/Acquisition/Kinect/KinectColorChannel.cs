@@ -8,13 +8,14 @@ using Microsoft.Kinect;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
-    public class KinectColorChannel : KinectChannel<byte[]>
+    public class KinectColorChannel : KinectChannel<byte>
     {
         public KinectColorChannel(KinectManager Kinect) : base(Kinect)
         {
             this.Name = "Kinect Color Channel";
             Kinect.Sensor.ColorFrameReady += Sensor_ColorFrameReady;
         }
+        public ColorImageStream InnerStream { get { return Kinect.Sensor.ColorStream; } }
 
         private void Sensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
@@ -33,7 +34,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
                     var pixelData = new byte[imageFrame.PixelDataLength];
                     imageFrame.CopyPixelDataTo(pixelData);
-                    this.Buffer.Post(new ChannelFrame<byte[]>(pixelData, meta));
+                    this.Buffer.Post(new ChannelFrame<byte>(pixelData, meta));
                 }
             }
         }

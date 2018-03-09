@@ -18,7 +18,7 @@ namespace MoSeqAcquire.Models.Acquisition
         public ConfigurationSection Config { get; protected set; }
         public List<IChannel> Channels;
 
-        public abstract void Initalize();
+        public abstract bool Initalize();
         public abstract void Start();
         public abstract void Stop();
 
@@ -26,6 +26,17 @@ namespace MoSeqAcquire.Models.Acquisition
         {
             
             this.Channels.Add(Channel);
+        }
+        public T FindChannel<T>()
+        {
+            foreach(var c in this.Channels)
+            {
+                if(typeof(T).Equals(c.GetType()))
+                {
+                    return (T)c;
+                }
+            }
+            return default(T);
         }
     }
 }

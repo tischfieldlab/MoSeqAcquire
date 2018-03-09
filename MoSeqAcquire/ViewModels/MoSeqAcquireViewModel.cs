@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models;
-using ReactiveUI;
+using MoSeqAcquire.Models.Acquisition.Kinect;
+
 
 namespace MoSeqAcquire.ViewModels
 {
-    class MoSeqAcquireViewModel : ReactiveObject
+    class MoSeqAcquireViewModel
     {
         protected KinectManager manager;
         public MoSeqAcquireViewModel()
