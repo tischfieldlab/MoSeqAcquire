@@ -13,17 +13,49 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition  Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Image Name="DepthImg" Grid.Row="1" Grid.Column="0" />
-        <Image Name="ColorImg" Grid.Row="1" Grid.Column="1"  />
+        <ItemsControl ItemsSource="{Binding Path=MediaSources}" Grid.Row="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <WrapPanel>
+                                <CheckBox />
+                                <TextBlock Text="{Binding Path=MediaSource.Name}" Grid.Column="0" />
+                            </WrapPanel>
+                            <xctk:PropertyGrid Name="pg" SelectedObject="{Binding Path=Config}" />
+                        </StackPanel>
 
-        <Image Name="DepthImg2" Grid.Row="2" Grid.Column="0" />
-        <Image Name="ColorImg2" Grid.Row="2" Grid.Column="1"  />
-        <toolkit:KinectSensorChooserUI x:Name="SensorChooserUI" IsListening="True"  HorizontalAlignment="Center" VerticalAlignment="Top" />
+                        <ItemsControl ItemsSource="{Binding Path=Channels}" Grid.Column="1">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Background="LightGray" Margin="10">
+                                        <WrapPanel>
+                                            <CheckBox IsChecked="{Binding Path=Enabled}"/>
+                                            <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                                        </WrapPanel>
+                                        <Image Source="{Binding Path=Stream}" MaxWidth="500" MaxHeight="500" Margin="10" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>

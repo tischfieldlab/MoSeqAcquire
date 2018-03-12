@@ -59,6 +59,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Interactive, Version=0.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -118,15 +119,16 @@
     <Compile Include="Models\Acquisition\ChannelFrame.cs" />
     <Compile Include="Models\Acquisition\Kinect\KinectChannel.cs" />
     <Compile Include="Models\Acquisition\Kinect\KinectColorChannel.cs" />
-    <Compile Include="Models\Acquisition\Kinect\KinectDepthChannelConfig.cs" />
-    <Compile Include="Models\Acquisition\Kinect\KinectColorChannelConfig.cs" />
     <Compile Include="Models\Acquisition\Kinect\KinectConfig.cs" />
     <Compile Include="Models\Acquisition\Kinect\KinectDepthChannel.cs" />
     <Compile Include="Models\Acquisition\MediaBus.cs" />
     <Compile Include="Models\Acquisition\MediaSource.cs" />
     <Compile Include="Models\Acquisition\MediaSourceConfig.cs" />
     <Compile Include="Models\IO\HDF5File.cs" />
+    <Compile Include="Models\IO\MediaSettingsWriter.cs" />
     <Compile Include="Models\IO\MediaWriter.cs" />
+    <Compile Include="Models\Management\Protocol.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MoSeqAcquireViewModel.cs" />
     <Compile Include="Views\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>

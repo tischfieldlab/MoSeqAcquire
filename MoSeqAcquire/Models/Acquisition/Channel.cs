@@ -8,22 +8,20 @@ using System.Threading.Tasks.Dataflow;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    public interface IChannel {
-        Type BufferType { get; }
-    }
-    public abstract class Channel<T> : IChannel
+
+    public abstract class Channel
     {
         public Channel() {
             var blockoptions = new DataflowBlockOptions() {
                 EnsureOrdered = true
             };
-            this.Buffer = new BufferBlock<ChannelFrame<T>>(blockoptions);
+            this.Buffer = new BufferBlock<ChannelFrame>(blockoptions);
         }
-        public Type BufferType { get { return typeof(T); } }
+        //public Type BufferType { get => this.Buffer. }
         public string Name { get; set; }
-        public bool Enabled { get; set; }
+        public virtual bool Enabled { get; set; }
         public ConfigurationSection Config { get; }
-        public BufferBlock<ChannelFrame<T>> Buffer { get; protected set; }
+        public BufferBlock<ChannelFrame> Buffer { get; protected set; }
 
         //protected abstract T PrepareFrame();
     }

@@ -14,8 +14,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         public KinectManager() : base()
         {
             this.Name = "Kinect";
-            
-            this.Config = (KinectConfig)ConfigurationManager.GetSection("mediaConfig/" + this.Name);
+            this.Config = new KinectConfig(this);
         }
 
         public override bool Initalize()
@@ -30,6 +29,8 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
 
             if (this.Sensor == null) { return false; }
+
+            this.Config.ReadState();
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
             return true;

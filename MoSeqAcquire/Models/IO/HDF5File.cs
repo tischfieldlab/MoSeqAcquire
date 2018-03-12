@@ -17,19 +17,19 @@ namespace MoSeqAcquire.Models.IO
 
         }
 
-        public void ConnectChannel(IChannel Channel, string Dest)
+        public void ConnectChannel(Channel Channel, string Dest)
         {
 
         }
 
-        public static ActionBlock<ChannelFrame<T>> GetWriter<T>(string filename, ulong[] chunksize) where T : struct
+        public static ActionBlock<ChannelFrame> GetWriter<T>(string filename, ulong[] chunksize) where T : struct
         {
             var fileId = Hdf5.CreateFile("testChunks.H5");
 
             // create a dataset and append two more datasets to it
             using (var chunkedDset = new ChunkedDataset<T>("/test", fileId, chunksize))
             {
-                return new ActionBlock<ChannelFrame<T>>(frame => chunkedDset.AppendDataset(frame.FrameData));
+                return new ActionBlock<ChannelFrame>(frame => chunkedDset.AppendDataset(frame.FrameData));
             };
 
         }

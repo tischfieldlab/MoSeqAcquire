@@ -8,7 +8,7 @@ using Microsoft.Kinect;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
-    public class KinectChannel<T> : Channel<T>
+    public class KinectChannel : Channel
     {
         public KinectChannel(KinectManager Kinect)
         {

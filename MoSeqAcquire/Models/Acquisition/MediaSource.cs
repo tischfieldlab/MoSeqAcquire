@@ -9,25 +9,26 @@ namespace MoSeqAcquire.Models.Acquisition
 {
     public abstract class MediaSource
     {
-        
+        public List<Channel> Channels;
+
+
         public MediaSource()
         {
-            this.Channels = new List<IChannel>();
+            this.Channels = new List<Channel>();
         }
         public string Name { get; set; }
-        public ConfigurationSection Config { get; protected set; }
-        public List<IChannel> Channels;
+        public MediaSourceConfig Config { get; protected set; }
+        
 
         public abstract bool Initalize();
         public abstract void Start();
         public abstract void Stop();
 
-        protected void RegisterChannel(IChannel Channel)
+        protected void RegisterChannel(Channel Channel)
         {
-            
             this.Channels.Add(Channel);
         }
-        public T FindChannel<T>()
+        public T FindChannel<T>() where T : Channel
         {
             foreach(var c in this.Channels)
             {
