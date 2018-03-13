@@ -30,7 +30,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Gain = config.Gain;
             this.Gamma = config.Gamma;
             this.Hue = config.Hue;
-            this.PowerLineFrequencys = config.PowerLineFrequencys;
+            this.PowerLineFrequency = config.PowerLineFrequency;
             this.AutoExposure = config.AutoExposure;
             this.AutoWhiteBalance = config.AutoWhiteBalance;
             this.BacklightCompensationMode = config.BacklightCompensationMode;
@@ -50,11 +50,36 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         public double Gain { get; set; }
         public double Gamma { get; set; }
         public double Hue { get; set; }
-        public PowerLineFrequency PowerLineFrequencys { get; set; }
+        public PowerLineFrequency PowerLineFrequency { get; set; }
         public bool AutoExposure { get; set; }
         public bool AutoWhiteBalance { get; set; }
         public BacklightCompensationMode BacklightCompensationMode { get; set; }
         public DepthRange DepthRange { get; set; }
+
+        public new static ConfigSnapshot GetDefault()
+        {
+            var s = Activator.CreateInstance<KinectConfigSnapshot>();
+            s.ForceInfraredEmitterOff = false;
+            s.ElevationAngle = 0;
+            s.ColorImageFormat = ColorImageFormat.RgbResolution640x480Fps30;
+            s.DepthImageFormat = DepthImageFormat.Resolution640x480Fps30;
+            s.Brightness = 0.2156;
+            s.Contrast = 1;
+            s.Saturation = 1;
+            s.Sharpness = 0.5;
+            s.WhiteBalance = 2700;
+            s.ExposureTime = 4000;
+            s.FrameInterval = 0;
+            s.Gain = 1;
+            s.Gamma = 2.2;
+            s.Hue = 0;
+            s.PowerLineFrequency = PowerLineFrequency.Disabled;
+            s.AutoExposure = true;
+            s.AutoWhiteBalance = true;
+            s.BacklightCompensationMode = BacklightCompensationMode.AverageBrightness;
+            s.DepthRange = DepthRange.Default;
+            return s;
+        }
 
     }
 
@@ -133,7 +158,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Gain = config.Gain;
             this.Gamma = config.Gamma;
             this.Hue = config.Hue;
-            this.PowerLineFrequencys = config.PowerLineFrequencys;
+            this.PowerLineFrequency = config.PowerLineFrequency;
             this.AutoExposure = config.AutoExposure;
             this.AutoWhiteBalance = config.AutoWhiteBalance;
             this.BacklightCompensationMode = config.BacklightCompensationMode;
@@ -406,7 +431,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         [Category("Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the Power Line Frequency of the camera.")]
-        public PowerLineFrequency PowerLineFrequencys
+        public PowerLineFrequency PowerLineFrequency
         {
             get => powerLineFrequency;
             set

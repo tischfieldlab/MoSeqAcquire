@@ -38,8 +38,14 @@ namespace MoSeqAcquire.ViewModels
             this.channelBitmaps = new ObservableCollection<ChannelViewModel>();
             this.ro_channelBitmaps = new ReadOnlyObservableCollection<ChannelViewModel>(this.channelBitmaps);
 
-            this.LoadMediaSources();
+            //this.LoadMediaSources();
+            this.loadAndApplyProtocol("basic.xml");
+            
 
+
+        }
+        protected void generateProtocol()
+        {
             var pcol = new Protocol("basic");
             foreach (var ms in this.mediaSources)
             {
@@ -47,11 +53,46 @@ namespace MoSeqAcquire.ViewModels
             }
             MediaSettingsWriter.WriteProtocol("basic.xml", pcol);
         }
+        protected void loadAndApplyProtocol(string filename)
+        {
+            var pcol = MediaSettingsWriter.ReadProtocol(filename);
+            if(pcol == null)
+            {
+                pcol = ProtocolExtensions.GetDefaultProtocol();
+            }
+            this.applyProtocol(pcol);
+        }
+        protected void applyProtocol(Protocol protocol)
+        {
+            foreach(var s in protocol.Configurations)
+            {
+                var provider = protocol.CreateProvider(s.GetProviderType());
+                provider.Initalize();
+                while (!provider.Initalize())
+                {
+                    Thread.Sleep(500);
+                }
+                this.__mediaBus.Publish(provider);
+                provider.Start();
+                var pvm = new MediaSourceViewModel(provider);
+                this.mediaSources.Add(pvm);
+                foreach (var c in pvm.Channels) { this.channelBitmaps.Add(c); }
+            }
+        }
+
+        protected void startRecording()
+        {
+            var h5 = new HDF5FileWriter("test.h5");
+            foreach (var c in this.__mediaBus.Channels)
+            {
+                h5.ConnectChannel(c, c.Channel.Name);
+            }
+        }
 
         public ReadOnlyObservableCollection<MediaSourceViewModel> MediaSources { get => ro_mediaSources; }
         public ReadOnlyObservableCollection<ChannelViewModel> ChannelStreams { get => ro_channelBitmaps; }
 
-        protected void LoadMediaSources()
+        /*protected void LoadMediaSources()
         {
             var kinect = new KinectManager();
             while (!kinect.Initalize())
@@ -63,7 +104,7 @@ namespace MoSeqAcquire.ViewModels
             var kvm = new MediaSourceViewModel(kinect);
             this.mediaSources.Add(kvm);
             foreach(var c in kvm.Channels) { this.channelBitmaps.Add(c); }
-        }
+        }*/
 
 
     }
@@ -130,5 +171,16 @@ namespace MoSeqAcquire.ViewModels
 
         public string Name { get => this.channel.Name; }
         public bool Enabled { get => this.channel.Enabled; set => this.channel.Enabled = value; }
+    }
+
+    public static class ProtocolExtensions
+    {
+        public static Protocol GetDefaultProtocol()
+        {
+            var pcol = new Protocol("Default");
+            //default protocol contains the Kinect sensor
+            pcol.RegisterProvider(typeof(KinectManager), KinectConfigSnapshot.GetDefault());
+            return pcol;
+        }
     }
 }

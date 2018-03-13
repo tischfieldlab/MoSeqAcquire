@@ -15,6 +15,8 @@ namespace MoSeqAcquire.Models.Acquisition
     public abstract class ConfigSnapshot// : ISerializable
     {
         protected ConfigSnapshot() { }
+
+        public static ConfigSnapshot GetDefault() { throw new NotImplementedException(); }
     }
     public interface IConfigSnapshotProvider
     {

@@ -32,7 +32,8 @@ namespace MoSeqAcquire.Models.Acquisition
         }
         #endregion
 
-        public IEnumerable<MediaSource> Sources { get { return this.__sources; } }
+        public IEnumerable<MediaSource> Sources { get => this.__sources; }
+        public IEnumerable<BusChannel> Channels { get => this.__channels; }
         public void Publish(MediaSource Source) {
             if (!this.__sources.Contains(Source))
             {

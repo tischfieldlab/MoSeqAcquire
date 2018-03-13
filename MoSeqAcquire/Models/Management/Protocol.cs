@@ -42,15 +42,21 @@ namespace MoSeqAcquire.Models.Management
         }
         public T CreateProvider<T>() where T: MediaSource
         {
-            var item = this.Configurations.Find(s => s.GetProviderType() == typeof(T));
+            return (T)this.CreateProvider(typeof(T));
+        }
+        public MediaSource CreateProvider(Type type)
+        {
+            var item = this.Configurations.Find(s => s.GetProviderType() == type);
             if (item != null)
             {
-                var ms = (MediaSource)Activator.CreateInstance<T>();
+                var ms = (MediaSource)Activator.CreateInstance(type);
                 ms.Config.ApplySnapshot(item.Config);
-                return (T)ms;
+                return ms;
             }
             return null;
         }
+
+        
     }
 
     [XmlType("Source")]

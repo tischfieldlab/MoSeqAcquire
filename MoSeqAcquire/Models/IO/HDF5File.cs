@@ -11,27 +11,53 @@ namespace MoSeqAcquire.Models.IO
 {
     class HDF5FileWriter
     {
+        protected long fileid;
+        protected List<HDF5ChannelSink> sinks;
+        
         
         public HDF5FileWriter(string filename)
         {
-
+            this.fileid = Hdf5.CreateFile("testChunks.H5");
+            this.sinks = new List<HDF5ChannelSink>();
         }
 
-        public void ConnectChannel(Channel Channel, string Dest)
+        public void ConnectChannel(BusChannel Channel, string Dest)
         {
-
+            this.sinks.Add(new HDF5ChannelSink(this.fileid, Dest, Channel));
         }
+    }
+    class HDF5ChannelSink
+    {
+        protected long fileid;
+        protected string dataset_name;
+        protected dynamic dataset; //of type ChunkedDataset<T>
+        protected BufferBlock<ChannelFrame> back_buffer;
+        protected ActionBlock<ChannelFrame> sink;
 
-        public static ActionBlock<ChannelFrame> GetWriter<T>(string filename, ulong[] chunksize) where T : struct
+        public HDF5ChannelSink(long fileid, string dataset, BusChannel channel)
         {
-            var fileId = Hdf5.CreateFile("testChunks.H5");
-
-            // create a dataset and append two more datasets to it
-            using (var chunkedDset = new ChunkedDataset<T>("/test", fileId, chunksize))
+            this.fileid = fileid;
+            this.dataset_name = dataset;
+            this.AttachSink(channel);
+        }
+        protected void Initialize(Type dataType, ulong[] chunksize)
+        {
+            var cdtype = typeof(ChunkedDataset<>).MakeGenericType(dataType);
+            this.dataset = Activator.CreateInstance(cdtype, new object[] { this.dataset_name, this.fileid, chunksize });
+        }
+        protected void AttachSink(BusChannel Channel)
+        {
+            this.back_buffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true });
+            this.sink = new ActionBlock<ChannelFrame>(frame =>
             {
-                return new ActionBlock<ChannelFrame>(frame => chunkedDset.AppendDataset(frame.FrameData));
-            };
-
+                if (this.dataset == null)
+                {
+                    this.Initialize(frame.DataType, new ulong[] { (ulong)frame.FrameData.Length });
+                }
+                this.dataset.AppendDataset(frame.FrameData);
+            });
+            Channel.Feed.LinkTo(this.back_buffer);
+            this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
         }
     }
 }
