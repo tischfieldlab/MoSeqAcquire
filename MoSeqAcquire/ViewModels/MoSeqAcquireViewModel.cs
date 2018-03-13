@@ -35,23 +35,26 @@ namespace MoSeqAcquire.ViewModels
             this.mediaSources = new ObservableCollection<MediaSourceViewModel>();
             this.ro_mediaSources = new ReadOnlyObservableCollection<MediaSourceViewModel>(this.mediaSources);
 
-            this.channelBitmaps = new ObservableCollection<ChannelViewModel>();
-            this.ro_channelBitmaps = new ReadOnlyObservableCollection<ChannelViewModel>(this.channelBitmaps);
-
             //this.LoadMediaSources();
             this.loadAndApplyProtocol("basic.xml");
+            this.generateAndSaveProtocol("basic.xml");
             
 
 
         }
-        protected void generateProtocol()
+        protected Protocol generateProtocol()
         {
             var pcol = new Protocol("basic");
             foreach (var ms in this.mediaSources)
             {
                 pcol.RegisterProvider(ms.MediaSource.GetType(), ms.Config.GetSnapshot());
             }
-            MediaSettingsWriter.WriteProtocol("basic.xml", pcol);
+            return pcol;
+            
+        }
+        protected void generateAndSaveProtocol(string filename)
+        {
+            MediaSettingsWriter.WriteProtocol("basic.xml", this.generateProtocol());
         }
         protected void loadAndApplyProtocol(string filename)
         {
@@ -74,7 +77,6 @@ namespace MoSeqAcquire.ViewModels
             foreach(var s in protocol.Configurations)
             {
                 var provider = protocol.CreateProvider(s.GetProviderType());
-                provider.Initalize();
                 while (!provider.Initalize())
                 {
                     Thread.Sleep(500);
@@ -84,7 +86,6 @@ namespace MoSeqAcquire.ViewModels
                 provider.Start();
                 var pvm = new MediaSourceViewModel(provider);
                 this.mediaSources.Add(pvm);
-                foreach (var c in pvm.Channels) { this.channelBitmaps.Add(c); }
             }
         }
 

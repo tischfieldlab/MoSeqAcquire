@@ -17,17 +17,27 @@ namespace MoSeqAcquire.Models.IO
         {
             var stypes = Configuration.Configurations.Select((s) => { return s.Config.GetType(); }).ToArray();
             XmlSerializer serializer = new XmlSerializer(typeof(Protocol), stypes);
-            TextWriter writer = new StreamWriter(filename);
-            serializer.Serialize(writer, Configuration);
-            writer.Close();
+            using (TextWriter writer = new StreamWriter(filename))
+            {
+                serializer.Serialize(writer, Configuration);
+            }
         }
         public static Protocol ReadProtocol(string filename)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Protocol));
-            FileStream fs = new FileStream(filename, FileMode.Open);  
+            XmlSerializer serializer = new XmlSerializer(typeof(Protocol), GetSerializedTypes());
             Protocol configuration;
-            configuration = (Protocol)serializer.Deserialize(fs);
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            {
+                configuration = (Protocol)serializer.Deserialize(fs);
+            }
             return configuration;
+        }
+
+        protected static Type[] GetSerializedTypes()
+        {
+            var types = new List<Type>();
+            types.Add(typeof(Acquisition.Kinect.KinectConfigSnapshot));
+            return types.ToArray();
         }
 
     }

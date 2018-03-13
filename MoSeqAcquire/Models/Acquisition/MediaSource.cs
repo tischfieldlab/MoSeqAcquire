@@ -19,14 +19,17 @@ namespace MoSeqAcquire.Models.Acquisition
         public string Name { get; set; }
         public MediaSourceConfig Config { get; protected set; }
         
-
+        public bool IsInitialized { get; protected set; }
         public abstract bool Initalize();
         public abstract void Start();
         public abstract void Stop();
 
         protected void RegisterChannel(Channel Channel)
         {
-            this.Channels.Add(Channel);
+            if (!this.Channels.Contains(Channel))
+            {
+                this.Channels.Add(Channel);
+            }
         }
         public T FindChannel<T>() where T : Channel
         {

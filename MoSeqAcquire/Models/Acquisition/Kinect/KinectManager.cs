@@ -33,6 +33,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Config.ReadState();
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
+            this.IsInitialized = true;
             return true;
         }
 
