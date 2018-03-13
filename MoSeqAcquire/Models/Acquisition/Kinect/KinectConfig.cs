@@ -13,7 +13,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
     public class KinectConfigSnapshot : ConfigSnapshot
     {
-        protected KinectConfigSnapshot() { }
+        public KinectConfigSnapshot() { }
         public KinectConfigSnapshot(KinectConfig config)
         {
             this.ForceInfraredEmitterOff = config.ForceInfraredEmitterOff;

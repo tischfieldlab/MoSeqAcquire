@@ -50,7 +50,7 @@ namespace MoSeqAcquire.Models.Management
             if (item != null)
             {
                 var ms = (MediaSource)Activator.CreateInstance(type);
-                ms.Config.ApplySnapshot(item.Config);
+                //ms.Config.ApplySnapshot(item.Config);
                 return ms;
             }
             return null;

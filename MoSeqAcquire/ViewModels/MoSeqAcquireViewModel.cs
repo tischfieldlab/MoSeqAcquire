@@ -55,7 +55,14 @@ namespace MoSeqAcquire.ViewModels
         }
         protected void loadAndApplyProtocol(string filename)
         {
-            var pcol = MediaSettingsWriter.ReadProtocol(filename);
+            Protocol pcol = null;
+            try
+            {
+                pcol = MediaSettingsWriter.ReadProtocol(filename);
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
             if(pcol == null)
             {
                 pcol = ProtocolExtensions.GetDefaultProtocol();
@@ -72,6 +79,7 @@ namespace MoSeqAcquire.ViewModels
                 {
                     Thread.Sleep(500);
                 }
+                provider.Config.ApplySnapshot(s.Config);
                 this.__mediaBus.Publish(provider);
                 provider.Start();
                 var pvm = new MediaSourceViewModel(provider);
