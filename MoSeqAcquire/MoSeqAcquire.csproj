@@ -128,6 +128,8 @@
     <Compile Include="Models\IO\MediaSettingsWriter.cs" />
     <Compile Include="Models\IO\MediaWriter.cs" />
     <Compile Include="Models\Management\Protocol.cs" />
+    <Compile Include="Models\Performance\FrameCounter.cs" />
+    <Compile Include="Models\Performance\PerformanceCounterManager.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MoSeqAcquireViewModel.cs" />
     <Compile Include="Views\UserControl1.xaml.cs">
