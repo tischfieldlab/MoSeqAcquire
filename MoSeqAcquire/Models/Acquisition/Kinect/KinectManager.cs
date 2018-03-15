@@ -33,6 +33,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Config.ReadState();
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
+            this.RegisterChannel(new KinectSoundChannel(this));
             this.IsInitialized = true;
             return true;
         }
@@ -40,11 +41,10 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
         public override void Start()
         {
+            this.Sensor.Start();
             this.Sensor.ColorStream.Enable();
             this.Sensor.DepthStream.Enable();
-            //this.Sensor.AudioSource.Start();
-            this.Sensor.Start();
-            
+            this.FindChannel<KinectSoundChannel>().Enabled = true;
         }
 
         public override void Stop()

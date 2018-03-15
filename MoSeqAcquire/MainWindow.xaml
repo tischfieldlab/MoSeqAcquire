@@ -7,6 +7,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:local="clr-namespace:MoSeqAcquire"
+        xmlns:vm="clr-namespace:MoSeqAcquire.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
@@ -35,13 +36,8 @@
                         </StackPanel>
 
                         <ItemsControl ItemsSource="{Binding Path=Channels}" Grid.Column="1">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
+                            <ItemsControl.Resources>
+                                <DataTemplate DataType="{x:Type vm:VideoChannelViewModel}">
                                     <StackPanel Background="LightGray" Margin="10">
                                         <WrapPanel>
                                             <CheckBox IsChecked="{Binding Path=Enabled}"/>
@@ -50,9 +46,23 @@
                                         <Image Source="{Binding Path=Stream}" MaxWidth="500" MaxHeight="500" Margin="10" />
                                     </StackPanel>
                                 </DataTemplate>
-                            </ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:AudioChannelViewModel}">
+                                    <StackPanel Background="LightGray" Margin="10">
+                                        <WrapPanel>
+                                            <CheckBox IsChecked="{Binding Path=Enabled}"/>
+                                            <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                                        </WrapPanel>
+                                        <Image Source="{Binding Path=LineSpectrum}" MaxWidth="500" MaxHeight="500" Margin="10"  />
+                                        <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="500" MaxHeight="500" Margin="10"  />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.Resources>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
                         </ItemsControl>
-
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

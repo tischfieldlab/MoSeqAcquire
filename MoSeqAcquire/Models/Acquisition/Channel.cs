@@ -8,6 +8,11 @@ using System.Threading.Tasks.Dataflow;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
+    public enum MediaType
+    {
+        Audio,
+        Video
+    }
 
     public abstract class Channel
     {
@@ -17,6 +22,7 @@ namespace MoSeqAcquire.Models.Acquisition
             };
             this.Buffer = new BufferBlock<ChannelFrame>(blockoptions);
         }
+        public MediaType MediaType { get; protected set; }
         //public Type BufferType { get => this.Buffer. }
         public string Name { get; set; }
         public virtual bool Enabled { get; set; }

@@ -15,6 +15,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             this.Name = "Kinect Depth Channel";
             Kinect.Sensor.DepthFrameReady += this.Sensor_DepthFrameReady;
+            this.MediaType = MediaType.Video;
         }
 
         public DepthImageStream InnerStream { get { return Kinect.Sensor.DepthStream; } }

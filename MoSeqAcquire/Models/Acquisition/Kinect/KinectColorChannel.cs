@@ -15,7 +15,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             this.Name = "Kinect Color Channel";
             Kinect.Sensor.ColorFrameReady += Sensor_ColorFrameReady;
-            
+            this.MediaType = MediaType.Video;
         }
         public ColorImageStream InnerStream { get { return Kinect.Sensor.ColorStream; } }
         public override bool Enabled
