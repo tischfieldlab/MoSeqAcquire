@@ -35,6 +35,12 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.AutoWhiteBalance = config.AutoWhiteBalance;
             this.BacklightCompensationMode = config.BacklightCompensationMode;
             this.DepthRange = config.DepthRange;
+            this.AutomaticGainControlEnabled = config.AutomaticGainControlEnabled;
+            this.BeamAngleMode = config.BeamAngleMode;
+            this.EchoCancellationMode = config.EchoCancellationMode;
+            this.EchoCancellationSpeakerIndex = config.EchoCancellationSpeakerIndex;
+            this.ManualBeamAngle = config.ManualBeamAngle;
+            this.NoiseSuppression = config.NoiseSuppression;
         }
         public bool ForceInfraredEmitterOff { get; set; }
         public int ElevationAngle { get; set; }
@@ -55,6 +61,13 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         public bool AutoWhiteBalance { get; set; }
         public BacklightCompensationMode BacklightCompensationMode { get; set; }
         public DepthRange DepthRange { get; set; }
+
+        public bool AutomaticGainControlEnabled { get; set; }
+        public BeamAngleMode BeamAngleMode { get; set; }
+        public EchoCancellationMode EchoCancellationMode { get; set; }
+        public int EchoCancellationSpeakerIndex { get; set; }
+        public double ManualBeamAngle { get; set; }
+        public bool NoiseSuppression { get; set; }
 
         public new static ConfigSnapshot GetDefault()
         {
@@ -78,6 +91,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             s.AutoWhiteBalance = true;
             s.BacklightCompensationMode = BacklightCompensationMode.AverageBrightness;
             s.DepthRange = DepthRange.Default;
+
             return s;
         }
 
@@ -116,7 +130,14 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.backlightCompensationMode = this.ColorCameraSettings.BacklightCompensationMode;
 
             this.depthRange = this.Kinect.Sensor.DepthStream.Range;
-            
+
+            this.automaticGainControlEnabled = this.Kinect.Sensor.AudioSource.AutomaticGainControlEnabled;
+            this.beamAngleMode = this.Kinect.Sensor.AudioSource.BeamAngleMode;
+            this.echoCancellationMode = this.Kinect.Sensor.AudioSource.EchoCancellationMode;
+            this.echoCancellationSpeakerIndex = this.Kinect.Sensor.AudioSource.EchoCancellationSpeakerIndex;
+            this.manualBeamAngle = this.Kinect.Sensor.AudioSource.ManualBeamAngle;
+            this.noiseSuppression = this.Kinect.Sensor.AudioSource.NoiseSuppression;
+
             this.NotifyPropertyChanged(null);
         }
         protected void SetRangeValidator<VAL, T>(string PropName, T Min, T Max)
@@ -163,6 +184,12 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.AutoWhiteBalance = config.AutoWhiteBalance;
             this.BacklightCompensationMode = config.BacklightCompensationMode;
             this.DepthRange = config.DepthRange;
+            this.AutomaticGainControlEnabled = config.AutomaticGainControlEnabled;
+            this.BeamAngleMode = config.BeamAngleMode;
+            this.EchoCancellationMode = config.EchoCancellationMode;
+            this.EchoCancellationSpeakerIndex = config.EchoCancellationSpeakerIndex;
+            this.ManualBeamAngle = config.ManualBeamAngle;
+            this.noiseSuppression = config.NoiseSuppression;
         }
 
 
@@ -186,6 +213,13 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         private bool autoWhiteBalance;
         private BacklightCompensationMode backlightCompensationMode;
         private DepthRange depthRange;
+
+        private bool automaticGainControlEnabled;
+        private BeamAngleMode beamAngleMode;
+        private EchoCancellationMode echoCancellationMode;
+        private int echoCancellationSpeakerIndex;
+        private double manualBeamAngle;
+        private bool noiseSuppression;
 
         #region Kinect Settings
         [Category("Kinect Settings")]
@@ -509,6 +543,91 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                 {
                     this.Sensor.DepthStream.Range = value;
                     SetField(ref depthRange, value);
+                }
+
+            }
+        }
+
+        [Category("Audio Settings")]
+        public bool AutomaticGainControlEnabled
+        {
+            get => automaticGainControlEnabled;
+            set
+            {
+                if (automaticGainControlEnabled != value)
+                {
+                    this.Sensor.AudioSource.AutomaticGainControlEnabled = value;
+                    SetField(ref automaticGainControlEnabled, value);
+                }
+
+            }
+        }
+        [Category("Audio Settings")]
+        public BeamAngleMode BeamAngleMode
+        {
+            get => beamAngleMode;
+            set
+            {
+                if (beamAngleMode != value)
+                {
+                    this.Sensor.AudioSource.BeamAngleMode = value;
+                    SetField(ref beamAngleMode, value);
+                }
+
+            }
+        }
+        [Category("Audio Settings")]
+        public EchoCancellationMode EchoCancellationMode
+        {
+            get => echoCancellationMode;
+            set
+            {
+                if (echoCancellationMode != value)
+                {
+                    this.Sensor.AudioSource.EchoCancellationMode = value;
+                    SetField(ref echoCancellationMode, value);
+                }
+
+            }
+        }
+        [Category("Audio Settings")]
+        public int EchoCancellationSpeakerIndex
+        {
+            get => echoCancellationSpeakerIndex;
+            set
+            {
+                if (echoCancellationSpeakerIndex != value)
+                {
+                    this.Sensor.AudioSource.EchoCancellationSpeakerIndex = value;
+                    SetField(ref echoCancellationSpeakerIndex, value);
+                }
+
+            }
+        }
+        [Category("Audio Settings")]
+        public double ManualBeamAngle
+        {
+            get => manualBeamAngle;
+            set
+            {
+                if (manualBeamAngle != value)
+                {
+                    this.Sensor.AudioSource.ManualBeamAngle = value;
+                    SetField(ref manualBeamAngle, value);
+                }
+
+            }
+        }
+        [Category("Audio Settings")]
+        public bool NoiseSuppression
+        {
+            get => noiseSuppression;
+            set
+            {
+                if (noiseSuppression != value)
+                {
+                    this.Sensor.AudioSource.NoiseSuppression = value;
+                    SetField(ref noiseSuppression, value);
                 }
 
             }
