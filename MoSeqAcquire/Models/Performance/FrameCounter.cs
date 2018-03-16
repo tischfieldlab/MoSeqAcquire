@@ -8,6 +8,10 @@ using System.Timers;
 
 namespace MoSeqAcquire.Models.Performance
 {
+    public interface IFrameRateProvider
+    {
+        FrameRateCounter FrameRate { get; }
+    }
     public class FrameRateCounter : BaseViewModel
     {
         private DateTime __lastTime;

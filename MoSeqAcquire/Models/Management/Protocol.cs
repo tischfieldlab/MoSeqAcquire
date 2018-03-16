@@ -38,7 +38,6 @@ namespace MoSeqAcquire.Models.Management
                     this.Configurations.ElementAt(position).Config = Config;
                 }
             }
-                
         }
         public T CreateProvider<T>() where T: MediaSource
         {
@@ -62,7 +61,6 @@ namespace MoSeqAcquire.Models.Management
     [XmlType("Source")]
     public class ProtocolSource
     {
-
         [XmlAttribute]
         public string Provider { get; set; }
         [XmlElement]
