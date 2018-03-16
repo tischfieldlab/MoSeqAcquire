@@ -44,6 +44,10 @@
                                             <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
                                         </WrapPanel>
                                         <Image Source="{Binding Path=Stream}" MaxWidth="500" MaxHeight="500" Margin="10" />
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding Path=FrameRate.FrameRate}" />
+                                            <TextBlock Text=" FPS" />
+                                        </WrapPanel>
                                     </StackPanel>
                                 </DataTemplate>
                                 <DataTemplate DataType="{x:Type vm:AudioChannelViewModel}">
@@ -54,6 +58,10 @@
                                         </WrapPanel>
                                         <Image Source="{Binding Path=LineSpectrum}" MaxWidth="500" MaxHeight="500" Margin="10"  />
                                         <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="500" MaxHeight="500" Margin="10"  />
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding Path=FrameRate.FrameRate}" />
+                                            <TextBlock Text=" FPS" />
+                                        </WrapPanel>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.Resources>

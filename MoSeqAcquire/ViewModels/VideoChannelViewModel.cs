@@ -33,8 +33,10 @@ namespace MoSeqAcquire.ViewModels
                             frame.FrameData,
                             frame.Metadata.Width * frame.Metadata.BytesPerPixel,
                             0);
+                        this.FrameRate.Increment();
                     }));
-                }));
+                })
+            );
         }
         protected bool CheckBitmapOk(ChannelFrame frame)
         {

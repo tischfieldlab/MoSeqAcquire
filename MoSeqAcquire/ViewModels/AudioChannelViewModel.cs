@@ -53,6 +53,7 @@ namespace MoSeqAcquire.ViewModels
 
         //public AudioVisualHost VisualHost { get; protected set; }
 
+        private float[] __buffer;
         public override void BindChannel()
         {
             MediaBus.Instance.Subscribe(
@@ -62,31 +63,38 @@ namespace MoSeqAcquire.ViewModels
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
                         var nsamples = frame.FrameData.Length / 2;
-                        var buffer = new float[nsamples];
+                        if(this.__buffer == null || this.__buffer.Length != nsamples)
+                        {
+                            this.__buffer = new float[nsamples];
+                        }
                         for (int i=0; i< nsamples; i++)
                         {
-                            buffer[i] = BitConverter.ToInt16((byte[])frame.FrameData, i*2) / 32768f;
+                            this.__buffer[i] = BitConverter.ToInt16((byte[])frame.FrameData, i*2) / 32768f;
                         }
-                        spectrumProvider.Add(buffer, nsamples);
+                        spectrumProvider.Add(this.__buffer, nsamples);
 
-                        if(this.__lineSpectrumBitmap == null)
-                        {
-                            this.__lineSpectrumBitmap = new RenderTargetBitmap(300, 100, 96, 96, PixelFormats.Pbgra32);
-                        }
-                        this.__lineSpectrum.CreateSpectrumLine(this.__lineSpectrumBitmap, Colors.Green, Colors.Red, Colors.White);
-
-                        if(this.__voicePrint3DSpectrumBitmap == null)
-                        {
-                            this.__voicePrint3DSpectrumBitmap = new RenderTargetBitmap(300, 100, 96, 96, PixelFormats.Pbgra32);
-                        }
+                        this.EnsureBitmaps();
                         float xpos = (float)this.framecount % this.__voicePrint3DSpectrumBitmap.PixelWidth;
                         this.__voicePrint3DSpectrum.CreateVoicePrint3D(this.__voicePrint3DSpectrumBitmap, xpos, Colors.Black);
+                        this.__lineSpectrum.CreateSpectrumLine(this.__lineSpectrumBitmap, Colors.Green, Colors.Red, Colors.White);
 
                         this.NotifyPropertyChanged("LineSpectrum");
                         this.NotifyPropertyChanged("VoicePrintSpectrum");
                         this.framecount++;
+                        this.FrameRate.Increment();
                     }));
                 }));
+        }
+        protected void EnsureBitmaps()
+        {
+            if (this.__lineSpectrumBitmap == null)
+            {
+                this.__lineSpectrumBitmap = new RenderTargetBitmap(300, 100, 96, 96, PixelFormats.Pbgra32);
+            }
+            if (this.__voicePrint3DSpectrumBitmap == null)
+            {
+                this.__voicePrint3DSpectrumBitmap = new RenderTargetBitmap(300, 100, 96, 96, PixelFormats.Pbgra32);
+            }
         }
         
     }

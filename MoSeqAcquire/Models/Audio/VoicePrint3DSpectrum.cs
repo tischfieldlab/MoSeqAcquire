@@ -85,7 +85,9 @@ namespace WinformsVisualization.Visualization
                         double pointHeight = bitmap.Height / spectrumPoints.Length;
 
                         //get the color based on the fft band value
-                        pen.Brush = new SolidColorBrush(_colorCalculator.GetColor((float)p.Value));
+                        var color = _colorCalculator.GetColor((float)p.Value);
+                        pen.Brush = new SolidColorBrush(color);
+                        //Console.WriteLine(color.ToString());
 
                         var p1 = new Point(xPos, currentYOffset);
                         var p2 = new Point(xPos, currentYOffset - pointHeight);

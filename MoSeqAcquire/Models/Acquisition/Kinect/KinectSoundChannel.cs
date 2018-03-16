@@ -73,17 +73,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             while (this.Enabled)
             {
-                /*if(this.InnerStream.Length < 0)
-                {
-                    continue;
-                }
-                if(this.__data == null || this.__data.Length != this.InnerStream.Length)
-                {
-                    this.__data = new byte[this.InnerStream.Length];
-                }*/
-
-                int readCount = this.InnerStream.Read(this.__data, 0, this.__data.Length);
-                
+                int readCount = this.InnerStream.Read(this.__data, 0, this.__data.Length);                
                 this.Buffer.Post(new ChannelFrame(this.__data));
             }
         }
