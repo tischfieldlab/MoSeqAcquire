@@ -25,15 +25,17 @@ namespace MoSeqAcquire.ViewModels
         protected ObservableCollection<MediaSourceViewModel> mediaSources;
         protected ReadOnlyObservableCollection<MediaSourceViewModel> ro_mediaSources;
 
-        protected ObservableCollection<ChannelViewModel> channelBitmaps;
-        protected ReadOnlyObservableCollection<ChannelViewModel> ro_channelBitmaps;
-
+        protected ObservableCollection<RecorderViewModel> recorders;
+        protected ReadOnlyObservableCollection<RecorderViewModel> ro_recorders;
 
         public MoSeqAcquireViewModel()
         {
             this.__mediaBus = MediaBus.Instance;
             this.mediaSources = new ObservableCollection<MediaSourceViewModel>();
             this.ro_mediaSources = new ReadOnlyObservableCollection<MediaSourceViewModel>(this.mediaSources);
+
+            this.recorders = new ObservableCollection<RecorderViewModel>();
+            this.ro_recorders = new ReadOnlyObservableCollection<RecorderViewModel>(this.recorders);
 
             this.loadAndApplyProtocol("basic.xml");
             //this.generateAndSaveProtocol("basic.xml");
@@ -96,7 +98,12 @@ namespace MoSeqAcquire.ViewModels
         }
 
         public ReadOnlyObservableCollection<MediaSourceViewModel> MediaSources { get => ro_mediaSources; }
-        public ReadOnlyObservableCollection<ChannelViewModel> ChannelStreams { get => ro_channelBitmaps; }
+        protected RecorderViewModel selectedRecorder;
+        public RecorderViewModel SelectedRecorder {
+            get => this.selectedRecorder;
+            set => this.SetField(ref this.selectedRecorder, value);
+        }
+        public ReadOnlyObservableCollection<RecorderViewModel> Recorders { get => ro_recorders; }
     }
 
     

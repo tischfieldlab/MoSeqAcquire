@@ -18,38 +18,14 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition  Width="Auto" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <ItemsControl ItemsSource="{Binding Path=MediaSources}" Grid.Row="1">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <WrapPanel>
-                                <CheckBox />
-                                <TextBlock Text="{Binding Path=MediaSource.Name}" Grid.Column="0" />
-                            </WrapPanel>
-                            <xctk:PropertyGrid Name="pg" SelectedObject="{Binding Path=Config}" />
-                        </StackPanel>
-                        <ItemsControl ItemsSource="{Binding Path=Channels}" Grid.Column="1">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <v:ChannelView />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <GroupBox Header="Available Hardware" Grid.Column="0" Grid.Row="1">
+            <v:MediaSourceView />
+        </GroupBox>
+        <GroupBox Header="Recorders" Grid.Column="1" Grid.Row="1">
+            <Button Content="Add Recorder" />
+            <ListBox />
+        </GroupBox>
     </Grid>
 </Window>

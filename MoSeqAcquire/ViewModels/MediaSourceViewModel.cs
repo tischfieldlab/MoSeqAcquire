@@ -12,6 +12,8 @@ namespace MoSeqAcquire.ViewModels
     {
         protected ObservableCollection<ChannelViewModel> _channels;
         protected ReadOnlyObservableCollection<ChannelViewModel> _ro_Channels;
+
+
         public MediaSourceViewModel(MediaSource mediaSource)
         {
             this.MediaSource = mediaSource;

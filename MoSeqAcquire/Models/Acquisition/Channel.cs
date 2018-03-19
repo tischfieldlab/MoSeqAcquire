@@ -23,11 +23,11 @@ namespace MoSeqAcquire.Models.Acquisition
             this.Buffer = new BufferBlock<ChannelFrame>(blockoptions);
         }
         public MediaType MediaType { get; protected set; }
-        //public Type BufferType { get => this.Buffer. }
         public string Name { get; set; }
         public virtual bool Enabled { get; set; }
         public ConfigurationSection Config { get; }
         public BufferBlock<ChannelFrame> Buffer { get; protected set; }
+        public Type DataType { get; protected set; }
 
         //protected abstract T PrepareFrame();
     }

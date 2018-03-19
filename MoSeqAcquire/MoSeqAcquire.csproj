@@ -130,11 +130,13 @@
     <Compile Include="Models\IO\HDF5File.cs" />
     <Compile Include="Models\IO\MediaSettingsWriter.cs" />
     <Compile Include="Models\IO\MediaWriter.cs" />
+    <Compile Include="Models\IO\RawDataWriter.cs" />
     <Compile Include="Models\Management\Protocol.cs" />
     <Compile Include="Models\Performance\FrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceCounterManager.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\AudioChannelViewModel.cs" />
+    <Compile Include="ViewModels\RecorderViewModel.cs" />
     <Compile Include="ViewModels\VideoChannelViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSourceViewModel.cs" />
@@ -143,8 +145,11 @@
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
+    <Compile Include="Views\RecorderEditor.xaml.cs">
+      <DependentUpon>RecorderEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MediaSourceView.xaml.cs">
+      <DependentUpon>MediaSourceView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\ColorStreamViewer.xaml">
       <SubType>Designer</SubType>
@@ -166,7 +171,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserControl1.xaml">
+    <Page Include="Views\RecorderEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MediaSourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
