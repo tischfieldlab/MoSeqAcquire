@@ -11,12 +11,18 @@ namespace MoSeqAcquire.ViewModels
 {
     public class RecorderViewModel : BaseViewModel
     {
-        
+        protected string name;
+        protected string recorderType;
         public RecorderViewModel()
         {
             this.AvailableRecorderTypes = new ReadOnlyObservableCollection<string>(new ObservableCollection<string>(this.FindRecorderTypes()));
         }
-        protected string recorderType;
+        
+        public string Name
+        {
+            get => this.name;
+            set => this.SetField(ref this.name, value);
+        }
         public string RecorderType
         {
             get => this.recorderType;
@@ -28,6 +34,12 @@ namespace MoSeqAcquire.ViewModels
         protected IEnumerable<string> FindRecorderTypes()
         {
             return Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsAssignableFrom(typeof(MediaWriter))).Select(t => t.Name);
+        }
+        public MediaWriter MakeMediaWriter()
+        {
+            var writer = (MediaWriter)Activator.CreateInstance(Type.GetType(this.recorderType));
+
+            return writer;
         }
     }
 }

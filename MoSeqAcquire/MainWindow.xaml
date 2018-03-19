@@ -24,8 +24,10 @@
             <v:MediaSourceView />
         </GroupBox>
         <GroupBox Header="Recorders" Grid.Column="1" Grid.Row="1">
-            <Button Content="Add Recorder" />
-            <ListBox />
+            <StackPanel>
+                <Button Content="Add Recorder" />
+                <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" DisplayMemberPath="Name" />
+            </StackPanel>
         </GroupBox>
     </Grid>
 </Window>
