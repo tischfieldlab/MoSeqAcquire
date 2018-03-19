@@ -68,22 +68,25 @@ namespace WinformsVisualization.Visualization
                 RaisePropertyChanged("CurrentSize");
             }
         }
-
+        private float[] fftBuffer;
         public void CreateSpectrumLine(RenderTargetBitmap bitmap, Brush brush, Color background)
         {
             var size = new Size(bitmap.Width, bitmap.Height);
             if (!UpdateFrequencyMappingIfNessesary(size))
                 return;
 
-            var fftBuffer = new float[(int) FftSize];
+            if(this.fftBuffer == null)
+            {
+                this.fftBuffer = new float[(int)FftSize];
+            }
 
             //get the fft result from the spectrum provider
-            if (SpectrumProvider.GetFftData(fftBuffer, this))
+            if (SpectrumProvider.GetFftData(this.fftBuffer, this))
             {
                 var pen = new Pen(brush, (float)_barWidth);
                 using (DrawingContext graphics = this.visual.RenderOpen())
                 {
-                    CreateSpectrumLineInternal(graphics, pen, fftBuffer, size);
+                    CreateSpectrumLineInternal(graphics, pen, this.fftBuffer, size);
                 }
             }
             bitmap.Clear();
