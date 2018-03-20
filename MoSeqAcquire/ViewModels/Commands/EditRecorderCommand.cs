@@ -21,10 +21,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            if(this.ViewModel.SelectedRecorder != null)
+            if(this.ViewModel.Recorder.SelectedRecorder != null)
             {
                 var dialog = new RecorderEditor();
-                dialog.DataContext = this.ViewModel.SelectedRecorder;
+                dialog.DataContext = this.ViewModel.Recorder.SelectedRecorder;
                 dialog.ShowDialog();
             }
             else

@@ -26,8 +26,7 @@ namespace MoSeqAcquire.ViewModels
         protected ObservableCollection<MediaSourceViewModel> mediaSources;
         protected ReadOnlyObservableCollection<MediaSourceViewModel> ro_mediaSources;
 
-        protected ObservableCollection<RecorderViewModel> recorders;
-        protected ReadOnlyObservableCollection<RecorderViewModel> ro_recorders;
+        protected RecordingManagerViewModel recorderManager;
 
         public MoSeqAcquireViewModel()
         {
@@ -35,8 +34,8 @@ namespace MoSeqAcquire.ViewModels
             this.mediaSources = new ObservableCollection<MediaSourceViewModel>();
             this.ro_mediaSources = new ReadOnlyObservableCollection<MediaSourceViewModel>(this.mediaSources);
 
-            this.recorders = new ObservableCollection<RecorderViewModel>();
-            this.ro_recorders = new ReadOnlyObservableCollection<RecorderViewModel>(this.recorders);
+            this.recorderManager = new RecordingManagerViewModel(this);
+            
 
             this.loadAndApplyProtocol("basic.xml");
             //this.generateAndSaveProtocol("basic.xml");
@@ -101,12 +100,8 @@ namespace MoSeqAcquire.ViewModels
         }
 
         public ReadOnlyObservableCollection<MediaSourceViewModel> MediaSources { get => ro_mediaSources; }
-        protected RecorderViewModel selectedRecorder;
-        public RecorderViewModel SelectedRecorder {
-            get => this.selectedRecorder;
-            set => this.SetField(ref this.selectedRecorder, value);
-        }
-        public ObservableCollection<RecorderViewModel> Recorders { get => recorders; }
+        public RecordingManagerViewModel Recorder { get => this.recorderManager; }
+
     }
 
     

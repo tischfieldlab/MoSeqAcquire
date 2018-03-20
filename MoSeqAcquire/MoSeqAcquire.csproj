@@ -140,6 +140,7 @@
     <Compile Include="ViewModels\Commands\AddRecorderCommand.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />
     <Compile Include="ViewModels\Commands\CommandLibrary.cs" />
+    <Compile Include="ViewModels\RecordingManagerViewModel.cs" />
     <Compile Include="ViewModels\RecorderViewModel.cs" />
     <Compile Include="ViewModels\VideoChannelViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />

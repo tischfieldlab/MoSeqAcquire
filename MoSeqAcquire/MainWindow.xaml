@@ -30,20 +30,37 @@
         <GroupBox Header="Available Hardware" Grid.Column="0" Grid.Row="1">
             <v:MediaSourceView HorizontalAlignment="Stretch" />
         </GroupBox>
-        <GroupBox Header="Recorders" Grid.Column="1" Grid.Row="1">
+
+        <GroupBox Header="Recording Console" Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=Recorder}">
             <StackPanel>
-                <Button Content="Add Recorder" Command="{Binding Path=Commands.AddRecorder}" />
-                <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=DisplayName}">
-                                <TextBlock.InputBindings>
-                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
-                                </TextBlock.InputBindings>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <WrapPanel>
+                    <Label>Recording Length</Label>
+                    <ComboBox>
+                        <ComboBoxItem Content="Capture ___ frames" />
+                        <ComboBoxItem Content="Capture ___ seconds" />
+                        <ComboBoxItem Content="Until stopped" />
+                    </ComboBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Button Content="Start" />
+                    <Button Content="Stop" />
+                </WrapPanel>
+                <GroupBox Header="Recorders" >
+                    <StackPanel>
+                        <Button Content="Add Recorder" Command="{Binding Path=Root.Commands.AddRecorder}" />
+                        <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=DisplayName}">
+                                        <TextBlock.InputBindings>
+                                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
+                                        </TextBlock.InputBindings>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </GroupBox>
             </StackPanel>
         </GroupBox>
     </Grid>

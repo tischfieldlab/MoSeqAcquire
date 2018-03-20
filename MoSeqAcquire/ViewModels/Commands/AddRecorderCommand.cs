@@ -21,8 +21,8 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             var recorder = new RecorderViewModel(this.ViewModel);
             recorder.Name = "New Recorder";
-            this.ViewModel.Recorders.Add(recorder);
-            this.ViewModel.SelectedRecorder = recorder;
+            this.ViewModel.Recorder.Recorders.Add(recorder);
+            this.ViewModel.Recorder.SelectedRecorder = recorder;
             this.ViewModel.Commands.EditRecorder.Execute(parameter);
         }
     }
