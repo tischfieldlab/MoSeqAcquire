@@ -21,9 +21,19 @@ namespace MoSeqAcquire.Models.IO
             this.sinks = new List<HDF5ChannelSink>();
         }
 
-        public void ConnectChannel(BusChannel Channel, string Dest)
+        public override void ConnectChannel(BusChannel Channel, string Dest)
         {
             this.sinks.Add(new HDF5ChannelSink(this.fileid, Dest, Channel));
+        }
+
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
         }
     }
     class HDF5ChannelSink

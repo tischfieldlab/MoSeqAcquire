@@ -136,6 +136,10 @@
     <Compile Include="Models\Performance\PerformanceCounterManager.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\AudioChannelViewModel.cs" />
+    <Compile Include="ViewModels\Commands\EditRecorderCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddRecorderCommand.cs" />
+    <Compile Include="ViewModels\Commands\BaseCommand.cs" />
+    <Compile Include="ViewModels\Commands\CommandLibrary.cs" />
     <Compile Include="ViewModels\RecorderViewModel.cs" />
     <Compile Include="ViewModels\VideoChannelViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />

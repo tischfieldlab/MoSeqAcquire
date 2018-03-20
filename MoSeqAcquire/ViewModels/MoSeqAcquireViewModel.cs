@@ -16,6 +16,7 @@ using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Acquisition.Kinect;
 using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.ViewModels.Commands;
 
 namespace MoSeqAcquire.ViewModels
 {
@@ -39,7 +40,9 @@ namespace MoSeqAcquire.ViewModels
 
             this.loadAndApplyProtocol("basic.xml");
             //this.generateAndSaveProtocol("basic.xml");
+            this.Commands = new CommandLibrary(this);
         }
+        public CommandLibrary Commands { get; protected set; }
         protected Protocol generateProtocol()
         {
             var pcol = new Protocol("basic");
@@ -103,7 +106,7 @@ namespace MoSeqAcquire.ViewModels
             get => this.selectedRecorder;
             set => this.SetField(ref this.selectedRecorder, value);
         }
-        public ReadOnlyObservableCollection<RecorderViewModel> Recorders { get => ro_recorders; }
+        public ObservableCollection<RecorderViewModel> Recorders { get => recorders; }
     }
 
     

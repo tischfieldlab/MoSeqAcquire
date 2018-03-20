@@ -33,15 +33,7 @@ namespace MoSeqAcquire.ViewModels
                             frame.FrameData,
                             frame.Metadata.Width * frame.Metadata.BytesPerPixel,
                             0);
-                        if (this.showCrosshairs)
-                        {
-                            var midx = frame.Metadata.Width / 2;
-                            var midy = frame.Metadata.Height / 2;
-                            for (var y = 0; y < frame.Metadata.Height)
-                            {
-                                this.Stream.
-                            }
-                        }
+                        
                         this.FrameRate.Increment();
                     }));
                 })

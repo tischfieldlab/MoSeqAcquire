@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:toolkit="clr-namespace:Microsoft.Kinect.Toolkit;assembly=Microsoft.Kinect.Toolkit"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
@@ -11,7 +12,13 @@
         xmlns:v="clr-namespace:MoSeqAcquire.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -21,12 +28,22 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <GroupBox Header="Available Hardware" Grid.Column="0" Grid.Row="1">
-            <v:MediaSourceView />
+            <v:MediaSourceView HorizontalAlignment="Stretch" />
         </GroupBox>
         <GroupBox Header="Recorders" Grid.Column="1" Grid.Row="1">
             <StackPanel>
-                <Button Content="Add Recorder" />
-                <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" DisplayMemberPath="Name" />
+                <Button Content="Add Recorder" Command="{Binding Path=Commands.AddRecorder}" />
+                <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=DisplayName}">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </StackPanel>
         </GroupBox>
     </Grid>

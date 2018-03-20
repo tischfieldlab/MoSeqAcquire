@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MoSeqAcquire.ViewModels.Commands
+{
+    public class AddRecorderCommand : BaseCommand
+    {
+        public AddRecorderCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        {
+        }
+
+        public override bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public override void Execute(object parameter)
+        {
+            var recorder = new RecorderViewModel(this.ViewModel);
+            recorder.Name = "New Recorder";
+            this.ViewModel.Recorders.Add(recorder);
+            this.ViewModel.SelectedRecorder = recorder;
+            this.ViewModel.Commands.EditRecorder.Execute(parameter);
+        }
+    }
+}

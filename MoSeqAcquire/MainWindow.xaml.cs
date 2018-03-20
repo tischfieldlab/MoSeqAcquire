@@ -3,6 +3,7 @@ using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Acquisition.Kinect;
 using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.ViewModels;
+using MoSeqAcquire.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,5 @@ namespace MoSeqAcquire
 
         }
 
-        
     }
 }

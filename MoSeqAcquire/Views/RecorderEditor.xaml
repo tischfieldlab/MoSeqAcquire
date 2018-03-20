@@ -4,12 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MoSeqAcquire.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="RecorderEditor" Height="450" Width="800">
     <Grid>
         <StackPanel>
-            <Label>Recorder Type</Label>
-            <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedItem="{Binding Path=RecorderType}" />
+            <WrapPanel>
+                <Label>Name</Label>
+                <TextBox Text="{Binding Path=Name}" />
+            </WrapPanel>
+            <WrapPanel>
+                <Label>Recorder Type</Label>
+                <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedItem="{Binding Path=RecorderType}" />
+            </WrapPanel>
+            <GroupBox Header="Channels To Record">
+                <xctk:CheckListBox ItemsSource="{Binding Path=AvailableChannels}" SelectedItemsOverride="{Binding Path=SelectedChannels}" SelectedMemberPath="IsSelected" DisplayMemberPath="Channel.Name" />
+            </GroupBox>
         </StackPanel>
     </Grid>
 </Window>

@@ -7,37 +7,35 @@
              xmlns:vm="clr-namespace:MoSeqAcquire.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.Resources>
-            <DataTemplate DataType="{x:Type vm:VideoChannelViewModel}">
-                <StackPanel Background="LightGray" Margin="10">
-                    <WrapPanel>
-                        <CheckBox IsChecked="{Binding Path=Enabled}"/>
-                        <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
-                    </WrapPanel>
-                    <Image Source="{Binding Path=Stream}" MaxWidth="500" MaxHeight="500" Margin="10" />
-                    
-                    <WrapPanel>
-                        <TextBlock Text="{Binding Path=FrameRate.FrameRate}" />
-                        <TextBlock Text=" FPS" />
-                    </WrapPanel>
-                </StackPanel>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:AudioChannelViewModel}">
-                <StackPanel Background="LightGray" Margin="10">
-                    <WrapPanel>
-                        <CheckBox IsChecked="{Binding Path=Enabled}"/>
-                        <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
-                    </WrapPanel>
-                    <Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" MaxWidth="500" MaxHeight="500" Margin="10"  />
-                    <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="500" MaxHeight="500" Margin="10"  />
-                    <WrapPanel>
-                        <TextBlock Text="{Binding Path=FrameRate.FrameRate}" />
-                        <TextBlock Text=" FPS" />
-                    </WrapPanel>
-                </StackPanel>
-            </DataTemplate>
-        </Grid.Resources>
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type vm:VideoChannelViewModel}">
+            <StackPanel Background="LightGray" Margin="10">
+                <WrapPanel>
+                    <CheckBox IsChecked="{Binding Path=Enabled}"/>
+                    <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                </WrapPanel>
+                <Image Source="{Binding Path=Stream}" MaxWidth="200" MaxHeight="200" Margin="10" />
 
+                <WrapPanel>
+                    <TextBlock Text="{Binding FrameRate.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
+                </WrapPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AudioChannelViewModel}">
+            <StackPanel Background="LightGray" Margin="10">
+                <WrapPanel>
+                    <CheckBox IsChecked="{Binding Path=Enabled}"/>
+                    <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                </WrapPanel>
+                <Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" MaxWidth="400" MaxHeight="100" Margin="10"  />
+                <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="400" MaxHeight="100" Margin="10"  />
+                <WrapPanel>
+                    <TextBlock Text="{Binding FrameRate.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
+                </WrapPanel>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ContentPresenter Content="{Binding}" />
     </Grid>
 </UserControl>
