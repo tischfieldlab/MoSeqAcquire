@@ -21,9 +21,14 @@ namespace MoSeqAcquire.Models.IO
             this.sinks = new List<HDF5ChannelSink>();
         }
 
-        public override void ConnectChannel(BusChannel Channel, string Dest)
+        public override void ConnectChannel(Channel Channel)
         {
-            this.sinks.Add(new HDF5ChannelSink(this.fileid, Dest, Channel));
+            this.sinks.Add(new HDF5ChannelSink(this.fileid, "", Channel));
+        }
+
+        public override IEnumerable<string> ListDestinations()
+        {
+            throw new NotImplementedException();
         }
 
         public override void Start()
@@ -44,7 +49,7 @@ namespace MoSeqAcquire.Models.IO
         protected BufferBlock<ChannelFrame> back_buffer;
         protected ActionBlock<ChannelFrame> sink;
 
-        public HDF5ChannelSink(long fileid, string dataset, BusChannel channel)
+        public HDF5ChannelSink(long fileid, string dataset, Channel channel)
         {
             this.fileid = fileid;
             this.dataset_name = dataset;
@@ -55,7 +60,7 @@ namespace MoSeqAcquire.Models.IO
             var cdtype = typeof(ChunkedDataset<>).MakeGenericType(dataType);
             this.dataset = Activator.CreateInstance(cdtype, new object[] { this.dataset_name, this.fileid, chunksize });
         }
-        protected void AttachSink(BusChannel Channel)
+        protected void AttachSink(Channel Channel)
         {
             this.back_buffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true });
             this.sink = new ActionBlock<ChannelFrame>(frame =>
@@ -66,7 +71,7 @@ namespace MoSeqAcquire.Models.IO
                 }
                 this.dataset.AppendDataset(frame.FrameData);
             });
-            Channel.Feed.LinkTo(this.back_buffer);
+            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.back_buffer);
             this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
         }
     }

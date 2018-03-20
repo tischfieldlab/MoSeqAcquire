@@ -34,12 +34,6 @@ namespace MoSeqAcquire
         {
             InitializeComponent();
             this.DataContext = new MoSeqAcquireViewModel();
-
-        
-
-
-
         }
-
     }
 }

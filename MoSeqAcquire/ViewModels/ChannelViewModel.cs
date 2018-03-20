@@ -22,6 +22,7 @@ namespace MoSeqAcquire.ViewModels
         }
         public abstract void BindChannel();
         
+        public Channel Channel { get => this.channel; }
         public string Name { get => this.channel.Name; }
         public bool Enabled { get => this.channel.Enabled; set => this.channel.Enabled = value; }
         public FrameRateCounter FrameRate { get; protected set; }

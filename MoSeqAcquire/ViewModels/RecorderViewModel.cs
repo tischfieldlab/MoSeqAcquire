@@ -30,15 +30,10 @@ namespace MoSeqAcquire.ViewModels
             this.SelectedChannels = new ObservableCollection<SelectableChannelViewModel>();
 
             this.SelectedChannels.CollectionChanged += (s, e) => { this.NotifyPropertyChanged("DisplayName"); };
+            this.PropertyChanged += (s, e) => { if (e.PropertyName == "Name") { this.NotifyPropertyChanged("DisplayName"); } };
         }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public string DisplayName
-        {
-            get
-            {
-                return this.name + " (" + this.SelectedChannels.Count + " Channels)";
-            }
-        }
+        public string DisplayName { get => this.name + " (" + this.SelectedChannels.Count + " Channels)"; }
         
         public string Name
         {
@@ -66,7 +61,10 @@ namespace MoSeqAcquire.ViewModels
         public MediaWriter MakeMediaWriter()
         {
             var writer = (MediaWriter)Activator.CreateInstance(Type.GetType(this.recorderType));
-
+            foreach(var c in this.SelectedChannels)
+            {
+                writer.ConnectChannel(c.Channel.Channel);
+            }
             return writer;
         }
     }

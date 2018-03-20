@@ -18,9 +18,14 @@ namespace MoSeqAcquire.Models.IO
         {
             this.sinks = new List<RawDataSink>();
         }
-        public override void ConnectChannel(BusChannel Channel, string Dest)
+        public override void ConnectChannel(Channel Channel)
         {
-            this.sinks.Add(new RawDataSink(Dest, Channel));
+            this.sinks.Add(new RawDataSink(this.Settings, Channel));
+        }
+
+        public override IEnumerable<string> ListDestinations()
+        {
+            return this.sinks.Select(s => s.FilePath);
         }
 
         public override void Start()
@@ -43,20 +48,46 @@ namespace MoSeqAcquire.Models.IO
 
     public class RawDataSink
     {
-        protected string filename;
-        protected BusChannel channel;
+        protected RecordingSettings settings;
+        protected Channel channel;
         
         protected BufferBlock<ChannelFrame> back_buffer;
         protected ActionBlock<ChannelFrame> sink;
         protected FileStream file;
         protected BinaryWriter writer;
 
-        public RawDataSink(string filename, BusChannel channel)
+        public RawDataSink(RecordingSettings settings, Channel channel)
         {
-            this.filename = filename;
-            this.file = File.Open(this.filename, FileMode.Create);
+            this.settings = settings;
+            this.channel = channel;
+            
+            this.file = File.Open(this.FilePath, FileMode.Create);
             this.writer = new BinaryWriter(this.file);
             this.AttachSink(channel);
+        }
+        public string FilePath
+        {
+            get
+            {
+                return Path.Combine(this.settings.Directory, this.settings.Basename + "." + this.channel.Name + "." + this.Ext);
+            }
+        }
+        public string Ext {
+            get
+            {
+                if (this.channel.DataType == typeof(short))
+                {
+                    return "short";
+                }
+                else if (this.channel.DataType == typeof(byte))
+                {
+                    return "byte";
+                }
+                else
+                {
+                    return "unknown";
+                }
+            }
         }
         public bool IsRecording { get; set; }
         protected ActionBlock<ChannelFrame> GetActionBlock(Type type)
@@ -78,11 +109,11 @@ namespace MoSeqAcquire.Models.IO
             }
             return null;
         }
-        protected void AttachSink(BusChannel Channel)
+        protected void AttachSink(Channel Channel)
         {
             this.back_buffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true });
-            this.sink = this.GetActionBlock(Channel.Channel.DataType);
-            Channel.Feed.LinkTo(this.back_buffer);
+            this.sink = this.GetActionBlock(Channel.DataType);
+            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.back_buffer);
             this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
         }
         public void Close()

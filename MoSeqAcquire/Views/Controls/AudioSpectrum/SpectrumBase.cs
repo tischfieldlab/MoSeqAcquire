@@ -70,7 +70,6 @@ namespace WinformsVisualization.Visualization
                 if (value == null)
                     throw new ArgumentNullException("value");
                 _spectrumProvider = value;
-
                 RaisePropertyChanged("SpectrumProvider");
             }
         }
@@ -121,6 +120,8 @@ namespace WinformsVisualization.Visualization
                 RaisePropertyChanged("FFTSize");
             }
         }
+
+        public virtual void UpdateVisual() { }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

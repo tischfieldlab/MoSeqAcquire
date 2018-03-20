@@ -1,4 +1,6 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Configuration;
+using MoSeqAcquire.Models.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +68,18 @@ namespace MoSeqAcquire.Models.Management
         [XmlElement]
         public ConfigSnapshot Config { get; set; }
 
+        public Type GetProviderType()
+        {
+            return Type.GetType(this.Provider);
+        }
+    }
+
+    public class ProtocolSink
+    {
+        [XmlAttribute]
+        public string Provider { get; set; }
+        [XmlElement]
+        public RecordingSettings Config { get; set; }
         public Type GetProviderType()
         {
             return Type.GetType(this.Provider);

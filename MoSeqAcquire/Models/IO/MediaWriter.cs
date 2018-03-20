@@ -9,8 +9,14 @@ namespace MoSeqAcquire.Models.IO
 {
     public abstract class MediaWriter
     {
+        public MediaWriter()
+        {
+            this.Settings = new RecordingSettings();
+        }
+        public RecordingSettings Settings { get; protected set; }
 
-        public abstract void ConnectChannel(BusChannel Channel, string Dest);
+        public abstract void ConnectChannel(Channel Channel);
+        public abstract IEnumerable<string> ListDestinations();
         public abstract void Start();
         public abstract void Stop();
 

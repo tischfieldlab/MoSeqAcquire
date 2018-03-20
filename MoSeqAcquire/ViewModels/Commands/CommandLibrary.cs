@@ -7,38 +7,29 @@ using System.Windows.Input;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class CommandLibrary
+    public class CommandLibrary : BaseCommandLibrary<MoSeqAcquireViewModel>
     {
-        protected MoSeqAcquireViewModel _vm;
-        protected Dictionary<Type, ICommand> __commands;
+        public CommandLibrary(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        {
+        }
 
+        protected override void InitializeCommands()
+        {
+            this.RegisterCommand<AddRecorderCommand>();
+            this.RegisterCommand<EditRecorderCommand>();
 
-        public CommandLibrary(MoSeqAcquireViewModel ViewModel)
-        {
-            this._vm = ViewModel;
-            this.__commands = new Dictionary<Type, ICommand>();
-            this.InitializeCommands();
+            this.RegisterCommand<StartRecordingCommand>();
+
+            this.RegisterCommand<LoadProtocolCommand>();
+            this.RegisterCommand<SaveProtocolCommand>();
         }
-        protected void InitializeCommands()
-        {
-            this.RegisterCommand(new AddRecorderCommand(this._vm));
-            this.RegisterCommand(new EditRecorderCommand(this._vm));
-        }
-        protected void RegisterCommand(ICommand Command)
-        {
-            this.__commands.Add(Command.GetType(), Command);
-        }
-        protected T GetCommand<T>()
-        {
-            if (this.__commands.ContainsKey(typeof(T)))
-            {
-                return (T)this.__commands[typeof(T)];
-            }
-            return default(T);
-        }
+        
 
         public AddRecorderCommand AddRecorder { get => this.GetCommand<AddRecorderCommand>(); }
         public EditRecorderCommand EditRecorder { get => this.GetCommand<EditRecorderCommand>(); }
+        public StartRecordingCommand StartRecording { get => this.GetCommand<StartRecordingCommand>(); }
+        public LoadProtocolCommand LoadProtocol { get => this.GetCommand<LoadProtocolCommand>(); }
+        public SaveProtocolCommand SaveProtocol { get => this.GetCommand<SaveProtocolCommand>(); }
 
 
 

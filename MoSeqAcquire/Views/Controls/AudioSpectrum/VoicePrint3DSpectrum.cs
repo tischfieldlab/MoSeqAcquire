@@ -28,7 +28,10 @@ namespace WinformsVisualization.Visualization
             FftSize = fftSize;
             this.visual = new DrawingVisual();
         }
-
+        public DrawingVisual Visual
+        {
+            get => this.visual;
+        }
         public Color[] Colors
         {
             get { return _colorCalculator.Colors; }

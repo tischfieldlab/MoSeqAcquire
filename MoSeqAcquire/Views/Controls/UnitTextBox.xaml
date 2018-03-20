@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.Controls.UnitTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters" Name="RootFC" >
+    <UserControl.Resources>
+        <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Name="ValueText" Text="{Binding Path=Value, ElementName=RootFC, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Padding="{Binding Path=ValuePadding, ElementName=RootFC, Mode=OneWay}" />
+        <TextBlock Name="UnitsText" Text="{Binding Path=Units, ElementName=RootFC, Mode=OneWay}"  VerticalAlignment="Center" Padding="5,0" Foreground="Gray" Margin="{Binding Path=UnitsMargin, ElementName=RootFC, Mode=OneWay}" >
+            <TextBlock.Style>
+                <Style>
+                    <Style.Triggers>
+                        <!--HorizontalAlignment="{Binding Path=UnitsHorizontalAlignment, ElementName=RootFC, Mode=OneWay}"-->
+                        <DataTrigger Binding="{Binding Path=UnitsAlignment, ElementName=RootFC, Mode=OneWay}" Value="Right">
+                            <Setter Property="TextBlock.HorizontalAlignment" Value="Right" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=UnitsAlignment, ElementName=RootFC, Mode=OneWay}" Value="Left">
+                            <Setter Property="TextBlock.HorizontalAlignment" Value="Left" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
+</UserControl>

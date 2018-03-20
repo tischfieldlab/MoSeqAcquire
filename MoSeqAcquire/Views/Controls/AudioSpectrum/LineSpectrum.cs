@@ -20,6 +20,10 @@ namespace WinformsVisualization.Visualization
             FftSize = fftSize;
             this.visual = new DrawingVisual();
         }
+        public DrawingVisual Visual
+        {
+            get => this.visual;
+        }
 
         [Browsable(false)]
         public double BarWidth
@@ -68,10 +72,27 @@ namespace WinformsVisualization.Visualization
                 RaisePropertyChanged("CurrentSize");
             }
         }
-        private float[] fftBuffer;
-        public void CreateSpectrumLine(RenderTargetBitmap bitmap, Brush brush, Color background)
+        protected Color background;
+        public Color Background
         {
-            var size = new Size(bitmap.Width, bitmap.Height);
+            get => this.background;
+            set => this.background = value;
+        }
+        protected Brush brush;
+        public Brush Brush
+        {
+            get => this.brush;
+            set => this.brush = value;
+        }
+
+
+
+
+
+        private float[] fftBuffer;
+        public override void UpdateVisual()
+        {
+            var size = this.CurrentSize;
             if (!UpdateFrequencyMappingIfNessesary(size))
                 return;
 
@@ -86,23 +107,15 @@ namespace WinformsVisualization.Visualization
                 var pen = new Pen(brush, (float)_barWidth);
                 using (DrawingContext graphics = this.visual.RenderOpen())
                 {
-                    CreateSpectrumLineInternal(graphics, pen, this.fftBuffer, size);
+                    CreateSpectrumLineInternal(graphics, pen, this.fftBuffer);
                 }
             }
-            bitmap.Clear();
-            bitmap.Render(this.visual);
         }
 
-        public void CreateSpectrumLine(RenderTargetBitmap bitmap, Color color1, Color color2, Color background)
-        {
-            Brush brush = new LinearGradientBrush(color1, color2, 0);
-            CreateSpectrumLine(bitmap, brush, background);
-        }
-
-        private void CreateSpectrumLineInternal(DrawingContext graphics, Pen pen, float[] fftBuffer, Size size)
+        private void CreateSpectrumLineInternal(DrawingContext graphics, Pen pen, float[] fftBuffer)
         {
             //prepare the fft result for rendering 
-            SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(size.Height, fftBuffer);
+            SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(this.CurrentSize.Height, fftBuffer);
 
             //connect the calculated points with lines
             for (int i = 0; i < spectrumPoints.Length; i++)
@@ -111,8 +124,8 @@ namespace WinformsVisualization.Visualization
                 int barIndex = p.SpectrumPointIndex;
                 double xCoord = BarSpacing * (barIndex + 1) + (_barWidth * barIndex) + _barWidth / 2;
 
-                var p1 = new Point(xCoord, size.Height);
-                var p2 = new Point(xCoord, (size.Height - p.Value - 1));
+                var p1 = new Point(xCoord, this.CurrentSize.Height);
+                var p2 = new Point(xCoord, (this.CurrentSize.Height - p.Value - 1));
 
                 graphics.DrawLine(pen, p1, p2);
             }

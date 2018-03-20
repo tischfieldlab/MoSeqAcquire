@@ -8,25 +8,15 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using MoSeqAcquire.Models.Configuration;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    
-    public abstract class ConfigSnapshot// : ISerializable
-    {
-        protected ConfigSnapshot() { }
-
-        public static ConfigSnapshot GetDefault() { throw new NotImplementedException(); }
-    }
-    public interface IConfigSnapshotProvider
-    {
-        ConfigSnapshot GetSnapshot();
-        void ApplySnapshot(ConfigSnapshot snapshot);
-    }
-
     public abstract class MediaSourceConfig : INotifyPropertyChanged, IConfigSnapshotProvider
     {
         public abstract void ReadState();
+        public abstract ConfigSnapshot GetSnapshot();
+        public abstract void ApplySnapshot(ConfigSnapshot snapshot);
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
@@ -48,8 +38,5 @@ namespace MoSeqAcquire.Models.Acquisition
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public abstract ConfigSnapshot GetSnapshot();
-        public abstract void ApplySnapshot(ConfigSnapshot snapshot);
     }
 }

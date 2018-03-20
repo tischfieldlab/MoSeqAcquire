@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.Controls.FileChooser" Name="RootFC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"  >
+    <UserControl.Resources>
+        <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="25" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Name="PathText" Text="{Binding Path=SelectedPath, ElementName=RootFC, Mode=TwoWay}" IsReadOnly="{Binding Path=ForcePickerUse, ElementName=RootFC, Mode=OneWay}" AllowDrop="True" Drop="PathText_Drop" MouseDoubleClick="buttonClicked" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" />
+        <Button Name="SelectButton" Grid.Column="1" Grid.Row="0" Click="buttonClicked">
+            <Image Name="ButtonImage" Width="16" Height="16">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled"  Value="False">
+                                <Setter Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+        </Button>
+    </Grid>
+</UserControl>

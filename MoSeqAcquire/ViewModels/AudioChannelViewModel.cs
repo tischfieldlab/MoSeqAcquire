@@ -28,7 +28,7 @@ namespace MoSeqAcquire.ViewModels
         {
             //this.VisualHost = new AudioVisualHost();
             this.spectrumProvider = new BasicSpectrumProvider(1, 16000, fftSize);
-            this.__lineSpectrum = new LineSpectrum(fftSize)
+            /*this.__lineSpectrum = new LineSpectrum(fftSize)
             {
                 SpectrumProvider = spectrumProvider,
                 UseAverage = true,
@@ -44,14 +44,12 @@ namespace MoSeqAcquire.ViewModels
                 PointCount = 200,
                 IsXLogScale = true,
                 ScalingStrategy = ScalingStrategy.Sqrt,
-            };
-            
-            
+            };*/
         }
         public BitmapSource LineSpectrum { get => this.__lineSpectrumBitmap; }
         public BitmapSource VoicePrintSpectrum { get => this.__voicePrint3DSpectrumBitmap; }
 
-        //public AudioVisualHost VisualHost { get; protected set; }
+        public BasicSpectrumProvider SpectrumProvider { get => this.spectrumProvider; }
 
         private float[] __buffer;
         public override void BindChannel()
@@ -67,19 +65,19 @@ namespace MoSeqAcquire.ViewModels
                         {
                             this.__buffer = new float[nsamples];
                         }
-                        for (int i=0; i< nsamples; i++)
+                        for (int i=0; i < nsamples; i++)
                         {
                             this.__buffer[i] = BitConverter.ToInt16((byte[])frame.FrameData, i*2) / 32768f;
                         }
                         spectrumProvider.Add(this.__buffer, nsamples);
 
-                        this.EnsureBitmaps();
-                        float xpos = (float)this.framecount % this.__voicePrint3DSpectrumBitmap.PixelWidth;
-                        this.__voicePrint3DSpectrum.CreateVoicePrint3D(this.__voicePrint3DSpectrumBitmap, xpos, Colors.Black);
-                        this.__lineSpectrum.CreateSpectrumLine(this.__lineSpectrumBitmap, Colors.Green, Colors.Red, Colors.White);
+                        //this.EnsureBitmaps();
+                        //float xpos = (float)this.framecount % this.__voicePrint3DSpectrumBitmap.PixelWidth;
+                        //this.__voicePrint3DSpectrum.CreateVoicePrint3D(this.__voicePrint3DSpectrumBitmap, xpos, Colors.Black);
+                        //this.__lineSpectrum.CreateSpectrumLine(this.__lineSpectrumBitmap, Colors.Green, Colors.Red, Colors.White);
 
-                        this.NotifyPropertyChanged("LineSpectrum");
-                        this.NotifyPropertyChanged("VoicePrintSpectrum");
+                        //this.NotifyPropertyChanged("LineSpectrum");
+                        //this.NotifyPropertyChanged("VoicePrintSpectrum");
                         this.framecount++;
                         this.FrameRate.Increment();
                     }));

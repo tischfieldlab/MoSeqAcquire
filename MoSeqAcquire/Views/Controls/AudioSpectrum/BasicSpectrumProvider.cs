@@ -38,17 +38,21 @@ namespace WinformsVisualization.Visualization
             return true;
         }
 
+        public delegate void SpectrumUpdatedHandler();
+        public event SpectrumUpdatedHandler SpectrumUpdated;
         public override void Add(float[] samples, int count)
         {
             base.Add(samples, count);
             if(count > 0)
                 _contexts.Clear();
+            this.SpectrumUpdated?.Invoke();
         }
 
         public override void Add(float left, float right)
         {
             base.Add(left, right);
             _contexts.Clear();
+            this.SpectrumUpdated?.Invoke();
         }
     }
 }

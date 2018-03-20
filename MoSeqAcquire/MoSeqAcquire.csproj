@@ -71,6 +71,7 @@
       <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.8.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -107,9 +108,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\ColorStreamViewer.xaml.cs">
+    <Compile Include="Models\Configuration\ConfigSnapshot.cs" />
+    <Compile Include="Models\Configuration\IConfigSnapshotProvider.cs" />
+    <Compile Include="Models\IO\RecordingSettings.cs" />
+    <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
+    <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
+    <Compile Include="Views\Controls\ColorStreamViewer.xaml.cs">
       <DependentUpon>ColorStreamViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\FileChooser.xaml.cs">
+      <DependentUpon>FileChooser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\UnitTextBox.xaml.cs">
+      <DependentUpon>UnitTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Converters\AdditionConverter.cs" />
+    <Compile Include="Views\Converters\BooleanInvertConverter.cs" />
+    <Compile Include="Views\Converters\BooleanMultiAndConverter.cs" />
+    <Compile Include="Views\Converters\BooleanMultiOrConverter.cs" />
+    <Compile Include="Views\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\BoolToVisibilityInvertConverter.cs" />
+    <Compile Include="Views\Converters\DataTypeConverter.cs" />
+    <Compile Include="Views\Converters\DataTypeInheritsTypeConverter.cs" />
+    <Compile Include="Views\Converters\DivideConverter.cs" />
+    <Compile Include="Views\Converters\EnumContainsConverter.cs" />
+    <Compile Include="Views\Converters\EnumEqualityConverter.cs" />
+    <Compile Include="Views\Converters\EnumToImageConverter.cs" />
+    <Compile Include="Views\Converters\EnumToStringConverter.cs" />
+    <Compile Include="Views\Converters\IsNullToBoolConverter.cs" />
+    <Compile Include="Views\Converters\IsNullToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\IsNullToVisibilityInvertConverter.cs" />
+    <Compile Include="Views\Converters\ListToStringConverter.cs" />
+    <Compile Include="Views\Converters\MultiplyConverter.cs" />
+    <Compile Include="Views\Converters\NumberFormatConverter.cs" />
+    <Compile Include="Views\Converters\OrderConverter.cs" />
+    <Compile Include="Views\Converters\RemainingTimeConverter.cs" />
+    <Compile Include="Views\Converters\RemoveNewLinesConverter.cs" />
+    <Compile Include="Views\Converters\ShortFilenameConverter.cs" />
+    <Compile Include="Views\Converters\SolidColorBrushConverter.cs" />
+    <Compile Include="Models\Acquisition\BusChannel.cs" />
     <Compile Include="Models\Acquisition\Channel.cs" />
     <Compile Include="Models\Acquisition\ChannelFrame.cs" />
     <Compile Include="Models\Acquisition\Kinect\KinectChannel.cs" />
@@ -120,13 +157,13 @@
     <Compile Include="Models\Acquisition\MediaBus.cs" />
     <Compile Include="Models\Acquisition\MediaSource.cs" />
     <Compile Include="Models\Acquisition\MediaSourceConfig.cs" />
-    <Compile Include="Models\Audio\BasicSpectrumProvider.cs" />
-    <Compile Include="Models\Audio\GradientCalculator.cs" />
-    <Compile Include="Models\Audio\ISpectrumProvider.cs" />
-    <Compile Include="Models\Audio\LineSpectrum.cs" />
-    <Compile Include="Models\Audio\ScalingStrategy.cs" />
-    <Compile Include="Models\Audio\SpectrumBase.cs" />
-    <Compile Include="Models\Audio\VoicePrint3DSpectrum.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\BasicSpectrumProvider.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\GradientCalculator.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\ISpectrumProvider.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\ScalingStrategy.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\SpectrumBase.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\VoicePrint3DSpectrum.cs" />
     <Compile Include="Models\IO\HDF5File.cs" />
     <Compile Include="Models\IO\MediaSettingsWriter.cs" />
     <Compile Include="Models\IO\MediaWriter.cs" />
@@ -136,6 +173,8 @@
     <Compile Include="Models\Performance\PerformanceCounterManager.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\AudioChannelViewModel.cs" />
+    <Compile Include="ViewModels\Commands\BaseCommandLibrary.cs" />
+    <Compile Include="ViewModels\Commands\StartRecordingCommand.cs" />
     <Compile Include="ViewModels\Commands\EditRecorderCommand.cs" />
     <Compile Include="ViewModels\Commands\AddRecorderCommand.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />
@@ -146,7 +185,7 @@
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSourceViewModel.cs" />
     <Compile Include="ViewModels\MoSeqAcquireViewModel.cs" />
-    <Compile Include="Views\AudioSpectrum.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum.cs" />
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
@@ -156,7 +195,15 @@
     <Compile Include="Views\MediaSourceView.xaml.cs">
       <DependentUpon>MediaSourceView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\ColorStreamViewer.xaml">
+    <Page Include="Views\Controls\ColorStreamViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\FileChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\UnitTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,7 +272,10 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\openHS.png" />
+    <Resource Include="Images\saveHS.png" />
+  </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
@@ -235,6 +285,9 @@
       <Project>{ADCC9AD9-EE46-4237-9220-95EAEA143D17}</Project>
       <Name>Hdf5DotNetTools</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Audio\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

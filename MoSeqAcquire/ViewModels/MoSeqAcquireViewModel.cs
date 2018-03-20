@@ -24,7 +24,7 @@ namespace MoSeqAcquire.ViewModels
     {
         protected MediaBus __mediaBus;
         protected ObservableCollection<MediaSourceViewModel> mediaSources;
-        protected ReadOnlyObservableCollection<MediaSourceViewModel> ro_mediaSources;
+        //protected ReadOnlyObservableCollection<MediaSourceViewModel> ro_mediaSources;
 
         protected RecordingManagerViewModel recorderManager;
 
@@ -32,17 +32,15 @@ namespace MoSeqAcquire.ViewModels
         {
             this.__mediaBus = MediaBus.Instance;
             this.mediaSources = new ObservableCollection<MediaSourceViewModel>();
-            this.ro_mediaSources = new ReadOnlyObservableCollection<MediaSourceViewModel>(this.mediaSources);
-
             this.recorderManager = new RecordingManagerViewModel(this);
             
 
-            this.loadAndApplyProtocol("basic.xml");
-            //this.generateAndSaveProtocol("basic.xml");
+
             this.Commands = new CommandLibrary(this);
+            this.Commands.LoadProtocol.Execute(null);
         }
         public CommandLibrary Commands { get; protected set; }
-        protected Protocol generateProtocol()
+        public Protocol GenerateProtocol()
         {
             var pcol = new Protocol("basic");
             foreach (var ms in this.mediaSources)
@@ -52,54 +50,27 @@ namespace MoSeqAcquire.ViewModels
             return pcol;
             
         }
-        protected void generateAndSaveProtocol(string filename)
-        {
-            MediaSettingsWriter.WriteProtocol("basic.xml", this.generateProtocol());
-        }
-        protected void loadAndApplyProtocol(string filename)
-        {
-            Protocol pcol = null;
-            try
-            {
-                pcol = MediaSettingsWriter.ReadProtocol(filename);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-            if(pcol == null)
-            {
-                pcol = ProtocolExtensions.GetDefaultProtocol();
-            }
-            this.applyProtocol(pcol);
-        }
-        protected void applyProtocol(Protocol protocol)
+        public void ApplyProtocol(Protocol protocol)
         {
             foreach(var s in protocol.Configurations)
             {
-                var provider = protocol.CreateProvider(s.GetProviderType());
-                while (!provider.Initalize())
+                Task.Run(() =>
                 {
-                    Thread.Sleep(500);
-                }
-                provider.Config.ApplySnapshot(s.Config);
-                this.__mediaBus.Publish(provider);
-                provider.Start();
-                var pvm = new MediaSourceViewModel(provider);
-                this.mediaSources.Add(pvm);
+                    var provider = protocol.CreateProvider(s.GetProviderType());
+                    while (!provider.Initalize())
+                    {
+                        Thread.Sleep(500);
+                    }
+                    provider.Config.ApplySnapshot(s.Config);
+                    this.__mediaBus.Publish(provider);
+                    provider.Start();
+                    var pvm = new MediaSourceViewModel(provider);
+                    this.mediaSources.Add(pvm);
+                });
             }
         }
 
-        protected void startRecording()
-        {
-            var h5 = new HDF5FileWriter("test.h5");
-            foreach (var c in this.__mediaBus.Channels)
-            {
-                h5.ConnectChannel(c, c.Channel.Name);
-            }
-        }
-
-        public ReadOnlyObservableCollection<MediaSourceViewModel> MediaSources { get => ro_mediaSources; }
+        public ObservableCollection<MediaSourceViewModel> MediaSources { get => mediaSources; }
         public RecordingManagerViewModel Recorder { get => this.recorderManager; }
 
     }
