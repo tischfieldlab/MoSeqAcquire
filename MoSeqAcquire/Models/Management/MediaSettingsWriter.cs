@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.Models.Management;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Management
 {
     class MediaSettingsWriter
     {

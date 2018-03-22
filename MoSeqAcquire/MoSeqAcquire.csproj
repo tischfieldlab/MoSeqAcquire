@@ -18,7 +18,7 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -124,6 +124,7 @@
     <Compile Include="Models\DrawingExtensions.cs" />
     <Compile Include="Models\IO\MPEGVideoWriter.cs" />
     <Compile Include="Models\IO\RecordingSettings.cs" />
+    <Compile Include="Models\Management\ExperimentMetadata.cs" />
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
@@ -184,7 +185,7 @@
     <Compile Include="Views\Controls\AudioSpectrum\SpectrumBase.cs" />
     <Compile Include="Views\Controls\AudioSpectrum\VoicePrint3DSpectrum.cs" />
     <Compile Include="Models\IO\HDF5File.cs" />
-    <Compile Include="Models\IO\MediaSettingsWriter.cs" />
+    <Compile Include="Models\Management\MediaSettingsWriter.cs" />
     <Compile Include="Models\IO\MediaWriter.cs" />
     <Compile Include="Models\IO\RawDataWriter.cs" />
     <Compile Include="Models\Management\Protocol.cs" />

@@ -16,10 +16,9 @@ namespace MoSeqAcquire.Models.IO
     {
         public MPEGVideoWriterSettings(RecorderSettings ParentSettings) : base(ParentSettings)
         {
-
+            
         }
-
-
+        public VideoCodec VideoCodec { get; set; }
     }
     public class MPEGVideoWriter : MediaWriter<MPEGVideoWriterSink>
     {
