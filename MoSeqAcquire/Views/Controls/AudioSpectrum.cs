@@ -10,28 +10,58 @@ using WinformsVisualization.Visualization;
 
 namespace MoSeqAcquire.Views.Controls
 {
-    public class AudioSpectrum : FrameworkElement
+    public class AudioSpectrumVis : FrameworkElement
     {
         private VisualCollection _children;
         protected LineSpectrum _lineSpectrum;
         protected VoicePrint3DSpectrum _3DSpectrum;
         protected Timer _timer; 
 
-        public static readonly DependencyProperty SpectrumProviderProperty = DependencyProperty.Register("SpectrumProvider", typeof(BasicSpectrumProvider), typeof(AudioSpectrum), new PropertyMetadata(null));
-        public static readonly DependencyProperty ShowLineSpectrumProperty = DependencyProperty.Register("ShowLineSpectrum", typeof(Boolean), typeof(AudioSpectrum), new PropertyMetadata(false));
-        public static readonly DependencyProperty Show3DSpectrumProperty = DependencyProperty.Register("Show3DSpectrum", typeof(Boolean), typeof(AudioSpectrum), new PropertyMetadata(false));
+        public static readonly DependencyProperty SpectrumProviderProperty = DependencyProperty.Register("SpectrumProvider", typeof(BasicSpectrumProvider), typeof(AudioSpectrumVis), new PropertyMetadata(null));
+        public static readonly DependencyProperty ShowLineSpectrumProperty = DependencyProperty.Register("ShowLineSpectrum", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(false, showLineSpectrumChanged));
+        public static readonly DependencyProperty Show3DSpectrumProperty = DependencyProperty.Register("Show3DSpectrum", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty UseAverageProperty = DependencyProperty.Register("UseAverage", typeof(Boolean), typeof(AudioSpectrum), new PropertyMetadata(true));
-        public static readonly DependencyProperty IsXLogScaleProperty = DependencyProperty.Register("IsXLogScale", typeof(Boolean), typeof(AudioSpectrum), new PropertyMetadata(true));
-        public static readonly DependencyProperty ScalingStrategyProperty = DependencyProperty.Register("ScalingStrategy", typeof(ScalingStrategy), typeof(AudioSpectrum), new PropertyMetadata(ScalingStrategy.Sqrt));
+        public static readonly DependencyProperty UseAverageProperty = DependencyProperty.Register("UseAverage", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsXLogScaleProperty = DependencyProperty.Register("IsXLogScale", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(true));
+        public static readonly DependencyProperty ScalingStrategyProperty = DependencyProperty.Register("ScalingStrategy", typeof(ScalingStrategy), typeof(AudioSpectrumVis), new PropertyMetadata(ScalingStrategy.Sqrt));
 
 
-        public AudioSpectrum()
+        public AudioSpectrumVis()
         {
             _children = new VisualCollection(this);
-            this.LoadVisuals();
+            this.MouseDown += AudioSpectrum_MouseDown;
+            //this.LoadVisuals();
         }
-        protected void LoadVisuals()
+
+        private void AudioSpectrum_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var x = 1;
+            //throw new NotImplementedException();
+        }
+
+        private static void showLineSpectrumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = d as AudioSpectrumVis;
+            if ((bool)e.NewValue)
+            {
+                self._lineSpectrum = new LineSpectrum(self.SpectrumProvider.FftSize)
+                {
+                    SpectrumProvider = self.SpectrumProvider,
+                    UseAverage = true,
+                    BarCount = 50,
+                    BarSpacing = 2,
+                    IsXLogScale = true,
+                    ScalingStrategy = ScalingStrategy.Sqrt
+                };
+                self._children.Add(self._lineSpectrum.Visual);
+            }
+            else
+            {
+                self._children.Remove(self._lineSpectrum.Visual);
+                self._lineSpectrum = null;
+            }
+        }
+        /*protected void LoadVisuals()
         {
             if (this.ShowLineSpectrum)
             {
@@ -55,8 +85,8 @@ namespace MoSeqAcquire.Views.Controls
                 IsXLogScale = true,
                 ScalingStrategy = ScalingStrategy.Sqrt,
             };
-            this._children.Add(this._3DSpectrum.Visual);*/
-        }
+            this._children.Add(this._3DSpectrum.Visual);*//*
+        }*/
         #region FrameworkElementOverrides
         protected override int VisualChildrenCount
         {

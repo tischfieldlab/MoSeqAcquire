@@ -28,7 +28,7 @@
                     <CheckBox IsChecked="{Binding Path=Enabled}"/>
                     <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
                 </WrapPanel>
-                <controls:AudioSpectrum SpectrumProvider="{Binding Path=SpectrumProvider}" />
+                <controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" />
                 <!--<Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" MaxWidth="400" MaxHeight="100" Margin="10"  />
                 <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="400" MaxHeight="100" Margin="10"  />-->
                 <WrapPanel>

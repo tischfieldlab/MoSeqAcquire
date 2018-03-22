@@ -15,8 +15,10 @@ namespace MoSeqAcquire.Models.IO
 
         public static void WriteProtocol(string filename, Protocol Configuration)
         {
-            var stypes = Configuration.Configurations.Select((s) => { return s.Config.GetType(); }).ToArray();
-            XmlSerializer serializer = new XmlSerializer(typeof(Protocol), stypes);
+            var stypes = Configuration.Sources.Select((s) => { return s.Config.GetType(); });
+            stypes = stypes.Concat(Configuration.Recorders.Select((s) => { return s.Config.GetType(); }));
+            stypes = stypes.Concat(GetSerializedTypes());
+            XmlSerializer serializer = new XmlSerializer(typeof(Protocol), stypes.ToArray());
             using (TextWriter writer = new StreamWriter(filename))
             {
                 serializer.Serialize(writer, Configuration);
@@ -37,6 +39,7 @@ namespace MoSeqAcquire.Models.IO
         {
             var types = new List<Type>();
             types.Add(typeof(Acquisition.Kinect.KinectConfigSnapshot));
+            types.Add(typeof(RecorderSettings));
             return types.ToArray();
         }
 

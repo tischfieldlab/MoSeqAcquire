@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoSeqAcquire.ViewModels
+namespace MoSeqAcquire.ViewModels.Recording
 {
     
     public class RecordingManagerViewModel : BaseViewModel
@@ -15,17 +15,24 @@ namespace MoSeqAcquire.ViewModels
         protected MoSeqAcquireViewModel rootViewModel;
         protected ObservableCollection<RecorderViewModel> recorders;
         protected RecorderViewModel selectedRecorder;
+        protected BaseRecordingSettingsViewModel settings;
         protected bool isRecording;
-        protected string directory;
-        protected string basename;
-        protected RecordingMode recordingMode;
-        protected int recordingFrameCount;
-        protected int recordingSeconds;
+
+        protected static List<string> _inheritableSettings = new List<string>() { "Directory", "Basename" };
+
 
         public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel)
         {
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
+            this.settings = new BaseRecordingSettingsViewModel();
+            this.settings.PropertyChanged += (s, e) =>
+            {
+                if (_inheritableSettings.Contains(e.PropertyName))
+                {
+
+                }
+            };
         }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         
@@ -41,30 +48,30 @@ namespace MoSeqAcquire.ViewModels
             get => this.isRecording;
             set => this.SetField(ref this.isRecording, value);
         }
-        public string Directory
+        public BaseRecordingSettingsViewModel Settings { get => this.settings; }
+
+        protected List<IMediaWriter> _realWriters;
+        public void StartRecording()
         {
-            get => this.directory;
-            set => this.SetField(ref this.directory, value);
+            this.IsRecording = true;
+            this._realWriters = new List<IMediaWriter>();
+            var settings = this.Settings;
+            foreach (var r in this.Recorders)
+            {
+                this._realWriters.Add(r.MakeMediaWriter());
+            }
+            foreach (var r in this._realWriters)
+            {
+                r.Start();
+            }
         }
-        public string Basename
+        public void StopRecording()
         {
-            get => this.basename;
-            set => this.SetField(ref this.basename, value);
-        }
-        public RecordingMode RecordingMode
-        {
-            get => this.recordingMode;
-            set => this.SetField(ref this.recordingMode, value);
-        }
-        public int RecordingFrameCount
-        {
-            get => this.recordingFrameCount;
-            set => this.SetField(ref this.recordingFrameCount, value);
-        }
-        public int RecordingSeconds
-        {
-            get => this.recordingSeconds;
-            set => this.SetField(ref this.recordingFrameCount, value);
+            foreach (var r in this._realWriters)
+            {
+                r.Stop();
+            }
+            this.IsRecording = false;
         }
     }
 }

@@ -9,20 +9,20 @@ using System.Windows;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class StartRecordingCommand : BaseCommand
+    public class StopRecordingCommand : BaseCommand
     {
-        public StartRecordingCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        public StopRecordingCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
         }
 
         public override bool CanExecute(object parameter)
         {
-            return this.ViewModel.Recorder.IsRecording == false;
+            return this.ViewModel.Recorder.IsRecording == true;
         }
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Recorder.StartRecording();
+            this.ViewModel.Recorder.StopRecording();
         }
     }
 }

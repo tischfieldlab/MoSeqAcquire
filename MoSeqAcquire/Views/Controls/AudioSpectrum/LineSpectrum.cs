@@ -19,6 +19,8 @@ namespace WinformsVisualization.Visualization
         {
             FftSize = fftSize;
             this.visual = new DrawingVisual();
+            this.background = Colors.White;
+            this.brush = new SolidColorBrush(Colors.Green);
         }
         public DrawingVisual Visual
         {
@@ -63,7 +65,7 @@ namespace WinformsVisualization.Visualization
         }
 
         [BrowsableAttribute(false)]
-        public Size CurrentSize
+        /*public Size CurrentSize
         {
             get { return _currentSize; }
             protected set
@@ -71,7 +73,7 @@ namespace WinformsVisualization.Visualization
                 _currentSize = value;
                 RaisePropertyChanged("CurrentSize");
             }
-        }
+        }*/
         protected Color background;
         public Color Background
         {
@@ -92,9 +94,9 @@ namespace WinformsVisualization.Visualization
         private float[] fftBuffer;
         public override void UpdateVisual()
         {
-            var size = this.CurrentSize;
-            if (!UpdateFrequencyMappingIfNessesary(size))
-                return;
+            //var size = this.CurrentSize;
+            //if (!UpdateFrequencyMappingIfNessesary(size))
+            //    return;
 
             if(this.fftBuffer == null)
             {
@@ -115,7 +117,7 @@ namespace WinformsVisualization.Visualization
         private void CreateSpectrumLineInternal(DrawingContext graphics, Pen pen, float[] fftBuffer)
         {
             //prepare the fft result for rendering 
-            SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(this.CurrentSize.Height, fftBuffer);
+            SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(fftBuffer);
 
             //connect the calculated points with lines
             for (int i = 0; i < spectrumPoints.Length; i++)
@@ -124,8 +126,8 @@ namespace WinformsVisualization.Visualization
                 int barIndex = p.SpectrumPointIndex;
                 double xCoord = BarSpacing * (barIndex + 1) + (_barWidth * barIndex) + _barWidth / 2;
 
-                var p1 = new Point(xCoord, this.CurrentSize.Height);
-                var p2 = new Point(xCoord, (this.CurrentSize.Height - p.Value - 1));
+                var p1 = new Point(xCoord, 100);
+                var p2 = new Point(xCoord, (100 - p.Value - 1));
 
                 graphics.DrawLine(pen, p1, p2);
             }
@@ -137,7 +139,7 @@ namespace WinformsVisualization.Visualization
             base.UpdateFrequencyMapping();
         }
 
-        private bool UpdateFrequencyMappingIfNessesary(Size newSize)
+        /*private bool UpdateFrequencyMappingIfNessesary(Size newSize)
         {
             if (newSize != CurrentSize)
             {
@@ -146,6 +148,6 @@ namespace WinformsVisualization.Visualization
             }
 
             return newSize.Width > 0 && newSize.Height > 0;
-        }
+        }*/
     }
 }

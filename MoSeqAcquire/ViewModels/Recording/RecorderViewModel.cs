@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoSeqAcquire.ViewModels
+namespace MoSeqAcquire.ViewModels.Recording
 {
     public class RecorderViewModel : BaseViewModel
     {
@@ -15,12 +15,14 @@ namespace MoSeqAcquire.ViewModels
         protected string name;
         protected string recorderType;
         protected ObservableCollection<SelectableChannelViewModel> channels;
+        protected RecorderSettingsViewModel settings;
 
-        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel)
+        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, BaseRecordingSettingsViewModel settings)
         {
             this.rootViewModel = RootViewModel;
             this.AvailableRecorderTypes = new ReadOnlyObservableCollection<string>(new ObservableCollection<string>(this.FindRecorderTypes()));
             this.loadChannels();
+            this.settings = new RecorderSettingsViewModel(settings);
         }
         protected void loadChannels()
         {
@@ -45,8 +47,9 @@ namespace MoSeqAcquire.ViewModels
             get => this.recorderType;
             set => this.SetField(ref this.recorderType, value);
         }
-        public ReadOnlyObservableCollection<String> AvailableRecorderTypes { get; protected set; }
 
+        public RecorderSettingsViewModel Settings { get => this.settings; }
+        public ReadOnlyObservableCollection<String> AvailableRecorderTypes { get; protected set; }
         public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
         public ObservableCollection<SelectableChannelViewModel> SelectedChannels { get; protected set; }
 
@@ -55,12 +58,13 @@ namespace MoSeqAcquire.ViewModels
         {
             return Assembly.GetExecutingAssembly()
                 .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(MediaWriter).IsAssignableFrom(t))
-                .Select(t => t.Name);
+                .Where(t => !t.IsAbstract && typeof(IMediaWriter).IsAssignableFrom(t))
+                .Select(t => t.FullName);
         }
-        public MediaWriter MakeMediaWriter()
+        public IMediaWriter MakeMediaWriter()
         {
-            var writer = (MediaWriter)Activator.CreateInstance(Type.GetType(this.recorderType));
+            var writer = (IMediaWriter)Activator.CreateInstance(Type.GetType(this.recorderType));
+            writer.ApplySettings((RecorderSettings)this.settings.GetSnapshot());
             foreach(var c in this.SelectedChannels)
             {
                 writer.ConnectChannel(c.Channel.Channel);
@@ -71,7 +75,8 @@ namespace MoSeqAcquire.ViewModels
 
     public class SelectableChannelViewModel : BaseViewModel
     {
-        protected bool isSelected;   
+        protected bool isSelected;
+        protected bool isEnabled;
         public SelectableChannelViewModel(ChannelViewModel Channel, bool IsSelected = false)
         {
             this.Channel = Channel;
@@ -82,6 +87,11 @@ namespace MoSeqAcquire.ViewModels
         {
             get => this.isSelected;
             set => this.SetField(ref isSelected, value);
+        }
+        public bool IsEnabled
+        {
+            get => this.isEnabled;
+            set => this.SetField(ref isEnabled, value);
         }
     }
 }

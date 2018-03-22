@@ -17,6 +17,7 @@ using MoSeqAcquire.Models.Acquisition.Kinect;
 using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.ViewModels.Commands;
+using MoSeqAcquire.ViewModels.Recording;
 
 namespace MoSeqAcquire.ViewModels
 {
@@ -47,16 +48,20 @@ namespace MoSeqAcquire.ViewModels
             {
                 pcol.RegisterProvider(ms.MediaSource.GetType(), ms.Config.GetSnapshot());
             }
+            foreach(var mw in this.recorderManager.Recorders)
+            {
+                pcol.RegisterProvider(Type.GetType(mw.RecorderType), mw.Settings.GetSnapshot());
+            }
             return pcol;
             
         }
         public void ApplyProtocol(Protocol protocol)
         {
-            foreach(var s in protocol.Configurations)
+            foreach(var s in protocol.Sources)
             {
                 Task.Run(() =>
                 {
-                    var provider = protocol.CreateProvider(s.GetProviderType());
+                    var provider = (MediaSource)protocol.CreateProvider(s.GetProviderType());
                     while (!provider.Initalize())
                     {
                         Thread.Sleep(500);
@@ -64,9 +69,23 @@ namespace MoSeqAcquire.ViewModels
                     provider.Config.ApplySnapshot(s.Config);
                     this.__mediaBus.Publish(provider);
                     provider.Start();
-                    var pvm = new MediaSourceViewModel(provider);
-                    this.mediaSources.Add(pvm);
+                    
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        this.mediaSources.Add(new MediaSourceViewModel(provider));
+                    });
                 });
+            }
+
+            this.recorderManager.Recorders.Clear();
+            foreach(var r in protocol.Recorders)
+            {
+                var recorder = new RecorderViewModel(this, this.recorderManager.Settings)
+                {
+                    RecorderType = r.Provider
+                };
+                recorder.Settings.ApplySnapshot(r.Config);
+                this.recorderManager.Recorders.Add(recorder);
             }
         }
 

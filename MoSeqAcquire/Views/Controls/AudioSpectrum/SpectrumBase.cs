@@ -25,7 +25,7 @@ namespace WinformsVisualization.Visualization
         private ScalingStrategy _scalingStrategy;
         private int[] _spectrumIndexMax;
         private int[] _spectrumLogScaleIndexMax;
-        private ISpectrumProvider _spectrumProvider;
+        private BasicSpectrumProvider _spectrumProvider;
 
         protected int SpectrumResolution;
         private bool _useAverage;
@@ -62,16 +62,24 @@ namespace WinformsVisualization.Visualization
         }
 
         [BrowsableAttribute(false)]
-        public ISpectrumProvider SpectrumProvider
+        public BasicSpectrumProvider SpectrumProvider
         {
             get { return _spectrumProvider; }
             set
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
+                if(_spectrumProvider != null)
+                    _spectrumProvider.SpectrumUpdated -= _onSpectrumUpdated;
                 _spectrumProvider = value;
+                _spectrumProvider.SpectrumUpdated += _onSpectrumUpdated;
                 RaisePropertyChanged("SpectrumProvider");
             }
+        }
+
+        private void _onSpectrumUpdated()
+        {
+            this.UpdateVisual();
         }
 
         public bool IsXLogScale
@@ -156,13 +164,13 @@ namespace WinformsVisualization.Visualization
             }
         }
 
-        protected virtual SpectrumPointData[] CalculateSpectrumPoints(double maxValue, float[] fftBuffer)
+        protected virtual SpectrumPointData[] CalculateSpectrumPoints(float[] fftBuffer)
         {
             var dataPoints = new List<SpectrumPointData>();
 
             double value0 = 0, value = 0;
             double lastValue = 0;
-            double actualMaxValue = maxValue;
+            double maxValue = 100, actualMaxValue = 100;
             int spectrumPointIndex = 0;
 
             for (int i = _minimumFrequencyIndex; i <= _maximumFrequencyIndex; i++)

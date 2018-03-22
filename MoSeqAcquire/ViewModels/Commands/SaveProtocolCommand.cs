@@ -23,10 +23,53 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            //expects parameter to be string path to protocol
-            MediaSettingsWriter.WriteProtocol(parameter as string, this.ViewModel.GenerateProtocol());
+            string path;
+            if(parameter == null)
+            {
+                path = this.GetPath();
+            }
+            else
+            {
+                path = parameter as string;
+            }
+            if (path != null && !string.IsNullOrWhiteSpace(path))
+            {
+                //expects parameter to be string path to protocol
+                MediaSettingsWriter.WriteProtocol(path, this.ViewModel.GenerateProtocol());
+            }
         }
 
-        
+        protected string GetPath()
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.AddExtension = true;
+            dlg.OverwritePrompt = true;
+            dlg.Title = "Save Protocol As....";
+            dlg.ValidateNames = true;
+            /*if (editor.CurrentFilePath == null || editor.CurrentFilePath.Equals(""))
+            {
+                dlg.FileName = IWFFile.NewWorkflowDefaultName;
+            }
+            else
+            {
+                dlg.InitialDirectory = Path.GetDirectoryName(editor.CurrentFilePath);
+                dlg.FileName = editor.CurrentFilePath;
+            }*/
+            dlg.DefaultExt = Protocol.Extension;
+            dlg.Filter = this.GetFilterString(Protocol.TypeDesc, Protocol.Extension);
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                return dlg.FileName;
+            }
+            return null;
+        }
+        protected string GetFilterString(string desc, params string[] ext)
+        {
+            var prep = string.Join(";", ext.Select(s => "*." + s));
+            return desc + " (" + prep + ")|" + prep;
+        }
+
+
     }
 }

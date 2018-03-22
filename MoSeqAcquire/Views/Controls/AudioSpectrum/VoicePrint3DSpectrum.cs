@@ -71,7 +71,7 @@ namespace WinformsVisualization.Visualization
             if (SpectrumProvider.GetFftData(fftBuffer, this))
             {
                 //prepare the fft result for rendering
-                SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(1.0, fftBuffer);
+                SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(/*1.0, */fftBuffer);
 
                 var pen = new Pen(new SolidColorBrush(background), lineThickness);
 

@@ -26,7 +26,7 @@ namespace MoSeqAcquire.Views.Controls
 
 
         public static readonly DependencyProperty PickerTypeProperty = DependencyProperty.Register("PickerType", typeof(PickerTypes), typeof(FileChooser), new PropertyMetadata(PickerTypes.Load, new PropertyChangedCallback(typeChangedCallBack)));
-        public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register("SelectedPath", typeof(String), typeof(FileChooser), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register("SelectedPath", typeof(String), typeof(FileChooser), new FrameworkPropertyMetadata(String.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
         public static readonly DependencyProperty MultiselectProperty = DependencyProperty.Register("Multiselect", typeof(Boolean), typeof(FileChooser), new PropertyMetadata(false));
         public static readonly DependencyProperty FileExtensionProperty = DependencyProperty.Register("FileExtension", typeof(String), typeof(FileChooser), new PropertyMetadata("*"));
         public static readonly DependencyProperty FileDescriptionProperty = DependencyProperty.Register("FileDescription", typeof(String), typeof(FileChooser), new PropertyMetadata("All Files"));

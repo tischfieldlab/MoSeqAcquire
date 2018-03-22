@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.Models.Management;
@@ -27,13 +28,18 @@ namespace MoSeqAcquire.ViewModels.Commands
             Protocol pcol = null;
             if(parameter is string)
             {
+                string path = parameter as string;
+                if(string.IsNullOrWhiteSpace(path))
+                {
+                    path = this.RequestPath();
+                }
                 try
                 {
                     pcol = MediaSettingsWriter.ReadProtocol(parameter as string);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.ToString());
+                    MessageBox.Show("Error loading protocol \"" + path + "\":\n\n" + e.Message);
                 }
             }
             else if(parameter is Protocol)
@@ -44,10 +50,31 @@ namespace MoSeqAcquire.ViewModels.Commands
             if (pcol == null)
             {
                 pcol = ProtocolExtensions.GetDefaultProtocol();
+                //return;
             }
             this.ViewModel.ApplyProtocol(pcol);
         }
 
-        
+        protected string RequestPath()
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Multiselect = false;
+            dlg.DefaultExt = Protocol.Extension;
+            dlg.Filter = this.GetFilterString(Protocol.TypeDesc, Protocol.Extension);
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                return dlg.FileName;
+            }
+            return null;
+        }
+
+        protected string GetFilterString(string desc, params string[] ext)
+        {
+            var prep =string.Join(";", ext.Select(s => "*." + s));
+            return desc+" (" + prep + ")|" + prep;
+        }
+
+
     }
 }

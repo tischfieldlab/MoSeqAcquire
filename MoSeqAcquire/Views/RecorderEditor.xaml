@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MoSeqAcquire.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:ctrl="clr-namespace:MoSeqAcquire.Views.Controls"
         mc:Ignorable="d"
         Title="RecorderEditor" Height="450" Width="800">
     <Grid>
@@ -16,6 +17,14 @@
             <WrapPanel>
                 <Label>Recorder Type</Label>
                 <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedItem="{Binding Path=RecorderType}" />
+            </WrapPanel>
+            <WrapPanel>
+                <Label>Destination Directory</Label>
+                <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=Settings.Directory}" />
+            </WrapPanel>
+            <WrapPanel>
+                <Label>Output Basename</Label>
+                <TextBox Text="{Binding Path=Settings.Basename}" />
             </WrapPanel>
             <GroupBox Header="Channels To Record">
                 <xctk:CheckListBox ItemsSource="{Binding Path=AvailableChannels}" SelectedItemsOverride="{Binding Path=SelectedChannels}" SelectedMemberPath="IsSelected" DisplayMemberPath="Channel.Name" />

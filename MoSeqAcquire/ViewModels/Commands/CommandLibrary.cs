@@ -19,6 +19,7 @@ namespace MoSeqAcquire.ViewModels.Commands
             this.RegisterCommand<EditRecorderCommand>();
 
             this.RegisterCommand<StartRecordingCommand>();
+            this.RegisterCommand<StopRecordingCommand>();
 
             this.RegisterCommand<LoadProtocolCommand>();
             this.RegisterCommand<SaveProtocolCommand>();
@@ -28,6 +29,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         public AddRecorderCommand AddRecorder { get => this.GetCommand<AddRecorderCommand>(); }
         public EditRecorderCommand EditRecorder { get => this.GetCommand<EditRecorderCommand>(); }
         public StartRecordingCommand StartRecording { get => this.GetCommand<StartRecordingCommand>(); }
+        public StopRecordingCommand StopRecording { get => this.GetCommand<StopRecordingCommand>(); }
         public LoadProtocolCommand LoadProtocol { get => this.GetCommand<LoadProtocolCommand>(); }
         public SaveProtocolCommand SaveProtocol { get => this.GetCommand<SaveProtocolCommand>(); }
 

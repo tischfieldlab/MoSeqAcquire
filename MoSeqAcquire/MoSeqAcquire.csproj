@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,6 +38,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.3.8.0\lib\net45\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Video, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Video.3.8.0\lib\net45\Accord.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Video.FFMPEG, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=x86">
+      <HintPath>..\packages\Accord.Video.FFMPEG.3.8.0\lib\net45\Accord.Video.FFMPEG.dll</HintPath>
+    </Reference>
     <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
     </Reference>
@@ -57,6 +67,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Interactive, Version=0.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Ix-Main.0.9.0.0\lib\Net45\System.Interactive.dll</HintPath>
       <Private>True</Private>
@@ -110,9 +121,17 @@
     </ApplicationDefinition>
     <Compile Include="Models\Configuration\ConfigSnapshot.cs" />
     <Compile Include="Models\Configuration\IConfigSnapshotProvider.cs" />
+    <Compile Include="Models\DrawingExtensions.cs" />
+    <Compile Include="Models\IO\MPEGVideoWriter.cs" />
     <Compile Include="Models\IO\RecordingSettings.cs" />
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
+    <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
+    <Compile Include="ViewModels\Recording\BaseRecordingSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Recording\RecorderSettingsViewModel.cs" />
+    <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml.cs">
+      <DependentUpon>LineSpectrum.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\ColorStreamViewer.xaml.cs">
       <DependentUpon>ColorStreamViewer.xaml</DependentUpon>
     </Compile>
@@ -170,7 +189,6 @@
     <Compile Include="Models\IO\RawDataWriter.cs" />
     <Compile Include="Models\Management\Protocol.cs" />
     <Compile Include="Models\Performance\FrameCounter.cs" />
-    <Compile Include="Models\Performance\PerformanceCounterManager.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\Commands\BaseCommandLibrary.cs" />
@@ -179,8 +197,8 @@
     <Compile Include="ViewModels\Commands\AddRecorderCommand.cs" />
     <Compile Include="ViewModels\Commands\BaseCommand.cs" />
     <Compile Include="ViewModels\Commands\CommandLibrary.cs" />
-    <Compile Include="ViewModels\RecordingManagerViewModel.cs" />
-    <Compile Include="ViewModels\RecorderViewModel.cs" />
+    <Compile Include="ViewModels\Recording\RecordingManagerViewModel.cs" />
+    <Compile Include="ViewModels\Recording\RecorderViewModel.cs" />
     <Compile Include="ViewModels\VideoChannelViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSourceViewModel.cs" />
@@ -195,6 +213,10 @@
     <Compile Include="Views\MediaSourceView.xaml.cs">
       <DependentUpon>MediaSourceView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\ColorStreamViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -286,9 +308,7 @@
       <Name>Hdf5DotNetTools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Audio\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -300,7 +320,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.1\build\NETStandard.Library.targets'))" />
+    <Error Condition="!Exists('..\packages\Accord.3.8.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.3.8.0\build\Accord.targets'))" />
+    <Error Condition="!Exists('..\packages\Accord.Video.FFMPEG.3.8.0\build\Accord.Video.FFMPEG.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.Video.FFMPEG.3.8.0\build\Accord.Video.FFMPEG.targets'))" />
   </Target>
+  <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />
+  <Import Project="..\packages\Accord.Video.FFMPEG.3.8.0\build\Accord.Video.FFMPEG.targets" Condition="Exists('..\packages\Accord.Video.FFMPEG.3.8.0\build\Accord.Video.FFMPEG.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
