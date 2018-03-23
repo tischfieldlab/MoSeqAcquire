@@ -45,16 +45,5 @@ namespace MoSeqAcquire.Models.IO
         {
             return this;
         }
-    }
-
-    /*public class RecorderSettings : BaseRecordingSettings
-    {
-        public RecorderSettings(RecorderSettings settings) : base(settings)
-        {
-            this.Channels = settings.Channels
-        }
-        public List<string> Channels { get; set; }
-    }*/
-
-    
+    }    
 }

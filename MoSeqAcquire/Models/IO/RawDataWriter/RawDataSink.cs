@@ -7,27 +7,8 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.IO.RawDataWriter
 {
-    public class RawDataWriter : MediaWriter<RawDataSink>
-    {
-        public RawDataWriter() : base()
-        {
-            
-        }
-        public override void ConnectChannel(Channel Channel)
-        {
-            this.sinks.Add(new RawDataSink(this.Settings, Channel));
-        }
-
-        public override IEnumerable<string> ListDestinations()
-        {
-            return this.sinks.Select(s => s.FilePath);
-        }
-
-
-    }
-
     public class RawDataSink : MediaWriterSink
     {
 
@@ -36,7 +17,7 @@ namespace MoSeqAcquire.Models.IO
 
         public RawDataSink(RecorderSettings settings, Channel channel) : base(settings, channel)
         {
-            
+
         }
         public string FilePath
         {
@@ -45,7 +26,8 @@ namespace MoSeqAcquire.Models.IO
                 return Path.Combine(this.settings.Directory, this.settings.Basename + "." + this.channel.Name + "." + this.Ext);
             }
         }
-        public string Ext {
+        public string Ext
+        {
             get
             {
                 if (this.channel.DataType == typeof(short))
@@ -76,20 +58,21 @@ namespace MoSeqAcquire.Models.IO
         }
         protected override ActionBlock<ChannelFrame> GetActionBlock(Type type)
         {
-            if(type == typeof(short))
+            if (type == typeof(short))
             {
                 return new ActionBlock<ChannelFrame>(frame =>
                 {
-                    if(!this.IsRecording) { return; }
+                    if (!this.IsRecording) { return; }
                     var d = frame.FrameData as short[];
                     for (var i = 0; i < d.Length; i++)
                     {
                         this.writer.Write(d[i]);
                     }
                 });
-            }else if(type == typeof(byte))
+            }
+            else if (type == typeof(byte))
             {
-                return new ActionBlock<ChannelFrame>(frame => { if (!this.IsRecording) { return; }  this.writer.Write(frame.FrameData as byte[]); });
+                return new ActionBlock<ChannelFrame>(frame => { if (!this.IsRecording) { return; } this.writer.Write(frame.FrameData as byte[]); });
             }
             return null;
         }

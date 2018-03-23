@@ -1,0 +1,84 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    x:Class="MoSeqAcquire.Views.Controls.PromptDialog"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    WindowStartupLocation="CenterScreen" 
+    SizeToContent="WidthAndHeight"
+    MinWidth="300" MinHeight="100"
+    WindowStyle="SingleBorderWindow"
+    ResizeMode="CanMinimize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="TextInput">
+                <TextBox Text="{Binding Path=Response}" />
+            </DataTemplate>
+            <DataTemplate x:Key="TextAreaInput">
+                <TextBox Text="{Binding Path=Response}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" Height="150" />
+            </DataTemplate>
+            <DataTemplate x:Key="PasswordInput">
+                <PasswordBox Password="{Binding Path=Response}" />
+            </DataTemplate>
+            <Style x:Key="InputMethodStyle" TargetType="{x:Type ContentPresenter}">
+                <Setter Property="ContentTemplate" Value="{DynamicResource TextInput}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=InputType}" Value="InputType.Password">
+                        <Setter Property="ContentTemplate" Value="{DynamicResource PasswordInput}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=InputType}" Value="InputType.TextArea">
+                        <Setter Property="ContentTemplate" Value="{DynamicResource TextAreaInput}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+
+
+
+            <DataTemplate x:Key="OKButton">
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
+                    <Button Content="_Ok" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="btnOk_Click" />
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="OKCancelButton">
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
+                    <Button Content="_Ok" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="btnOk_Click" />
+                    <Button Content="_Cancel" IsCancel="True"  Width="50" Name="btnCancel" Click="btnCancel_Click" />
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="YesNoButton">
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
+                    <Button Content="_Yes" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="btnOk_Click" />
+                    <Button Content="_No" IsCancel="True"  Width="50" Name="btnCancel" Click="btnCancel_Click" />
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="YesNoCancelButton">
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
+                    <Button Content="_Yes" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnYes" Click="btnOk_Click" />
+                    <Button Content="_No" IsCancel="True"  Width="50" Name="btnNo" Click="btnCancel_Click" />
+                    <Button Content="_Cancel" IsCancel="True"  Width="50" Name="btnCancel" Click="btnCancel_Click" />
+                </StackPanel>
+            </DataTemplate>
+            <Style x:Key="ButtonStyle" TargetType="{x:Type ContentPresenter}">
+                <Setter Property="ContentTemplate" Value="{DynamicResource OKCancelButton}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=ButtonType}" Value="MessageBoxButton.Ok">
+                        <Setter Property="ContentTemplate" Value="{DynamicResource OKButton}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=ButtonType}" Value="MessageBoxButton.YesNo">
+                        <Setter Property="ContentTemplate" Value="{DynamicResource YesNoButton}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=ButtonType}" Value="MessageBoxButton.YesNoCancel">
+                        <Setter Property="ContentTemplate" Value="{DynamicResource YesNoCancelButton}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    
+    
+    <StackPanel Margin="5">
+        <GroupBox Header="{Binding Path=Question}">
+            <ContentPresenter Name="InputContainer" Style="{DynamicResource InputMethodStyle}" Content="{Binding}"/>
+        </GroupBox>
+        <ContentPresenter Name="ButtonContainer" Style="{DynamicResource ButtonStyle}" Content="{Binding}"/>
+    </StackPanel>
+</Window>

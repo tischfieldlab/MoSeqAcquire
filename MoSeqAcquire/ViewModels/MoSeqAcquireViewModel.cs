@@ -46,11 +46,11 @@ namespace MoSeqAcquire.ViewModels
             var pcol = new Protocol("basic");
             foreach (var ms in this.mediaSources)
             {
-                pcol.RegisterProvider(ms.MediaSource.GetType(), ms.Config.GetSnapshot());
+                pcol.Sources.Add(ms.MediaSource.GetType(), ms.Config.GetSnapshot());
             }
             foreach(var mw in this.recorderManager.Recorders)
             {
-                pcol.RegisterProvider(Type.GetType(mw.RecorderType), mw.Settings.GetSnapshot());
+                pcol.Recorders.Add(mw.GetRecorderDefinition());
             }
             return pcol;
             
@@ -61,7 +61,7 @@ namespace MoSeqAcquire.ViewModels
             {
                 Task.Run(() =>
                 {
-                    var provider = (MediaSource)protocol.CreateProvider(s.GetProviderType());
+                    var provider = (MediaSource)s.Create();
                     while (!provider.Initalize())
                     {
                         Thread.Sleep(500);
@@ -80,10 +80,7 @@ namespace MoSeqAcquire.ViewModels
             this.recorderManager.Recorders.Clear();
             foreach(var r in protocol.Recorders)
             {
-                var recorder = new RecorderViewModel(this, this.recorderManager.Settings)
-                {
-                    RecorderType = r.Provider
-                };
+                var recorder = new RecorderViewModel(this, r.Provider, this.recorderManager.Settings);
                 recorder.Settings.ApplySnapshot(r.Config);
                 this.recorderManager.Recorders.Add(recorder);
             }
@@ -104,7 +101,7 @@ namespace MoSeqAcquire.ViewModels
         {
             var pcol = new Protocol("Default");
             //default protocol contains the Kinect sensor
-            pcol.RegisterProvider(typeof(KinectManager), KinectConfigSnapshot.GetDefault());
+            pcol.Sources.Add(typeof(KinectManager), KinectConfigSnapshot.GetDefault());
             return pcol;
         }
     }

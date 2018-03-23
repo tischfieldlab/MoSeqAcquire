@@ -19,24 +19,18 @@ namespace MoSeqAcquire.Models.Management
         public Protocol(String Name)
         {
             this.Name = Name;
-            this.Sources = new List<ProtocolItem>();
-            this.Recorders = new List<ProtocolItem>();
+            this.Sources = new ProtocolSourceCollection();
+            this.Recorders = new ProtocolRecorderCollection();
         }
         public string Name { get; set; }
         public bool Locked { get; set; }
 
-
-        [XmlArray("Sources")]
-        [XmlArrayItem(ElementName = "Source")]
-        public List<ProtocolItem> Sources { get; set; }
-
-        [XmlArray("Recorders")]
-        [XmlArrayItem(ElementName = "Recorder")]
-        public List<ProtocolItem> Recorders { get; set; }
+        public ProtocolSourceCollection Sources { get; protected set; }
+        public ProtocolRecorderCollection Recorders { get; protected set; }
 
 
 
-        public void RegisterProvider(Type Provider, ConfigSnapshot Config)
+        /*public void RegisterProvider(Type Provider, ConfigSnapshot Config)
         {
             List<ProtocolItem> items = this.GetCollectionForType(Provider);
 
@@ -52,48 +46,6 @@ namespace MoSeqAcquire.Models.Management
             {
                 items.ElementAt(position).Config = Config;
             }
-        }
-        protected List<ProtocolItem> GetCollectionForType(Type type)
-        {
-            if (typeof(MediaSource).IsAssignableFrom(type))
-            {
-                return this.Sources;
-            }
-            else if (typeof(IMediaWriter).IsAssignableFrom(type))
-            {
-                return this.Recorders;
-            }
-            throw new InvalidOperationException("Type \"" + type.FullName + "\" is not a valid provider type!");
-        }
-        public T CreateProvider<T>() 
-        {
-            return (T)this.CreateProvider(typeof(T));
-        }
-        public object CreateProvider(Type type)
-        {
-            var item = this.GetCollectionForType(type).Find(s => s.GetProviderType() == type);
-            if (item != null)
-            {
-                var ms = (MediaSource)Activator.CreateInstance(type);
-                //ms.Config.ApplySnapshot(item.Config);
-                return ms;
-            }
-            return null;
-        }
-       
-        
-    }
-
-    public class ProtocolItem
-    {
-        [XmlAttribute]
-        public string Provider { get; set; }
-        [XmlElement]
-        public ConfigSnapshot Config { get; set; }
-
-        public Type GetProviderType()
-        {
-            return Type.GetType(this.Provider);
-        }
+        }   */
     }
 }

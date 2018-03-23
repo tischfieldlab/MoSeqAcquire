@@ -6,39 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Accord.Video;
 using Accord.Video.FFMPEG;
 using MoSeqAcquire.Models.Acquisition;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
 {
-    public class MPEGVideoWriterSettings : RecorderSettings
-    {
-        public MPEGVideoWriterSettings(RecorderSettings ParentSettings) : base(ParentSettings)
-        {
-            
-        }
-        public VideoCodec VideoCodec { get; set; }
-    }
-    public class MPEGVideoWriter : MediaWriter<MPEGVideoWriterSink>
-    {
-        public override void ConnectChannel(Channel Channel)
-        {
-            this.sinks.Add(new MPEGVideoWriterSink(this.Settings, Channel));
-        }
-
-        public override IEnumerable<string> ListDestinations()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class MPEGVideoWriterSink : MediaWriterSink
     {
         protected VideoFileWriter writer;
         public MPEGVideoWriterSink(RecorderSettings settings, Channel channel) : base(settings, channel)
         {
-           
+
         }
         public string FilePath
         {
@@ -70,7 +48,8 @@ namespace MoSeqAcquire.Models.IO
                 unsafe
                 {
                     byte[] data = (byte[])frame.FrameData;
-                    fixed (byte* first = &data[0]){
+                    fixed (byte* first = &data[0])
+                    {
                         Bitmap bmp = new Bitmap(frame.Metadata.Width,
                                                 frame.Metadata.Height,
                                                 frame.Metadata.BytesPerPixel * frame.Metadata.Width,

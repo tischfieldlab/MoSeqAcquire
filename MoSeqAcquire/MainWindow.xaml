@@ -68,7 +68,10 @@
                 
                 <GroupBox Header="Recorders" >
                     <StackPanel>
-                        <Button Content="Add Recorder" Command="{Binding Path=Root.Commands.AddRecorder}" />
+                        <WrapPanel>
+                            <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedItem="{Binding Path=SelectedRecorderType}" />
+                            <Button Content="Add Recorder" Command="{Binding Path=Root.Commands.AddRecorder}" />
+                        </WrapPanel>
                         <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" >
                             <ListBox.ItemTemplate>
                                 <DataTemplate>

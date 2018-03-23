@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Management;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,11 +18,11 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected ObservableCollection<SelectableChannelViewModel> channels;
         protected RecorderSettingsViewModel settings;
 
-        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, BaseRecordingSettingsViewModel settings)
+        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, string RecorderType, BaseRecordingSettingsViewModel settings)
         {
             this.rootViewModel = RootViewModel;
-            this.AvailableRecorderTypes = new ReadOnlyObservableCollection<string>(new ObservableCollection<string>(this.FindRecorderTypes()));
             this.loadChannels();
+            this.RecorderType = RecorderType;
             this.settings = new RecorderSettingsViewModel(settings);
         }
         protected void loadChannels()
@@ -45,22 +46,14 @@ namespace MoSeqAcquire.ViewModels.Recording
         public string RecorderType
         {
             get => this.recorderType;
-            set => this.SetField(ref this.recorderType, value);
+            protected set => this.SetField(ref this.recorderType, value);
         }
 
         public RecorderSettingsViewModel Settings { get => this.settings; }
-        public ReadOnlyObservableCollection<String> AvailableRecorderTypes { get; protected set; }
         public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
         public ObservableCollection<SelectableChannelViewModel> SelectedChannels { get; protected set; }
 
 
-        protected IEnumerable<string> FindRecorderTypes()
-        {
-            return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(IMediaWriter).IsAssignableFrom(t))
-                .Select(t => t.FullName);
-        }
         public IMediaWriter MakeMediaWriter()
         {
             var writer = (IMediaWriter)Activator.CreateInstance(Type.GetType(this.recorderType));
@@ -70,6 +63,15 @@ namespace MoSeqAcquire.ViewModels.Recording
                 writer.ConnectChannel(c.Channel.Channel);
             }
             return writer;
+        }
+        public ProtocolRecorder GetRecorderDefinition()
+        {
+            return new ProtocolRecorder()
+            {
+                Name = this.Name,
+                Provider = this.RecorderType,
+                Config = this.Settings.GetSnapshot()
+            };
         }
     }
 

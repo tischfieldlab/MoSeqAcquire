@@ -62,7 +62,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.RecordingSeconds = this.RecordingSeconds;
         }
 
-        public ConfigSnapshot GetSnapshot()
+        public virtual ConfigSnapshot GetSnapshot()
         {
             return new RecorderSettings()
             {

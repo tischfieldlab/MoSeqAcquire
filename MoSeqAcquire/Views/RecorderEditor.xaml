@@ -11,12 +11,12 @@
     <Grid>
         <StackPanel>
             <WrapPanel>
-                <Label>Name</Label>
-                <TextBox Text="{Binding Path=Name}" />
+                <Label>Recorder Type</Label>
+                <TextBlock Text="{Binding Path=RecorderType}" />
             </WrapPanel>
             <WrapPanel>
-                <Label>Recorder Type</Label>
-                <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedItem="{Binding Path=RecorderType}" />
+                <Label>Name</Label>
+                <TextBox Text="{Binding Path=Name}" />
             </WrapPanel>
             <WrapPanel>
                 <Label>Destination Directory</Label>

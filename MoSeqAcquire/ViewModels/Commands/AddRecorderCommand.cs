@@ -19,11 +19,8 @@ namespace MoSeqAcquire.ViewModels.Commands
         }
 
         public override void Execute(object parameter)
-        {
-            var recorder = new RecorderViewModel(this.ViewModel, this.ViewModel.Recorder.Settings);
-            recorder.Name = "New Recorder";
-            this.ViewModel.Recorder.Recorders.Add(recorder);
-            this.ViewModel.Recorder.SelectedRecorder = recorder;
+        {            
+            this.ViewModel.Recorder.AddRecorder();
             this.ViewModel.Commands.EditRecorder.Execute(parameter);
         }
     }

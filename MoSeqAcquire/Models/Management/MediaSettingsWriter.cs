@@ -16,9 +16,9 @@ namespace MoSeqAcquire.Models.Management
 
         public static void WriteProtocol(string filename, Protocol Configuration)
         {
-            var stypes = Configuration.Sources.Select((s) => { return s.Config.GetType(); });
-            stypes = stypes.Concat(Configuration.Recorders.Select((s) => { return s.Config.GetType(); }));
-            stypes = stypes.Concat(GetSerializedTypes());
+            //var stypes = Configuration.Sources.Select((s) => { return s.Config.GetType(); });
+            //stypes = stypes.Concat(Configuration.Recorders.Select((s) => { return s.Config.GetType(); }));
+            var stypes = GetSerializedTypes();
             XmlSerializer serializer = new XmlSerializer(typeof(Protocol), stypes.ToArray());
             using (TextWriter writer = new StreamWriter(filename))
             {

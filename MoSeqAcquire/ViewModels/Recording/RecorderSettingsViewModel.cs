@@ -21,7 +21,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             base.ApplySnapshot(snapshot);
         }
 
-        /*public RecorderSettings GetSnapshot()
+        public override ConfigSnapshot GetSnapshot()
         {
             return new RecorderSettings()
             {
@@ -31,6 +31,6 @@ namespace MoSeqAcquire.ViewModels.Recording
                 RecordingFrameCount = this.recordingFrameCount,
                 RecordingSeconds = this.recordingSeconds
             };
-        }*/
+        }
     }
 }
