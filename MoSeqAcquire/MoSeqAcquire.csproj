@@ -164,6 +164,7 @@
     <Compile Include="Views\Converters\DataTypeInheritsTypeConverter.cs" />
     <Compile Include="Views\Converters\DivideConverter.cs" />
     <Compile Include="Views\Converters\EnumContainsConverter.cs" />
+    <Compile Include="Views\Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\EnumEqualityConverter.cs" />
     <Compile Include="Views\Converters\EnumToImageConverter.cs" />
     <Compile Include="Views\Converters\EnumToStringConverter.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Extensions\EnumerationExtension.cs" />
     <Compile Include="Views\RecorderEditor.xaml.cs">
       <DependentUpon>RecorderEditor.xaml</DependentUpon>
     </Compile>

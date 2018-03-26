@@ -40,27 +40,31 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             get => this.__isEnabled;
             set
             {
-                if (this.Enabled)
+                if (this.__isEnabled != value)
                 {
-                    this.__isEnabled = false;
-                    if (null != readingThread)
+                    if (this.__isEnabled)
                     {
-                        readingThread.Join();
-                    }
+                        this.__isEnabled = false;
+                        if (null != readingThread)
+                        {
+                            readingThread.Join();
+                        }
 
-                    if (null != this.Kinect.Sensor)
-                    {
-                        //this.Kinect.Sensor.AudioSource.BeamAngleChanged -= this.AudioSourceBeamChanged;
-                        //this.Kinect.Sensor.AudioSource.SoundSourceAngleChanged -= this.AudioSourceSoundSourceAngleChanged;
-                        this.Kinect.Sensor.AudioSource.Stop();
+                        if (null != this.Kinect.Sensor)
+                        {
+                            //this.Kinect.Sensor.AudioSource.BeamAngleChanged -= this.AudioSourceBeamChanged;
+                            //this.Kinect.Sensor.AudioSource.SoundSourceAngleChanged -= this.AudioSourceSoundSourceAngleChanged;
+                            this.Kinect.Sensor.AudioSource.Stop();
+                        }
                     }
-                }
-                else
-                {
-                    this.InnerStream = this.Kinect.Sensor.AudioSource.Start(TimeSpan.MaxValue);
-                    this.__isEnabled = true;
-                    this.readingThread = new Thread(this.AudioReadingThread);
-                    this.readingThread.Start();
+                    else
+                    {
+                        this.InnerStream = this.Kinect.Sensor.AudioSource.Start(TimeSpan.MaxValue);
+                        this.__isEnabled = true;
+                        this.readingThread = new Thread(this.AudioReadingThread);
+                        this.readingThread.Name = "Kinect Audio Reading Thread";
+                        this.readingThread.Start();
+                    }
                 }
                 //this.Kinect.Config.ReadState();
             }
@@ -71,7 +75,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         private Thread readingThread;
         private void AudioReadingThread()
         {
-            while (this.Enabled)
+            while (this.__isEnabled)
             {
                 int readCount = this.InnerStream.Read(this.__data, 0, this.__data.Length);                
                 this.Buffer.Post(new ChannelFrame(this.__data));

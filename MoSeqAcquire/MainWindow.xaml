@@ -13,11 +13,13 @@
         xmlns:ctrl="clr-namespace:MoSeqAcquire.Views.Controls"
         xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
         xmlns:mio="clr-namespace:MoSeqAcquire.Models.IO"
+        xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <ResourceDictionary>
             <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
+            <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -43,29 +45,38 @@
 
         <GroupBox Header="Recording Console" Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=Recorder}">
             <StackPanel>
-                <WrapPanel>
-                    <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" />
-                    <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" />
-                    <ProgressBar Width="100" IsIndeterminate="{Binding Path=IsRecording}" />
-                </WrapPanel>
-                <WrapPanel>
-                    
-                    <StackPanel>
-                        <Label>Recording Length</Label>
-                        <RadioButton IsChecked="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}">Capture Frame Count</RadioButton>
-                        <RadioButton IsChecked="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}">Capture Seconds</RadioButton>
-                        <RadioButton IsChecked="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.Indeterminate}}">Until Stopped</RadioButton>
-                    </StackPanel>
-                </WrapPanel>
-                <WrapPanel>
-                    <Label>Destination Directory</Label>
-                    <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" />
-                </WrapPanel>
-                <WrapPanel>
-                    <Label>Output Basename</Label>
-                    <TextBox Text="{Binding Path=GeneralSettings.Basename}" />
-                </WrapPanel>
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0">
+                        <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" />
+                        <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" />
+                        <ProgressBar Width="100" IsIndeterminate="{Binding Path=IsRecording}" />
+                    </WrapPanel>
+
+                    <Label Grid.Row="1" Grid.Column="0">Recording Length</Label>
+                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Source={mve:Enumeration {x:Type mio:RecordingMode}}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
+                    <ctrl:UnitTextBox Grid.Row="2" Grid.Column="1" Value="{Binding Path=GeneralSettings.RecordingFrameCount}" Units="Frames" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
+                    <ctrl:UnitTextBox Grid.Row="2" Grid.Column="1" Value="{Binding Path=GeneralSettings.RecordingSeconds}" Units="Seconds" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
+
+
+                    <Label Grid.Row="3" Grid.Column="0">Destination Directory</Label>
+                    <ctrl:FileChooser Grid.Row="3" Grid.Column="1" PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" />
+
+
+                    <Label Grid.Row="4" Grid.Column="0">Output Basename</Label>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=GeneralSettings.Basename}" />
+                </Grid>
                 <GroupBox Header="Recorders" >
                     <StackPanel>
                         <WrapPanel>

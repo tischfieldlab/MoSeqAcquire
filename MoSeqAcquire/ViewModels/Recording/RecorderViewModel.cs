@@ -35,7 +35,8 @@ namespace MoSeqAcquire.ViewModels.Recording
             {
                 if (Recorder.Channels.Contains(c.Channel.Name))
                 {
-                    c.IsSelected = true;
+                    this.SelectedChannels.Add(c);
+                    //c.IsSelected = true;
                 }
             }
         }

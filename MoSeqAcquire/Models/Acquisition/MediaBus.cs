@@ -31,7 +31,11 @@ namespace MoSeqAcquire.Models.Acquisition
             }
         }
         #endregion
-
+        public void Clear()
+        {
+            this.__sources.Clear();
+            this.__channels.Clear();
+        }
         public IEnumerable<MediaSource> Sources { get => this.__sources; }
         public IEnumerable<BusChannel> Channels { get => this.__channels; }
         public void Publish(MediaSource Source) {

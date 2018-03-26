@@ -57,9 +57,17 @@ namespace MoSeqAcquire.ViewModels
         }
         public void ApplyProtocol(Protocol protocol)
         {
+            //prepare
+            this.mediaSources.ForEach(s => s.MediaSource.Stop());
+            this.mediaSources.Clear();
+            this.__mediaBus.Clear();
+            this.recorderManager.Recorders.Clear();
+
+            //add media sources
+            var tasks = new List<Task>();
             foreach(var s in protocol.Sources)
             {
-                Task.Run(() =>
+                tasks.Add(Task.Run(() =>
                 {
                     var provider = (MediaSource)s.Create();
                     while (!provider.Initalize())
@@ -68,21 +76,27 @@ namespace MoSeqAcquire.ViewModels
                     }
                     provider.Config.ApplySnapshot(s.Config);
                     this.__mediaBus.Publish(provider);
-                    provider.Start();
+                    
                     
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         this.mediaSources.Add(new MediaSourceViewModel(provider));
                     });
-                });
+                    provider.Start();
+                }));
             }
 
-            this.recorderManager.Recorders.Clear();
-            this.recorderManager.GeneralSettings = protocol.Recordings.GeneralSettings;
-            foreach(var r in protocol.Recordings.Recorders)
+            Task.WhenAll(tasks).ContinueWith((t) =>
             {
-                this.recorderManager.Recorders.Add(new RecorderViewModel(this, r));
-            }
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    this.recorderManager.GeneralSettings = protocol.Recordings.GeneralSettings;
+                    foreach (var r in protocol.Recordings.Recorders)
+                    {
+                        this.recorderManager.Recorders.Add(new RecorderViewModel(this, r));
+                    }
+                });
+            });
         }
 
         public ObservableCollection<MediaSourceViewModel> MediaSources { get => mediaSources; }

@@ -1,6 +1,8 @@
 ﻿using MoSeqAcquire.Models.Configuration;
+using MoSeqAcquire.Views.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +11,16 @@ namespace MoSeqAcquire.Models.IO
 {
     public enum RecordingMode
     {
+        [Description("Recordes a specified number of frames")]
+        [EnumDisplayName("A specified number of frames")]
         FrameCount,
+
+        [Description("Recordes a specified number of seconds")]
+        [EnumDisplayName("A specified number of seconds")]
         TimeCount,
+
+        [Description("Recordes until stopped")]
+        [EnumDisplayName("Until stopped")]
         Indeterminate
     }
     public class RecorderSettings : ObservableObject { }

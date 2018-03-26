@@ -259,7 +259,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         }
         #endregion
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the brightness of the camera.")]
         public ColorImageFormat ColorImageFormat
@@ -276,9 +276,9 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Depth Camera Settings")]
         //[DefaultValue(0d)]
-        [Description("Sets the brightness of the camera.")]
+        [Description("Sets the depth image format.")]
         public DepthImageFormat DepthImageFormat
         {
             get => depthImageFormat;
@@ -289,11 +289,10 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                     //this.Sensor.DepthStream.Enable(value);
                     SetField(ref depthImageFormat, value, () => { this.Sensor.DepthStream.Enable(value); });
                 }
-
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the brightness of the camera.")]
         public double Brightness
@@ -310,7 +309,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the contrast of the camera.")]
         public double Contrast
@@ -327,7 +326,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the saturation of the camera.")]
         public double Saturation
@@ -344,7 +343,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the sharpness of the camera.")]
         public double Sharpness
@@ -361,7 +360,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the white balance of the camera.")]
         public int WhiteBalance
@@ -378,7 +377,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the exposure time of the camera.")]
         public double ExposureTime
@@ -395,7 +394,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the frame interval of the camera.")]
         public double FrameInterval
@@ -412,7 +411,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the gain of the camera.")]
         public double Gain
@@ -429,7 +428,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the gamma of the camera.")]
         public double Gamma
@@ -446,7 +445,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the hue of the camera.")]
         public double Hue
@@ -463,7 +462,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the Power Line Frequency of the camera.")]
         public PowerLineFrequency PowerLineFrequency
@@ -480,7 +479,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the autoexposure setting of the camera.")]
         public bool AutoExposure
@@ -497,7 +496,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the auto white exposure setting of the camera.")]
         public bool AutoWhiteBalance
@@ -514,7 +513,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
         }
 
-        [Category("Camera Settings")]
+        [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the backlight compensation setting of the camera.")]
         public BacklightCompensationMode BacklightCompensationMode
@@ -532,7 +531,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         }
 
 
-        [Category("Camera Settings")]
+        [Category("Depth Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the backlight compensation setting of the camera.")]
         public DepthRange DepthRange
