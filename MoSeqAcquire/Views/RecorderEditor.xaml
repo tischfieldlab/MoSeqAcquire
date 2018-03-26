@@ -9,7 +9,11 @@
         mc:Ignorable="d"
         Title="RecorderEditor" Height="450" Width="800">
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
             <WrapPanel>
                 <Label>Recorder Type</Label>
                 <TextBlock Text="{Binding Path=RecorderType}" />
@@ -18,17 +22,10 @@
                 <Label>Name</Label>
                 <TextBox Text="{Binding Path=Name}" />
             </WrapPanel>
-            <WrapPanel>
-                <Label>Destination Directory</Label>
-                <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=Settings.Directory}" />
-            </WrapPanel>
-            <WrapPanel>
-                <Label>Output Basename</Label>
-                <TextBox Text="{Binding Path=Settings.Basename}" />
-            </WrapPanel>
             <GroupBox Header="Channels To Record">
                 <xctk:CheckListBox ItemsSource="{Binding Path=AvailableChannels}" SelectedItemsOverride="{Binding Path=SelectedChannels}" SelectedMemberPath="IsSelected" DisplayMemberPath="Channel.Name" />
             </GroupBox>
         </StackPanel>
+        <xctk:PropertyGrid SelectedObject="{Binding Path=Settings}" Grid.Column="1" />
     </Grid>
 </Window>

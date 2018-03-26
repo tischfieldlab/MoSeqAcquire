@@ -1,4 +1,5 @@
-﻿using MoSeqAcquire.Models.IO;
+﻿using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.Models.Management;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,34 @@ namespace MoSeqAcquire.ViewModels.Recording
     {
         protected MoSeqAcquireViewModel rootViewModel;
         protected string name;
-        protected string recorderType;
+        protected Type recorderType;
         protected ObservableCollection<SelectableChannelViewModel> channels;
-        protected RecorderSettingsViewModel settings;
+        protected RecorderSettings settings;
 
-        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, string RecorderType, BaseRecordingSettingsViewModel settings)
+        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
         {
             this.rootViewModel = RootViewModel;
             this.loadChannels();
             this.RecorderType = RecorderType;
-            this.settings = new RecorderSettingsViewModel(settings);
+
+            this.PrepareSettings();
+        }
+        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolRecorder Recorder) : this(RootViewModel, Recorder.GetProviderType())
+        {
+            this.Name = Recorder.Name;
+            this.Settings = Recorder.Config;
+            foreach(var c in this.AvailableChannels)
+            {
+                if (Recorder.Channels.Contains(c.Channel.Name))
+                {
+                    c.IsSelected = true;
+                }
+            }
+        }
+        protected void PrepareSettings()
+        {
+            var sit = this.recorderType.GetCustomAttribute<SettingsImplementationAttribute>();
+            this.settings = Activator.CreateInstance(sit.SettingsImplementation) as RecorderSettings;
         }
         protected void loadChannels()
         {
@@ -43,21 +62,25 @@ namespace MoSeqAcquire.ViewModels.Recording
             get => this.name;
             set => this.SetField(ref this.name, value);
         }
-        public string RecorderType
+        public Type RecorderType
         {
             get => this.recorderType;
             protected set => this.SetField(ref this.recorderType, value);
         }
 
-        public RecorderSettingsViewModel Settings { get => this.settings; }
+        public RecorderSettings Settings
+        {
+            get => this.settings;
+            set => this.SetField(ref this.settings, value);
+        }
         public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
         public ObservableCollection<SelectableChannelViewModel> SelectedChannels { get; protected set; }
 
 
         public IMediaWriter MakeMediaWriter()
         {
-            var writer = (IMediaWriter)Activator.CreateInstance(Type.GetType(this.recorderType));
-            writer.ApplySettings((RecorderSettings)this.settings.GetSnapshot());
+            var writer = (IMediaWriter)Activator.CreateInstance(this.recorderType);
+            //writer.ApplySettings((RecorderSettings)this.settings.GetSnapshot());
             foreach(var c in this.SelectedChannels)
             {
                 writer.ConnectChannel(c.Channel.Channel);
@@ -69,8 +92,9 @@ namespace MoSeqAcquire.ViewModels.Recording
             return new ProtocolRecorder()
             {
                 Name = this.Name,
-                Provider = this.RecorderType,
-                Config = this.Settings.GetSnapshot()
+                Provider = this.RecorderType.FullName,
+                Config = this.Settings,
+                Channels = this.SelectedChannels.Select(c => c.Channel.Name).ToList()
             };
         }
     }

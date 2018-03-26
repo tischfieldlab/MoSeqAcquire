@@ -26,7 +26,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             //expects parameter to be string path to protocol, or protocol instance
             Protocol pcol = null;
-            if(parameter is string)
+            if(parameter == null || parameter is string)
             {
                 string path = parameter as string;
                 if(string.IsNullOrWhiteSpace(path))
@@ -35,7 +35,7 @@ namespace MoSeqAcquire.ViewModels.Commands
                 }
                 try
                 {
-                    pcol = MediaSettingsWriter.ReadProtocol(parameter as string);
+                    pcol = MediaSettingsWriter.ReadProtocol(path as string);
                 }
                 catch (Exception e)
                 {

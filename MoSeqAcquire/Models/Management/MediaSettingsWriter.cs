@@ -41,6 +41,7 @@ namespace MoSeqAcquire.Models.Management
             var types = new List<Type>();
             types.Add(typeof(Acquisition.Kinect.KinectConfigSnapshot));
             types.Add(typeof(RecorderSettings));
+            types.AddRange(ProtocolHelpers.GetKnownTypesForRecorders());
             return types.ToArray();
         }
 

@@ -10,17 +10,24 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
 {
     public class MPEGVideoWriterSettings : RecorderSettings
     {
-        public MPEGVideoWriterSettings(RecorderSettings ParentSettings) : base(ParentSettings)
+        public MPEGVideoWriterSettings() : base() { }
+
+        protected VideoCodec videoCodec;
+
+        public VideoCodec VideoCodec
         {
-
+            get => this.videoCodec;
+            set => this.SetField(ref this.videoCodec, value);
         }
-        public VideoCodec VideoCodec { get; set; }
 
-        public override void ApplySnapshot(ConfigSnapshot snapshot)
+        /*public override void ApplySnapshot(ConfigSnapshot snapshot)
         {
             base.ApplySnapshot(snapshot);
             var ss = snapshot as MPEGVideoWriterSettings;
-            this.VideoCodec = ss.VideoCodec;
-        }
+            if (ss != null)
+            {
+                this.VideoCodec = ss.VideoCodec;
+            }
+        }*/
     }
 }

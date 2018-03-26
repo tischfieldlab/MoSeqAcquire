@@ -15,6 +15,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override bool CanExecute(object parameter)
         {
+            if(this.ViewModel.Recorder.SelectedRecorderType == null)
+            {
+                return false;
+            }
             return true;
         }
 

@@ -25,7 +25,6 @@ namespace MoSeqAcquire.ViewModels
     {
         protected MediaBus __mediaBus;
         protected ObservableCollection<MediaSourceViewModel> mediaSources;
-        //protected ReadOnlyObservableCollection<MediaSourceViewModel> ro_mediaSources;
 
         protected RecordingManagerViewModel recorderManager;
 
@@ -38,7 +37,7 @@ namespace MoSeqAcquire.ViewModels
 
 
             this.Commands = new CommandLibrary(this);
-            this.Commands.LoadProtocol.Execute(null);
+            this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
         public CommandLibrary Commands { get; protected set; }
         public Protocol GenerateProtocol()
@@ -50,8 +49,9 @@ namespace MoSeqAcquire.ViewModels
             }
             foreach(var mw in this.recorderManager.Recorders)
             {
-                pcol.Recorders.Add(mw.GetRecorderDefinition());
+                pcol.Recordings.Recorders.Add(mw.GetRecorderDefinition());
             }
+            pcol.Recordings.GeneralSettings = this.recorderManager.GeneralSettings;
             return pcol;
             
         }
@@ -78,11 +78,10 @@ namespace MoSeqAcquire.ViewModels
             }
 
             this.recorderManager.Recorders.Clear();
-            foreach(var r in protocol.Recorders)
+            this.recorderManager.GeneralSettings = protocol.Recordings.GeneralSettings;
+            foreach(var r in protocol.Recordings.Recorders)
             {
-                var recorder = new RecorderViewModel(this, r.Provider, this.recorderManager.Settings);
-                recorder.Settings.ApplySnapshot(r.Config);
-                this.recorderManager.Recorders.Add(recorder);
+                this.recorderManager.Recorders.Add(new RecorderViewModel(this, r));
             }
         }
 
@@ -102,6 +101,7 @@ namespace MoSeqAcquire.ViewModels
             var pcol = new Protocol("Default");
             //default protocol contains the Kinect sensor
             pcol.Sources.Add(typeof(KinectManager), KinectConfigSnapshot.GetDefault());
+            pcol.Recordings.GeneralSettings = new GeneralRecordingSettings();
             return pcol;
         }
     }

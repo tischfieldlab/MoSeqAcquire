@@ -22,7 +22,7 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
         {
             get
             {
-                return Path.Combine(this.settings.Directory, this.settings.Basename + "." + this.channel.Name + ".mp4");
+                return "";//Path.Combine(this.settings.Directory, this.settings.Basename + "." + this.channel.Name + ".mp4");
             }
         }
         public override void Close()
@@ -35,6 +35,7 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
         {
             this.writer = new VideoFileWriter();
             this.AttachSink(channel);
+            
         }
 
         protected override ActionBlock<ChannelFrame> GetActionBlock(Type type)

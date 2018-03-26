@@ -12,6 +12,16 @@ using MoSeqAcquire.Models.IO;
 
 namespace MoSeqAcquire.Models.Management
 {
+    public class ProtocolRecordingsSetup
+    {
+        public ProtocolRecordingsSetup()
+        {
+            this.Recorders = new ProtocolRecorderCollection();
+        }
+        public GeneralRecordingSettings GeneralSettings { get; set; }
+        public ProtocolRecorderCollection Recorders { get; protected set; }
+    }
+
     [XmlRoot("Recorders")]
     public class ProtocolRecorderCollection : Collection<ProtocolRecorder>
     {
@@ -35,7 +45,10 @@ namespace MoSeqAcquire.Models.Management
         [XmlElement]
         public string Provider { get; set; }
         [XmlElement]
-        public ConfigSnapshot Config { get; set; }
+        public RecorderSettings Config { get; set; }
+        [XmlArray("Channels")]
+        [XmlArrayItem("Channel")]
+        public List<string> Channels { get; set; }
 
         public Type GetProviderType()
         {

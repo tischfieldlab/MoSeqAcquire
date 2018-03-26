@@ -16,7 +16,7 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
 {
     [KnownType(typeof(MPEGVideoWriterSettings))]
     [DisplayName("MPEG Video Writer")]
-    [SettingsImplementation(typeof(MPEGVideoWriter))]
+    [SettingsImplementation(typeof(MPEGVideoWriterSettings))]
     public class MPEGVideoWriter : MediaWriter<MPEGVideoWriterSink>
     {
         public override void ConnectChannel(Channel Channel)

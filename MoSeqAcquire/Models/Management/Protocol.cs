@@ -20,13 +20,13 @@ namespace MoSeqAcquire.Models.Management
         {
             this.Name = Name;
             this.Sources = new ProtocolSourceCollection();
-            this.Recorders = new ProtocolRecorderCollection();
+            this.Recordings = new ProtocolRecordingsSetup();
         }
         public string Name { get; set; }
         public bool Locked { get; set; }
 
-        public ProtocolSourceCollection Sources { get; protected set; }
-        public ProtocolRecorderCollection Recorders { get; protected set; }
+        public ProtocolSourceCollection Sources { get; set; }
+        public ProtocolRecordingsSetup Recordings { get; set; }
 
 
 

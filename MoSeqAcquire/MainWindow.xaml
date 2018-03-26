@@ -52,18 +52,18 @@
                     
                     <StackPanel>
                         <Label>Recording Length</Label>
-                        <RadioButton IsChecked="{Binding Path=Settings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}">Capture Frame Count</RadioButton>
-                        <RadioButton IsChecked="{Binding Path=Settings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}">Capture Seconds</RadioButton>
-                        <RadioButton IsChecked="{Binding Path=Settings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.Indeterminate}}">Until Stopped</RadioButton>
+                        <RadioButton IsChecked="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}">Capture Frame Count</RadioButton>
+                        <RadioButton IsChecked="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}">Capture Seconds</RadioButton>
+                        <RadioButton IsChecked="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static mio:RecordingMode.Indeterminate}}">Until Stopped</RadioButton>
                     </StackPanel>
                 </WrapPanel>
                 <WrapPanel>
                     <Label>Destination Directory</Label>
-                    <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=Settings.Directory}" />
+                    <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" />
                 </WrapPanel>
                 <WrapPanel>
                     <Label>Output Basename</Label>
-                    <TextBox Text="{Binding Path=Settings.Basename}" />
+                    <TextBox Text="{Binding Path=GeneralSettings.Basename}" />
                 </WrapPanel>
                 
                 <GroupBox Header="Recorders" >

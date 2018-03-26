@@ -23,7 +23,7 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
         {
             get
             {
-                return Path.Combine(this.settings.Directory, this.settings.Basename + "." + this.channel.Name + "." + this.Ext);
+                return ""; //Path.Combine(this.settings.Directory, this.settings.Basename + "." + this.channel.Name + "." + this.Ext);
             }
         }
         public string Ext
