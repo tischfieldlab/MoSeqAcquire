@@ -131,10 +131,12 @@
     <Compile Include="Models\IO\RawDataWriter\RawDataSink.cs" />
     <Compile Include="Models\IO\RecorderSpecification.cs" />
     <Compile Include="Models\IO\RecorderSettings.cs" />
+    <Compile Include="Models\IO\RecordingManager.cs" />
     <Compile Include="Models\Management\ExperimentMetadata.cs" />
     <Compile Include="Models\Management\ProtocolHelpers.cs" />
     <Compile Include="Models\Management\ProtocolRecorderCollection.cs" />
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
+    <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
@@ -197,7 +199,7 @@
     <Compile Include="Views\Controls\AudioSpectrum\ScalingStrategy.cs" />
     <Compile Include="Views\Controls\AudioSpectrum\SpectrumBase.cs" />
     <Compile Include="Views\Controls\AudioSpectrum\VoicePrint3DSpectrum.cs" />
-    <Compile Include="Models\IO\HDF5File.cs" />
+    <Compile Include="Models\IO\HDF5Writer\HDF5File.cs" />
     <Compile Include="Models\Management\MediaSettingsWriter.cs" />
     <Compile Include="Models\IO\MediaWriter.cs" />
     <Compile Include="Models\IO\RawDataWriter\RawDataWriter.cs" />
@@ -292,6 +294,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

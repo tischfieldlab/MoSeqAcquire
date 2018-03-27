@@ -24,9 +24,9 @@ namespace MoSeqAcquire.Models.IO
             this.Settings = new RecorderSettings();
         }
         public RecorderSettings Settings { get; protected set; }
-        public virtual void ApplySettings(RecorderSettings settings)
+        public virtual void ApplySettings(RecorderSettings Settings)
         {
-            this.Settings = settings;
+            this.Settings = Settings;
         }
 
         public abstract void ConnectChannel(Channel Channel);

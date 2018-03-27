@@ -12,11 +12,11 @@ namespace MoSeqAcquire.Models.IO
     public enum RecordingMode
     {
         [Description("Recordes a specified number of frames")]
-        [EnumDisplayName("A specified number of frames")]
+        [EnumDisplayName("A specific number of frames")]
         FrameCount,
 
         [Description("Recordes a specified number of seconds")]
-        [EnumDisplayName("A specified number of seconds")]
+        [EnumDisplayName("A specific number of seconds")]
         TimeCount,
 
         [Description("Recordes until stopped")]

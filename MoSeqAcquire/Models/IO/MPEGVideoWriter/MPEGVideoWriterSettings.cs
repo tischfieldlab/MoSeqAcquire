@@ -19,15 +19,5 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
             get => this.videoCodec;
             set => this.SetField(ref this.videoCodec, value);
         }
-
-        /*public override void ApplySnapshot(ConfigSnapshot snapshot)
-        {
-            base.ApplySnapshot(snapshot);
-            var ss = snapshot as MPEGVideoWriterSettings;
-            if (ss != null)
-            {
-                this.VideoCodec = ss.VideoCodec;
-            }
-        }*/
     }
 }
