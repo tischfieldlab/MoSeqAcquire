@@ -13,7 +13,7 @@ namespace MoSeqAcquire.Models.IO
         void Start();
         void Stop();
         void ConnectChannel(Channel Channel);
-        void ApplySettings(RecorderSettings settings);
+        //void ApplySettings(RecorderSettings settings);
     }
     public abstract class MediaWriter<TSink> : IMediaWriter where TSink : MediaWriterSink
     {
@@ -24,10 +24,10 @@ namespace MoSeqAcquire.Models.IO
             this.Settings = new RecorderSettings();
         }
         public RecorderSettings Settings { get; protected set; }
-        public virtual void ApplySettings(RecorderSettings Settings)
+        /*public virtual void ApplySettings(RecorderSettings Settings)
         {
             this.Settings = Settings;
-        }
+        }*/
 
         public abstract void ConnectChannel(Channel Channel);
         public abstract IEnumerable<string> ListDestinations();

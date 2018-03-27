@@ -75,27 +75,22 @@ namespace MoSeqAcquire.ViewModels.Recording
             set => this.SetField(ref this.settings, value);
         }
 
-        protected List<IMediaWriter> _realWriters;
+        protected RecordingManager _recordingManager;
         public void StartRecording()
         {
             this.IsRecording = true;
-            this._realWriters = new List<IMediaWriter>();
-            var settings = this.GeneralSettings;
+            this._recordingManager = new RecordingManager();
             foreach (var r in this.Recorders)
             {
-                this._realWriters.Add(r.MakeMediaWriter());
+                this._recordingManager.AddRecorder(r.MakeMediaWriter());
             }
-            foreach (var r in this._realWriters)
-            {
-                r.Start();
-            }
+            this._recordingManager.Initialize(this.GeneralSettings);
+            this._recordingManager.Start();
         }
         public void StopRecording()
         {
-            foreach (var r in this._realWriters)
-            {
-                r.Stop();
-            }
+            this._recordingManager.Stop();
+            this._recordingManager = null;
             this.IsRecording = false;
         }
     }
