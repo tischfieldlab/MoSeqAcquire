@@ -120,6 +120,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
+    <Compile Include="Models\Attributes\SupportedChannelTypeAttribute.cs" />
     <Compile Include="Models\Configuration\ConfigSnapshot.cs" />
     <Compile Include="Models\Configuration\IConfigSnapshotProvider.cs" />
     <Compile Include="Models\DrawingExtensions.cs" />

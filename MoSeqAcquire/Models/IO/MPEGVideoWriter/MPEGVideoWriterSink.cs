@@ -57,6 +57,7 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
                                                 frame.Metadata.PixelFormat.ToDrawingPixelFormat(),
                                                 (IntPtr)first);
                         this.writer.WriteVideoFrame(bmp);
+                        
                     }
                 }
             });

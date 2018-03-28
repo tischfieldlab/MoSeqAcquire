@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Models.IO.RawDataWriter
 {
+    [KnownType(typeof(RecorderSettings))]
+    [DisplayName("Raw Data Writer")]
+    [SettingsImplementation(typeof(RecorderSettings))]
     public class RawDataWriter : MediaWriter<RawDataSink>
     {
         public RawDataWriter() : base()
