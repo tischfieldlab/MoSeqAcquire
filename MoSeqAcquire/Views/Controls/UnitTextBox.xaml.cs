@@ -27,7 +27,7 @@ namespace MoSeqAcquire.Views.Controls
         }
 
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(String), typeof(UnitTextBox), new PropertyMetadata(String.Empty));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(String), typeof(UnitTextBox), new FrameworkPropertyMetadata(String.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
         public static readonly DependencyProperty UnitsProperty = DependencyProperty.Register("Units", typeof(String), typeof(UnitTextBox), new PropertyMetadata(String.Empty));
         public static readonly DependencyProperty UnitsAlignmentProperty = DependencyProperty.Register("UnitsAlignment", typeof(UnitAlignment), typeof(UnitTextBox), new PropertyMetadata(UnitAlignment.Right, new PropertyChangedCallback(UnitAlignmentPropertyChanged)));
 

@@ -3,6 +3,7 @@ using MoSeqAcquire.Views.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,10 @@ namespace MoSeqAcquire.Models.IO
         {
             get => this.basename;
             set => this.SetField(ref this.basename, value);
+        }
+        public string ComputedBasePath
+        {
+            get => Path.Combine(this.Directory, this.Basename);
         }
         public RecordingMode RecordingMode
         {

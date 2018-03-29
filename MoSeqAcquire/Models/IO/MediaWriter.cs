@@ -8,27 +8,40 @@ using System.Threading.Tasks.Dataflow;
 
 namespace MoSeqAcquire.Models.IO
 {
-    public interface IMediaWriter
+    public abstract class MediaWriter : IMediaWriter
     {
-        void Start(string basePath);
-        void Stop();
-        void ConnectChannel(Channel Channel);
-        //void ApplySettings(RecorderSettings settings);
+        public MediaWriter()
+        {
+            this.Settings = new RecorderSettings();
+            this.Specification = new RecorderSpecification(this.GetType());
+        }
+        public event DestinationBaseResponse RequestDestinationBase;
+        protected string RequestBaseDestination()
+        {
+            return this.RequestDestinationBase?.Invoke();
+        }
+        public string Name { get; set; }
+        public RecorderSettings Settings { get; set; }
+
+        public bool IsRecording { get; protected set; }
+        public RecorderSpecification Specification { get; protected set; }
+        
+
+        public abstract void ConnectChannel(Channel Channel);
+        public abstract void Start();
+
+        public abstract void Stop();
     }
-    public abstract class MediaWriter<TSink> : IMediaWriter where TSink : MediaWriterSink
+
+    /*public abstract class MediaWriter<TSink> : MediaWriter where TSink : MediaWriterSink
     {
         protected List<TSink> sinks;
         public MediaWriter()
         {
             this.sinks = new List<TSink>();
-            this.Settings = new RecorderSettings();
-            this.Specification = new RecorderSpecification(this.GetType());
         }
-        public RecorderSpecification Specification { get; protected set; }
-        public RecorderSettings Settings { get; protected set; }
 
-
-        public abstract void ConnectChannel(Channel Channel);
+        //public abstract void ConnectChannel(Channel Channel);
         public abstract IEnumerable<string> ListDestinations();
         public virtual void Start(string basePath)
         {
@@ -75,5 +88,5 @@ namespace MoSeqAcquire.Models.IO
         }
         public abstract void Close();
         public abstract void Open();
-    }
+    }*/
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,26 +12,109 @@ using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Models.IO.RawDataWriter
 {
-    [KnownType(typeof(RecorderSettings))]
+    [KnownType(typeof(RawDataWriterSettings))]
     [DisplayName("Raw Data Writer")]
-    [SettingsImplementation(typeof(RecorderSettings))]
-    public class RawDataWriter : MediaWriter<RawDataSink>
+    [SettingsImplementation(typeof(RawDataWriterSettings))]
+    public class RawDataWriter : MediaWriter
     {
-        public RawDataWriter() : base()
-        {
-            
-        }
+        protected Channel channel;
+        protected BufferBlock<ChannelFrame> back_buffer;
+        protected ActionBlock<ChannelFrame> sink;
+
+        protected FileStream file;
+        protected GZipStream compressor;
+        protected BinaryWriter writer;
+
+
         public override void ConnectChannel(Channel Channel)
         {
-            this.sinks.Add(new RawDataSink(this.Settings, Channel));
-        }
+            if (this.channel != null)
+            {
+                throw new InvalidOperationException("Channel was already connected!");
+            }
+            this.channel = Channel;
+            this.back_buffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true });
+            this.sink = this.GetActionBlock(Channel.DataType);
+            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.back_buffer);
+            this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
 
-        public override IEnumerable<string> ListDestinations()
+        }
+        public string FilePath
         {
-            return this.sinks.Select(s => s.FilePath);
+            get => Path.Combine(this.RequestBaseDestination(), this.Name + "." + this.Ext);
+        }
+        public string Ext
+        {
+            get
+            {
+                string ext = "";
+                if (this.channel.DataType == typeof(short))
+                {
+                    ext = "short";
+                }
+                else if (this.channel.DataType == typeof(byte))
+                {
+                    ext = "byte";
+                }
+                else
+                {
+                    ext = "unknown";
+                }
+                if ((this.Settings as RawDataWriterSettings).EnableGZipCompression)
+                {
+                    return ext + ".gz";
+                }
+                return ext;
+            }
         }
 
+        public override void Start()
+        {
+            this.file = File.Open(this.FilePath, FileMode.Create);
+            if ((this.Settings as RawDataWriterSettings).EnableGZipCompression)
+            {
+                this.compressor = new GZipStream(this.file, CompressionMode.Compress);
+                this.writer = new BinaryWriter(this.compressor);
+            }
+            else
+            {
+                this.writer = new BinaryWriter(this.file);
+            }
+            this.IsRecording = true;
+        }
 
+        public override void Stop()
+        {
+            this.sink.Complete();
+            this.sink.Completion.Wait();
+            this.IsRecording = false;
+            this.writer.Close();
+        }
+
+        protected ActionBlock<ChannelFrame> GetActionBlock(Type type)
+        {
+            if (type == typeof(short))
+            {
+                return new ActionBlock<ChannelFrame>(frame =>
+                {
+                    if (!this.IsRecording) { return; }
+                    var d = frame.FrameData as short[];
+                    for (var i = 0; i < d.Length; i++)
+                    {
+                        this.writer.Write(d[i]);
+                    }
+                });
+            }
+            else if (type == typeof(byte))
+            {
+                return new ActionBlock<ChannelFrame>(frame => 
+                {
+                    if (!this.IsRecording) { return; }
+                    this.writer.Write(frame.FrameData as byte[]);
+                });
+            }
+            return null;
+        }
     }
 
     

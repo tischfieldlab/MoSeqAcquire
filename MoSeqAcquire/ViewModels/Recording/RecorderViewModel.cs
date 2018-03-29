@@ -80,7 +80,9 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         public IMediaWriter MakeMediaWriter()
         {
-            var writer = (IMediaWriter)Activator.CreateInstance(this.recorderType);
+            var writer = (MediaWriter)Activator.CreateInstance(this.recorderType);
+            writer.Name = this.Name;
+            writer.Settings = this.settings;
             //writer.ApplySettings((RecorderSettings)this.settings.GetSnapshot());
             foreach(var c in this.SelectedChannels)
             {

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.Models.IO
 {
@@ -23,7 +25,23 @@ namespace MoSeqAcquire.Models.IO
             {
                 throw new InvalidOperationException("Cannot add recorder after initialization!");
             }
+            Writer.RequestDestinationBase += this.ReplyToDestinationRequest;
             this._writers.Add(Writer);
+        }
+        /*public void AddRecorder(ProtocolRecorder WriterDefinition)
+        {
+            var writer = (MediaWriter)Activator.CreateInstance(WriterDefinition.GetProviderType(), new object[] { this });
+            //writer.ApplySettings((RecorderSettings)this.settings.GetSnapshot());
+            foreach (var c in WriterDefinition.Channels)
+            {
+                writer.ConnectChannel(c.Channel.Channel);
+            }
+            this.AddRecorder(Writer);
+        }*/
+        protected string ReplyToDestinationRequest()
+        {
+            Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);
+            return this.GeneralSettings.ComputedBasePath;
         }
 
 

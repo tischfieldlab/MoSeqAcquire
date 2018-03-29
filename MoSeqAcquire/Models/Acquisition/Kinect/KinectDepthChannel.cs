@@ -17,6 +17,45 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             Kinect.Sensor.DepthFrameReady += this.Sensor_DepthFrameReady;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(short);
+            this.Kinect.Config.PropertyChanged += (s, e) => this.RecomputeMetadata();
+            this.RecomputeMetadata();
+        }
+        private void RecomputeMetadata()
+        {
+            var conf = this.Kinect.Config as KinectConfig;
+            switch (conf.DepthImageFormat)
+            {
+                case DepthImageFormat.Resolution80x60Fps30:
+                    this.Metadata = new VideoChannelMetadata()
+                    {
+                        Width = 80,
+                        Height = 60,
+                        FramesPerSecond = 30,
+                        BytesPerPixel = 16,
+                        PixelFormat = PixelFormats.Gray16
+                    };
+                    break;
+                case DepthImageFormat.Resolution320x240Fps30:
+                    this.Metadata = new VideoChannelMetadata()
+                    {
+                        Width = 320,
+                        Height = 240,
+                        FramesPerSecond = 30,
+                        BytesPerPixel = 16,
+                        PixelFormat = PixelFormats.Gray16
+                    };
+                    break;
+                case DepthImageFormat.Resolution640x480Fps30:
+                    this.Metadata = new VideoChannelMetadata()
+                    {
+                        Width = 640,
+                        Height = 480,
+                        FramesPerSecond = 30,
+                        BytesPerPixel = 16,
+                        PixelFormat = PixelFormats.Gray16
+                    };
+                    break;
+            }
         }
 
         public DepthImageStream InnerStream { get { return Kinect.Sensor.DepthStream; } }

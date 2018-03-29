@@ -126,9 +126,12 @@
     <Compile Include="Models\DrawingExtensions.cs" />
     <Compile Include="Models\Attributes\AttributeExtensions.cs" />
     <Compile Include="Models\Attributes\KnownTypeAttribute.cs" />
+    <Compile Include="Models\IO\IMediaWriter.cs" />
     <Compile Include="Models\IO\MPEGVideoWriter\MPEGVideoWriter.cs" />
     <Compile Include="Models\IO\MPEGVideoWriter\MPEGVideoWriterSettings.cs" />
+    <Compile Include="Models\IO\MPEGVideoWriter\MPEGAudioWriterSink.cs" />
     <Compile Include="Models\IO\MPEGVideoWriter\MPEGVideoWriterSink.cs" />
+    <Compile Include="Models\IO\RawDataWriter\RawDataWriterSettings.cs" />
     <Compile Include="Models\IO\RawDataWriter\RawDataSink.cs" />
     <Compile Include="Models\IO\RecorderSpecification.cs" />
     <Compile Include="Models\IO\RecorderSettings.cs" />
@@ -295,7 +298,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

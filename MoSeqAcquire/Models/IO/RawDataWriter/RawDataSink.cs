@@ -9,7 +9,7 @@ using MoSeqAcquire.Models.Acquisition;
 
 namespace MoSeqAcquire.Models.IO.RawDataWriter
 {
-    public class RawDataSink : MediaWriterSink
+    /*public class RawDataSink : MediaWriterSink
     {
 
         protected FileStream file;
@@ -76,5 +76,5 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
             }
             return null;
         }
-    }
+    }*/
 }

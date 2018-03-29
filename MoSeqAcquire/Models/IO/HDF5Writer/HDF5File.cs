@@ -9,7 +9,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace MoSeqAcquire.Models.IO
 {
-    class HDF5FileWriter : MediaWriter<HDF5ChannelSink>
+    /*class HDF5FileWriter : MediaWriter<HDF5ChannelSink>
     {
         protected long fileid;
         
@@ -78,5 +78,5 @@ namespace MoSeqAcquire.Models.IO
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

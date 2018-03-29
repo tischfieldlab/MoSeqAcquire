@@ -11,7 +11,7 @@ using MoSeqAcquire.Models.Acquisition;
 
 namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
 {
-    public class MPEGVideoWriterSink : MediaWriterSink
+    /*public class MPEGVideoWriterSink : MediaWriterSink
     {
         protected VideoFileWriter writer;
         public MPEGVideoWriterSink(RecorderSettings settings, Channel channel) : base(settings, channel)
@@ -57,10 +57,9 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
                                                 frame.Metadata.PixelFormat.ToDrawingPixelFormat(),
                                                 (IntPtr)first);
                         this.writer.WriteVideoFrame(bmp);
-                        
                     }
                 }
             });
         }
-    }
+    }*/
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using System.Windows.Media;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
@@ -28,7 +29,22 @@ namespace MoSeqAcquire.Models.Acquisition
         public ConfigurationSection Config { get; }
         public BufferBlock<ChannelFrame> Buffer { get; protected set; }
         public Type DataType { get; protected set; }
+        public ChannelMetadata Metadata { get; protected set; }
 
         //protected abstract T PrepareFrame();
+    }
+
+    public class ChannelMetadata
+    {
+
+    }
+
+    public class VideoChannelMetadata : ChannelMetadata
+    {
+        public double FramesPerSecond { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int BytesPerPixel { get; set; }
+        public PixelFormat PixelFormat { get; set; }
     }
 }
