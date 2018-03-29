@@ -8,12 +8,12 @@ using System.Timers;
 
 namespace MoSeqAcquire.Models.Performance
 {
-    public class FrameRateCounter : BaseViewModel
+    public class FrameRateCounter : BaseViewModel, IFrameRateProvider
     {
         private DateTime __lastTime;
         private Timer __timer;
         private long __countSinceLast;
-        private static readonly object lockobject = new object();
+        private object lockobject = new object();
 
         public FrameRateCounter()
         {

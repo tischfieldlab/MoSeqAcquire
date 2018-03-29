@@ -81,16 +81,19 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
                 this.writer = new BinaryWriter(this.file);
             }
             this.IsRecording = true;
+            this.Stats.Start();
         }
 
         public override void Stop()
         {
+            this.Stats.Stop();
             this.sink.Complete();
             this.sink.Completion.Wait();
             this.IsRecording = false;
             this.writer.Close();
         }
 
+        protected byte[] stupidByteBuffer;
         protected ActionBlock<ChannelFrame> GetActionBlock(Type type)
         {
             if (type == typeof(short))
@@ -98,11 +101,11 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
                 return new ActionBlock<ChannelFrame>(frame =>
                 {
                     if (!this.IsRecording) { return; }
-                    var d = frame.FrameData as short[];
-                    for (var i = 0; i < d.Length; i++)
-                    {
-                        this.writer.Write(d[i]);
-                    }
+                    var frameBytes = frame.FrameData.Length * frame.Metadata.BytesPerPixel;
+                    if (this.stupidByteBuffer == null) { this.stupidByteBuffer = new byte[frameBytes]; }
+                    Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frameBytes);
+                    this.writer.Write(this.stupidByteBuffer);
+                    this.Stats.Increment();
                 });
             }
             else if (type == typeof(byte))
@@ -111,6 +114,7 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
                 {
                     if (!this.IsRecording) { return; }
                     this.writer.Write(frame.FrameData as byte[]);
+                    this.Stats.Increment();
                 });
             }
             return null;

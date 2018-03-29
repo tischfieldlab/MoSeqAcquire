@@ -21,6 +21,7 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
     [SupportedChannelType(MediaType.Audio, 1)]
     public class MPEGVideoWriter : MediaWriter
     {
+        private object lockobject = new object();
         protected VideoFileWriter writer;
 
         protected Channel video_channel;
@@ -73,14 +74,16 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
             this.writer = new VideoFileWriter();
             var vChanMeta = this.video_channel.Metadata as VideoChannelMetadata;
             var conf = this.Settings as MPEGVideoWriterSettings;
-            this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height, 
-                new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate, 
-                conf.AudioCodec, conf.AudioBitrate, 16000, 1);
+            this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height);//, 
+                //new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate, 
+                //conf.AudioCodec, conf.AudioBitrate, 16000, 1);
             this.IsRecording = true;
+            this.Stats.Start();
         }
 
         public override void Stop()
         {
+            this.Stats.Stop();
             this.video_sink.Complete();
             this.audio_sink.Complete();
             this.video_sink.Completion.Wait();
@@ -99,7 +102,10 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
             {
                 if (this.IsRecording)
                 {
-                    this.writer.WriteAudioFrame((byte[])frame.FrameData);
+                    lock (this.lockobject)
+                    {
+                        this.writer.WriteAudioFrame((byte[])frame.FrameData);
+                    }
                 }
             });
         }
@@ -119,9 +125,13 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
                                                     frame.Metadata.BytesPerPixel * frame.Metadata.Width,
                                                     frame.Metadata.PixelFormat.ToDrawingPixelFormat(),
                                                     (IntPtr)first);
-                            this.writer.WriteVideoFrame(bmp);
+                            lock (this.lockobject)
+                            {
+                                this.writer.WriteVideoFrame(bmp);
+                            }
                         }
                     }
+                    this.Stats.Increment();
                 }
             });
         }

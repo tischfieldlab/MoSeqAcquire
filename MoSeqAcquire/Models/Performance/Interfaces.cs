@@ -8,7 +8,7 @@ namespace MoSeqAcquire.Models.Performance
 {
     public interface IFrameRateProvider
     {
-        FrameRateCounter FrameRate { get; }
+        double FrameRate { get; }
     }
     public interface ITotalFrameCountProvider
     {
@@ -17,6 +17,10 @@ namespace MoSeqAcquire.Models.Performance
     public interface IDurationProvider
     {
         TimeSpan Duration { get; }
+    }
+    public interface ITimeRemainingProvider
+    {
+        TimeSpan? TimeRemaining { get; }
     }
     public interface IProgressProvider
     {

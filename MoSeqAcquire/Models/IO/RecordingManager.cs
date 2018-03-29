@@ -8,11 +8,15 @@ using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.Models.IO
 {
-    public class RecordingManager
+    public class RecordingManager : ObservableObject
     {
         protected bool isInitialized;
+        protected bool isRecording;
         protected IRecordingLengthStrategy terminator;
         protected List<IMediaWriter> _writers;
+
+        public event EventHandler RecordingStarted;
+        public event EventHandler RecordingFinished;
 
         public RecordingManager()
         {
@@ -44,7 +48,14 @@ namespace MoSeqAcquire.Models.IO
             return this.GeneralSettings.ComputedBasePath;
         }
         public bool IsInitialized { get => this.isInitialized; }
-        public bool IsRecording { get; protected set; }
+        public bool IsRecording
+        {
+            get => this.isRecording;
+            protected set => this.SetField(ref this.isRecording, value);
+        }
+        public TimeSpan Duration { get => this.terminator.Duration; }
+        public double? Progress { get => this.terminator.Progress; }
+        public TimeSpan? TimeRemaining { get => this.terminator.TimeRemaining; }
         public GeneralRecordingSettings GeneralSettings { get; protected set; }
 
         public void Initialize(GeneralRecordingSettings GeneralSettings)
@@ -62,6 +73,7 @@ namespace MoSeqAcquire.Models.IO
                     break;
             }
             this.terminator.TriggerStop += (s, e) => { this.Stop(); };
+            this.terminator.PropertyChanged += (s,e) => { this.NotifyPropertyChanged(null); };
         }
         public void Start()
         {
@@ -69,11 +81,14 @@ namespace MoSeqAcquire.Models.IO
             {
                 throw new InvalidOperationException("Recording Manager must be initialized before starting!");
             }
+            
             this.IsRecording = true;
+            this.terminator.Start();
             foreach (var r in this._writers)
             {
                 r.Start();
             }
+            this.RecordingStarted?.Invoke(this, new EventArgs());
         }
         public void Stop()
         {
@@ -85,52 +100,9 @@ namespace MoSeqAcquire.Models.IO
             {
                 r.Stop();
             }
+            this.terminator.Stop();
             this.IsRecording = false;
+            this.RecordingFinished?.Invoke(this, new EventArgs());
         }
-    }
-
-    public interface IRecordingLengthStrategy
-    {
-        event EventHandler TriggerStop;
-    }
-    public interface IRecordingStats
-    {
-        double Progress { get; }
-    }
-    public class IndeterminantRecordingLength : IRecordingLengthStrategy
-    {
-        public event EventHandler TriggerStop;
-    }
-    public class TimeBasedRecordingLength : IRecordingLengthStrategy
-    {
-        protected Timer timer;
-        protected TimeSpan targetLength;
-        protected DateTime startTime;
-        protected DateTime endTime;
-
-        public TimeBasedRecordingLength(TimeSpan recordingLength)
-        {
-            this.targetLength = recordingLength;
-            this.startTime = DateTime.UtcNow;
-            this.endTime = this.startTime.Add(this.targetLength);
-
-            this.timer = new Timer()
-            {
-                Interval = 100, //100 milliseconds
-                AutoReset = true,
-                Enabled = true
-            };
-            this.timer.Elapsed += this.check_condition;
-        }
-
-        private void check_condition(object sender, ElapsedEventArgs e)
-        {
-            if (this.endTime <= DateTime.UtcNow)
-            {
-                this.TriggerStop?.Invoke(this, e);
-            }
-        }
-
-        public event EventHandler TriggerStop;
     }
 }

@@ -18,6 +18,7 @@
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <ResourceDictionary>
+            <conv:IsNullToBoolInvertConverter x:Key="IsNullToBoolInvertConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
             <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
@@ -62,7 +63,17 @@
                     <WrapPanel Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0">
                         <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" />
                         <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" />
-                        <ProgressBar Width="100" IsIndeterminate="{Binding Path=IsRecording}" Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                        
+                            <ProgressBar Grid.ColumnSpan="3" Width="150" Minimum="0" Maximum="1" Value="{Binding Path=Progress, Mode=OneWay}" IsIndeterminate="{Binding Path=Progress, Mode=OneWay, Converter={StaticResource IsNullToBoolInvertConverter}}" Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <TextBlock Grid.Column="0" Text="{Binding Path=Duration, StringFormat=hh\\:mm\\:ss, Mode=OneWay}" />
+                            <TextBlock Grid.Column="3" Text="{Binding Path=TimeRemaining, StringFormat=hh\\:mm\\:ss, Mode=OneWay}" />
+                        </Grid>
                     </WrapPanel>
 
                     <Label Grid.Row="1" Grid.Column="0">Recording Length</Label>

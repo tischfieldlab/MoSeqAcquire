@@ -66,8 +66,11 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public bool IsRecording
         {
-            get => this.isRecording;
-            set => this.SetField(ref this.isRecording, value);
+            get
+            {
+                if (this._recordingManager == null) { return false; }
+                return this._recordingManager.IsRecording;
+            }
         }
         public GeneralRecordingSettings GeneralSettings
         {
@@ -75,11 +78,16 @@ namespace MoSeqAcquire.ViewModels.Recording
             set => this.SetField(ref this.settings, value);
         }
 
+        public TimeSpan? Duration { get => this._recordingManager?.Duration; }
+        public double? Progress { get => this._recordingManager?.Progress; }
+        public TimeSpan? TimeRemaining { get => this._recordingManager?.TimeRemaining; }
+
         protected RecordingManager _recordingManager;
         public void StartRecording()
         {
-            this.IsRecording = true;
             this._recordingManager = new RecordingManager();
+            this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
+            this._recordingManager.RecordingFinished += (s, e) => { this._recordingManager = null; };
             foreach (var r in this.Recorders)
             {
                 this._recordingManager.AddRecorder(r.MakeMediaWriter());
@@ -91,7 +99,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this._recordingManager.Stop();
             this._recordingManager = null;
-            this.IsRecording = false;
         }
     }
 }

@@ -56,7 +56,10 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.PropertyChanged += (s, e) => { if (e.PropertyName == "Name") { this.NotifyPropertyChanged("DisplayName"); } };
         }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public string DisplayName { get => this.name + " (" + this.SelectedChannels.Count + " Channels)"; }
+        public string DisplayName
+        {
+            get => this.name + " (" + this.SelectedChannels.Count + " Channels)";
+        }
         
         public string Name
         {
@@ -76,18 +79,19 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
         public ObservableCollection<SelectableChannelViewModel> SelectedChannels { get; protected set; }
-
+        public MediaWriterStats Stats { get; protected set; }
 
         public IMediaWriter MakeMediaWriter()
         {
             var writer = (MediaWriter)Activator.CreateInstance(this.recorderType);
             writer.Name = this.Name;
             writer.Settings = this.settings;
-            //writer.ApplySettings((RecorderSettings)this.settings.GetSnapshot());
             foreach(var c in this.SelectedChannels)
             {
                 writer.ConnectChannel(c.Channel.Channel);
             }
+            this.Stats = writer.Stats;
+            this.NotifyPropertyChanged("Stats");
             return writer;
         }
         public ProtocolRecorder GetRecorderDefinition()

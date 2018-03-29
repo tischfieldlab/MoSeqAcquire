@@ -14,6 +14,7 @@ namespace MoSeqAcquire.Models.IO
         {
             this.Settings = new RecorderSettings();
             this.Specification = new RecorderSpecification(this.GetType());
+            this.Stats = new MediaWriterStats();
         }
         public event DestinationBaseResponse RequestDestinationBase;
         protected string RequestBaseDestination()
@@ -24,6 +25,7 @@ namespace MoSeqAcquire.Models.IO
         public RecorderSettings Settings { get; set; }
 
         public bool IsRecording { get; protected set; }
+        public MediaWriterStats Stats { get; protected set; }
         public RecorderSpecification Specification { get; protected set; }
         
 

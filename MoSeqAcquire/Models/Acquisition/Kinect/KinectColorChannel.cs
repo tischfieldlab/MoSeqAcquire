@@ -37,7 +37,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         PixelFormat = PixelFormats.
                     };*/
                     throw new NotImplementedException();
-                    break;
+                    //break;
                 case ColorImageFormat.RawBayerResolution640x480Fps30:
                     this.Metadata = new VideoChannelMetadata()
                     {
@@ -48,7 +48,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         PixelFormat = PixelFormats.Gray16
                     };
                     throw new NotImplementedException();
-                    break;
+                    //break;
                 case ColorImageFormat.RawYuvResolution640x480Fps15:
                     this.Metadata = new VideoChannelMetadata()
                     {
@@ -59,7 +59,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         PixelFormat = PixelFormats.Gray16
                     };
                     throw new NotImplementedException();
-                    break;
+                    //break;
                 case ColorImageFormat.YuvResolution640x480Fps15:
                     this.Metadata = new VideoChannelMetadata()
                     {

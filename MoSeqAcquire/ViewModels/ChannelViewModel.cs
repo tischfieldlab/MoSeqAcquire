@@ -11,7 +11,7 @@ using MoSeqAcquire.Models.Performance;
 
 namespace MoSeqAcquire.ViewModels
 {
-    public abstract class ChannelViewModel : BaseViewModel, IFrameRateProvider
+    public abstract class ChannelViewModel : BaseViewModel
     {
         protected Channel channel;
         public ChannelViewModel(Channel channel)
