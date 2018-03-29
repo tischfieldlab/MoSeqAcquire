@@ -18,4 +18,8 @@ namespace MoSeqAcquire.Models.Performance
     {
         TimeSpan Duration { get; }
     }
+    public interface IProgressProvider
+    {
+        double? Progress { get; }
+    }
 }

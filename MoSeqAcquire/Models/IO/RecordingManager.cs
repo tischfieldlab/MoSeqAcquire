@@ -43,8 +43,8 @@ namespace MoSeqAcquire.Models.IO
             Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);
             return this.GeneralSettings.ComputedBasePath;
         }
-
-
+        public bool IsInitialized { get => this.isInitialized; }
+        public bool IsRecording { get; protected set; }
         public GeneralRecordingSettings GeneralSettings { get; protected set; }
 
         public void Initialize(GeneralRecordingSettings GeneralSettings)
@@ -69,7 +69,7 @@ namespace MoSeqAcquire.Models.IO
             {
                 throw new InvalidOperationException("Recording Manager must be initialized before starting!");
             }
-            //this.IsRecording = true;
+            this.IsRecording = true;
             foreach (var r in this._writers)
             {
                 r.Start();
@@ -77,16 +77,25 @@ namespace MoSeqAcquire.Models.IO
         }
         public void Stop()
         {
+            if (!this.IsRecording)
+            {
+                throw new InvalidOperationException("Recording Manager must be started before stopping!");
+            }
             foreach (var r in this._writers)
             {
                 r.Stop();
             }
+            this.IsRecording = false;
         }
     }
 
     public interface IRecordingLengthStrategy
     {
         event EventHandler TriggerStop;
+    }
+    public interface IRecordingStats
+    {
+        double Progress { get; }
     }
     public class IndeterminantRecordingLength : IRecordingLengthStrategy
     {

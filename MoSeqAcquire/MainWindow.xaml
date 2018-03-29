@@ -18,6 +18,7 @@
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
             <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
         </ResourceDictionary>
@@ -61,7 +62,7 @@
                     <WrapPanel Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0">
                         <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" />
                         <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" />
-                        <ProgressBar Width="100" IsIndeterminate="{Binding Path=IsRecording}" />
+                        <ProgressBar Width="100" IsIndeterminate="{Binding Path=IsRecording}" Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </WrapPanel>
 
                     <Label Grid.Row="1" Grid.Column="0">Recording Length</Label>
