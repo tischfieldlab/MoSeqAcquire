@@ -12,7 +12,14 @@ namespace MoSeqAcquire.Models.IO
         protected Timer timer;
         protected DateTime startTime;
 
-        public event EventHandler TriggerStop;
+        
+        public event EventHandler TriggerStop
+        {
+            //do this to suppress the "event never used" warning
+            //in this implementation, the TriggerStop event is NEVER triggered!
+            add { } 
+            remove { }
+        }
 
         public IndeterminantRecordingLength()
         {

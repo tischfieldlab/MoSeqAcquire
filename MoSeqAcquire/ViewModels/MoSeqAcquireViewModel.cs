@@ -60,14 +60,18 @@ namespace MoSeqAcquire.ViewModels
             //prepare
             this.mediaSources.ForEach(s => s.MediaSource.Stop());
             this.mediaSources.Clear();
-            this.__mediaBus.Clear();
+            //this.__mediaBus.Clear();
             this.recorderManager.Recorders.Clear();
 
             //add media sources
             var tasks = new List<Task>();
             foreach(var s in protocol.Sources)
             {
-                tasks.Add(Task.Run(() =>
+                var msvm = new MediaSourceViewModel(s);
+                tasks.Add(msvm.InitTask);
+                this.mediaSources.Add(msvm);
+                
+                /*tasks.Add(Task.Run(() =>
                 {
                     var provider = (MediaSource)s.Create();
                     while (!provider.Initalize())
@@ -80,10 +84,10 @@ namespace MoSeqAcquire.ViewModels
                     
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        this.mediaSources.Add(new MediaSourceViewModel(provider));
+                        
                     });
                     provider.Start();
-                }));
+                }));*/
             }
 
             Task.WhenAll(tasks).ContinueWith((t) =>

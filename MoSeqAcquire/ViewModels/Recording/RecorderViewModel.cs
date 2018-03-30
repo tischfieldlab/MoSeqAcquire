@@ -16,7 +16,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected MoSeqAcquireViewModel rootViewModel;
         protected string name;
         protected Type recorderType;
-        protected ObservableCollection<SelectableChannelViewModel> channels;
+        //protected ObservableCollection<SelectableChannelViewModel> channels;
         protected RecorderSettings settings;
 
         public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
@@ -48,8 +48,8 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected void loadChannels()
         {
             var channels = this.rootViewModel.MediaSources.SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)));
-            this.channels = new ObservableCollection<SelectableChannelViewModel>(channels);
-            this.AvailableChannels = new ReadOnlyObservableCollection<SelectableChannelViewModel>(this.channels);
+            //this.channels = new ObservableCollection<SelectableChannelViewModel>(channels);
+            //this.AvailableChannels = new ReadOnlyObservableCollection<SelectableChannelViewModel>(this.channels);
             this.SelectedChannels = new ObservableCollection<SelectableChannelViewModel>();
 
             this.SelectedChannels.CollectionChanged += (s, e) => { this.NotifyPropertyChanged("DisplayName"); };
@@ -77,7 +77,11 @@ namespace MoSeqAcquire.ViewModels.Recording
             get => this.settings;
             set => this.SetField(ref this.settings, value);
         }
-        public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
+        //public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
+        public IList<SelectableChannelViewModel> AvailableChannels
+        {
+            get => this.rootViewModel.MediaSources.SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c))).ToList();
+        }
         public ObservableCollection<SelectableChannelViewModel> SelectedChannels { get; protected set; }
         public MediaWriterStats Stats { get; protected set; }
 
@@ -125,6 +129,19 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             get => this.isEnabled;
             set => this.SetField(ref isEnabled, value);
+        }
+        public override bool Equals(Object obj)
+        {
+            // Check for null values and compare run-time types.
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            SelectableChannelViewModel other = (SelectableChannelViewModel)obj;
+            return this.Channel.Equals(other.Channel);
+        }
+        public override int GetHashCode()
+        {
+            return this.Channel.GetHashCode();
         }
     }
 }

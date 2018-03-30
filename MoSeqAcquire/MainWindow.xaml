@@ -92,8 +92,10 @@
                 <GroupBox Header="Recorders" >
                     <StackPanel>
                         <WrapPanel>
-                            <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedItem="{Binding Path=SelectedRecorderType}" />
-                            <Button Content="Add Recorder" Command="{Binding Path=Root.Commands.AddRecorder}" />
+                            <xctk:WatermarkComboBox Watermark="Select Recorder Type" ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" />
+                            <Button Content="Add" Command="{Binding Path=Root.Commands.AddRecorder}" />
+                            <Button Content="Edit" Command="{Binding Path=Root.Commands.EditRecorder}" />
+                            <Button Content="Remove" Command="{Binding Path=Root.Commands.RemoveRecorder}" />
                         </WrapPanel>
                         <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" >
                             <ListBox.ItemTemplate>

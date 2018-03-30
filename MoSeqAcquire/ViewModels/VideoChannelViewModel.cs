@@ -23,15 +23,15 @@ namespace MoSeqAcquire.ViewModels
                 {
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
+                        var meta = frame.Metadata as VideoChannelFrameMetadata;
                         if (this.Stream == null || !this.CheckBitmapOk(frame))
                         {
-                            this.Stream = new WriteableBitmap(frame.Metadata.Width, frame.Metadata.Height, 96, 96, frame.Metadata.PixelFormat, null);
+                            this.Stream = new WriteableBitmap(meta.Width, meta.Height, 96, 96, meta.PixelFormat, null);
                         }
-
                         this.Stream.WritePixels(
-                            new Int32Rect(0, 0, frame.Metadata.Width, frame.Metadata.Height),
+                            new Int32Rect(0, 0, meta.Width, meta.Height),
                             frame.FrameData,
-                            frame.Metadata.Width * frame.Metadata.BytesPerPixel,
+                            meta.Stride,
                             0);
                         
                         this.FrameRate.Increment();
@@ -41,9 +41,10 @@ namespace MoSeqAcquire.ViewModels
         }
         protected bool CheckBitmapOk(ChannelFrame frame)
         {
-            if (this.Stream.PixelHeight != frame.Metadata.Height) return false;
-            if (this.Stream.PixelWidth != frame.Metadata.Width) return false;
-            if (this.Stream.Format != frame.Metadata.PixelFormat) return false;
+            var meta = frame.Metadata as VideoChannelFrameMetadata;
+            if (this.Stream.PixelHeight != meta.Height) return false;
+            if (this.Stream.PixelWidth != meta.Width) return false;
+            if (this.Stream.Format != meta.PixelFormat) return false;
             return true;
         }
         private WriteableBitmap _stream;

@@ -26,25 +26,21 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
             this.settings = new GeneralRecordingSettings();
-
-            this.AvailableRecorderTypes = new ReadOnlyObservableCollection<Type>(new ObservableCollection<Type>(ProtocolHelpers.FindRecorderTypes()));
+            this.PopulateAvailableRecorderTypes();
+        }
+        protected void PopulateAvailableRecorderTypes()
+        {
+            this.AvailableRecorderTypes = new ReadOnlyObservableCollection<AvailableRecorderTypeViewModel>(new ObservableCollection<AvailableRecorderTypeViewModel>(ProtocolHelpers.FindRecorderTypes().Select(t => new AvailableRecorderTypeViewModel(t))));
         }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
 
 
         #region support typed recorder creation
-        public ReadOnlyObservableCollection<Type> AvailableRecorderTypes { get; protected set; }
+        public ReadOnlyObservableCollection<AvailableRecorderTypeViewModel> AvailableRecorderTypes { get; protected set; }
         public Type SelectedRecorderType
         {
             get => this.selectedRecorderType;
             set => this.SetField(ref this.selectedRecorderType, value);
-        }
-        protected IEnumerable<Type> FindRecorderTypes()
-        {
-            return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(IMediaWriter).IsAssignableFrom(t));
-                //.Select(t => t.FullName);
         }
         public void AddRecorder()
         {
@@ -52,6 +48,15 @@ namespace MoSeqAcquire.ViewModels.Recording
             recorder.Name = "New Recorder";
             this.Recorders.Add(recorder);
             this.SelectedRecorder = recorder;
+        }
+        public void RemoveSelectedRecorder()
+        {
+            if(this.SelectedRecorder != null)
+            {
+                var currIdx = this.Recorders.IndexOf(this.SelectedRecorder);
+                this.Recorders.Remove(this.SelectedRecorder);
+                this.SelectedRecorder = this.Recorders.ElementAtOrDefault(currIdx - 1);
+            }
         }
         #endregion
 
@@ -99,6 +104,27 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this._recordingManager.Stop();
             this._recordingManager = null;
+        }
+    }
+
+
+    public class AvailableRecorderTypeViewModel
+    {
+        protected Type recorderType;
+        protected RecorderSpecification spec;
+
+        public AvailableRecorderTypeViewModel(Type RecorderType)
+        {
+            this.recorderType = RecorderType;
+            this.spec = new RecorderSpecification(RecorderType);
+        }
+        public Type RecorderType
+        {
+            get => this.recorderType;
+        }
+        public string Name
+        {
+            get => this.spec.Name;
         }
     }
 }

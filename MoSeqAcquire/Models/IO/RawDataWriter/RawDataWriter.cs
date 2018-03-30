@@ -101,9 +101,8 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
                 return new ActionBlock<ChannelFrame>(frame =>
                 {
                     if (!this.IsRecording) { return; }
-                    var frameBytes = frame.FrameData.Length * frame.Metadata.BytesPerPixel;
-                    if (this.stupidByteBuffer == null) { this.stupidByteBuffer = new byte[frameBytes]; }
-                    Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frameBytes);
+                    if (this.stupidByteBuffer == null) { this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes]; }
+                    Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
                     this.writer.Write(this.stupidByteBuffer);
                     this.Stats.Increment();
                 });

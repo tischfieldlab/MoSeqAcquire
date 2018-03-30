@@ -53,7 +53,7 @@ namespace MoSeqAcquire.Models.Acquisition
         public void UnPublish(MediaSource Source)
         {
             if (this.__sources.Contains(Source)){
-                var to_remove = this.__channels.Where(bc => bc.Source.Equals(Source));
+                var to_remove = this.__channels.Where(bc => bc.Source.Equals(Source)).ToList();
                 foreach (var tr in to_remove) {
                     tr.Complete();
                     this.__channels.Remove(tr);

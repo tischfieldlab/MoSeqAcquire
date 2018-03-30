@@ -74,9 +74,9 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
             this.writer = new VideoFileWriter();
             var vChanMeta = this.video_channel.Metadata as VideoChannelMetadata;
             var conf = this.Settings as MPEGVideoWriterSettings;
-            this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height);//, 
-                //new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate, 
-                //conf.AudioCodec, conf.AudioBitrate, 16000, 1);
+            this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height, 
+                             new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate);
+                            //conf.AudioCodec, conf.AudioBitrate, 16000, 1);
             this.IsRecording = true;
             this.Stats.Start();
         }
@@ -118,12 +118,13 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
                     unsafe
                     {
                         byte[] data = (byte[])frame.FrameData;
+                        var meta = frame.Metadata as VideoChannelFrameMetadata;
                         fixed (byte* first = &data[0])
                         {
-                            Bitmap bmp = new Bitmap(frame.Metadata.Width,
-                                                    frame.Metadata.Height,
-                                                    frame.Metadata.BytesPerPixel * frame.Metadata.Width,
-                                                    frame.Metadata.PixelFormat.ToDrawingPixelFormat(),
+                            Bitmap bmp = new Bitmap(meta.Width,
+                                                    meta.Height,
+                                                    meta.BytesPerPixel * meta.Width,
+                                                    meta.PixelFormat.ToDrawingPixelFormat(),
                                                     (IntPtr)first);
                             lock (this.lockobject)
                             {

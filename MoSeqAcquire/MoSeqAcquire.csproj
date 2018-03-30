@@ -143,6 +143,7 @@
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Commands\RemoveRecorderCommand.cs" />
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />

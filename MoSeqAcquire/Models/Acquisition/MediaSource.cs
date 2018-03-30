@@ -17,12 +17,19 @@ namespace MoSeqAcquire.Models.Acquisition
             this.Channels = new List<Channel>();
         }
         public string Name { get; set; }
+        public string Status { get; protected set; }
         public MediaSourceConfig Config { get; protected set; }
         
         public bool IsInitialized { get; protected set; }
         public abstract bool Initalize();
-        public abstract void Start();
-        public abstract void Stop();
+        public virtual void Start()
+        {
+            MediaBus.Instance.Publish(this);
+        }
+        public virtual void Stop()
+        {
+            MediaBus.Instance.UnPublish(this);
+        }
 
         protected void RegisterChannel(Channel Channel)
         {

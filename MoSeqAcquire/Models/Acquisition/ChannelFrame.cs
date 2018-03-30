@@ -22,8 +22,12 @@ namespace MoSeqAcquire.Models.Acquisition
         public ChannelFrameMetadata Metadata { get; protected set; } 
 
     }
-
     public class ChannelFrameMetadata
+    {
+        public int TotalBytes { get; set; }
+    }
+
+    public class VideoChannelFrameMetadata : ChannelFrameMetadata
     {
         public int FrameId { get; set; }
         public long Timestamp { get; set; }
@@ -31,6 +35,11 @@ namespace MoSeqAcquire.Models.Acquisition
         public int Height { get; set; }
         public int BytesPerPixel { get; set; }
         public PixelFormat PixelFormat { get; set; }
+        public int Stride { get => this.Width * this.BytesPerPixel; }
+    }
+
+    public class AudioChannelFrameMetadata : ChannelFrameMetadata
+    {
 
     }
 }

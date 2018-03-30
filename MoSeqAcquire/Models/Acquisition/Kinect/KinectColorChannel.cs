@@ -129,14 +129,15 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             {
                 if (imageFrame != null)
                 {
-                    var meta = new ChannelFrameMetadata()
+                    var meta = new VideoChannelFrameMetadata()
                     {
                         FrameId = imageFrame.FrameNumber,
                         Timestamp = imageFrame.Timestamp,
                         Width = imageFrame.Width,
                         Height = imageFrame.Height,
                         BytesPerPixel = imageFrame.BytesPerPixel,
-                        PixelFormat = PixelFormats.Bgr32
+                        PixelFormat = PixelFormats.Bgr32,
+                        TotalBytes = imageFrame.PixelDataLength * imageFrame.BytesPerPixel
                     };
                     if(imageFrame.Format == ColorImageFormat.InfraredResolution640x480Fps30)
                     {

@@ -19,15 +19,22 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
         public override bool Initalize()
         {
-            foreach (var potentialSensor in KinectSensor.KinectSensors)
+            if (KinectSensor.KinectSensors.Count > 0)
             {
-                if (potentialSensor.Status == KinectStatus.Connected)
+                foreach (var potentialSensor in KinectSensor.KinectSensors)
                 {
-                    this.Sensor = potentialSensor;
-                    break;
+                    this.Status = potentialSensor.Status.ToString();
+                    if (potentialSensor.Status == KinectStatus.Connected)
+                    {
+                        this.Sensor = potentialSensor;
+                        break;
+                    }
                 }
             }
-
+            else
+            {
+                this.Status = KinectStatus.Disconnected.ToString();
+            }
             if (this.Sensor == null) { return false; }
 
             this.Config.ReadState();
@@ -38,13 +45,13 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             return true;
         }
 
-
         public override void Start()
         {
             this.Sensor.Start();
             this.Sensor.ColorStream.Enable();
             this.Sensor.DepthStream.Enable();
             this.FindChannel<KinectSoundChannel>().Enabled = true;
+            base.Start();
         }
 
         public override void Stop()
@@ -52,6 +59,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Sensor.ColorStream.Disable();
             this.Sensor.DepthStream.Disable();
             this.FindChannel<KinectSoundChannel>().Enabled = false;
+            base.Stop();
         }  
 
         public KinectSensor Sensor { get; set; }

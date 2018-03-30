@@ -17,6 +17,7 @@ namespace MoSeqAcquire.Models.Attributes
         public SupportedChannelTypeAttribute(MediaType mediaType, int maxCount)
         {
             this.mediaType = mediaType;
+            this.maxCount = maxCount;
         }
 
         public MediaType MediaType

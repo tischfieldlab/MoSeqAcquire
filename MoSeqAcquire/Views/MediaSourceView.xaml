@@ -5,8 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
+             
+             xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <conv:BoolToVisibilityInvertConverter x:Key="BoolToVisibilityInvertConverter" />
+    </UserControl.Resources>
     <Grid>
         <ItemsControl ItemsSource="{Binding Path=MediaSources}" Grid.Row="1">
             <ItemsControl.ItemTemplate>
@@ -21,7 +27,11 @@
                                 <CheckBox />
                                 <TextBlock Text="{Binding Path=MediaSource.Name}" Grid.Column="0" />
                             </WrapPanel>
-                            <xctk:PropertyGrid Name="pg" SelectedObject="{Binding Path=Config}" />
+                            <Grid Visibility="{Binding Path=IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
+                                <ProgressBar IsIndeterminate="true" Height="30" Width="150" />
+                                <TextBlock Text="{Binding Path=CurrentStatus}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <xctk:PropertyGrid Name="pg" SelectedObject="{Binding Path=Config}" Visibility="{Binding Path=IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </StackPanel>
                         <ItemsControl ItemsSource="{Binding Path=Channels}" Grid.Column="1">
                             <ItemsControl.ItemTemplate>
