@@ -15,6 +15,14 @@
         xmlns:mio="clr-namespace:MoSeqAcquire.Models.IO"
         xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
         mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <ResourceDictionary>
@@ -39,6 +47,25 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
                 <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Theme Style">
+                    <MenuItem Header="Dark" IsCheckable="True" 
+                              IsChecked="{Binding Theme.LightDarkMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static vm:LightDarkMode.Dark}}"
+                              Command="{Binding Path=Theme.SetThemeCommand}" CommandParameter="{x:Static vm:LightDarkMode.Dark}" />
+                    <MenuItem Header="Light" IsCheckable="True" 
+                              IsChecked="{Binding Theme.LightDarkMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static vm:LightDarkMode.Light}}"
+                              Command="{Binding Path=Theme.SetThemeCommand}" CommandParameter="{x:Static vm:LightDarkMode.Light}" />
+                </MenuItem>
+                <MenuItem Header="Theme Primary Color" ItemsSource="{Binding Path=Theme.Swatches}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding Path=Name}" IsCheckable="True" 
+                                      Command="{Binding Path=Theme.ApplyPrimaryCommand}" CommandParameter="{Binding}" />
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+                    
+                </MenuItem>
             </MenuItem>
         </Menu>
         <GroupBox Header="Available Hardware" Grid.Column="0" Grid.Row="1">

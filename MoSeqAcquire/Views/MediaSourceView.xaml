@@ -17,35 +17,50 @@
         <ItemsControl ItemsSource="{Binding Path=MediaSources}" Grid.Row="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <WrapPanel>
-                                <CheckBox />
-                                <TextBlock Text="{Binding Path=MediaSource.Name}" Grid.Column="0" />
-                            </WrapPanel>
-                            <Grid Visibility="{Binding Path=IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
-                                <ProgressBar IsIndeterminate="true" Height="30" Width="150" />
+                    <Border CornerRadius="5" Margin="5" Background="LightGray">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Border CornerRadius="5,5,0,0" Background="DarkSlateGray" Grid.ColumnSpan="2" Grid.Row="0">
+                                <WrapPanel Margin="5">
+                                    <CheckBox />
+                                    <TextBlock Text="{Binding Path=MediaSource.Name}" Grid.Column="0" />
+                                    <Button Content="X" />
+                                </WrapPanel>
+                            </Border>
+                            <Grid Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Stretch"  Visibility="{Binding Path=IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
+                                <ProgressBar IsIndeterminate="true" Height="30" HorizontalAlignment="Stretch" />
                                 <TextBlock Text="{Binding Path=CurrentStatus}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </Grid>
-                            <xctk:PropertyGrid Name="pg" SelectedObject="{Binding Path=Config}" Visibility="{Binding Path=IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                        </StackPanel>
-                        <ItemsControl ItemsSource="{Binding Path=Channels}" Grid.Column="1">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <local:ChannelView />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </Grid>
+                            <DockPanel Grid.Column="0" Grid.Row="1" Margin="0" Visibility="{Binding Path=IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                                <xctk:PropertyGrid Name="pg" MaxHeight="450" SelectedObject="{Binding Path=Config}"  />
+                            </DockPanel>
+                            <ItemsControl ItemsSource="{Binding Path=Channels}" Grid.Column="1" Grid.Row="1" Margin="5">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <local:ChannelView />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <Border CornerRadius="0,0,5,5" Background="DarkSlateGray" Grid.Row="2" Grid.ColumnSpan="2">
+                                <StatusBar Background="Transparent">
+                                    <StatusBarItem Content="Status...." />
+                                </StatusBar>
+                            </Border>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

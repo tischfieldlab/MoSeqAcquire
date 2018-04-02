@@ -30,6 +30,7 @@ namespace MoSeqAcquire.ViewModels
 
         public MoSeqAcquireViewModel()
         {
+            this.Theme = new ThemeViewModel();
             this.__mediaBus = MediaBus.Instance;
             this.mediaSources = new ObservableCollection<MediaSourceViewModel>();
             this.recorderManager = new RecordingManagerViewModel(this);
@@ -40,6 +41,7 @@ namespace MoSeqAcquire.ViewModels
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
         public CommandLibrary Commands { get; protected set; }
+        public ThemeViewModel Theme { get; protected set; }
         public Protocol GenerateProtocol()
         {
             var pcol = new Protocol("basic");
