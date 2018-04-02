@@ -30,6 +30,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
             <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+            <conv:ObjectEqualityConverter x:Key="ObjectEqualityConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -57,14 +58,19 @@
                               IsChecked="{Binding Theme.LightDarkMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static vm:LightDarkMode.Light}}"
                               Command="{Binding Path=Theme.SetThemeCommand}" CommandParameter="{x:Static vm:LightDarkMode.Light}" />
                 </MenuItem>
-                <MenuItem Header="Theme Primary Color" ItemsSource="{Binding Path=Theme.Swatches}">
+                <MenuItem Header="Theme Primary Color" ItemsSource="{Binding Path=Theme.PrimarySwatches}">
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
-                            <MenuItem Header="{Binding Path=Name}" IsCheckable="True" 
-                                      Command="{Binding Path=Theme.ApplyPrimaryCommand}" CommandParameter="{Binding}" />
+                            <MenuItem Header="{Binding Path=Name}" IsCheckable="True" IsChecked="{Binding Path=IsSelected}" Command="{Binding SelectionCommand}" CommandParameter="{Binding Path=Swatch}" />
                         </DataTemplate>
                     </MenuItem.ItemTemplate>
-                    
+                </MenuItem>
+                <MenuItem Header="Theme Accent Color" ItemsSource="{Binding Path=Theme.AccentSwatches}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding Path=Name}" IsCheckable="True" IsChecked="{Binding Path=IsSelected}" Command="{Binding SelectionCommand}" CommandParameter="{Binding Path=Swatch}" />
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
                 </MenuItem>
             </MenuItem>
         </Menu>
