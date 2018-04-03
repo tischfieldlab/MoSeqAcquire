@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using MoSeqAcquire.Models;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Acquisition.DirectShow;
 using MoSeqAcquire.Models.Acquisition.Kinect;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.ViewModels.Commands;
@@ -121,6 +123,7 @@ namespace MoSeqAcquire.ViewModels
             var pcol = new Protocol("Default");
             //default protocol contains the Kinect sensor
             pcol.Sources.Add(typeof(KinectManager), KinectConfigSnapshot.GetDefault());
+            pcol.Sources.Add(typeof(DirectShowSource), new DirectShowConfigSnapshot());
             pcol.Recordings.GeneralSettings = new GeneralRecordingSettings();
             return pcol;
         }

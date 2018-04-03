@@ -44,6 +44,9 @@
     <Reference Include="Accord.Video, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
       <HintPath>..\packages\Accord.Video.3.8.0\lib\net45\Accord.Video.dll</HintPath>
     </Reference>
+    <Reference Include="Accord.Video.DirectShow, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Video.DirectShow.3.8.0\lib\net45\Accord.Video.DirectShow.dll</HintPath>
+    </Reference>
     <Reference Include="Accord.Video.FFMPEG, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=x86">
       <HintPath>..\packages\Accord.Video.FFMPEG.3.8.0\lib\net45\Accord.Video.FFMPEG.dll</HintPath>
     </Reference>
@@ -134,6 +137,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Acquisition\DirectShow\DirectShowConfig.cs" />
+    <Compile Include="Models\Acquisition\DirectShow\DirectShowSource.cs" />
+    <Compile Include="Models\Acquisition\DirectShow\DirectShowVideoChannel.cs" />
+    <Compile Include="Models\Acquisition\DirectShow\DirectShowChannel.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
     <Compile Include="Models\Attributes\SupportedChannelTypeAttribute.cs" />
     <Compile Include="Models\Configuration\ConfigSnapshot.cs" />
@@ -354,9 +361,7 @@
       <Name>Hdf5DotNetTools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Acquisition\DirectShow\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
