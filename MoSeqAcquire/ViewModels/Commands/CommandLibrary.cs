@@ -24,6 +24,8 @@ namespace MoSeqAcquire.ViewModels.Commands
 
             this.RegisterCommand<LoadProtocolCommand>();
             this.RegisterCommand<SaveProtocolCommand>();
+
+            this.RegisterCommand<AddMediaSourceCommand>();
         }
         
 
@@ -35,6 +37,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         public StopRecordingCommand StopRecording { get => this.GetCommand<StopRecordingCommand>(); }
         public LoadProtocolCommand LoadProtocol { get => this.GetCommand<LoadProtocolCommand>(); }
         public SaveProtocolCommand SaveProtocol { get => this.GetCommand<SaveProtocolCommand>(); }
+        public AddMediaSourceCommand AddMediaSource { get => this.GetCommand<AddMediaSourceCommand>(); }
 
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.IO;
 
@@ -11,7 +12,12 @@ namespace MoSeqAcquire.Models.Management
 {
     public static class ProtocolHelpers
     {
-
+        public static IEnumerable<Type> FindProviderTypes()
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => !t.IsAbstract && typeof(MediaSource).IsAssignableFrom(t));
+        }
         public static IEnumerable<Type> FindRecorderTypes()
         {
             return Assembly.GetExecutingAssembly()

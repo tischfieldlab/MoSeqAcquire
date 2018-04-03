@@ -32,32 +32,41 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         { get; set;
             
         }
-        private MemoryStream _ms;
-        private void Device_NewFrame(object sender, Accord.Video.NewFrameEventArgs eventArgs)
+        private byte[] _copyBuffer;
+        private void Device_NewFrame(object sender, Accord.Video.NewFrameEventArgs e)
         {
-            if (eventArgs.Frame != null)
+            if (e.Frame != null)
             {
+                var frame = e.Frame;
                 var meta = new VideoChannelFrameMetadata()
                 {
                     //FrameId = imageFrame.FrameNumber,
                     //Timestamp = imageFrame.Timestamp,
-                    Width = eventArgs.Frame.Width,
-                    Height = eventArgs.Frame.Height,
-                    BytesPerPixel = Image.GetPixelFormatSize(eventArgs.Frame.PixelFormat) / 8,
-                    PixelFormat = eventArgs.Frame.PixelFormat.ToMediaPixelFormat(),
+                    Width = e.Frame.Width,
+                    Height = e.Frame.Height,
+                    BytesPerPixel = Image.GetPixelFormatSize(e.Frame.PixelFormat) / 8,
+                    PixelFormat = e.Frame.PixelFormat.ToMediaPixelFormat(),
                     //TotalBytes = imageFrame.PixelDataLength * imageFrame.BytesPerPixel
                 };
                 meta.TotalBytes = meta.Width * meta.Height * meta.BytesPerPixel;
 
-                if(this._ms == null)
+                Rectangle rect = new Rectangle(0, 0, e.Frame.Width, e.Frame.Height);
+                System.Drawing.Imaging.BitmapData bmpData = e.Frame.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly, e.Frame.PixelFormat);
+
+                // Declare an array to hold the bytes of the bitmap.
+                int bytes = Math.Abs(bmpData.Stride) * e.Frame.Height;
+                if(this._copyBuffer == null || this._copyBuffer.Length != bytes)
                 {
-                    this._ms = new MemoryStream();
+                    this._copyBuffer = new byte[bytes];
                 }
-                eventArgs.Frame.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                eventArgs.Frame.Save(this._ms, ImageFormat.Bmp);
+                System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, this._copyBuffer, 0, bytes);
+
+
+                //e.Frame.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                //e.Frame.Save(this._ms, ImageFormat.Bmp);
                 
-                this.Buffer.Post(new ChannelFrame(this._ms.ToArray(), meta));
-                this._ms.SetLength(0); //reset the memorystream buffer;
+                this.Buffer.Post(new ChannelFrame(this._copyBuffer, meta));
+                //this._ms.SetLength(0); //reset the memorystream buffer;
             }
         }
     }

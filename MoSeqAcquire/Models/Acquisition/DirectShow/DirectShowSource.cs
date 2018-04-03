@@ -15,11 +15,22 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Config = new DirectShowConfig();
         }
         public VideoCaptureDevice Device { get; protected set; }
-        public override bool Initalize()
+        public override List<Tuple<string, string>> ListAvailableDevices()
+        {
+            var items = new List<Tuple<string, string>>();
+            var videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (var device in videoDevices)
+            {
+                items.Add(new Tuple<string, string>(device.Name, device.MonikerString));
+            }
+            return items;
+        }
+        public override bool Initalize(string DeviceId)
         {
             var videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            this.Device = new VideoCaptureDevice(videoDevices[0].MonikerString);
-            if (this.Device == null) { return false; }
+             
+            this.Device = new VideoCaptureDevice(DeviceId);
+            if (this.Device == null || this.Device.SourceObject == null) { return false; }
 
             //this.Config.ReadState();
             this.RegisterChannel(new DirectShowVideoChannel(this));

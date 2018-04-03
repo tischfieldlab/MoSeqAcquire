@@ -46,6 +46,7 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.ColumnSpan="2" >
             <MenuItem Header="File">
+                <MenuItem Header="Add Media Source" Command="{Binding Path=Commands.AddMediaSource}" />
                 <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
                 <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
             </MenuItem>

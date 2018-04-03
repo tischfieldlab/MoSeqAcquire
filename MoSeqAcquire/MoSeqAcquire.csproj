@@ -166,6 +166,7 @@
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddMediaSourceCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveRecorderCommand.cs" />
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
@@ -256,6 +257,9 @@
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Extensions\EnumerationExtension.cs" />
+    <Compile Include="Views\NewMediaSourceDialog.xaml.cs">
+      <DependentUpon>NewMediaSourceDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RecorderEditor.xaml.cs">
       <DependentUpon>RecorderEditor.xaml</DependentUpon>
     </Compile>
@@ -297,6 +301,10 @@
     <Page Include="Views\ChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewMediaSourceDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RecorderEditor.xaml">
       <SubType>Designer</SubType>

@@ -35,7 +35,7 @@ namespace MoSeqAcquire.ViewModels
             this.MediaSource = (MediaSource)mediaSource.Create();
             this.InitTask = Task.Run(() =>
             {
-                while (!this.MediaSource.Initalize())
+                while (!this.MediaSource.Initalize(mediaSource.DeviceId))
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {

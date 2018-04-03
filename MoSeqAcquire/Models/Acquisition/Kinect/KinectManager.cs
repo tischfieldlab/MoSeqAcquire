@@ -16,22 +16,36 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Name = "Kinect";
             this.Config = new KinectConfig(this);
         }
-
-        public override bool Initalize()
+        public override List<Tuple<string, string>> ListAvailableDevices()
         {
+            var items = new List<Tuple<string, string>>();
+            foreach (var potentialSensor in KinectSensor.KinectSensors)
+            {
+                items.Add(new Tuple<string, string>(potentialSensor.UniqueKinectId, potentialSensor.DeviceConnectionId));
+            }
+            return items;
+        }
+        public override bool Initalize(string DeviceId)
+        {
+            var deviceFound = false;
             if (KinectSensor.KinectSensors.Count > 0)
             {
                 foreach (var potentialSensor in KinectSensor.KinectSensors)
                 {
-                    this.Status = potentialSensor.Status.ToString();
-                    if (potentialSensor.Status == KinectStatus.Connected)
+                    if (potentialSensor.DeviceConnectionId == DeviceId)
                     {
-                        this.Sensor = potentialSensor;
-                        break;
+                        deviceFound = true;
+                        this.Status = potentialSensor.Status.ToString();
+                        if (potentialSensor.Status == KinectStatus.Connected)
+                        {
+                            
+                            this.Sensor = potentialSensor;
+                            break;
+                        }
                     }
                 }
             }
-            else
+            if(!deviceFound)
             {
                 this.Status = KinectStatus.Disconnected.ToString();
             }
@@ -60,7 +74,9 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Sensor.DepthStream.Disable();
             this.FindChannel<KinectSoundChannel>().Enabled = false;
             base.Stop();
-        }  
+        }
+
+        
 
         public KinectSensor Sensor { get; set; }
     }
