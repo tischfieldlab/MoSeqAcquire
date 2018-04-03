@@ -53,7 +53,9 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 {
                     this._ms = new MemoryStream();
                 }
+                eventArgs.Frame.RotateFlip(RotateFlipType.Rotate180FlipNone);
                 eventArgs.Frame.Save(this._ms, ImageFormat.Bmp);
+                
                 this.Buffer.Post(new ChannelFrame(this._ms.ToArray(), meta));
                 this._ms.SetLength(0); //reset the memorystream buffer;
             }
