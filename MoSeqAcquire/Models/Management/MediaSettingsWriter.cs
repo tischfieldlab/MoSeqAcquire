@@ -36,9 +36,10 @@ namespace MoSeqAcquire.Models.Management
         protected static Type[] GetSerializedTypes()
         {
             var types = new List<Type>();
-            types.Add(typeof(Acquisition.Kinect.KinectConfigSnapshot));
+            //types.Add(typeof(Acquisition.Kinect.KinectConfigSnapshot));
             types.Add(typeof(RecorderSettings));
             types.AddRange(ProtocolHelpers.GetKnownTypesForRecorders());
+            types.AddRange(ProtocolHelpers.GetKnownTypesForProviders());
             return types.ToArray();
         }
 

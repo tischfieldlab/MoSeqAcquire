@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -49,9 +50,9 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                     //TotalBytes = imageFrame.PixelDataLength * imageFrame.BytesPerPixel
                 };
                 meta.TotalBytes = meta.Width * meta.Height * meta.BytesPerPixel;
-
+                //e.Frame.RotateFlip(RotateFlipType.RotateNoneFlipX)
                 Rectangle rect = new Rectangle(0, 0, e.Frame.Width, e.Frame.Height);
-                System.Drawing.Imaging.BitmapData bmpData = e.Frame.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly, e.Frame.PixelFormat);
+                BitmapData bmpData = e.Frame.LockBits(rect, ImageLockMode.ReadOnly, e.Frame.PixelFormat);
 
                 // Declare an array to hold the bytes of the bitmap.
                 int bytes = Math.Abs(bmpData.Stride) * e.Frame.Height;
@@ -59,14 +60,9 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 {
                     this._copyBuffer = new byte[bytes];
                 }
-                System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, this._copyBuffer, 0, bytes);
-
-
-                //e.Frame.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                //e.Frame.Save(this._ms, ImageFormat.Bmp);
+                Marshal.Copy(bmpData.Scan0, this._copyBuffer, 0, bytes);
                 
                 this.Buffer.Post(new ChannelFrame(this._copyBuffer, meta));
-                //this._ms.SetLength(0); //reset the memorystream buffer;
             }
         }
     }

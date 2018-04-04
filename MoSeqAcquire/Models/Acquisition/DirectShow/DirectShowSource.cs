@@ -1,4 +1,5 @@
 ﻿using Accord.Video.DirectShow;
+using MoSeqAcquire.Models.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
+    [KnownType(typeof(DirectShowConfigSnapshot))]
     public class DirectShowSource : MediaSource
     {
         public DirectShowSource()
@@ -27,14 +29,18 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         public override bool Initalize(string DeviceId)
         {
+            this.DeviceId = DeviceId;
             var videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-             
+            if(videoDevices.FindAll(fi => fi.MonikerString.Equals(DeviceId)).Count == 0)
+            {
+                this.Status = "Disconnected";
+                return false;
+            }
+            this.Status = "Initializing";
             this.Device = new VideoCaptureDevice(DeviceId);
-            if (this.Device == null || this.Device.SourceObject == null) { return false; }
-
-            //this.Config.ReadState();
             this.RegisterChannel(new DirectShowVideoChannel(this));
             this.IsInitialized = true;
+
             return true;
         }
         public override void Start()
@@ -44,6 +50,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         public override void Stop()
         {
+            if (!this.IsInitialized) { return; }
             this.Device.SignalToStop();
             this.Device.WaitForStop();
             base.Stop();

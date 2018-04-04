@@ -15,17 +15,18 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Add Media Source" Height="250" Width="400">
+        Title="Add Media Source" Height="250" Width="450">
     <DockPanel LastChildFill="False">
         <StackPanel DockPanel.Dock="Top">
             <TextBlock Margin="10" Text="Add a new media source" FontWeight="Bold" FontSize="18"/>
             <WrapPanel Margin="10">
-                <Label Width="150">Select Device Type</Label>
+                <Label Width="140">Select Device Type</Label>
                 <ComboBox Width="200" ItemsSource="{Binding Path=AvailableProviders}" SelectedItem="{Binding Path=SelectedProvider}" DisplayMemberPath="Name" />
             </WrapPanel>
             <WrapPanel Margin="10">
-                <Label Width="150">Select Device</Label>
+                <Label Width="140">Select Device</Label>
                 <ComboBox Width="200" ItemsSource="{Binding Path=AvailableDevices}" SelectedItem="{Binding Path=SelectedDevice}" DisplayMemberPath="Name" />
+                <Button Content="@" Click="onRefreshButtonClick" Margin="20,0,0,0" />
             </WrapPanel>
             
         </StackPanel>

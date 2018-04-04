@@ -18,6 +18,12 @@ namespace MoSeqAcquire.Models.Management
                 .GetTypes()
                 .Where(t => !t.IsAbstract && typeof(MediaSource).IsAssignableFrom(t));
         }
+        public static IEnumerable<Type> GetKnownTypesForProviders()
+        {
+            return FindProviderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
+        }
+
+
         public static IEnumerable<Type> FindRecorderTypes()
         {
             return Assembly.GetExecutingAssembly()

@@ -166,6 +166,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         public override void ApplySnapshot(ConfigSnapshot snapshot)
         {
             var config = snapshot as KinectConfigSnapshot;
+            if(config == null) { return; }
             this.ForceInfraredEmitterOff = config.ForceInfraredEmitterOff;
             this.ElevationAngle = config.ElevationAngle;
             this.ColorImageFormat = config.ColorImageFormat;

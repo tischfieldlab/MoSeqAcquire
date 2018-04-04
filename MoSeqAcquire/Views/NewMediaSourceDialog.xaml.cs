@@ -47,6 +47,11 @@ namespace MoSeqAcquire.Views
         {
             this.Close();
         }
+
+        private void onRefreshButtonClick(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as NewMediaSourceDialogViewModel).RequeryDevices();
+        }
     }
 
     public class AddMediaSourceDialogResult
@@ -60,6 +65,7 @@ namespace MoSeqAcquire.Views
         
         protected Type selectedProvider;
         protected DeviceItemViewModel selectedDevice;
+        protected IEnumerable<DeviceItemViewModel> availableDevices;
 
         public NewMediaSourceDialogViewModel()
         {
@@ -72,25 +78,26 @@ namespace MoSeqAcquire.Views
             set
             {
                 this.SetField(ref this.selectedProvider, value);
-                this.NotifyPropertyChanged("AvailableDevices");
+                this.RequeryDevices();
             }
         }
         public IEnumerable<DeviceItemViewModel> AvailableDevices
         {
-            get
-            {
-                if(this.selectedProvider != null)
-                {
-                    var provider = (MediaSource)Activator.CreateInstance(this.selectedProvider, new object[] { });
-                    return provider.ListAvailableDevices().Select(i => new DeviceItemViewModel(i.Item1, i.Item2));
-                }
-                return null;
-            }
+            get => this.availableDevices;
+            protected set => this.SetField(ref this.availableDevices, value);
         }
         public DeviceItemViewModel SelectedDevice
         {
             get => this.selectedDevice;
             set => this.SetField(ref this.selectedDevice, value);
+        }
+        public void RequeryDevices()
+        {
+            if(this.selectedProvider != null)
+            {
+                var provider = (MediaSource)Activator.CreateInstance(this.selectedProvider, new object[] { });
+                this.AvailableDevices = provider.ListAvailableDevices().Select(i => new DeviceItemViewModel(i.Item1, i.Item2));
+            }
         }
     }
     public class DeviceItemViewModel

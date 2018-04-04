@@ -122,8 +122,8 @@ namespace MoSeqAcquire.ViewModels
         {
             var pcol = new Protocol("Default");
             //default protocol contains the Kinect sensor
-            pcol.Sources.Add(typeof(KinectManager), "", KinectConfigSnapshot.GetDefault());
-            pcol.Sources.Add(typeof(DirectShowSource), "", new DirectShowConfigSnapshot());
+            //pcol.Sources.Add(typeof(KinectManager), "", KinectConfigSnapshot.GetDefault());
+            //pcol.Sources.Add(typeof(DirectShowSource), "", new DirectShowConfigSnapshot());
             pcol.Recordings.GeneralSettings = new GeneralRecordingSettings();
             return pcol;
         }

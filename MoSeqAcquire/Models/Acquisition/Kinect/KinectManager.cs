@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using KinectManagement;
 using Microsoft.Kinect;
 using System.Configuration;
+using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
+    [KnownType(typeof(KinectConfigSnapshot))]
     public class KinectManager : MediaSource
     {
         public KinectManager() : base()
@@ -27,6 +29,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         }
         public override bool Initalize(string DeviceId)
         {
+            this.DeviceId = DeviceId;
             var deviceFound = false;
             if (KinectSensor.KinectSensors.Count > 0)
             {
@@ -70,6 +73,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
         public override void Stop()
         {
+            if(!this.IsInitialized) { return; }
             this.Sensor.ColorStream.Disable();
             this.Sensor.DepthStream.Disable();
             this.FindChannel<KinectSoundChannel>().Enabled = false;
