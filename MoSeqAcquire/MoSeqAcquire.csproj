@@ -166,6 +166,7 @@
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
+    <Compile Include="ViewModels\Commands\OpenThemeDialogCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveMediaSourceCommand.cs" />
     <Compile Include="ViewModels\Commands\AddMediaSourceCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveRecorderCommand.cs" />
@@ -267,6 +268,9 @@
     <Compile Include="Views\MediaSourceView.xaml.cs">
       <DependentUpon>MediaSourceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ThemeSettingsDialog.xaml.cs">
+      <DependentUpon>ThemeSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -312,6 +316,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MediaSourceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ThemeSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

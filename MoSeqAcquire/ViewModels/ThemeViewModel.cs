@@ -18,7 +18,7 @@ namespace MoSeqAcquire.ViewModels
     public class ThemeViewModel : BaseViewModel
     {
         protected PaletteHelper helper;
-        protected LightDarkMode lightDarkMode;
+        protected bool isDarkMode;
         protected Swatch primarySwatch;
         protected Swatch accentSwatch;
 
@@ -26,7 +26,8 @@ namespace MoSeqAcquire.ViewModels
         {
             this.helper = new PaletteHelper();
 
-            this.SetThemeCommand = new ActionCommand((p) => this.LightDarkMode = (LightDarkMode)p);
+
+            //this.SetThemeCommand = new ActionCommand((p) => this.LightDarkMode = (LightDarkMode)p);
             this.ApplyPrimaryCommand = new ActionCommand((o) => this.PrimarySwatch = (Swatch)o);
             this.ApplyAccentCommand = new ActionCommand((o) => this.AccentSwatch = (Swatch)o);
 
@@ -34,12 +35,13 @@ namespace MoSeqAcquire.ViewModels
             this.AccentSwatches = new SwatchesProvider().Swatches.Select(s => new SwatchViewModel(s, this.ApplyAccentCommand));
         }
         
-        public LightDarkMode LightDarkMode
+        public bool IsDarkMode
         {
-            get => this.lightDarkMode;
-            set {
-                this.helper.SetLightDark(value == LightDarkMode.Dark ? true : false);
-                this.SetField(ref this.lightDarkMode, value);
+            get => this.isDarkMode;
+            set
+            {
+                this.helper.SetLightDark(value);
+                this.SetField(ref this.isDarkMode, value);
             }
         }
         public Swatch PrimarySwatch
@@ -67,6 +69,7 @@ namespace MoSeqAcquire.ViewModels
 
         public IEnumerable<SwatchViewModel> PrimarySwatches { get; }
         public IEnumerable<SwatchViewModel> AccentSwatches { get; }
+        public ICommand OpenThemeDialog { get; protected set; }
         public ICommand SetThemeCommand { get; protected set; }
         public ICommand ApplyPrimaryCommand { get; protected set; }
         public ICommand ApplyAccentCommand { get; protected set; }

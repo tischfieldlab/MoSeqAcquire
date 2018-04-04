@@ -66,10 +66,16 @@ namespace MoSeqAcquire.Views
         protected Type selectedProvider;
         protected DeviceItemViewModel selectedDevice;
         protected IEnumerable<DeviceItemViewModel> availableDevices;
+        protected bool isBusy;
 
         public NewMediaSourceDialogViewModel()
         {
             this.AvailableProviders = ProtocolHelpers.FindProviderTypes();
+        }
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetField(ref this.isBusy, value);
         }
         public IEnumerable<Type> AvailableProviders { get; protected set; }
         public Type SelectedProvider
@@ -93,11 +99,22 @@ namespace MoSeqAcquire.Views
         }
         public void RequeryDevices()
         {
-            if(this.selectedProvider != null)
+            this.IsBusy = true;
+
+            Task.Run(() =>
             {
-                var provider = (MediaSource)Activator.CreateInstance(this.selectedProvider, new object[] { });
-                this.AvailableDevices = provider.ListAvailableDevices().Select(i => new DeviceItemViewModel(i.Item1, i.Item2));
-            }
+                IEnumerable<DeviceItemViewModel> devices = null;
+                if (this.selectedProvider != null)
+                {
+                    var provider = (MediaSource)Activator.CreateInstance(this.selectedProvider, new object[] { });
+                    devices = provider.ListAvailableDevices().Select(i => new DeviceItemViewModel(i.Item1, i.Item2));
+                }
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    this.AvailableDevices = devices;
+                    this.IsBusy = false;
+                });
+            });
         }
     }
     public class DeviceItemViewModel

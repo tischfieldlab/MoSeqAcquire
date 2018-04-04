@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 
 namespace MoSeqAcquire.Views.Controls
 {
@@ -76,20 +77,20 @@ namespace MoSeqAcquire.Views.Controls
         }
         protected void updateButtonIcon()
         {
-            this.ButtonImage.Source = new BitmapImage(this.ButtonIcon);
+            this.ButtonImage.Kind = this.ButtonIcon; //.Source = new BitmapImage(this.ButtonIcon);
         }
-        protected Uri ButtonIcon
+        protected PackIconKind ButtonIcon
         {
             get
             {
                 switch (this.PickerType)
                 {
                     case PickerTypes.Save:
-                        return new Uri("pack://application:,,,/MoSeqAcquire;component/Images/saveHS.png");
+                        return PackIconKind.ContentSave;//new Uri("pack://application:,,,/MoSeqAcquire;component/Images/saveHS.png");
                     case PickerTypes.Load:
                     case PickerTypes.Folder:
                     default:
-                        return new Uri("pack://application:,,,/MoSeqAcquire;component/Images/openHS.png");
+                        return PackIconKind.Folder;//new Uri("pack://application:,,,/MoSeqAcquire;component/Images/openHS.png");
                 }
             }
         }

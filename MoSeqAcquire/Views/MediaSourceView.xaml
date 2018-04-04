@@ -8,6 +8,7 @@
              
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              xmlns:MoSeqAcquire="clr-namespace:MoSeqAcquire" x:Class="MoSeqAcquire.Views.MediaSourceView"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -34,7 +35,9 @@
                                     <WrapPanel Margin="5">
                                         <CheckBox />
                                         <TextBlock Text="{Binding MediaSource.Name}" Grid.Column="0" />
-                                        <Button Content="X" Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" CommandParameter="{Binding}" />
+                                        <Button Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" CommandParameter="{Binding}" >
+                                            <materialDesign:PackIcon Kind="close" />
+                                        </Button>
                                     </WrapPanel>
                                 </Border>
                                 <Grid Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">

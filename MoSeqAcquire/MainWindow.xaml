@@ -51,6 +51,7 @@
                 <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
             </MenuItem>
             <MenuItem Header="View">
+                <MenuItem Header="Theme" Command="{Binding Path=Commands.OpenThemeDialog}" />
                 <MenuItem Header="Theme Style">
                     <MenuItem Header="Dark" IsCheckable="True" 
                               IsChecked="{Binding Theme.LightDarkMode, Converter={StaticResource EnumEqualityConverter}, ConverterParameter={x:Static vm:LightDarkMode.Dark}}"
