@@ -15,7 +15,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="ThemeSettingsDialog" Height="450" Width="800">
+        Title="ThemeSettingsDialog" Height="200" Width="300">
     <Window.Resources>
         <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
     </Window.Resources>
@@ -24,9 +24,19 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <Label Content="Theme Style" />
-        <ToggleButton IsChecked="{Binding Path=IsDarkMode}" />
+        <Label Grid.Column="0" Grid.Row="0" Content="Theme Style" VerticalAlignment="Center" />
+        <ToggleButton Grid.Column="1" Grid.Row="0" IsChecked="{Binding Path=IsDarkMode}" />
 
+        <Label Grid.Column="0" Grid.Row="1" Content="Theme Primary Color" VerticalAlignment="Center" />
+        <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=AvailableSwatches}" SelectedItem="{Binding Path=PrimarySwatch}" DisplayMemberPath="Name" />
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Theme Accent Color" VerticalAlignment="Center" />
+        <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Path=AvailableSwatches}" SelectedItem="{Binding Path=AccentSwatch}" DisplayMemberPath="Name" />
     </Grid>
 </Window>

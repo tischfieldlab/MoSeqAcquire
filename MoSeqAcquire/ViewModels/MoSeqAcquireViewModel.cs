@@ -33,7 +33,6 @@ namespace MoSeqAcquire.ViewModels
         public MoSeqAcquireViewModel()
         {
             this.Theme = new ThemeViewModel();
-            this.Theme.IsDarkMode = true;
             this.__mediaBus = MediaBus.Instance;
             this.mediaSources = new ObservableCollection<MediaSourceViewModel>();
             this.recorderManager = new RecordingManagerViewModel(this);

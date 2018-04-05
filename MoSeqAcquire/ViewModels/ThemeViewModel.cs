@@ -10,11 +10,6 @@ using System.Windows.Input;
 
 namespace MoSeqAcquire.ViewModels
 {
-    public enum LightDarkMode
-    {
-        Light,
-        Dark
-    }
     public class ThemeViewModel : BaseViewModel
     {
         protected PaletteHelper helper;
@@ -24,15 +19,31 @@ namespace MoSeqAcquire.ViewModels
 
         public ThemeViewModel()
         {
+            this.Initialize();
+            this.IsDarkMode = Properties.Settings.Default.ThemeIsDarkMode;
+            this.PrimarySwatch = this.AvailableSwatches.First(s => s.Name == Properties.Settings.Default.ThemePrimaryColor);
+            this.AccentSwatch = this.AvailableSwatches.First(s => s.Name == Properties.Settings.Default.ThemeAccentColor);
+            this.PropertyChanged += (s, e) => this.PushThemeToSettings();
+        }
+        public ThemeViewModel(bool isDarkMode, string Primary, string Accent)
+        {
+            this.Initialize();
+            this.IsDarkMode = isDarkMode;
+            this.PrimarySwatch = this.AvailableSwatches.First(s => s.Name == Primary);
+            this.AccentSwatch = this.AvailableSwatches.First(s => s.Name == Accent);
+            this.PropertyChanged += (s, e) => this.PushThemeToSettings();
+        }
+        protected void Initialize()
+        {
             this.helper = new PaletteHelper();
-
-
-            //this.SetThemeCommand = new ActionCommand((p) => this.LightDarkMode = (LightDarkMode)p);
-            this.ApplyPrimaryCommand = new ActionCommand((o) => this.PrimarySwatch = (Swatch)o);
-            this.ApplyAccentCommand = new ActionCommand((o) => this.AccentSwatch = (Swatch)o);
-
-            this.PrimarySwatches = new SwatchesProvider().Swatches.Select(s => new SwatchViewModel(s, this.ApplyPrimaryCommand));
-            this.AccentSwatches = new SwatchesProvider().Swatches.Select(s => new SwatchViewModel(s, this.ApplyAccentCommand));
+            this.AvailableSwatches = new SwatchesProvider().Swatches;            
+        }
+        protected void PushThemeToSettings()
+        {
+            Properties.Settings.Default.ThemeIsDarkMode = this.IsDarkMode;
+            Properties.Settings.Default.ThemePrimaryColor = this.PrimarySwatch.Name;
+            Properties.Settings.Default.ThemeAccentColor = this.AccentSwatch.Name;
+            Properties.Settings.Default.Save();
         }
         
         public bool IsDarkMode
@@ -50,8 +61,6 @@ namespace MoSeqAcquire.ViewModels
             set
             {
                 this.helper.ReplacePrimaryColor(value);
-                this.PrimarySwatches.ForEach(s => s.IsSelected = false);
-                this.PrimarySwatches.Where(s => s.Swatch.Equals(value)).ForEach(s => s.IsSelected = true);
                 this.SetField(ref this.primarySwatch, value);
             }
         }
@@ -61,40 +70,10 @@ namespace MoSeqAcquire.ViewModels
             set
             {
                 this.helper.ReplaceAccentColor(value);
-                this.AccentSwatches.ForEach(s => s.IsSelected = false);
-                this.AccentSwatches.Where(s => s.Swatch.Equals(value)).ForEach(s => s.IsSelected = true);
                 this.SetField(ref this.accentSwatch, value);
             }
         }
 
-        public IEnumerable<SwatchViewModel> PrimarySwatches { get; }
-        public IEnumerable<SwatchViewModel> AccentSwatches { get; }
-        public ICommand OpenThemeDialog { get; protected set; }
-        public ICommand SetThemeCommand { get; protected set; }
-        public ICommand ApplyPrimaryCommand { get; protected set; }
-        public ICommand ApplyAccentCommand { get; protected set; }
-    }
-
-    public class SwatchViewModel : BaseViewModel
-    {
-        protected Swatch swatch;
-        protected bool isSelected;
-        public SwatchViewModel(Swatch swatch)
-        {
-            this.swatch = swatch;
-        }
-        public SwatchViewModel(Swatch swatch, ICommand selectionCommand)
-        {
-            this.swatch = swatch;
-            this.SelectionCommand = selectionCommand;
-        }
-        public Swatch Swatch { get => this.swatch; }
-        public string Name { get => this.swatch.Name; }
-        public bool IsSelected
-        {
-            get => this.isSelected;
-            set => this.SetField(ref this.isSelected, value);
-        }
-        public ICommand SelectionCommand { get; set; }
+        public IEnumerable<Swatch> AvailableSwatches { get; protected set; }
     }
 }
