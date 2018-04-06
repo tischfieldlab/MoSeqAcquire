@@ -20,7 +20,26 @@
             <ItemsControl ItemsSource="{Binding MediaSources}" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border CornerRadius="5" Margin="5" Background="LightGray">
+                        <GroupBox Margin="10" Style="{DynamicResource MaterialDesignCardGroupBox}" Header="{Binding}">
+                            <GroupBox.HeaderTemplate>
+                                <DataTemplate>
+                                    <DockPanel LastChildFill="False">
+                                        <materialDesign:PackIcon
+                                              Kind="ImageArea"
+                                              Height="32"
+                                              Width="32"
+                                              VerticalAlignment="Center" />
+                                        <TextBlock
+                                              Margin="8,0,0,0"
+                                              VerticalAlignment="Center"
+                                              Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                                              Text="{Binding MediaSource.Name}" />
+                                        <Button DockPanel.Dock="Right" Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" CommandParameter="{Binding}" >
+                                            <materialDesign:PackIcon Kind="close" />
+                                        </Button>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </GroupBox.HeaderTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -28,26 +47,15 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Border CornerRadius="5,5,0,0" Background="DarkSlateGray" Grid.ColumnSpan="2" Grid.Row="0">
-                                    <WrapPanel Margin="5">
-                                        <CheckBox />
-                                        <TextBlock Text="{Binding MediaSource.Name}" Grid.Column="0" />
-                                        <Button Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" CommandParameter="{Binding}" >
-                                            <materialDesign:PackIcon Kind="close" />
-                                        </Button>
-                                    </WrapPanel>
-                                </Border>
-                                <Grid Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
+                                <Grid Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
                                     <ProgressBar IsIndeterminate="true" Height="30" HorizontalAlignment="Stretch" />
                                     <TextBlock Text="{Binding CurrentStatus}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 </Grid>
-                                <DockPanel Grid.Column="0" Grid.Row="1" Margin="0" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                                <DockPanel Grid.Column="0" Grid.Row="0" Margin="0" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" >
                                     <xctk:PropertyGrid x:Name="pg" MaxHeight="450" SelectedObject="{Binding Config}"  />
                                 </DockPanel>
-                                <ItemsControl ItemsSource="{Binding Channels}" Grid.Column="1" Grid.Row="1" Margin="5">
+                                <ItemsControl ItemsSource="{Binding Channels}" Grid.Column="1" Grid.Row="0" Margin="5">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <local:ChannelView />
@@ -59,13 +67,8 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
-                                <Border CornerRadius="0,0,5,5" Background="DarkSlateGray" Grid.Row="2" Grid.ColumnSpan="2">
-                                    <StatusBar Background="Transparent">
-                                        <StatusBarItem Content="Status...." />
-                                    </StatusBar>
-                                </Border>
                             </Grid>
-                        </Border>
+                        </GroupBox>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
