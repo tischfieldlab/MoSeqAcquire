@@ -15,28 +15,31 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="ThemeSettingsDialog" Height="200" Width="300">
+        Title="ThemeSettingsDialog" Height="250" Width="300">
     <Window.Resources>
         <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <materialDesign:ColorZone Mode="PrimaryDark" Padding="16" >
+            <TextBlock Text="Theme Settings" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+        </materialDesign:ColorZone>
+        <StackPanel Grid.Row="1" Margin="8">
+            <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Center" >
+                <TextBlock VerticalAlignment="Center">Light</TextBlock>
+                <ToggleButton Margin="16 0 16 0" IsChecked="{Binding Path=IsDarkMode}" />
+                <TextBlock VerticalAlignment="Center">Dark</TextBlock>
+            </StackPanel>
 
-        <Label Grid.Column="0" Grid.Row="0" Content="Theme Style" VerticalAlignment="Center" />
-        <ToggleButton Grid.Column="1" Grid.Row="0" IsChecked="{Binding Path=IsDarkMode}" />
-
-        <Label Grid.Column="0" Grid.Row="1" Content="Theme Primary Color" VerticalAlignment="Center" />
-        <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=AvailableSwatches}" SelectedItem="{Binding Path=PrimarySwatch}" DisplayMemberPath="Name" />
-
-        <Label Grid.Column="0" Grid.Row="2" Content="Theme Accent Color" VerticalAlignment="Center" />
-        <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Path=AvailableSwatches}" SelectedItem="{Binding Path=AccentSwatch}" DisplayMemberPath="Name" />
+            <ComboBox Margin="8" ItemsSource="{Binding Path=AvailableSwatches}" SelectedItem="{Binding Path=PrimarySwatch}" DisplayMemberPath="Name" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Primary Color" />
+        
+            <ComboBox Margin="8" ItemsSource="{Binding Path=AvailableSwatches}" SelectedItem="{Binding Path=AccentSwatch}" DisplayMemberPath="Name" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Accent Color" />
+        </StackPanel>
     </Grid>
 </Window>

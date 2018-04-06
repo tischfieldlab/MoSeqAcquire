@@ -23,7 +23,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="400" Width="800">
+        Title="MainWindow" Height="400" Width="1000">
     <Window.Resources>
         <ResourceDictionary>
             <conv:IsNullToBoolInvertConverter x:Key="IsNullToBoolInvertConverter" />
@@ -31,6 +31,7 @@
             <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
             <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
             <conv:ObjectEqualityConverter x:Key="ObjectEqualityConverter" />
+            <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -55,15 +56,15 @@
                 
             </MenuItem>
         </Menu>
-        <GroupBox Header="Available Hardware" Grid.Column="0" Grid.Row="1">
+        <GroupBox Header="Available Hardware" Grid.Column="0" Grid.Row="1" Margin="8">
             <v:MediaSourceView HorizontalAlignment="Stretch" />
         </GroupBox>
 
-        <GroupBox Header="Recording Console" Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=Recorder}">
+        <GroupBox Header="Recording Console" Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=Recorder}" Margin="8">
             <StackPanel>
-                <Grid>
+                <Grid Margin="0,0,0,30">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -74,44 +75,53 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <WrapPanel Grid.ColumnSpan="1" Grid.Row="0" Grid.Column="0">
-                        <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" />
-                        <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" />
+                    <StackPanel Grid.ColumnSpan="1" Grid.Row="0" Grid.Column="0">
+                        <WrapPanel>
+                            <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" Margin="8" />
+                            <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" Margin="8" />
+                        </WrapPanel>
                         <Grid Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
                         
-                            <ProgressBar Grid.ColumnSpan="3" Width="150" Minimum="0" Maximum="1" 
+                            <ProgressBar Grid.Row="0" Grid.ColumnSpan="3" Width="150" Minimum="0" Maximum="1" 
                                          Value="{Binding Path=Progress, Mode=OneWay}" 
                                          IsIndeterminate="{Binding Path=Progress, Mode=OneWay, Converter={StaticResource IsNullToBoolInvertConverter}}" />
-                            <TextBlock Grid.Column="0" Text="{Binding Path=Duration, StringFormat=hh\\:mm\\:ss, Mode=OneWay}" />
-                            <TextBlock Grid.Column="3" Text="{Binding Path=TimeRemaining, StringFormat=hh\\:mm\\:ss, Mode=OneWay}" />
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Path=Duration, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}" />
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Path=TimeRemaining, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}" />
                         </Grid>
-                    </WrapPanel>
+                    </StackPanel>
 
-                    <DockPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
-                        <Label Width="200" DockPanel.Dock="Left">Recording Length</Label>
-                        <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingFrameCount}" Units="Frames" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
-                        <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingSeconds}" Units="Seconds" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
-                        <ComboBox Width="200" ItemsSource="{Binding Source={mve:Enumeration {x:Type mio:RecordingMode}}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
-                        
+                    <StackPanel Grid.Row="0" Grid.Column="1">
+                        <DockPanel  Grid.ColumnSpan="1">
+                            <Label Width="140" DockPanel.Dock="Left">Recording Length</Label>
+                            <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingFrameCount}" Units="Frames" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
+                            <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingSeconds}" Units="Seconds" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
+                            <ComboBox Width="200" ItemsSource="{Binding Source={mve:Enumeration {x:Type mio:RecordingMode}}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
+                        </DockPanel>
 
-                    </DockPanel>
-                   
-                    <Label Grid.Row="3" Grid.Column="0">Destination Directory</Label>
-                    <ctrl:FileChooser Grid.Row="3" Grid.Column="1" PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" />
+                        <DockPanel>
+                            <Label Width="140">Destination Directory</Label>
+                            <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" />
+                        </DockPanel>
 
-
-                    <Label Grid.Row="4" Grid.Column="0">Output Basename</Label>
-                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=GeneralSettings.Basename}" />
+                        <DockPanel>
+                            <Label Width="140">Output Basename</Label>
+                            <TextBox Text="{Binding Path=GeneralSettings.Basename}" />
+                        </DockPanel>
+                    </StackPanel>
                 </Grid>
                 <GroupBox Header="Recorders" >
                     <StackPanel>
                         <WrapPanel>
-                            <xctk:WatermarkComboBox Watermark="Select Recorder Type" ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" />
+                            <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Recorder Type"  />
                             <Button Content="Add" Command="{Binding Path=Root.Commands.AddRecorder}" />
                             <Button Content="Edit" Command="{Binding Path=Root.Commands.EditRecorder}" />
                             <Button Content="Remove" Command="{Binding Path=Root.Commands.RemoveRecorder}" />

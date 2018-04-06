@@ -29,8 +29,8 @@ namespace MoSeqAcquire.Models.IO
     {
         public GeneralRecordingSettings() { }
 
-        protected string directory;
-        protected string basename;
+        protected string directory = "";
+        protected string basename = "";
         protected RecordingMode recordingMode;
         protected int recordingFrameCount;
         protected int recordingSeconds;

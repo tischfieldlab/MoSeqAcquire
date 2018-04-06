@@ -71,11 +71,22 @@ namespace MoSeqAcquire.Views
         public NewMediaSourceDialogViewModel()
         {
             this.AvailableProviders = ProtocolHelpers.FindProviderTypes();
+            this.PropertyChanged += (s, e) =>
+            {
+                if ("SelectedProvider".Equals(e.PropertyName) || "SelectedDevice".Equals(e.PropertyName))
+                {
+                    this.NotifyPropertyChanged("IsComplete");
+                }
+            };
         }
         public bool IsBusy
         {
             get => this.isBusy;
             set => this.SetField(ref this.isBusy, value);
+        }
+        public bool IsComplete
+        {
+            get => this.SelectedProvider != null && this.SelectedDevice != null;
         }
         public IEnumerable<Type> AvailableProviders { get; protected set; }
         public Type SelectedProvider

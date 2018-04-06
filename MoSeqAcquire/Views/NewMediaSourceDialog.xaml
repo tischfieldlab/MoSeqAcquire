@@ -18,7 +18,10 @@
         Title="Add Media Source" Height="250" Width="450">
     <DockPanel LastChildFill="False">
         <StackPanel DockPanel.Dock="Top">
-            <TextBlock Margin="10" Text="Add a new media source" FontWeight="Bold" FontSize="18"/>
+            <materialDesign:ColorZone Mode="PrimaryDark" Padding="16">
+                <TextBlock Text="Add a new media source" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+            </materialDesign:ColorZone>
+            
             <WrapPanel Margin="10">
                 <Label Width="140">Select Device Type</Label>
                 <ComboBox Width="200" ItemsSource="{Binding Path=AvailableProviders}" SelectedItem="{Binding Path=SelectedProvider}" DisplayMemberPath="Name" />
@@ -33,8 +36,8 @@
             
         </StackPanel>
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-            <Button Content="OK" Click="onOkButtonClick" Margin="10" />
-            <Button Content="Cancel" Click="onCancelButtonClick" Margin="10" />
+            <Button Content="Add" Click="onOkButtonClick" Margin="10" IsEnabled="{Binding Path=IsComplete}" />
+            <Button Content="Cancel" Click="onCancelButtonClick" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" />
         </WrapPanel>
     </DockPanel>
 </Window>

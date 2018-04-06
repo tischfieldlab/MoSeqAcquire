@@ -173,6 +173,7 @@
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
+    <Compile Include="ViewModels\Properties\PropertyCollection.cs" />
     <Compile Include="ViewModels\ThemeViewModel.cs" />
     <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml.cs">
       <DependentUpon>LineSpectrum.xaml</DependentUpon>
@@ -189,6 +190,7 @@
     <Compile Include="Views\Controls\UnitTextBox.xaml.cs">
       <DependentUpon>UnitTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Converters\TimeSpanFormatConverter.cs" />
     <Compile Include="Views\Converters\AdditionConverter.cs" />
     <Compile Include="Views\Converters\BooleanInvertConverter.cs" />
     <Compile Include="Views\Converters\BooleanMultiAndConverter.cs" />
@@ -262,6 +264,9 @@
     <Compile Include="Views\NewMediaSourceDialog.xaml.cs">
       <DependentUpon>NewMediaSourceDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PropertyView.xaml.cs">
+      <DependentUpon>PropertyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RecorderEditor.xaml.cs">
       <DependentUpon>RecorderEditor.xaml</DependentUpon>
     </Compile>
@@ -310,6 +315,10 @@
     <Page Include="Views\NewMediaSourceDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PropertyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RecorderEditor.xaml">
       <SubType>Designer</SubType>
