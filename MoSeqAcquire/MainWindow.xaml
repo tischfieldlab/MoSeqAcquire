@@ -23,7 +23,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="400" Width="800">
     <Window.Resources>
         <ResourceDictionary>
             <conv:IsNullToBoolInvertConverter x:Key="IsNullToBoolInvertConverter" />
@@ -63,7 +63,7 @@
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -74,28 +74,33 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <WrapPanel Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0">
+                    <WrapPanel Grid.ColumnSpan="1" Grid.Row="0" Grid.Column="0">
                         <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" />
                         <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" />
-                        <Grid>
+                        <Grid Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                         
-                            <ProgressBar Grid.ColumnSpan="3" Width="150" Minimum="0" Maximum="1" Value="{Binding Path=Progress, Mode=OneWay}" IsIndeterminate="{Binding Path=Progress, Mode=OneWay, Converter={StaticResource IsNullToBoolInvertConverter}}" Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <ProgressBar Grid.ColumnSpan="3" Width="150" Minimum="0" Maximum="1" 
+                                         Value="{Binding Path=Progress, Mode=OneWay}" 
+                                         IsIndeterminate="{Binding Path=Progress, Mode=OneWay, Converter={StaticResource IsNullToBoolInvertConverter}}" />
                             <TextBlock Grid.Column="0" Text="{Binding Path=Duration, StringFormat=hh\\:mm\\:ss, Mode=OneWay}" />
                             <TextBlock Grid.Column="3" Text="{Binding Path=TimeRemaining, StringFormat=hh\\:mm\\:ss, Mode=OneWay}" />
                         </Grid>
                     </WrapPanel>
 
-                    <Label Grid.Row="1" Grid.Column="0">Recording Length</Label>
-                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Source={mve:Enumeration {x:Type mio:RecordingMode}}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
-                    <ctrl:UnitTextBox Grid.Row="2" Grid.Column="1" Value="{Binding Path=GeneralSettings.RecordingFrameCount}" Units="Frames" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
-                    <ctrl:UnitTextBox Grid.Row="2" Grid.Column="1" Value="{Binding Path=GeneralSettings.RecordingSeconds}" Units="Seconds" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
+                    <DockPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
+                        <Label Width="200" DockPanel.Dock="Left">Recording Length</Label>
+                        <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingFrameCount}" Units="Frames" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
+                        <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingSeconds}" Units="Seconds" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
+                        <ComboBox Width="200" ItemsSource="{Binding Source={mve:Enumeration {x:Type mio:RecordingMode}}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
+                        
 
-
+                    </DockPanel>
+                   
                     <Label Grid.Row="3" Grid.Column="0">Destination Directory</Label>
                     <ctrl:FileChooser Grid.Row="3" Grid.Column="1" PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" />
 
