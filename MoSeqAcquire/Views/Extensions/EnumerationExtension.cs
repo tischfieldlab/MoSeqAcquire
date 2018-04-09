@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -13,7 +14,11 @@ namespace MoSeqAcquire.Views.Extensions
     public class EnumerationExtension : MarkupExtension
     {
         private Type _enumType;
+        private BindingBase _binding;
 
+        private static readonly DependencyProperty ValueProperty =
+            DependencyProperty.RegisterAttached("Value", typeof(Type), typeof(EnumerationExtension));
+    
 
         public EnumerationExtension(Type enumType)
         {
@@ -22,7 +27,12 @@ namespace MoSeqAcquire.Views.Extensions
 
             EnumType = enumType;
         }
+        public EnumerationExtension(BindingBase binding)
+        {
+            this._binding = binding;
+        }
 
+        [ConstructorArgument("enumType")]
         public Type EnumType
         {
             get { return _enumType; }
@@ -42,6 +52,19 @@ namespace MoSeqAcquire.Views.Extensions
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
+            if (_binding != null)
+            {
+                var pvt = (IProvideValueTarget)serviceProvider.GetService(typeof(IProvideValueTarget));
+                var target = pvt.TargetObject as DependencyObject;
+
+                // if we are inside a template, WPF will call us again when it is applied
+                if (target == null)
+                    return this;
+
+                BindingOperations.SetBinding(target, ValueProperty, _binding);
+                EnumType = (Type)target.GetValue(ValueProperty);
+                BindingOperations.ClearBinding(target, ValueProperty);
+            }
             var enumValues = Enum.GetValues(EnumType);
 
             return (

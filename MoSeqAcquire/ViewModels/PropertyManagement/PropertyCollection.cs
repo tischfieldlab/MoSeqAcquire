@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoSeqAcquire.ViewModels.Properties
+namespace MoSeqAcquire.ViewModels.PropertyManagement
 {
     public class PropertyCollection : ObservableCollection<PropertyItem>
     {
@@ -33,7 +33,7 @@ namespace MoSeqAcquire.ViewModels.Properties
         {
             this.sourceObject
                 .GetType()
-                .GetProperty(e.PropertyName)
+                .GetProperty((sender as PropertyItem).PropertyName)
                 .SetValue(this.sourceObject, (sender as PropertyItem).Value);
         }
 
@@ -57,6 +57,7 @@ namespace MoSeqAcquire.ViewModels.Properties
             this.propertyName = PropertyName;
             this.value = Value;
         }
+        public Type ValueType { get => this.value.GetType(); }
         public string PropertyName { get => this.propertyName; }
         public string DisplayName { get; set; }
         public object Value

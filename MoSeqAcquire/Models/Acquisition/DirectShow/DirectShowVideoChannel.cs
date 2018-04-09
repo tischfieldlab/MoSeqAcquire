@@ -18,21 +18,13 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
     {
         public DirectShowVideoChannel(DirectShowSource Source) : base(Source)
         {
-            this.Name = "Direct Show Video Channel";
+            this.Name = Source.Name + " - Video Channel";
             this.Device.Device.NewFrame += this.Device_NewFrame;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(byte);
-            //this.Kinect.Config.PropertyChanged += (s,e) => this.RecomputeMetadata();
-            //this.RecomputeMetadata();
         }
 
-        
-
-        //public ColorImageStream InnerStream { get { return Kinect.Sensor.ColorStream; } }
-        public override bool Enabled
-        { get; set;
-            
-        }
+        public override bool Enabled { get; set; }
         private byte[] _copyBuffer;
         private void Device_NewFrame(object sender, Accord.Video.NewFrameEventArgs e)
         {

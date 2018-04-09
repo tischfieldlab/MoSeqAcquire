@@ -17,7 +17,8 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return this.ViewModel.Recorder.IsRecording == false;
+            return this.ViewModel.Recorder.IsRecording == false
+                && this.ViewModel.Recorder.GeneralSettings.IsValid;
         }
 
         public override void Execute(object parameter)

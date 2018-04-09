@@ -1,6 +1,7 @@
 ﻿using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.IO;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.ViewModels.PropertyManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -76,6 +77,10 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             get => this.settings;
             set => this.SetField(ref this.settings, value);
+        }
+        public PropertyCollection SettingsProps
+        {
+            get => new PropertyCollection(this.settings);
         }
         //public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
         public IList<SelectableChannelViewModel> AvailableChannels

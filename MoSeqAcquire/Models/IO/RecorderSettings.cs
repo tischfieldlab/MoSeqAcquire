@@ -12,22 +12,27 @@ namespace MoSeqAcquire.Models.IO
 {
     public enum RecordingMode
     {
-        [Description("Recordes a specified number of frames")]
-        [EnumDisplayName("A specific number of frames")]
-        FrameCount,
+        [Description("Recordes until stopped")]
+        [EnumDisplayName("Until stopped")]
+        Indeterminate,
 
         [Description("Recordes a specified number of seconds")]
         [EnumDisplayName("A specific number of seconds")]
         TimeCount,
 
-        [Description("Recordes until stopped")]
-        [EnumDisplayName("Until stopped")]
-        Indeterminate
+
+        [Description("Recordes a specified number of frames")]
+        [EnumDisplayName("A specific number of frames")]
+        FrameCount,
+
     }
     public class RecorderSettings : ObservableObject { }
     public class GeneralRecordingSettings : ObservableObject 
     {
-        public GeneralRecordingSettings() { }
+        public GeneralRecordingSettings()
+        {
+            this.PropertyChanged += (s, e) => { if (!"IsValid".Equals(e.PropertyName)){ this.NotifyPropertyChanged("IsValid"); } };
+        }
 
         protected string directory = "";
         protected string basename = "";
@@ -63,6 +68,18 @@ namespace MoSeqAcquire.Models.IO
         {
             get => this.recordingSeconds;
             set => this.SetField(ref this.recordingSeconds, value);
+        }
+        public bool IsValid
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(this.directory)
+                    && !string.IsNullOrWhiteSpace(this.basename)
+                    && (this.recordingMode.Equals(RecordingMode.Indeterminate)
+                        || (this.recordingMode.Equals(RecordingMode.TimeCount) && this.recordingSeconds > 0)
+                        || (this.recordingMode.Equals(RecordingMode.FrameCount) && this.recordingFrameCount > 0)
+                       );
+            }
         }
     }    
 }

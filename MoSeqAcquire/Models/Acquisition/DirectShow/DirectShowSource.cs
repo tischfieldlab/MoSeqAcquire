@@ -36,6 +36,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 this.Status = "Disconnected";
                 return false;
             }
+            this.Name = videoDevices.Find(fi => fi.MonikerString.Equals(DeviceId)).Name;
             this.Status = "Initializing";
             this.Device = new VideoCaptureDevice(DeviceId);
             this.RegisterChannel(new DirectShowVideoChannel(this));

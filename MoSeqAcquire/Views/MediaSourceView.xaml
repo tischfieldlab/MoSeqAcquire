@@ -16,7 +16,7 @@
         <conv:BoolToVisibilityInvertConverter x:Key="BoolToVisibilityInvertConverter" />
     </UserControl.Resources>
     <Grid>
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" Margin="-8,-9,-8,-8">
             <ItemsControl ItemsSource="{Binding MediaSources}" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -25,7 +25,7 @@
                                 <DataTemplate>
                                     <DockPanel LastChildFill="False">
                                         <materialDesign:PackIcon
-                                              Kind="ImageArea"
+                                              Kind="Camera"
                                               Height="32"
                                               Width="32"
                                               VerticalAlignment="Center" />
@@ -34,8 +34,12 @@
                                               VerticalAlignment="Center"
                                               Style="{StaticResource MaterialDesignSubheadingTextBlock}"
                                               Text="{Binding MediaSource.Name}" />
-                                        <Button DockPanel.Dock="Right" Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" CommandParameter="{Binding}" >
-                                            <materialDesign:PackIcon Kind="close" />
+                                        <Button DockPanel.Dock="Right"  Width="24" Height="24"
+                                                Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                                ToolTip="Remove Source">
+                                            <materialDesign:PackIcon Kind="Close"  />
                                         </Button>
                                     </DockPanel>
                                 </DataTemplate>
@@ -54,6 +58,7 @@
                                 </Grid>
                                 <DockPanel Grid.Column="0" Grid.Row="0" Margin="0" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" >
                                     <xctk:PropertyGrid x:Name="pg" MaxHeight="450" SelectedObject="{Binding Config}"  />
+                                    
                                 </DockPanel>
                                 <ItemsControl ItemsSource="{Binding Channels}" Grid.Column="1" Grid.Row="0" Margin="5">
                                     <ItemsControl.ItemTemplate>

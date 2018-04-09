@@ -38,12 +38,12 @@
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.ColumnSpan="2" >
             <MenuItem Header="File">
@@ -118,26 +118,48 @@
                         </DockPanel>
                     </StackPanel>
                 </Grid>
-                <GroupBox Header="Recorders" >
-                    <StackPanel>
-                        <WrapPanel>
-                            <ComboBox ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Recorder Type"  />
-                            <Button Content="Add" Command="{Binding Path=Root.Commands.AddRecorder}" />
-                            <Button Content="Edit" Command="{Binding Path=Root.Commands.EditRecorder}" />
-                            <Button Content="Remove" Command="{Binding Path=Root.Commands.RemoveRecorder}" />
-                        </WrapPanel>
-                        <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" >
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=DisplayName}">
+                <GroupBox >
+                    <GroupBox.Header>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                    Command="{Binding Path=Root.Commands.AddRecorder}"
+                                    ToolTip="Remove Recorder">
+                                <materialDesign:PackIcon Kind="Plus"  />
+                            </Button>
+                            <ComboBox Margin="0,-8,0,-8" DockPanel.Dock="Right" ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Recorder Type"  />
+
+                            <TextBlock Text="Recorders" VerticalAlignment="Center" />
+                        </DockPanel>
+                    </GroupBox.Header>
+                    <ListBox ItemsSource="{Binding Path=Recorders}" SelectedItem="{Binding Path=SelectedRecorder}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel HorizontalAlignment="Stretch">
+
+                                    <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="0,0,8,0"
+                                                Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" 
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                ToolTip="Remove Recorder">
+                                        <materialDesign:PackIcon Kind="Close"  />
+                                    </Button>
+                                    <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" 
+                                                Command="{Binding Path=DataContext.Commands.EditRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" 
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit Recorder">
+                                        <materialDesign:PackIcon Kind="Pencil"  />
+                                    </Button>
+                                    <TextBlock Text="{Binding Path=DisplayName}" VerticalAlignment="Center">
                                         <TextBlock.InputBindings>
                                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
                                         </TextBlock.InputBindings>
                                     </TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </GroupBox>
             </StackPanel>
         </GroupBox>

@@ -30,7 +30,7 @@ namespace MoSeqAcquire.Models.Attributes
         }
         public bool HasLimit
         {
-            get => this.maxCount < 0;
+            get => this.maxCount > 0;
         }
     }
 }
