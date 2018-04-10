@@ -20,7 +20,7 @@
             <ItemsControl ItemsSource="{Binding MediaSources}" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <GroupBox Margin="10" Style="{DynamicResource MaterialDesignCardGroupBox}" Header="{Binding}">
+                        <GroupBox Margin="10,20,10,0" Style="{DynamicResource MaterialDesignCardGroupBox}" Header="{Binding}">
                             <GroupBox.HeaderTemplate>
                                 <DataTemplate>
                                     <DockPanel LastChildFill="False">
