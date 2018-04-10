@@ -8,7 +8,7 @@
         xmlns:v="clr-namespace:MoSeqAcquire.Views"
         xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
         mc:Ignorable="d"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
@@ -65,7 +65,13 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="MAHAPPS">
-
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <v:DirectoryTreeView />
+                    </Grid>
                 </TabItem>
             </dragablz:TabablzControl>
         </dockablz:Layout>

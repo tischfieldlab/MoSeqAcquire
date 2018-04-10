@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
-             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
+             Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -17,7 +18,7 @@
             <TextBox Text="{Binding Path=Value}" HorizontalAlignment="Stretch" />
         </DataTemplate>
         <DataTemplate x:Key="ComboBoxEditor">
-            <ComboBox ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
         </DataTemplate>
         <local:PropertyItemDataTemplateSelector x:Key="PropertyItemDataTemplateSelector" />
     </UserControl.Resources>
