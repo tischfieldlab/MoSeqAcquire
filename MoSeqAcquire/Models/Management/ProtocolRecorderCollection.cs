@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Configuration;
-using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Recording;
 
 namespace MoSeqAcquire.Models.Management
 {

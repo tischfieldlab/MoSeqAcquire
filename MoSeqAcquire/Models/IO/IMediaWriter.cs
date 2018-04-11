@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     public delegate string DestinationBaseResponse();
 
@@ -13,8 +13,14 @@ namespace MoSeqAcquire.Models.IO
     {
         event DestinationBaseResponse RequestDestinationBase;
 
+
+        string Name { get; }
+        bool IsRecording { get; }
+
+
         void Start();
         void Stop();
         void ConnectChannel(Channel Channel);
+        IDictionary<string, IList<Channel>> GetChannelFileMap();
     }
 }

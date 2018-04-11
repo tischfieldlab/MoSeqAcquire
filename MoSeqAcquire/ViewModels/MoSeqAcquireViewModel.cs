@@ -16,7 +16,7 @@ using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Acquisition.DirectShow;
 using MoSeqAcquire.Models.Acquisition.Kinect;
 using MoSeqAcquire.Models.Configuration;
-using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.ViewModels.Commands;
 using MoSeqAcquire.ViewModels.Recording;

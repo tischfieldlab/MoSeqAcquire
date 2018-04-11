@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     public class IndeterminantRecordingLength : ObservableObject, IRecordingLengthStrategy
     {

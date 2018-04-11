@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     public abstract class MediaWriter : IMediaWriter
     {
@@ -33,6 +33,8 @@ namespace MoSeqAcquire.Models.IO
         public abstract void Start();
 
         public abstract void Stop();
+
+        public abstract IDictionary<string, IList<Channel>> GetChannelFileMap();
     }
 
     /*public abstract class MediaWriter<TSink> : MediaWriter where TSink : MediaWriterSink

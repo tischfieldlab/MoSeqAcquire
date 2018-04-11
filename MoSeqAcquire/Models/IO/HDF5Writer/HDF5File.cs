@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     /*class HDF5FileWriter : MediaWriter<HDF5ChannelSink>
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Performance;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     public interface IRecordingLengthStrategy : INotifyPropertyChanged, IDurationProvider, IProgressProvider, ITimeRemainingProvider
     {

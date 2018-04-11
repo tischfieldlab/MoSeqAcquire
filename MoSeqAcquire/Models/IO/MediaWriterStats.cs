@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using MoSeqAcquire.Models.Performance;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     public class MediaWriterStats : ObservableObject, IFrameRateProvider, ITotalFrameCountProvider, IDurationProvider
     {

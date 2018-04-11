@@ -64,7 +64,7 @@
                         </GroupBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="MAHAPPS">
+                <TabItem Header="REVIEW">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200" />

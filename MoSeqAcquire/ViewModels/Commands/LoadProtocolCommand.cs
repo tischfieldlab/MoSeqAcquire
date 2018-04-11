@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.ViewModels.Commands

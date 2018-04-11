@@ -1,5 +1,5 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Management;
 using System;
 using System.Collections.Generic;

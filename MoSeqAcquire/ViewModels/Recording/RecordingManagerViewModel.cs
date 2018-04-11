@@ -1,4 +1,4 @@
-﻿using MoSeqAcquire.Models.IO;
+﻿using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Management;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,8 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected Type selectedRecorderType;
         protected ObservableCollection<RecorderViewModel> recorders;
         protected RecorderViewModel selectedRecorder;
-        protected GeneralRecordingSettings settings;
+        protected RecordingManager _recordingManager;
+        //protected GeneralRecordingSettings settings;
         protected bool isRecording;
 
 
@@ -25,8 +26,15 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
-            this.settings = new GeneralRecordingSettings();
+            //this.settings = new GeneralRecordingSettings();
             this.PopulateAvailableRecorderTypes();
+
+            this._recordingManager = new RecordingManager();
+            this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
+            foreach (var r in this.Recorders)
+            {
+                this._recordingManager.AddRecorder(r.MakeMediaWriter());
+            }
         }
         protected void PopulateAvailableRecorderTypes()
         {
@@ -48,6 +56,8 @@ namespace MoSeqAcquire.ViewModels.Recording
             recorder.Name = "New Recorder";
             this.Recorders.Add(recorder);
             this.SelectedRecorder = recorder;
+
+            this._recordingManager.AddRecorder(recorder.MakeMediaWriter());
         }
         public void RemoveSelectedRecorder()
         {
@@ -79,15 +89,15 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public GeneralRecordingSettings GeneralSettings
         {
-            get => this.settings;
-            set => this.SetField(ref this.settings, value);
+            get => this._recordingManager.GeneralSettings;
+            set => this._recordingManager.GeneralSettings = value;
         }
 
         public TimeSpan? Duration { get => this._recordingManager?.Duration; }
         public double? Progress { get => this._recordingManager?.Progress; }
         public TimeSpan? TimeRemaining { get => this._recordingManager?.TimeRemaining; }
 
-        protected RecordingManager _recordingManager;
+        
         public void StartRecording()
         {
             this._recordingManager = new RecordingManager();

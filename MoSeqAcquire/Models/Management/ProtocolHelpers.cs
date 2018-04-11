@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
-using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Recording;
 
 namespace MoSeqAcquire.Models.Management
 {

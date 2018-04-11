@@ -6,7 +6,7 @@ using System.Text;
 using System.Timers;
 using MoSeqAcquire.Models.Management;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     public class RecordingManager : ObservableObject
     {
@@ -21,6 +21,7 @@ namespace MoSeqAcquire.Models.IO
         public RecordingManager()
         {
             this._writers = new List<IMediaWriter>();
+            this.GeneralSettings = new GeneralRecordingSettings();
         }
 
         public void AddRecorder(IMediaWriter Writer)
@@ -32,20 +33,10 @@ namespace MoSeqAcquire.Models.IO
             Writer.RequestDestinationBase += this.ReplyToDestinationRequest;
             this._writers.Add(Writer);
         }
-        /*public void AddRecorder(ProtocolRecorder WriterDefinition)
-        {
-            var writer = (MediaWriter)Activator.CreateInstance(WriterDefinition.GetProviderType(), new object[] { this });
-            //writer.ApplySettings((RecorderSettings)this.settings.GetSnapshot());
-            foreach (var c in WriterDefinition.Channels)
-            {
-                writer.ConnectChannel(c.Channel.Channel);
-            }
-            this.AddRecorder(Writer);
-        }*/
         protected string ReplyToDestinationRequest()
         {
             Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);
-            return this.GeneralSettings.ComputedBasePath;
+            return this.GeneralSettings.ComputedBasePath == null ? string.Empty : this.GeneralSettings.ComputedBasePath;
         }
         public bool IsInitialized { get => this.isInitialized; }
         public bool IsRecording
@@ -53,10 +44,10 @@ namespace MoSeqAcquire.Models.IO
             get => this.isRecording;
             protected set => this.SetField(ref this.isRecording, value);
         }
-        public TimeSpan Duration { get => this.terminator.Duration; }
-        public double? Progress { get => this.terminator.Progress; }
-        public TimeSpan? TimeRemaining { get => this.terminator.TimeRemaining; }
-        public GeneralRecordingSettings GeneralSettings { get; protected set; }
+        public TimeSpan Duration { get => this.terminator == null ? TimeSpan.Zero : this.terminator.Duration; }
+        public double? Progress { get => this.terminator?.Progress; }
+        public TimeSpan? TimeRemaining { get => this.terminator?.TimeRemaining; }
+        public GeneralRecordingSettings GeneralSettings { get; set; }
 
         public void Initialize(GeneralRecordingSettings GeneralSettings)
         {
@@ -103,6 +94,15 @@ namespace MoSeqAcquire.Models.IO
             this.terminator.Stop();
             this.IsRecording = false;
             this.RecordingFinished?.Invoke(this, new EventArgs());
+        }
+
+        protected void WriteRecordingInfo()
+        {
+            foreach(var writer in this._writers)
+            {
+                var name = writer.Name;
+                var dest = writer.GetChannelFileMap();
+            }
         }
     }
 }

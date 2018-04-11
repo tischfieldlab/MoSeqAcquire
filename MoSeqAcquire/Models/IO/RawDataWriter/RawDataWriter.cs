@@ -10,7 +10,7 @@ using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 
-namespace MoSeqAcquire.Models.IO.RawDataWriter
+namespace MoSeqAcquire.Models.Recording.RawDataWriter
 {
     [KnownType(typeof(RawDataWriterSettings))]
     [DisplayName("Raw Data Writer")]
@@ -93,6 +93,16 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
             this.writer.Close();
         }
 
+
+        public override IDictionary<string, IList<Channel>> GetChannelFileMap()
+        {
+            return new Dictionary<string, IList<Channel>>()
+            {
+                { this.FilePath, new List<Channel>(){ this.channel } }
+            };
+        }
+
+
         protected byte[] stupidByteBuffer;
         protected ActionBlock<ChannelFrame> GetActionBlock(Type type)
         {
@@ -119,6 +129,4 @@ namespace MoSeqAcquire.Models.IO.RawDataWriter
             return null;
         }
     }
-
-    
 }

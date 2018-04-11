@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Attributes;
 
-namespace MoSeqAcquire.Models.IO
+namespace MoSeqAcquire.Models.Recording
 {
     public class RecorderSpecification
     {

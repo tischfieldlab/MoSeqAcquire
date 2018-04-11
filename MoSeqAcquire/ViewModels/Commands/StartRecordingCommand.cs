@@ -1,4 +1,4 @@
-﻿using MoSeqAcquire.Models.IO;
+﻿using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Views;
 using System;
 using System.Collections.Generic;

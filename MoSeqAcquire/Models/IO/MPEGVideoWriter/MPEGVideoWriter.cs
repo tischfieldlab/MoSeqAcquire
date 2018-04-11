@@ -12,7 +12,7 @@ using Accord.Video.FFMPEG;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 
-namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
+namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 {
     [KnownType(typeof(MPEGVideoWriterSettings))]
     [DisplayName("MPEG Video Writer")]
@@ -62,7 +62,10 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
         }
         public string FilePath
         {
-            get => Path.Combine(this.RequestBaseDestination(), this.Name+"."+this.Ext);
+            get {
+                var basepath = this.RequestBaseDestination();
+                return Path.Combine(basepath == null ? "" : basepath, this.Name + "." + this.Ext);
+            }
         }
         public string Ext
         {
@@ -91,7 +94,13 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
             this.IsRecording = false;
             this.writer.Close();
         }
-
+        public override IDictionary<string, IList<Channel>> GetChannelFileMap()
+        {
+            return new Dictionary<string, IList<Channel>>()
+            {
+                { this.FilePath, new List<Channel>(){ this.video_channel, this.audio_channel } }
+            };
+        }
 
 
 
@@ -136,6 +145,8 @@ namespace MoSeqAcquire.Models.IO.MPEGVideoWriter
                 }
             });
         }
+
+        
     }
 
     

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Accord.Video.FFMPEG;
 using MoSeqAcquire.Models.Configuration;
 
-namespace MoSeqAcquire.Models.IO.RawDataWriter
+namespace MoSeqAcquire.Models.Recording.RawDataWriter
 {
     public class RawDataWriterSettings : RecorderSettings
     {

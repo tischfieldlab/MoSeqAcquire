@@ -1,5 +1,5 @@
 ﻿using MoSeqAcquire.Models.Attributes;
-using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.ViewModels.PropertyManagement;
 using System;
@@ -18,6 +18,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected MoSeqAcquireViewModel rootViewModel;
         protected string name;
         protected Type recorderType;
+        protected MediaWriter writer; //not always set!!!
         //protected ObservableCollection<SelectableChannelViewModel> channels;
         protected RecorderSettings settings;
 
@@ -92,18 +93,39 @@ namespace MoSeqAcquire.ViewModels.Recording
         public CollectionView SelectedChannels { get; protected set; }
         public MediaWriterStats Stats { get; protected set; }
 
+        public IEnumerable<RecorderProduct> Products
+        {
+            get
+            {
+                var products = new List<RecorderProduct>();
+                //if(this.writer != null)
+                //{
+                    products.AddRange(
+                        this.MakeMediaWriter()
+                            .GetChannelFileMap()
+                            .Select(kvp => new RecorderProduct()
+                            {
+                                Name = kvp.Key,
+                                Channels = this.AvailableChannels.Where(scvm => kvp.Value.Contains(scvm.Channel.Channel)).Select(scvm => scvm.Channel)
+                            })
+                    );
+                //}
+                return products;
+            }
+        }
+
         public IMediaWriter MakeMediaWriter()
         {
-            var writer = (MediaWriter)Activator.CreateInstance(this.recorderType);
-            writer.Name = this.Name;
-            writer.Settings = this.settings;
+            this.writer = (MediaWriter)Activator.CreateInstance(this.recorderType);
+            this.writer.Name = this.Name;
+            this.writer.Settings = this.settings;
             foreach(var c in this.SelectedChannels)
             {
-                writer.ConnectChannel((c as SelectableChannelViewModel).Channel.Channel);
+                this.writer.ConnectChannel((c as SelectableChannelViewModel).Channel.Channel);
             }
-            this.Stats = writer.Stats;
+            this.Stats = this.writer.Stats;
             this.NotifyPropertyChanged("Stats");
-            return writer;
+            return this.writer;
         }
         public ProtocolRecorder GetRecorderDefinition()
         {
@@ -115,6 +137,12 @@ namespace MoSeqAcquire.ViewModels.Recording
                 Channels = this.AvailableChannels.Where(c => c.IsSelected).Select(c => c.Channel.Name).ToList()
             };
         }
+    }
+
+    public class RecorderProduct
+    {
+        public string Name { get; set; }
+        public IEnumerable<ChannelViewModel> Channels { get; set; }
     }
 
     public class SelectableChannelViewModel : BaseViewModel

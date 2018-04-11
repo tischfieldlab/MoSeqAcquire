@@ -1,6 +1,6 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Configuration;
-using MoSeqAcquire.Models.IO;
+using MoSeqAcquire.Models.Recording;
 using System;
 using System.Collections.Generic;
 using System.Linq;
