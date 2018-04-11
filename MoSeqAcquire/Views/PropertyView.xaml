@@ -6,6 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mac="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
@@ -19,6 +20,9 @@
         </DataTemplate>
         <DataTemplate x:Key="ComboBoxEditor">
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
+        </DataTemplate>
+        <DataTemplate x:Key="NumericEditor">
+            <mac:NumericUpDown Value="{Binding Path=Value}" />
         </DataTemplate>
         <local:PropertyItemDataTemplateSelector x:Key="PropertyItemDataTemplateSelector" />
     </UserControl.Resources>

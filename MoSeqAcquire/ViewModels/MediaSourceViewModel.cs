@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.ViewModels.PropertyManagement;
 
 namespace MoSeqAcquire.ViewModels
 {
@@ -81,6 +82,7 @@ namespace MoSeqAcquire.ViewModels
 
         public MediaSource MediaSource { get; protected set; }
         public MediaSourceConfig Config { get => MediaSource.Config; }
+        public PropertyCollection ConfigItems { get => new PropertyCollection(this.Config); }
         public ReadOnlyObservableCollection<ChannelViewModel> Channels { get => this._ro_Channels; }
     }
 }

@@ -31,10 +31,9 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
 
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.sourceObject
-                .GetType()
-                .GetProperty((sender as PropertyItem).PropertyName)
-                .SetValue(this.sourceObject, (sender as PropertyItem).Value);
+            var pi = sender as PropertyItem;
+            var property = this.sourceObject.GetType().GetProperty(pi.PropertyName);
+            property.SetValue(this.sourceObject, Convert.ChangeType(pi.Value, property.PropertyType));
         }
 
         protected void Initialize()

@@ -43,7 +43,6 @@
             <TextBox Text="{Binding Path=Name}" Margin="10" materialDesign:HintAssist.Hint="Recorder Name" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
             
             <GroupBox Header="Channels To Record" Margin="10">
-                <!-- piece together your own items control to create some nice stuff that will make everyone think you are cool. and rightly so, because you are cool.  you might even be a hipster for all I know -->
                 <ItemsControl ItemsSource="{Binding Path=AvailableChannels}" Grid.IsSharedSizeScope="True" Margin="-8,-9,-8,-8">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate >

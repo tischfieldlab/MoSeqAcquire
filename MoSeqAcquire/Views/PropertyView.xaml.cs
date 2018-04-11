@@ -51,6 +51,10 @@ namespace MoSeqAcquire.Views
             {
                 return elemnt.FindResource("CheckboxEditor") as DataTemplate;
             }
+            else if(pit.Equals(typeof(int)) || pit.Equals(typeof(float)) || pit.Equals(typeof(double)))
+            {
+                return elemnt.FindResource("NumericEditor") as DataTemplate;
+            }
             else if (pit.IsEnum)
             {
                 return elemnt.FindResource("ComboBoxEditor") as DataTemplate;

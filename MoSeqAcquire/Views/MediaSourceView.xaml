@@ -41,38 +41,52 @@
                                                 ToolTip="Remove Source">
                                             <materialDesign:PackIcon Kind="Close"  />
                                         </Button>
+                                        <Button DockPanel.Dock="Right" Width="24" Height="24"
+                                            Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                                            CommandParameter="{x:Static Dock.Right}"
+                                                CommandTarget="{Binding ElementName=dh}"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                                ToolTip="Open Config"
+                                            Margin="4">     
+                                            <materialDesign:PackIcon Kind="Settings" />
+                                        </Button>
                                     </DockPanel>
                                 </DataTemplate>
                             </GroupBox.HeaderTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
-                                    <ProgressBar IsIndeterminate="true" Height="30" HorizontalAlignment="Stretch" />
-                                    <TextBlock Text="{Binding CurrentStatus}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <materialDesign:DrawerHost Name="dh" Margin="-9">
+                                <materialDesign:DrawerHost.RightDrawerContent>
+                                    <local:PropertyView SelectedObject="{Binding ConfigItems}" />
+                                </materialDesign:DrawerHost.RightDrawerContent>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
+                                        <ProgressBar IsIndeterminate="true" Height="30" HorizontalAlignment="Stretch" />
+                                        <TextBlock Text="{Binding CurrentStatus}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    </Grid>
+                                    <DockPanel Grid.Column="0" Grid.Row="0" Margin="0" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                                        <!--<xctk:PropertyGrid x:Name="pg" MaxHeight="450" SelectedObject="{Binding Config}"  />-->
+                                        
+                                    </DockPanel>
+                                    <ItemsControl ItemsSource="{Binding Channels}" Grid.Column="1" Grid.Row="0" Margin="5">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <local:ChannelView />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
                                 </Grid>
-                                <DockPanel Grid.Column="0" Grid.Row="0" Margin="0" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" >
-                                    <xctk:PropertyGrid x:Name="pg" MaxHeight="450" SelectedObject="{Binding Config}"  />
-                                    
-                                </DockPanel>
-                                <ItemsControl ItemsSource="{Binding Channels}" Grid.Column="1" Grid.Row="0" Margin="5">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <local:ChannelView />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                            </Grid>
+                            </materialDesign:DrawerHost>
                         </GroupBox>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
