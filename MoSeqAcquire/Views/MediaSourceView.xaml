@@ -55,25 +55,15 @@
                             </GroupBox.HeaderTemplate>
                             <materialDesign:DrawerHost Name="dh" Margin="-9">
                                 <materialDesign:DrawerHost.RightDrawerContent>
-                                    <local:PropertyView SelectedObject="{Binding ConfigItems}" />
+                                    
+                                    <local:PropertyView SelectedObject="{Binding ConfigItems}" MaxHeight="250" />
                                 </materialDesign:DrawerHost.RightDrawerContent>
                                 <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
+                                    <Grid HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">
                                         <ProgressBar IsIndeterminate="true" Height="30" HorizontalAlignment="Stretch" />
                                         <TextBlock Text="{Binding CurrentStatus}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                     </Grid>
-                                    <DockPanel Grid.Column="0" Grid.Row="0" Margin="0" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" >
-                                        <!--<xctk:PropertyGrid x:Name="pg" MaxHeight="450" SelectedObject="{Binding Config}"  />-->
-                                        
-                                    </DockPanel>
-                                    <ItemsControl ItemsSource="{Binding Channels}" Grid.Column="1" Grid.Row="0" Margin="5">
+                                    <ItemsControl ItemsSource="{Binding Channels}" Margin="5">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <local:ChannelView />
