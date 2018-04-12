@@ -45,22 +45,22 @@
             <GroupBox Header="Channels To Record" Margin="10">
                 <ItemsControl ItemsSource="{Binding Path=AvailableChannels}" Grid.IsSharedSizeScope="True" Margin="-8,-9,-8,-8">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate >
+                        <DataTemplate>
                             <Border x:Name="Border" Padding="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition SharedSizeGroup="Checkerz" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected}" />
-                                    <StackPanel Margin="8 0 0 0" Grid.Column="1">
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=IsSelected}" />
+                                    <StackPanel Margin="8 0 0 0" Grid.Column="1" Background="Blue">
                                         <TextBlock FontWeight="Bold" Text="{Binding Path=Channel.Name}" />
                                         <!--<TextBlock Text="{Binding Description}" />-->
                                     </StackPanel>
                                 </Grid>
                             </Border>
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
                                     <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>

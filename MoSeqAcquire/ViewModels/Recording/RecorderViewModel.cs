@@ -52,7 +52,9 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             var channels = this.rootViewModel.MediaSources.SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)));
             this.AvailableChannels = new ObservableCollection<SelectableChannelViewModel>(channels);
-            this.SelectedChannels =(CollectionView)CollectionViewSource.GetDefaultView(this.AvailableChannels);
+
+            this.SelectedChannels = new CollectionView(this.AvailableChannels);
+            //this.SelectedChannels =(CollectionView)CollectionViewSource.GetDefaultView(this.AvailableChannels);
             this.SelectedChannels.Filter = (e) => (e as SelectableChannelViewModel).IsSelected;
 
             //this.SelectedChannels.CollectionChanged += (s, e) => { this.NotifyPropertyChanged("DisplayName"); };
@@ -106,7 +108,7 @@ namespace MoSeqAcquire.ViewModels.Recording
                             .Select(kvp => new RecorderProduct()
                             {
                                 Name = kvp.Key,
-                                Channels = this.AvailableChannels.Where(scvm => kvp.Value.Contains(scvm.Channel.Channel)).Select(scvm => scvm.Channel)
+                                Channels = this.SelectedChannels.OfType<SelectableChannelViewModel>().Select(scvm => scvm.Channel)
                             })
                     );
                 //}
