@@ -33,6 +33,27 @@ namespace MoSeqAcquire.Models.Recording
             Writer.RequestDestinationBase += this.ReplyToDestinationRequest;
             this._writers.Add(Writer);
         }
+        public void RemoveRecorder(IMediaWriter Writer)
+        {
+            if (this.isInitialized)
+            {
+                throw new InvalidOperationException("Cannot remove recorder after initialization!");
+            }
+            Writer.RequestDestinationBase -= this.ReplyToDestinationRequest;
+            this._writers.Remove(Writer);
+        }
+        public void ClearRecorders()
+        {
+            if (this.isInitialized)
+            {
+                throw new InvalidOperationException("Cannot clear recorders after initialization!");
+            }
+            foreach(var w in this._writers)
+            {
+                w.RequestDestinationBase -= this.ReplyToDestinationRequest;
+            }
+            this._writers.Clear();
+        }
         protected string ReplyToDestinationRequest()
         {
             Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);

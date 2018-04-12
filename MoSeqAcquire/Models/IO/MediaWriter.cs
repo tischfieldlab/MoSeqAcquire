@@ -1,6 +1,7 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,17 @@ namespace MoSeqAcquire.Models.Recording
         public bool IsRecording { get; protected set; }
         public MediaWriterStats Stats { get; protected set; }
         public RecorderSpecification Specification { get; protected set; }
-        
+
+        public virtual string FilePath
+        {
+            get
+            {
+                var basepath = this.RequestBaseDestination();
+                return Path.Combine(basepath == null ? "" : basepath, this.Name + "." + this.Ext);
+            }
+        }
+        protected abstract string Ext { get; }
+
 
         public abstract void ConnectChannel(Channel Channel);
         public abstract void Start();

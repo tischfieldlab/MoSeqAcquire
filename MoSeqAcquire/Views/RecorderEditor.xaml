@@ -53,7 +53,7 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=IsSelected}" />
-                                    <StackPanel Margin="8 0 0 0" Grid.Column="1" Background="Blue">
+                                    <StackPanel Margin="8 0 0 0" Grid.Column="1">
                                         <TextBlock FontWeight="Bold" Text="{Binding Path=Channel.Name}" />
                                         <!--<TextBlock Text="{Binding Description}" />-->
                                     </StackPanel>

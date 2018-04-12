@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.ComponentModel;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -22,11 +23,14 @@ namespace MoSeqAcquire.ViewModels.Recording
         //protected ObservableCollection<SelectableChannelViewModel> channels;
         protected RecorderSettings settings;
 
+        protected ObservableCollection<SelectableChannelViewModel> availableChannels;
+        protected ObservableCollection<ChannelViewModel> selectedChannels;
+
         public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
         {
             this.rootViewModel = RootViewModel;
-            this.loadChannels();
             this.RecorderType = RecorderType;
+            this.loadChannels();
 
             this.PrepareSettings();
         }
@@ -38,7 +42,6 @@ namespace MoSeqAcquire.ViewModels.Recording
             {
                 if (Recorder.Channels.Contains(c.Channel.Name))
                 {
-                    //this.SelectedChannels.Add(c);
                     c.IsSelected = true;
                 }
             }
@@ -51,20 +54,33 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected void loadChannels()
         {
             var channels = this.rootViewModel.MediaSources.SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)));
-            this.AvailableChannels = new ObservableCollection<SelectableChannelViewModel>(channels);
+            this.availableChannels = new ObservableCollection<SelectableChannelViewModel>(channels);
+            this.availableChannels.ForEach(scvm => scvm.PropertyChanged += this.UpdateSelectedChannels);
+            this.selectedChannels = new ObservableCollection<ChannelViewModel>();
 
-            this.SelectedChannels = new CollectionView(this.AvailableChannels);
-            //this.SelectedChannels =(CollectionView)CollectionViewSource.GetDefaultView(this.AvailableChannels);
-            this.SelectedChannels.Filter = (e) => (e as SelectableChannelViewModel).IsSelected;
-
-            //this.SelectedChannels.CollectionChanged += (s, e) => { this.NotifyPropertyChanged("DisplayName"); };
-            this.PropertyChanged += (s, e) => { if (e.PropertyName == "Name") { this.NotifyPropertyChanged("DisplayName"); } };
+            this.SelectedChannels.CollectionChanged += (s, e) => {
+                this.NotifyPropertyChanged("Products");
+            };
         }
-        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public string DisplayName
+
+        private void UpdateSelectedChannels(object sender, PropertyChangedEventArgs e)
         {
-            get => this.name + " (" + this.SelectedChannels.Count + " Channels)";
+            if ("IsSelected".Equals(e.PropertyName))
+            {
+                var scvm = sender as SelectableChannelViewModel;
+                if (scvm.IsSelected)
+                {
+                    this.selectedChannels.Add(scvm.Channel);
+                }
+                else
+                {
+                    this.selectedChannels.Remove(scvm.Channel);
+                }
+            }
         }
+
+        
+        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         
         public string Name
         {
@@ -86,13 +102,8 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             get => new PropertyCollection(this.settings);
         }
-        //public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels { get; protected set; }
-        public ObservableCollection<SelectableChannelViewModel> AvailableChannels
-        {
-            get;
-            protected set;
-        }
-        public CollectionView SelectedChannels { get; protected set; }
+        public ObservableCollection<SelectableChannelViewModel> AvailableChannels { get => this.availableChannels; }
+        public ObservableCollection<ChannelViewModel> SelectedChannels { get => this.selectedChannels; }
         public MediaWriterStats Stats { get; protected set; }
 
         public IEnumerable<RecorderProduct> Products
@@ -108,7 +119,7 @@ namespace MoSeqAcquire.ViewModels.Recording
                             .Select(kvp => new RecorderProduct()
                             {
                                 Name = kvp.Key,
-                                Channels = this.SelectedChannels.OfType<SelectableChannelViewModel>().Select(scvm => scvm.Channel)
+                                Channels = this.SelectedChannels
                             })
                     );
                 //}
@@ -123,7 +134,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.writer.Settings = this.settings;
             foreach(var c in this.SelectedChannels)
             {
-                this.writer.ConnectChannel((c as SelectableChannelViewModel).Channel.Channel);
+                this.writer.ConnectChannel(c.Channel);
             }
             this.Stats = this.writer.Stats;
             this.NotifyPropertyChanged("Stats");

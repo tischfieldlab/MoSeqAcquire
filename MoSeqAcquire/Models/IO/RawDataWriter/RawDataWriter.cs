@@ -39,15 +39,16 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
             this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
 
         }
-        public string FilePath
-        {
-            get => Path.Combine(this.RequestBaseDestination(), this.Name + "." + this.Ext);
-        }
-        public string Ext
+        
+        protected override string Ext
         {
             get
             {
                 string ext = "";
+                if(this.channel == null)
+                {
+                    return "###";
+                }
                 if (this.channel.DataType == typeof(short))
                 {
                     ext = "short";
@@ -62,7 +63,7 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
                 }
                 if ((this.Settings as RawDataWriterSettings).EnableGZipCompression)
                 {
-                    return ext + ".gz";
+                    ext += ".gz";
                 }
                 return ext;
             }

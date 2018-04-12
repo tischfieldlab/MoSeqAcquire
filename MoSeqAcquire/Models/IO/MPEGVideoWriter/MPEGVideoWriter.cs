@@ -60,14 +60,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
                 this.audio_back_buffer.LinkTo(this.audio_sink, new DataflowLinkOptions() { PropagateCompletion = true });
             }
         }
-        public string FilePath
-        {
-            get {
-                var basepath = this.RequestBaseDestination();
-                return Path.Combine(basepath == null ? "" : basepath, this.Name + "." + this.Ext);
-            }
-        }
-        public string Ext
+        protected override string Ext
         {
             get => "mp4";
         }
