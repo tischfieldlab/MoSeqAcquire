@@ -84,8 +84,15 @@ namespace MoSeqAcquire.Models.Recording
                     this.terminator = new IndeterminantRecordingLength();
                     break;
             }
-            this.terminator.TriggerStop += (s, e) => { this.Stop(); };
-            this.terminator.PropertyChanged += (s,e) => { this.NotifyPropertyChanged(null); };
+            this.terminator.TriggerStop += this.Terminator_TriggerStop;
+            this.terminator.PropertyChanged += this.Terminator_PropertyChanged;
+        }
+
+
+
+        public void Reset()
+        {
+            this.isInitialized = false;
         }
         public void Start()
         {
@@ -113,6 +120,8 @@ namespace MoSeqAcquire.Models.Recording
                 r.Stop();
             }
             this.terminator.Stop();
+            this.terminator.TriggerStop -= this.Terminator_TriggerStop;
+            this.terminator.PropertyChanged -= this.Terminator_PropertyChanged;
             this.IsRecording = false;
             this.RecordingFinished?.Invoke(this, new EventArgs());
         }
@@ -124,6 +133,19 @@ namespace MoSeqAcquire.Models.Recording
                 var name = writer.Name;
                 var dest = writer.GetChannelFileMap();
             }
+        }
+
+
+
+
+        private void Terminator_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            this.NotifyPropertyChanged(null);
+        }
+
+        private void Terminator_TriggerStop(object sender, EventArgs e)
+        {
+            this.Stop();
         }
     }
 }

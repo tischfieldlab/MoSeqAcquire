@@ -114,7 +114,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public void StopRecording()
         {
-            this._recordingManager = new 
             this._recordingManager.Stop();
             this._recordingManager = null;
         }
