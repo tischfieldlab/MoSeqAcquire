@@ -8,11 +8,12 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
+using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Configuration;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
-    public class KinectConfigSnapshot : ConfigSnapshot
+    /*public class KinectConfigSnapshot : ConfigSnapshot
     {
         public KinectConfigSnapshot() { }
         public KinectConfigSnapshot(KinectConfig config)
@@ -96,7 +97,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             return s;
         }
 
-    }
+    }*/
 
     public class KinectConfig : MediaSourceConfig
     {
@@ -158,7 +159,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             return false;
         }
 
-        public override ConfigSnapshot GetSnapshot()
+        /*public override ConfigSnapshot GetSnapshot()
         {
             return new KinectConfigSnapshot(this);
         }
@@ -192,7 +193,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.EchoCancellationSpeakerIndex = config.EchoCancellationSpeakerIndex;
             this.ManualBeamAngle = config.ManualBeamAngle;
             this.noiseSuppression = config.NoiseSuppression;
-        }
+        }*/
 
 
         protected bool forceInfraredEmitterOff;

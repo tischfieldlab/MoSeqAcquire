@@ -18,7 +18,7 @@ namespace MoSeqAcquire.Models.Management
         {
             this.Recorders = new ProtocolRecorderCollection();
         }
-        public GeneralRecordingSettings GeneralSettings { get; set; }
+        public ConfigSnapshot GeneralSettings { get; set; }
         public ProtocolRecorderCollection Recorders { get; protected set; }
     }
 
@@ -26,7 +26,7 @@ namespace MoSeqAcquire.Models.Management
     public class ProtocolRecorderCollection : Collection<ProtocolRecorder>
     {
 
-        public void Add(Type Type, RecorderSettings Settings)
+        public void Add(Type Type, ConfigSnapshot Settings)
         {
             base.Add(new ProtocolRecorder()
             {
@@ -45,18 +45,22 @@ namespace MoSeqAcquire.Models.Management
         [XmlElement]
         public string Provider { get; set; }
         [XmlElement]
-        public RecorderSettings Config { get; set; }
-        [XmlArray("Channels")]
-        [XmlArrayItem("Channel")]
-        public List<string> Channels { get; set; }
+        public ConfigSnapshot Config { get; set; }
+        [XmlArray("Pins")]
+        [XmlArrayItem("Pin")]
+        public List<ProtocolRecorderPin> Pins { get; set; }
 
         public Type GetProviderType()
         {
             return Type.GetType(this.Provider);
         }
-        public MediaSource Create()
-        {
-            return (MediaSource)Activator.CreateInstance(this.GetProviderType());
-        }
+    }
+
+    public class ProtocolRecorderPin
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+        [XmlAttribute]
+        public string Channel { get; set; }
     }
 }

@@ -57,7 +57,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.Recorders.Add(recorder);
             this.SelectedRecorder = recorder;
 
-            this._recordingManager.AddRecorder(recorder.MakeMediaWriter());
+            this._recordingManager.AddRecorder(recorder.Writer);
         }
         public void RemoveSelectedRecorder()
         {
@@ -91,7 +91,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         public GeneralRecordingSettings GeneralSettings
         {
             get => this._recordingManager.GeneralSettings;
-            set => this._recordingManager.GeneralSettings = value;
+            //set => this._recordingManager.GeneralSettings = value;
         }
 
         public TimeSpan? Duration { get => this._recordingManager?.Duration; }
@@ -107,7 +107,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this._recordingManager.ClearRecorders();
             foreach (var r in this.Recorders)
             {
-                this._recordingManager.AddRecorder(r.MakeMediaWriter());
+                //this._recordingManager.AddRecorder(r.MakeMediaWriter());
             }
             this._recordingManager.Initialize(this.GeneralSettings);
             this._recordingManager.Start();
@@ -136,7 +136,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public string Name
         {
-            get => this.spec.Name;
+            get => this.spec.DisplayName;
         }
     }
 }

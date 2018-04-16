@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,25 +17,19 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
         public PropertyCollection(object data)
         {
             this.sourceObject = data;
-            this.Initialize();
-            
+            this.Initialize();  
+        }
+        public object SourceObject
+        {
+            get => this.sourceObject;
         }
         public new void Add(PropertyItem Item)
         {
-            Item.PropertyChanged += this.Item_PropertyChanged;
             base.Add(Item);
         }
         public new void Remove(PropertyItem Item)
         {
-            Item.PropertyChanged -= this.Item_PropertyChanged;
             base.Remove(Item);
-        }
-
-        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var pi = sender as PropertyItem;
-            var property = this.sourceObject.GetType().GetProperty(pi.PropertyName);
-            property.SetValue(this.sourceObject, Convert.ChangeType(pi.Value, property.PropertyType));
         }
 
         protected void Initialize()
@@ -41,28 +37,8 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
             this.sourceObject
                 .GetType()
                 .GetProperties()
-                .Select(p => new PropertyItem(p.Name, p.GetValue(this.sourceObject)))
+                .Select(p => new PropertyItem(this.sourceObject, p.Name))
                 .ForEach(pi => this.Add(pi));
-        }
-    }
-
-    public class PropertyItem : BaseViewModel
-    {
-        protected string propertyName;
-        protected object value;
-
-        public PropertyItem(string PropertyName, object Value)
-        {
-            this.propertyName = PropertyName;
-            this.value = Value;
-        }
-        public Type ValueType { get => this.value.GetType(); }
-        public string PropertyName { get => this.propertyName; }
-        public string DisplayName { get; set; }
-        public object Value
-        {
-            get => this.value;
-            set => this.SetField(ref this.value, value);
         }
     }
 }

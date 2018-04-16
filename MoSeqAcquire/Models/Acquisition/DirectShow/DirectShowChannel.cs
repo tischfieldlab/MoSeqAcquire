@@ -8,7 +8,7 @@ using Microsoft.Kinect;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
-    public class DirectShowChannel : Channel
+    public abstract class DirectShowChannel : Channel
     {
         public DirectShowChannel(DirectShowSource Source)
         {

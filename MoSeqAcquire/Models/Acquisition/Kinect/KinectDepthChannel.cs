@@ -13,48 +13,48 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
     {
         public KinectDepthChannel(KinectManager Kinect) : base(Kinect)
         {
-            this.Name = "Kinect Depth Channel";
+            this.Name = "Depth Channel";
+            this.DeviceName = "Microsoft Kinect";
             Kinect.Sensor.DepthFrameReady += this.Sensor_DepthFrameReady;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(short);
-            this.Kinect.Config.PropertyChanged += (s, e) => this.RecomputeMetadata();
-            this.RecomputeMetadata();
         }
-        private void RecomputeMetadata()
+        public override ChannelMetadata Metadata
         {
-            var conf = this.Kinect.Config as KinectConfig;
-            switch (conf.DepthImageFormat)
+            get
             {
-                case DepthImageFormat.Resolution80x60Fps30:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 80,
-                        Height = 60,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 16,
-                        PixelFormat = PixelFormats.Gray16
-                    };
-                    break;
-                case DepthImageFormat.Resolution320x240Fps30:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 320,
-                        Height = 240,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 16,
-                        PixelFormat = PixelFormats.Gray16
-                    };
-                    break;
-                case DepthImageFormat.Resolution640x480Fps30:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 640,
-                        Height = 480,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 16,
-                        PixelFormat = PixelFormats.Gray16
-                    };
-                    break;
+                var conf = this.Kinect.Config as KinectConfig;
+                switch (conf.DepthImageFormat)
+                {
+                    case DepthImageFormat.Resolution80x60Fps30:
+                        return new VideoChannelMetadata()
+                        {
+                            Width = 80,
+                            Height = 60,
+                            FramesPerSecond = 30,
+                            BytesPerPixel = 16,
+                            PixelFormat = PixelFormats.Gray16
+                        };
+                    case DepthImageFormat.Resolution320x240Fps30:
+                        return new VideoChannelMetadata()
+                        {
+                            Width = 320,
+                            Height = 240,
+                            FramesPerSecond = 30,
+                            BytesPerPixel = 16,
+                            PixelFormat = PixelFormats.Gray16
+                        };
+                    case DepthImageFormat.Resolution640x480Fps30:
+                    default:
+                        return new VideoChannelMetadata()
+                        {
+                            Width = 640,
+                            Height = 480,
+                            FramesPerSecond = 30,
+                            BytesPerPixel = 16,
+                            PixelFormat = PixelFormats.Gray16
+                        };
+                }
             }
         }
 

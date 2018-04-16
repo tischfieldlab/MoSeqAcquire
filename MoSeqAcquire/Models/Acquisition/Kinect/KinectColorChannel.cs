@@ -14,94 +14,65 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
     {
         public KinectColorChannel(KinectManager Kinect) : base(Kinect)
         {
-            this.Name = "Kinect Color Channel";
+            this.Name = "Color Channel";
+            this.DeviceName = "Microsoft Kinect";
             Kinect.Sensor.ColorFrameReady += Sensor_ColorFrameReady;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(byte);
-            this.Kinect.Config.PropertyChanged += (s,e) => this.RecomputeMetadata();
-            this.RecomputeMetadata();
         }
 
-        private void RecomputeMetadata()
+        public override ChannelMetadata Metadata
         {
-            var conf = this.Kinect.Config as KinectConfig;
-            switch (conf.ColorImageFormat)
+            get
             {
-                case ColorImageFormat.RawBayerResolution1280x960Fps12:
-                    /*this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 1280,
-                        Height = 960,
-                        FramesPerSecond = 12,
-                        BytesPerPixel = 8,
-                        PixelFormat = PixelFormats.
-                    };*/
-                    throw new NotImplementedException();
-                    //break;
-                case ColorImageFormat.RawBayerResolution640x480Fps30:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 640,
-                        Height = 480,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 16,
-                        PixelFormat = PixelFormats.Gray16
-                    };
-                    throw new NotImplementedException();
-                    //break;
-                case ColorImageFormat.RawYuvResolution640x480Fps15:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 640,
-                        Height = 480,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 16,
-                        PixelFormat = PixelFormats.Gray16
-                    };
-                    throw new NotImplementedException();
-                    //break;
-                case ColorImageFormat.YuvResolution640x480Fps15:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 640,
-                        Height = 480,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 16,
-                        PixelFormat = PixelFormats.Bgr32
-                    };
-                    break;
-                case ColorImageFormat.InfraredResolution640x480Fps30:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 640,
-                        Height = 480,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 16,
-                        PixelFormat = PixelFormats.Gray16
-                    };
-                    break;
-                case ColorImageFormat.RgbResolution1280x960Fps12:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 1280,
-                        Height = 960,
-                        FramesPerSecond = 12,
-                        BytesPerPixel = 32,
-                        PixelFormat = PixelFormats.Bgr32
-                    };
-                    break;
-                case ColorImageFormat.RgbResolution640x480Fps30:
-                default:
-                    this.Metadata = new VideoChannelMetadata()
-                    {
-                        Width = 640,
-                        Height = 480,
-                        FramesPerSecond = 30,
-                        BytesPerPixel = 32,
-                        PixelFormat = PixelFormats.Bgr32
-                    };
-                    break;
+                var conf = this.Kinect.Config as KinectConfig;
+                switch (conf.ColorImageFormat)
+                {
+                    case ColorImageFormat.RawBayerResolution1280x960Fps12:
+                        throw new NotImplementedException();
+                    case ColorImageFormat.RawBayerResolution640x480Fps30:
+                        throw new NotImplementedException();
+                    case ColorImageFormat.RawYuvResolution640x480Fps15:
+                        throw new NotImplementedException();
+                    case ColorImageFormat.YuvResolution640x480Fps15:
+                        return new VideoChannelMetadata()
+                        {
+                            Width = 640,
+                            Height = 480,
+                            FramesPerSecond = 30,
+                            BytesPerPixel = 16,
+                            PixelFormat = PixelFormats.Bgr32
+                        };
+                    case ColorImageFormat.InfraredResolution640x480Fps30:
+                        return new VideoChannelMetadata()
+                        {
+                            Width = 640,
+                            Height = 480,
+                            FramesPerSecond = 30,
+                            BytesPerPixel = 16,
+                            PixelFormat = PixelFormats.Gray16
+                        };
+                    case ColorImageFormat.RgbResolution1280x960Fps12:
+                        return new VideoChannelMetadata()
+                        {
+                            Width = 1280,
+                            Height = 960,
+                            FramesPerSecond = 12,
+                            BytesPerPixel = 32,
+                            PixelFormat = PixelFormats.Bgr32
+                        };
+                    case ColorImageFormat.RgbResolution640x480Fps30:
+                    default:
+                        return new VideoChannelMetadata()
+                        {
+                            Width = 640,
+                            Height = 480,
+                            FramesPerSecond = 30,
+                            BytesPerPixel = 32,
+                            PixelFormat = PixelFormats.Bgr32
+                        };
 
+                }
             }
         }
 

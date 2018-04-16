@@ -148,8 +148,10 @@
     <Compile Include="Models\Acquisition\DirectShow\DirectShowVideoChannel.cs" />
     <Compile Include="Models\Acquisition\DirectShow\DirectShowChannel.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
+    <Compile Include="Models\Attributes\ChoicesMethodAttribute.cs" />
     <Compile Include="Models\Attributes\SupportedChannelTypeAttribute.cs" />
     <Compile Include="Models\Configuration\ConfigSnapshot.cs" />
+    <Compile Include="Models\Configuration\BaseConfiguration.cs" />
     <Compile Include="Models\Configuration\IConfigSnapshotProvider.cs" />
     <Compile Include="Models\DrawingExtensions.cs" />
     <Compile Include="Models\Attributes\AttributeExtensions.cs" />
@@ -180,6 +182,7 @@
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
     <Compile Include="ViewModels\PropertyManagement\PropertyCollection.cs" />
+    <Compile Include="ViewModels\PropertyManagement\PropertyItem.cs" />
     <Compile Include="ViewModels\ThemeViewModel.cs" />
     <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml.cs">
       <DependentUpon>LineSpectrum.xaml</DependentUpon>

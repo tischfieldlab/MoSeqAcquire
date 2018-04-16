@@ -11,6 +11,7 @@ namespace MoSeqAcquire.Models.Acquisition
 {
     public enum MediaType
     {
+        Any,
         Audio,
         Video
     }
@@ -25,11 +26,12 @@ namespace MoSeqAcquire.Models.Acquisition
         }
         public MediaType MediaType { get; protected set; }
         public string Name { get; set; }
+        public string DeviceName { get; set; }
+        public string FullName { get => this.DeviceName + " - " + this.Name; }
         public virtual bool Enabled { get; set; }
-        public ConfigurationSection Config { get; }
         public BufferBlock<ChannelFrame> Buffer { get; protected set; }
         public Type DataType { get; protected set; }
-        public ChannelMetadata Metadata { get; protected set; }
+        public abstract ChannelMetadata Metadata { get; }
 
         //protected abstract T PrepareFrame();
     }

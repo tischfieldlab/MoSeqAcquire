@@ -68,7 +68,7 @@ namespace MoSeqAcquire.Models.Recording
         public TimeSpan Duration { get => this.terminator == null ? TimeSpan.Zero : this.terminator.Duration; }
         public double? Progress { get => this.terminator?.Progress; }
         public TimeSpan? TimeRemaining { get => this.terminator?.TimeRemaining; }
-        public GeneralRecordingSettings GeneralSettings { get; set; }
+        public GeneralRecordingSettings GeneralSettings { get; protected set; }
 
         public void Initialize(GeneralRecordingSettings GeneralSettings)
         {

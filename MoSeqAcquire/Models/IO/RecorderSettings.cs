@@ -26,8 +26,10 @@ namespace MoSeqAcquire.Models.Recording
         FrameCount,
 
     }
-    public class RecorderSettings : ObservableObject { }
-    public class GeneralRecordingSettings : ObservableObject 
+    public abstract class RecorderSettings : BaseConfiguration
+    {
+    }
+    public class GeneralRecordingSettings : BaseConfiguration
     {
         public GeneralRecordingSettings()
         {

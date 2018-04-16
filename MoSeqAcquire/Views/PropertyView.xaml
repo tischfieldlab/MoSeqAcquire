@@ -36,7 +36,7 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding PropertyName}" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" />
                     <GridViewColumn Header="Value" CellTemplateSelector="{StaticResource PropertyItemDataTemplateSelector}" />
                 </GridView>
             </ListView.View>

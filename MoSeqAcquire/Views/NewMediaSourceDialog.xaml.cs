@@ -118,7 +118,9 @@ namespace MoSeqAcquire.Views
                 if (this.selectedProvider != null)
                 {
                     var provider = (MediaSource)Activator.CreateInstance(this.selectedProvider, new object[] { });
-                    devices = provider.ListAvailableDevices().Select(i => new DeviceItemViewModel(i.Item1, i.Item2));
+                    devices = provider.ListAvailableDevices()
+                                      .Where(i => MediaBus.Instance.Sources.Count(ms => ms.DeviceId.Equals(i.Item2)) == 0)
+                                      .Select(i => new DeviceItemViewModel(i.Item1, i.Item2));
                 }
                 Application.Current.Dispatcher.Invoke(() =>
                 {

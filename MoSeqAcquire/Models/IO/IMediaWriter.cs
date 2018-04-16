@@ -20,7 +20,7 @@ namespace MoSeqAcquire.Models.Recording
 
         void Start();
         void Stop();
-        void ConnectChannel(Channel Channel);
-        IDictionary<string, IList<Channel>> GetChannelFileMap();
+        //void ConnectChannel(Channel Channel);
+        IDictionary<string, IEnumerable<Channel>> GetChannelFileMap();
     }
 }

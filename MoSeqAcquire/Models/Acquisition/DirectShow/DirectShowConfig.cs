@@ -9,7 +9,19 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     public class DirectShowConfig : MediaSourceConfig
     {
-        public override void ApplySnapshot(ConfigSnapshot snapshot)
+        public DirectShowConfig()
+        {
+
+        }
+        public DirectShowConfig(DirectShowSource Source)
+        {
+
+        }
+        
+
+
+
+        /*public override void ApplySnapshot(ConfigSnapshot snapshot)
         {
             //throw new NotImplementedException();
         }
@@ -18,7 +30,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         {
             return new DirectShowConfigSnapshot();
             //throw new NotImplementedException();
-        }
+        }*/
 
         public override void ReadState()
         {

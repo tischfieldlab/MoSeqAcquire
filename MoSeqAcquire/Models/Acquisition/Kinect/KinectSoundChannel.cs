@@ -15,7 +15,8 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
     {
         public KinectSoundChannel(KinectManager Kinect) : base(Kinect)
         {
-            this.Name = "Kinect Sound Channel";
+            this.Name = "Audio Channel";
+            this.DeviceName = "Microsoft Kinect";
             this.MediaType = MediaType.Audio;
             Kinect.Sensor.AudioSource.BeamAngleChanged += AudioSource_BeamAngleChanged;
             Kinect.Sensor.AudioSource.SoundSourceAngleChanged += AudioSource_SoundSourceAngleChanged;
@@ -30,6 +31,10 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         private void AudioSource_BeamAngleChanged(object sender, BeamAngleChangedEventArgs e)
         {
             //do nothing
+        }
+        public override ChannelMetadata Metadata
+        {
+            get { return null; }
         }
 
         public Stream InnerStream { get; protected set; }

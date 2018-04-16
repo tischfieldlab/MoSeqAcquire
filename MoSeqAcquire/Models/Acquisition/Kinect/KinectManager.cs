@@ -10,7 +10,12 @@ using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
-    [KnownType(typeof(KinectConfigSnapshot))]
+    //[KnownType(typeof(KinectConfigSnapshot))]
+    [KnownType(typeof(ColorImageFormat))]
+    [KnownType(typeof(DepthImageFormat))]
+    [KnownType(typeof(PowerLineFrequency))]
+    [KnownType(typeof(BacklightCompensationMode))]
+    [KnownType(typeof(DepthRange))]
     public class KinectManager : MediaSource
     {
         public KinectManager() : base()

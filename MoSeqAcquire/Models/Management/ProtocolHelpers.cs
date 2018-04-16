@@ -29,11 +29,15 @@ namespace MoSeqAcquire.Models.Management
             return Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(t => !t.IsAbstract && typeof(IMediaWriter).IsAssignableFrom(t));
-            //.Select(t => t.FullName);
         }
         public static IEnumerable<Type> GetKnownTypesForRecorders()
         {
             return FindRecorderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
+        }
+
+        public static IEnumerable<Type> GetKnownTypes()
+        {
+            return GetKnownTypesForProviders().Concat(GetKnownTypesForRecorders());
         }
     }
 }

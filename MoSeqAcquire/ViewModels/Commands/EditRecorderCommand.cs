@@ -1,4 +1,5 @@
-﻿using MoSeqAcquire.Views;
+﻿using MoSeqAcquire.ViewModels.Recording;
+using MoSeqAcquire.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,16 +26,24 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            if(this.ViewModel.Recorder.SelectedRecorder != null)
+            RecorderViewModel recorderViewModel;
+            if (parameter != null && parameter is RecorderViewModel)
             {
-                var dialog = new RecorderEditor();
-                dialog.DataContext = this.ViewModel.Recorder.SelectedRecorder;
-                dialog.ShowDialog();
+                recorderViewModel = parameter as RecorderViewModel;
+            }
+            else if(this.ViewModel.Recorder.SelectedRecorder != null)
+            {
+                recorderViewModel = this.ViewModel.Recorder.SelectedRecorder;
             }
             else
             {
                 MessageBox.Show("Please select a recorder to edit!");
+                return;
             }
+
+            var dialog = new RecorderEditor();
+            dialog.DataContext = recorderViewModel;
+            dialog.ShowDialog();
         }
     }
 }

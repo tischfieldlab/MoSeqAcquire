@@ -1,71 +1,53 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.ViewModels.Commands;
+using MoSeqAcquire.ViewModels.Recording;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using MoSeqAcquire.Models;
-using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Acquisition.DirectShow;
-using MoSeqAcquire.Models.Acquisition.Kinect;
-using MoSeqAcquire.Models.Configuration;
-using MoSeqAcquire.Models.Recording;
-using MoSeqAcquire.Models.Management;
-using MoSeqAcquire.ViewModels.Commands;
-using MoSeqAcquire.ViewModels.Recording;
 
 namespace MoSeqAcquire.ViewModels
 {
     public class MoSeqAcquireViewModel : BaseViewModel
     {
-        protected MediaBus __mediaBus;
-        protected ObservableCollection<MediaSourceViewModel> mediaSources;
-
-        protected RecordingManagerViewModel recorderManager;
 
         public MoSeqAcquireViewModel()
         {
             this.Theme = new ThemeViewModel();
-            this.__mediaBus = MediaBus.Instance;
-            this.mediaSources = new ObservableCollection<MediaSourceViewModel>();
-            this.recorderManager = new RecordingManagerViewModel(this);
+            this.MediaSources = new ObservableCollection<MediaSourceViewModel>();
+            this.Recorder = new RecordingManagerViewModel(this);
             
-
-
             this.Commands = new CommandLibrary(this);
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
         public CommandLibrary Commands { get; protected set; }
         public ThemeViewModel Theme { get; protected set; }
+        public ObservableCollection<MediaSourceViewModel> MediaSources { get; protected set; }
+        public RecordingManagerViewModel Recorder { get; protected set; }
+
+
         public Protocol GenerateProtocol()
         {
             var pcol = new Protocol("basic");
-            foreach (var ms in this.mediaSources)
+            foreach (var ms in this.MediaSources)
             {
                 pcol.Sources.Add(ms.MediaSource.GetType(), ms.MediaSource.DeviceId, ms.Config.GetSnapshot());
             }
-            foreach(var mw in this.recorderManager.Recorders)
+            foreach(var mw in this.Recorder.Recorders)
             {
                 pcol.Recordings.Recorders.Add(mw.GetRecorderDefinition());
             }
-            pcol.Recordings.GeneralSettings = this.recorderManager.GeneralSettings;
+            pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
             return pcol;
-            
         }
         public void ApplyProtocol(Protocol protocol)
         {
             //prepare
-            this.mediaSources.ForEach(s => s.MediaSource.Stop());
-            this.mediaSources.Clear();
-            //this.__mediaBus.Clear();
-            this.recorderManager.Recorders.Clear();
+            this.MediaSources.ForEach(s => s.MediaSource.Stop());
+            this.MediaSources.Clear();
+            this.Recorder.Recorders.Clear();
 
             //add media sources
             var tasks = new List<Task>();
@@ -73,43 +55,26 @@ namespace MoSeqAcquire.ViewModels
             {
                 var msvm = new MediaSourceViewModel(s);
                 tasks.Add(msvm.InitTask);
-                this.mediaSources.Add(msvm);
-                
-                /*tasks.Add(Task.Run(() =>
-                {
-                    var provider = (MediaSource)s.Create();
-                    while (!provider.Initalize())
-                    {
-                        Thread.Sleep(500);
-                    }
-                    provider.Config.ApplySnapshot(s.Config);
-                    this.__mediaBus.Publish(provider);
-                    
-                    
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        
-                    });
-                    provider.Start();
-                }));*/
+                this.MediaSources.Add(msvm);
             }
 
+            //necessary to wait for all hardware to load prior to applying recorders
+            //otherwise the channel does not exist!
             Task.WhenAll(tasks).ContinueWith((t) =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    this.recorderManager.GeneralSettings = protocol.Recordings.GeneralSettings;
-                    foreach (var r in protocol.Recordings.Recorders)
+                    if (protocol.Recordings != null)
                     {
-                        this.recorderManager.Recorders.Add(new RecorderViewModel(this, r));
+                        this.Recorder.GeneralSettings.ApplySnapshot(protocol.Recordings.GeneralSettings);
+                        foreach (var r in protocol.Recordings.Recorders)
+                        {
+                            this.Recorder.Recorders.Add(new RecorderViewModel(this, r));
+                        }
                     }
                 });
             });
         }
-
-        public ObservableCollection<MediaSourceViewModel> MediaSources { get => mediaSources; }
-        public RecordingManagerViewModel Recorder { get => this.recorderManager; }
-
     }
 
     
@@ -124,7 +89,7 @@ namespace MoSeqAcquire.ViewModels
             //default protocol contains the Kinect sensor
             //pcol.Sources.Add(typeof(KinectManager), "", KinectConfigSnapshot.GetDefault());
             //pcol.Sources.Add(typeof(DirectShowSource), "", new DirectShowConfigSnapshot());
-            pcol.Recordings.GeneralSettings = new GeneralRecordingSettings();
+            pcol.Recordings.GeneralSettings = new GeneralRecordingSettings().GetSnapshot();
             return pcol;
         }
     }

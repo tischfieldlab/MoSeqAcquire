@@ -18,10 +18,24 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
     {
         public DirectShowVideoChannel(DirectShowSource Source) : base(Source)
         {
-            this.Name = Source.Name + " - Video Channel";
+            this.Name = "Video Channel";
+            this.DeviceName = Source.Name;
             this.Device.Device.NewFrame += this.Device_NewFrame;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(byte);
+        }
+        public override ChannelMetadata Metadata
+        {
+            get
+            {
+                return new VideoChannelMetadata()
+                {
+                    Width = this.Device.Device.VideoResolution.FrameSize.Width,
+                    Height = this.Device.Device.VideoResolution.FrameSize.Height,
+                    FramesPerSecond = this.Device.Device.VideoResolution.MaximumFrameRate,
+                    BytesPerPixel = this.Device.Device.VideoResolution.BitCount / 8,
+                };
+            }
         }
 
         public override bool Enabled { get; set; }

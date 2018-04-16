@@ -15,29 +15,22 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
     [KnownType(typeof(RawDataWriterSettings))]
     [DisplayName("Raw Data Writer")]
     [SettingsImplementation(typeof(RawDataWriterSettings))]
+    [SupportedChannelType(MediaType.Any, ChannelCapacity.Multiple)]
     public class RawDataWriter : MediaWriter
     {
         protected Channel channel;
         protected BufferBlock<ChannelFrame> back_buffer;
         protected ActionBlock<ChannelFrame> sink;
 
+        protected MediaWriterPin dataPin;
+
         protected FileStream file;
         protected GZipStream compressor;
         protected BinaryWriter writer;
 
-
-        public override void ConnectChannel(Channel Channel)
+        public RawDataWriter() : base()
         {
-            if (this.channel != null)
-            {
-                throw new InvalidOperationException("Channel was already connected!");
-            }
-            this.channel = Channel;
-            this.back_buffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true });
-            this.sink = this.GetActionBlock(Channel.DataType);
-            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.back_buffer);
-            this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
-
+            this.dataPin = new MediaWriterPin(MediaType.Any, ChannelCapacity.Single, this.GetActionBlock());
         }
         
         protected override string Ext
@@ -45,15 +38,15 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
             get
             {
                 string ext = "";
-                if(this.channel == null)
+                if(this.dataPin.Channel == null)
                 {
                     return "###";
                 }
-                if (this.channel.DataType == typeof(short))
+                if (this.dataPin.Channel.DataType == typeof(short))
                 {
                     ext = "short";
                 }
-                else if (this.channel.DataType == typeof(byte))
+                else if (this.dataPin.Channel.DataType == typeof(byte))
                 {
                     ext = "byte";
                 }
@@ -95,39 +88,25 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
         }
 
 
-        public override IDictionary<string, IList<Channel>> GetChannelFileMap()
-        {
-            return new Dictionary<string, IList<Channel>>()
-            {
-                { this.FilePath, new List<Channel>(){ this.channel } }
-            };
-        }
-
-
         protected byte[] stupidByteBuffer;
-        protected ActionBlock<ChannelFrame> GetActionBlock(Type type)
+        protected ActionBlock<ChannelFrame> GetActionBlock()
         {
-            if (type == typeof(short))
+            return new ActionBlock<ChannelFrame>(frame =>
             {
-                return new ActionBlock<ChannelFrame>(frame =>
+                if (!this.IsRecording) { return; }
+
+                if (frame.DataType == typeof(short))
                 {
-                    if (!this.IsRecording) { return; }
                     if (this.stupidByteBuffer == null) { this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes]; }
                     Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
                     this.writer.Write(this.stupidByteBuffer);
-                    this.Stats.Increment();
-                });
-            }
-            else if (type == typeof(byte))
-            {
-                return new ActionBlock<ChannelFrame>(frame => 
+                }
+                else
                 {
-                    if (!this.IsRecording) { return; }
                     this.writer.Write(frame.FrameData as byte[]);
-                    this.Stats.Increment();
-                });
-            }
-            return null;
+                }
+                this.Stats.Increment();
+            });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Recording;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,30 +8,33 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Attributes
 {
+    
+
+
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class SupportedChannelTypeAttribute : Attribute
     {
         MediaType mediaType;
-        int maxCount;
+        ChannelCapacity capacity;
 
-        public SupportedChannelTypeAttribute(MediaType mediaType) : this(mediaType, -1) { }
-        public SupportedChannelTypeAttribute(MediaType mediaType, int maxCount)
+        public SupportedChannelTypeAttribute(MediaType mediaType) : this(mediaType, ChannelCapacity.Single) { }
+        public SupportedChannelTypeAttribute(MediaType mediaType, ChannelCapacity Capacity)
         {
             this.mediaType = mediaType;
-            this.maxCount = maxCount;
+            this.capacity = Capacity;
         }
 
         public MediaType MediaType
         {
             get => this.mediaType;
         }
-        public int MaxCount
+        public ChannelCapacity Capacity
         {
-            get => this.maxCount;
+            get => this.capacity;
         }
-        public bool HasLimit
+        /*public bool HasCapacity
         {
-            get => this.maxCount > 0;
-        }
+            get => this.capacity > 0;
+        }*/
     }
 }
