@@ -18,10 +18,6 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
     [SupportedChannelType(MediaType.Any, ChannelCapacity.Multiple)]
     public class RawDataWriter : MediaWriter
     {
-        protected Channel channel;
-        protected BufferBlock<ChannelFrame> back_buffer;
-        protected ActionBlock<ChannelFrame> sink;
-
         protected MediaWriterPin dataPin;
 
         protected FileStream file;
@@ -80,10 +76,7 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
 
         public override void Stop()
         {
-            this.Stats.Stop();
-            this.sink.Complete();
-            this.sink.Completion.Wait();
-            this.IsRecording = false;
+            base.Stop();
             this.writer.Close();
         }
 

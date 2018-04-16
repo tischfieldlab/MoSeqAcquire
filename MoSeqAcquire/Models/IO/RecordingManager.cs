@@ -56,7 +56,10 @@ namespace MoSeqAcquire.Models.Recording
         }
         protected string ReplyToDestinationRequest()
         {
-            Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);
+            if (!string.IsNullOrWhiteSpace(this.GeneralSettings.ComputedBasePath))
+            {
+                Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);
+            }
             return this.GeneralSettings.ComputedBasePath == null ? string.Empty : this.GeneralSettings.ComputedBasePath;
         }
         public bool IsInitialized { get => this.isInitialized; }
@@ -126,13 +129,23 @@ namespace MoSeqAcquire.Models.Recording
             this.RecordingFinished?.Invoke(this, new EventArgs());
         }
 
-        protected void WriteRecordingInfo()
+        protected RecordingSummary WriteRecordingInfo()
         {
+            var summary = new RecordingSummary();
+            summary.Recordings = new List<RecordingRecord>();
             foreach(var writer in this._writers)
             {
-                var name = writer.Name;
-                var dest = writer.GetChannelFileMap();
+                foreach (var mapItem in writer.GetChannelFileMap()) {
+                    var record = new RecordingRecord()
+                    {
+                        Name = writer.Name,
+                        Filename = mapItem.Key,
+                        Channels = mapItem.Value.Select(c => c.FullName).ToList()
+                    };
+                    summary.Recordings.Add(record);
+                }
             }
+            return summary;
         }
 
 
@@ -147,5 +160,17 @@ namespace MoSeqAcquire.Models.Recording
         {
             this.Stop();
         }
+    }
+
+
+    public class RecordingSummary
+    {
+        public List<RecordingRecord> Recordings { get; set; }
+    }
+    public class RecordingRecord
+    {
+        public string Name { get; set; }
+        public string Filename { get; set; }
+        public List<string> Channels { get; set; }
     }
 }

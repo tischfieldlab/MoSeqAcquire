@@ -1,13 +1,69 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using MoSeqAcquire.Models;
+using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels
 {
-    public class BaseViewModel : ObservableObject
+    public abstract class BaseViewModel : ObservableObject
     {
+        public BaseViewModel()
+        {
+            Validator = new ValidationHelper();
+        }
+        protected ValidationHelper Validator { get; private set; }
+    }
+
+    public class ValidatingBaseViewModel : BaseViewModel, INotifyDataErrorInfo
+    {
+        private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }
+
+        public ValidatingBaseViewModel() : base()
+        {
+            NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(Validator);
+        }
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            return NotifyDataErrorInfoAdapter.GetErrors(propertyName);
+        }
+
+        public bool HasErrors
+        {
+            get { return NotifyDataErrorInfoAdapter.HasErrors; }
+        }
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged
+        {
+            add { NotifyDataErrorInfoAdapter.ErrorsChanged += value; }
+            remove { NotifyDataErrorInfoAdapter.ErrorsChanged -= value; }
+        }
+
+        protected bool SetField<T>(ref T field, T value, bool validate = true, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            NotifyPropertyChanged(propertyName);
+            if (validate)
+            {
+                Validator.Validate(propertyName);
+            }
+            return true;
+        }
+        protected bool SetField<T>(ref T field, T value, Action Task, bool validate = true, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            Task.Invoke();
+            field = value;
+            NotifyPropertyChanged(propertyName);
+            if (validate)
+            {
+                Validator.Validate(propertyName);
+            }
+            return true;
+        }
     }
 }

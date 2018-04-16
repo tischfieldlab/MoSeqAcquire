@@ -7,11 +7,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
     
-    public class RecordingManagerViewModel : BaseViewModel
+    public class RecordingManagerViewModel : ValidatingBaseViewModel
     {
         protected MoSeqAcquireViewModel rootViewModel;
         protected Type selectedRecorderType;
@@ -26,15 +27,16 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
-            //this.settings = new GeneralRecordingSettings();
             this.PopulateAvailableRecorderTypes();
 
             this._recordingManager = new RecordingManager();
             this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
-            /*foreach (var r in this.Recorders)
-            {
-                this._recordingManager.AddRecorder(r.MakeMediaWriter());
-            }*/
+            this.RegisterRules();
+        }
+        protected void RegisterRules()
+        {
+            Validator.AddRequiredRule(() => this.GeneralSettings.Directory, "Directory cannot be empty!");
+
         }
         protected void PopulateAvailableRecorderTypes()
         {
@@ -91,7 +93,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         public GeneralRecordingSettings GeneralSettings
         {
             get => this._recordingManager.GeneralSettings;
-            //set => this._recordingManager.GeneralSettings = value;
         }
 
         public TimeSpan? Duration { get => this._recordingManager?.Duration; }
@@ -104,18 +105,18 @@ namespace MoSeqAcquire.ViewModels.Recording
             //this._recordingManager = new RecordingManager();
             //this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
             //this._recordingManager.RecordingFinished += (s, e) => { this._recordingManager = null; };
-            this._recordingManager.ClearRecorders();
-            foreach (var r in this.Recorders)
-            {
+            //this._recordingManager.ClearRecorders();
+            //foreach (var r in this.Recorders)
+            //{
                 //this._recordingManager.AddRecorder(r.MakeMediaWriter());
-            }
+            //}
             this._recordingManager.Initialize(this.GeneralSettings);
             this._recordingManager.Start();
         }
         public void StopRecording()
         {
             this._recordingManager.Stop();
-            this._recordingManager = null;
+            //this._recordingManager = null;
         }
     }
 

@@ -137,7 +137,7 @@
                                                                 <DataTemplate DataType="{x:Type mvm:ChannelViewModel}">
                                                                     <StackPanel Orientation="Horizontal" Margin="48,0,0,0">
                                                                         <materialDesign:PackIcon Kind="SubdirectoryArrowRight" />
-                                                                        <TextBlock Text="{Binding Path=Name}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                                                                        <TextBlock Text="{Binding Path=FullName}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
                                                                     </StackPanel>
                                                                 </DataTemplate>
                                                             </ItemsControl.ItemTemplate>

@@ -1,17 +1,13 @@
-﻿using MoSeqAcquire.Models.Attributes;
-using MoSeqAcquire.Models.Recording;
-using MoSeqAcquire.Models.Management;
-using MoSeqAcquire.ViewModels.PropertyManagement;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 using System.ComponentModel;
+using System.Linq;
+using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.ViewModels.PropertyManagement;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -19,47 +15,28 @@ namespace MoSeqAcquire.ViewModels.Recording
     {
         protected MoSeqAcquireViewModel rootViewModel;
 
-        protected RecorderSpecification recSpec;
         protected MediaWriter writer;
         protected PropertyCollection settings;
 
         protected ObservableCollection<SelectableChannelViewModel> availableChannels;
         protected ObservableCollection<ChannelViewModel> selectedChannels;
         
-        protected RecorderViewModel(MoSeqAcquireViewModel RootViewModel)
+        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
         {
             this.rootViewModel = RootViewModel;
-            this.loadChannels();
-        }
-        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType) : this(RootViewModel)
-        {
-            
             var spec = new RecorderSpecification(RecorderType);
             this.writer = spec.Factory();
+            this.Initialize();
         }
-        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolRecorder Recorder) : this(RootViewModel)
+        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolRecorder Recorder)
         {
+            this.rootViewModel = RootViewModel;
             this.writer = MediaWriter.FromProtocolRecorder(Recorder);
-
-            //foreach(var prp in Recorder.Pins)
-            //{
-
-            //    var chan = this.availableChannels.FirstOrDefault(scvm => scvm.Channel.FullName.Equals(prp.Channel));
-                
-
-            //}
-            //Recorder.Pins.ForEach(prp => prp.)
-
-            //foreach (var c in this.AvailableChannels)
-            //{
-            //    if (Recorder.Pins.Channels.Contains(c.Channel.FullName))
-            //    {
-            //        c.IsSelected = true;
-            //    }
-            //}
+            this.Initialize();
         }
         protected void Initialize()
         {
+            this.loadChannels();
             this.settings = new PropertyCollection(this.writer.Settings);
             var pins = new List<RecorderPinViewModel>();
             foreach (var wp in this.writer.Pins.Values)
@@ -71,6 +48,7 @@ namespace MoSeqAcquire.ViewModels.Recording
                     pins.Add(pin);
                 }
             }
+            this.RecorderPins = pins;
         }
         
         protected void loadChannels()
@@ -108,7 +86,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public MediaWriter Writer { get => this.writer; }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public RecorderSpecification Specification { get => this.recSpec; }
+        public RecorderSpecification Specification { get => this.writer.Specification; }
         public IEnumerable<RecorderPinViewModel> RecorderPins { get; protected set; }
         public PropertyCollection Settings { get => this.settings; }
         public ObservableCollection<SelectableChannelViewModel> AvailableChannels { get => this.availableChannels; }
@@ -119,36 +97,15 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             get
             {
-                var products = new List<RecorderProduct>();
-                //if(this.writer != null)
-                //{
-                    products.AddRange(
-                        this.writer
-                            .GetChannelFileMap()
-                            .Select(kvp => new RecorderProduct()
-                            {
-                                Name = kvp.Key,
-                                Channels = this.SelectedChannels
-                            })
-                    );
-                //}
-                return products;
+                return this.writer
+                           .GetChannelFileMap()
+                           .Select(kvp => new RecorderProduct()
+                           {
+                               Name = kvp.Key,
+                               Channels = this.SelectedChannels
+                           });
             }
         }
-
-        /*public IMediaWriter MakeMediaWriter()
-        {
-            this.writer = (MediaWriter)Activator.CreateInstance(this.recSpec.RecorderType);
-            this.writer.Name = this.Name;
-            this.writer.Settings = this.settings;
-            foreach(var c in this.SelectedChannels)
-            {
-                this.writer.ConnectChannel(c.Channel);
-            }
-            this.Stats = this.writer.Stats;
-            this.NotifyPropertyChanged("Stats");
-            return this.writer;
-        }*/
         public ProtocolRecorder GetRecorderDefinition()
         {
             return this.writer.GetProtocolRecorder();

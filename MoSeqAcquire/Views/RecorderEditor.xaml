@@ -38,57 +38,69 @@
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2" Mode="PrimaryDark" Padding="16">
             <WrapPanel>
-                <TextBlock Text="Configure " Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
-                <TextBlock Text="{Binding Path=Specification.DisplayName}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                <TextBlock Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
             </WrapPanel>
         </materialDesign:ColorZone>
-        <StackPanel Grid.Column="0" Grid.Row="1" Margin="16">
-            <TextBox Text="{Binding Path=Name}" Margin="16" materialDesign:HintAssist.Hint="Recorder Name" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+        <materialDesign:Transitioner SelectedIndex="{Binding CurrentStep}" Grid.ColumnSpan="2" Grid.Row="1">
+            <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+                <ComboBox Margin="0,-8,0,-8" HorizontalAlignment="Center" VerticalAlignment="Center" ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Recorder Type"  />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="16">
+                        <TextBox Text="{Binding Path=Name}" Margin="16" materialDesign:HintAssist.Hint="Recorder Name" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Text="Select Channels" Margin="16" />
-            <ItemsControl ItemsSource="{Binding Path=RecorderPins}">
-                <ItemsControl.Resources>
-                    <DataTemplate DataType="{x:Type mvmr:SingleCapacityRecorderPin}">
-                        <ComboBox Margin="16" materialDesign:HintAssist.Hint="{Binding Path=PinName}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                  ItemsSource="{Binding Path=AvailableChannels}"
-                                  SelectedValue="{Binding Path=SelectedChannel}" SelectedValuePath="Channel"
-                                  DisplayMemberPath="Channel.FullName">
-                        </ComboBox>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type mvmr:MultipleCapacityRecorderPin}">
-                        <GroupBox Header="{Binding Path=PinName}" Margin="12 0 12 0">
-                            <ItemsControl ItemsSource="{Binding Path=AvailableChannels}" Grid.IsSharedSizeScope="True" Margin="-8,-9,-8,-8">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border x:Name="Border" Padding="8">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition SharedSizeGroup="Checkerz" />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected}" />
-                                                <StackPanel Margin="8 0 0 0" Grid.Column="1">
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Channel.Name}" />
-                                                    <TextBlock Text="{Binding Path=Channel.DeviceName}" />
-                                                </StackPanel>
-                                            </Grid>
-                                        </Border>
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </GroupBox>
-                    </DataTemplate>
-                </ItemsControl.Resources>
-            </ItemsControl>
-        </StackPanel>
+                        <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Text="Select Channels" Margin="16" />
+                        <ItemsControl ItemsSource="{Binding Path=RecorderPins}">
+                            <ItemsControl.Resources>
+                                <DataTemplate DataType="{x:Type mvmr:SingleCapacityRecorderPin}">
+                                    <ComboBox Margin="16" materialDesign:HintAssist.Hint="{Binding Path=PinName}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                      ItemsSource="{Binding Path=AvailableChannels}"
+                                      SelectedValue="{Binding Path=SelectedChannel}" SelectedValuePath="Channel"
+                                      DisplayMemberPath="Channel.FullName">
+                                    </ComboBox>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type mvmr:MultipleCapacityRecorderPin}">
+                                    <GroupBox Header="{Binding Path=PinName}" Margin="12 0 12 0">
+                                        <ItemsControl ItemsSource="{Binding Path=AvailableChannels}" Grid.IsSharedSizeScope="True" Margin="-8,-9,-8,-8">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border x:Name="Border" Padding="8">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition SharedSizeGroup="Checkerz" />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected}" />
+                                                            <StackPanel Margin="8 0 0 0" Grid.Column="1">
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=Channel.Name}" />
+                                                                <TextBlock Text="{Binding Path=Channel.DeviceName}" />
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Border>
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </GroupBox>
+                                </DataTemplate>
+                            </ItemsControl.Resources>
+                        </ItemsControl>
+                    </StackPanel>
 
-        <!--<xctk:PropertyGrid SelectedObject="{Binding Path=Settings}" Grid.Column="1" Grid.Row="1" />-->
-        <local:PropertyView SelectedObject="{Binding Path=SettingsProps}" Grid.Column="1" Grid.Row="1" />
+                    <local:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="1" />
+                </Grid>
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
+        
 
     </Grid>
 </Window>

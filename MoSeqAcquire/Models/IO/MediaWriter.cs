@@ -26,6 +26,7 @@ namespace MoSeqAcquire.Models.Recording
         public MediaWriterPin(MediaType mediaType, ChannelCapacity Capacity, ActionBlock<ChannelFrame> Worker)
         {
             this.MediaType = mediaType;
+            this.Capacity = Capacity;
             this.sink = Worker;
             this.name = this.MediaType.ToString() + " Pin";
         }
@@ -148,61 +149,4 @@ namespace MoSeqAcquire.Models.Recording
             return writer;
         }
     }
-
-    /*public abstract class MediaWriter<TSink> : MediaWriter where TSink : MediaWriterSink
-    {
-        protected List<TSink> sinks;
-        public MediaWriter()
-        {
-            this.sinks = new List<TSink>();
-        }
-
-        //public abstract void ConnectChannel(Channel Channel);
-        public abstract IEnumerable<string> ListDestinations();
-        public virtual void Start(string basePath)
-        {
-            foreach (var s in this.sinks)
-            {
-                s.IsRecording = true;
-                s.Open();
-            }
-        }
-        public virtual void Stop()
-        {
-            foreach (var s in this.sinks)
-            {
-                s.Close();
-                s.IsRecording = false;
-            }
-        }
-
-    }
-
-
-    public abstract class MediaWriterSink
-    {
-        protected RecorderSettings settings;
-        protected Channel channel;
-
-        protected BufferBlock<ChannelFrame> back_buffer;
-        protected ActionBlock<ChannelFrame> sink;
-
-        public MediaWriterSink(RecorderSettings settings, Channel channel)
-        {
-            this.settings = settings;
-            this.channel = channel;
-        }
-        
-        public bool IsRecording { get; set; }
-        protected abstract ActionBlock<ChannelFrame> GetActionBlock(Type type);
-        protected void AttachSink(Channel Channel)
-        {
-            this.back_buffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true });
-            this.sink = this.GetActionBlock(Channel.DataType);
-            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.back_buffer);
-            this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
-        }
-        public abstract void Close();
-        public abstract void Open();
-    }*/
 }
