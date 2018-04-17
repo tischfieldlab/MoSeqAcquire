@@ -30,6 +30,7 @@ namespace MoSeqAcquire.Models.Configuration
                     prop.SetValue(this, snapshot[key]);
                 }
             }
+            this.NotifyPropertyChanged(null);
         }
     }
 }

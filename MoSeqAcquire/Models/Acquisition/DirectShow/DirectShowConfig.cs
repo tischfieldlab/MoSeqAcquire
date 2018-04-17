@@ -3,40 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Video.DirectShow;
 using MoSeqAcquire.Models.Configuration;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     public class DirectShowConfig : MediaSourceConfig
     {
-        public DirectShowConfig()
-        {
+        private VideoCapabilities imageFormat;
 
-        }
+
+
+
         public DirectShowConfig(DirectShowSource Source)
         {
-
+            this.Source = Source;
         }
-        
-
-
-
-        /*public override void ApplySnapshot(ConfigSnapshot snapshot)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public override ConfigSnapshot GetSnapshot()
-        {
-            return new DirectShowConfigSnapshot();
-            //throw new NotImplementedException();
-        }*/
-
+        protected DirectShowSource Source { get; set; }
         public override void ReadState()
         {
             //throw new NotImplementedException();
         }
-    }
 
-    public class DirectShowConfigSnapshot : ConfigSnapshot { }
+        public VideoCapabilities ImageFormat
+        {
+            get => this.imageFormat;
+            set => this.SetField(ref this.imageFormat, value, () => { this.Source.Device.VideoResolution = value; });
+        }
+        public IEnumerable<VideoCapabilities> ImageFormatChoices()
+        {
+            return this.Source.Device.VideoCapabilities;
+        }
+
+        
+    }
 }

@@ -13,98 +13,40 @@ using MoSeqAcquire.Models.Configuration;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
-    /*public class KinectConfigSnapshot : ConfigSnapshot
-    {
-        public KinectConfigSnapshot() { }
-        public KinectConfigSnapshot(KinectConfig config)
-        {
-            this.ForceInfraredEmitterOff = config.ForceInfraredEmitterOff;
-            this.ElevationAngle = config.ElevationAngle;
-            this.ColorImageFormat = config.ColorImageFormat;
-            this.DepthImageFormat = config.DepthImageFormat;
-            this.Brightness = config.Brightness;
-            this.Contrast = config.Contrast;
-            this.Saturation = config.Saturation;
-            this.Sharpness = config.Sharpness;
-            this.WhiteBalance = config.WhiteBalance;
-            this.ExposureTime = config.ExposureTime;
-            this.FrameInterval = config.FrameInterval;
-            this.Gain = config.Gain;
-            this.Gamma = config.Gamma;
-            this.Hue = config.Hue;
-            this.PowerLineFrequency = config.PowerLineFrequency;
-            this.AutoExposure = config.AutoExposure;
-            this.AutoWhiteBalance = config.AutoWhiteBalance;
-            this.BacklightCompensationMode = config.BacklightCompensationMode;
-            this.DepthRange = config.DepthRange;
-            this.AutomaticGainControlEnabled = config.AutomaticGainControlEnabled;
-            this.BeamAngleMode = config.BeamAngleMode;
-            this.EchoCancellationMode = config.EchoCancellationMode;
-            this.EchoCancellationSpeakerIndex = config.EchoCancellationSpeakerIndex;
-            this.ManualBeamAngle = config.ManualBeamAngle;
-            this.NoiseSuppression = config.NoiseSuppression;
-        }
-        public bool ForceInfraredEmitterOff { get; set; }
-        public int ElevationAngle { get; set; }
-        public ColorImageFormat ColorImageFormat { get; set; }
-        public DepthImageFormat DepthImageFormat { get; set; }
-        public double Brightness { get; set; }
-        public double Contrast { get; set; }
-        public double Saturation { get; set; }
-        public double Sharpness { get; set; }
-        public int WhiteBalance { get; set; }
-        public double ExposureTime { get; set; }
-        public double FrameInterval { get; set; }
-        public double Gain { get; set; }
-        public double Gamma { get; set; }
-        public double Hue { get; set; }
-        public PowerLineFrequency PowerLineFrequency { get; set; }
-        public bool AutoExposure { get; set; }
-        public bool AutoWhiteBalance { get; set; }
-        public BacklightCompensationMode BacklightCompensationMode { get; set; }
-        public DepthRange DepthRange { get; set; }
-
-        public bool AutomaticGainControlEnabled { get; set; }
-        public BeamAngleMode BeamAngleMode { get; set; }
-        public EchoCancellationMode EchoCancellationMode { get; set; }
-        public int EchoCancellationSpeakerIndex { get; set; }
-        public double ManualBeamAngle { get; set; }
-        public bool NoiseSuppression { get; set; }
-
-        public new static ConfigSnapshot GetDefault()
-        {
-            var s = Activator.CreateInstance<KinectConfigSnapshot>();
-            s.ForceInfraredEmitterOff = false;
-            s.ElevationAngle = 0;
-            s.ColorImageFormat = ColorImageFormat.RgbResolution640x480Fps30;
-            s.DepthImageFormat = DepthImageFormat.Resolution640x480Fps30;
-            s.Brightness = 0.2156;
-            s.Contrast = 1;
-            s.Saturation = 1;
-            s.Sharpness = 0.5;
-            s.WhiteBalance = 2700;
-            s.ExposureTime = 4000;
-            s.FrameInterval = 0;
-            s.Gain = 1;
-            s.Gamma = 2.2;
-            s.Hue = 0;
-            s.PowerLineFrequency = PowerLineFrequency.Disabled;
-            s.AutoExposure = true;
-            s.AutoWhiteBalance = true;
-            s.BacklightCompensationMode = BacklightCompensationMode.AverageBrightness;
-            s.DepthRange = DepthRange.Default;
-
-            return s;
-        }
-
-    }*/
-
     public class KinectConfig : MediaSourceConfig
     {
+        protected bool forceInfraredEmitterOff;
+        protected int elevationAngle;
+
+        protected ColorImageFormat colorImageFormat;
+        protected DepthImageFormat depthImageFormat;
+        protected double brightness;
+        protected double contrast;
+        private double saturation;
+        private double sharpness;
+        private int whiteBalance;
+        private double exposureTime;
+        private double frameInterval;
+        private double gain;
+        private double gamma;
+        private double hue;
+        private PowerLineFrequency powerLineFrequency;
+        private bool autoExposure;
+        private bool autoWhiteBalance;
+        private BacklightCompensationMode backlightCompensationMode;
+        private DepthRange depthRange;
+
+        private bool automaticGainControlEnabled;
+        private BeamAngleMode beamAngleMode;
+        private EchoCancellationMode echoCancellationMode;
+        private int echoCancellationSpeakerIndex;
+        private double manualBeamAngle;
+        private bool noiseSuppression;
+
+
         public KinectConfig(KinectManager Kinect)
         {
             this.Kinect = Kinect;
-            //this.ReadKinectState();
         }
         public override void ReadState()
         {
@@ -142,10 +84,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
             this.NotifyPropertyChanged(null);
         }
-        protected void SetRangeValidator<VAL, T>(string PropName, T Min, T Max)
-        {
-            //not implemented yet
-        }
+        
         protected KinectManager Kinect { get; set; }
         protected KinectSensor Sensor { get => Kinect.Sensor; }
         protected ColorCameraSettings ColorCameraSettings { get => Sensor.ColorStream.CameraSettings; }
@@ -158,71 +97,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
             return false;
         }
-
-        /*public override ConfigSnapshot GetSnapshot()
-        {
-            return new KinectConfigSnapshot(this);
-        }
-
-        public override void ApplySnapshot(ConfigSnapshot snapshot)
-        {
-            var config = snapshot as KinectConfigSnapshot;
-            if(config == null) { return; }
-            this.ForceInfraredEmitterOff = config.ForceInfraredEmitterOff;
-            this.ElevationAngle = config.ElevationAngle;
-            this.ColorImageFormat = config.ColorImageFormat;
-            this.DepthImageFormat = config.DepthImageFormat;
-            this.Brightness = config.Brightness;
-            this.Contrast = config.Contrast;
-            this.Saturation = config.Saturation;
-            this.Sharpness = config.Sharpness;
-            this.WhiteBalance = config.WhiteBalance;
-            this.ExposureTime = config.ExposureTime;
-            this.FrameInterval = config.FrameInterval;
-            this.Gain = config.Gain;
-            this.Gamma = config.Gamma;
-            this.Hue = config.Hue;
-            this.PowerLineFrequency = config.PowerLineFrequency;
-            this.AutoExposure = config.AutoExposure;
-            this.AutoWhiteBalance = config.AutoWhiteBalance;
-            this.BacklightCompensationMode = config.BacklightCompensationMode;
-            this.DepthRange = config.DepthRange;
-            this.AutomaticGainControlEnabled = config.AutomaticGainControlEnabled;
-            this.BeamAngleMode = config.BeamAngleMode;
-            this.EchoCancellationMode = config.EchoCancellationMode;
-            this.EchoCancellationSpeakerIndex = config.EchoCancellationSpeakerIndex;
-            this.ManualBeamAngle = config.ManualBeamAngle;
-            this.noiseSuppression = config.NoiseSuppression;
-        }*/
-
-
-        protected bool forceInfraredEmitterOff;
-        protected int elevationAngle;
-
-        protected ColorImageFormat colorImageFormat;
-        protected DepthImageFormat depthImageFormat;
-        protected double brightness;
-        protected double contrast;
-        private double saturation;
-        private double sharpness;
-        private int whiteBalance;
-        private double exposureTime;
-        private double frameInterval;
-        private double gain;
-        private double gamma;
-        private double hue;
-        private PowerLineFrequency powerLineFrequency;
-        private bool autoExposure;
-        private bool autoWhiteBalance;
-        private BacklightCompensationMode backlightCompensationMode;
-        private DepthRange depthRange;
-
-        private bool automaticGainControlEnabled;
-        private BeamAngleMode beamAngleMode;
-        private EchoCancellationMode echoCancellationMode;
-        private int echoCancellationSpeakerIndex;
-        private double manualBeamAngle;
-        private bool noiseSuppression;
 
         #region Kinect Settings
         [Category("Kinect Settings")]
@@ -261,6 +135,42 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         }
         #endregion
 
+        #region Kinect Depth Camera Settings
+        [Category("Depth Camera Settings")]
+        //[DefaultValue(0d)]
+        [Description("Sets the depth image format.")]
+        public DepthImageFormat DepthImageFormat
+        {
+            get => depthImageFormat;
+            set
+            {
+                if (depthImageFormat != value && DepthImageFormat.Undefined != value)
+                {
+                    //this.Sensor.DepthStream.Enable(value);
+                    SetField(ref depthImageFormat, value, () => { this.Sensor.DepthStream.Enable(value); });
+                }
+            }
+        }
+
+        [Category("Depth Camera Settings")]
+        //[DefaultValue(0d)]
+        [Description("Sets the backlight compensation setting of the camera.")]
+        public DepthRange DepthRange
+        {
+            get => depthRange;
+            set
+            {
+                if (depthRange != value)
+                {
+                    this.Sensor.DepthStream.Range = value;
+                    SetField(ref depthRange, value);
+                }
+
+            }
+        }
+        #endregion
+
+        #region Kinect Color Camera settings
         [Category("Color Camera Settings")]
         //[DefaultValue(0d)]
         [Description("Sets the brightness of the camera.")]
@@ -275,22 +185,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                     SetField(ref colorImageFormat, value, () => { this.Sensor.ColorStream.Enable(value); });
                 }
 
-            }
-        }
-
-        [Category("Depth Camera Settings")]
-        //[DefaultValue(0d)]
-        [Description("Sets the depth image format.")]
-        public DepthImageFormat DepthImageFormat
-        {
-            get => depthImageFormat;
-            set
-            {
-                if (depthImageFormat != value && DepthImageFormat.Undefined != value)
-                {
-                    //this.Sensor.DepthStream.Enable(value);
-                    SetField(ref depthImageFormat, value, () => { this.Sensor.DepthStream.Enable(value); });
-                }
             }
         }
 
@@ -531,25 +425,9 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
             }
         }
+        #endregion
 
-
-        [Category("Depth Camera Settings")]
-        //[DefaultValue(0d)]
-        [Description("Sets the backlight compensation setting of the camera.")]
-        public DepthRange DepthRange
-        {
-            get => depthRange;
-            set
-            {
-                if (depthRange != value)
-                {
-                    this.Sensor.DepthStream.Range = value;
-                    SetField(ref depthRange, value);
-                }
-
-            }
-        }
-
+        #region Kinect Audio Settings
         [Category("Audio Settings")]
         public bool AutomaticGainControlEnabled
         {
@@ -634,5 +512,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
             }
         }
+        #endregion
     }
 }

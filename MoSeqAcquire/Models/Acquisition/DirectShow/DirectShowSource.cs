@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
-    [KnownType(typeof(DirectShowConfigSnapshot))]
+    //[KnownType(typeof(DirectShowConfigSnapshot))]
     public class DirectShowSource : MediaSource
     {
         public DirectShowSource()
         {
             this.Name = "Direct Show Device";
-            this.Config = new DirectShowConfig();
+            this.Config = new DirectShowConfig(this);
         }
         public VideoCaptureDevice Device { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()

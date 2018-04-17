@@ -15,7 +15,6 @@ namespace MoSeqAcquire.ViewModels.Recording
     public class RecordingManagerViewModel : ValidatingBaseViewModel
     {
         protected MoSeqAcquireViewModel rootViewModel;
-        protected Type selectedRecorderType;
         protected ObservableCollection<RecorderViewModel> recorders;
         protected RecorderViewModel selectedRecorder;
         protected RecordingManager _recordingManager;
@@ -47,14 +46,9 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         #region support typed recorder creation
         public ReadOnlyObservableCollection<AvailableRecorderTypeViewModel> AvailableRecorderTypes { get; protected set; }
-        public Type SelectedRecorderType
+        public void AddRecorder(Type RecorderType)
         {
-            get => this.selectedRecorderType;
-            set => this.SetField(ref this.selectedRecorderType, value);
-        }
-        public void AddRecorder()
-        {
-            var recorder = new RecorderViewModel(this.rootViewModel, this.SelectedRecorderType);
+            var recorder = new RecorderViewModel(this.rootViewModel, RecorderType);
             recorder.Name = "New Recorder";
             this.Recorders.Add(recorder);
             this.SelectedRecorder = recorder;
@@ -123,27 +117,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this._recordingManager.Stop();
             //this._recordingManager = null;
-        }
-    }
-
-
-    public class AvailableRecorderTypeViewModel
-    {
-        protected Type recorderType;
-        protected RecorderSpecification spec;
-
-        public AvailableRecorderTypeViewModel(Type RecorderType)
-        {
-            this.recorderType = RecorderType;
-            this.spec = new RecorderSpecification(RecorderType);
-        }
-        public Type RecorderType
-        {
-            get => this.recorderType;
-        }
-        public string Name
-        {
-            get => this.spec.DisplayName;
         }
     }
 }
