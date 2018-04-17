@@ -24,8 +24,8 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {            
-            this.ViewModel.Recorder.AddRecorder();
-            this.ViewModel.Commands.EditRecorder.Execute(parameter);
+            //this.ViewModel.Recorder.AddRecorder();
+            this.ViewModel.Commands.EditRecorder.Execute(null);
         }
     }
 }

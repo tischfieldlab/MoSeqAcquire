@@ -26,7 +26,9 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            RecorderViewModel recorderViewModel;
+            
+
+            RecorderViewModel recorderViewModel = null;
             if (parameter != null && parameter is RecorderViewModel)
             {
                 recorderViewModel = parameter as RecorderViewModel;
@@ -35,14 +37,10 @@ namespace MoSeqAcquire.ViewModels.Commands
             {
                 recorderViewModel = this.ViewModel.Recorder.SelectedRecorder;
             }
-            else
-            {
-                MessageBox.Show("Please select a recorder to edit!");
-                return;
-            }
+            
 
-            var dialog = new RecorderEditor();
-            dialog.DataContext = recorderViewModel;
+            var dialog = new RecorderEditor(this.ViewModel, recorderViewModel);
+            //dialog.DataContext = recorderViewModel;
             dialog.ShowDialog();
         }
     }

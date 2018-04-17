@@ -61,6 +61,12 @@ namespace MoSeqAcquire.ViewModels.Recording
 
             this._recordingManager.AddRecorder(recorder.Writer);
         }
+        public void AddRecorder(RecorderViewModel Recorder)
+        {
+            this.Recorders.Add(Recorder);
+            this.SelectedRecorder = Recorder;
+            this._recordingManager.AddRecorder(Recorder.Writer);
+        }
         public void RemoveSelectedRecorder()
         {
             if(this.SelectedRecorder != null)
