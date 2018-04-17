@@ -37,28 +37,27 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2" Mode="PrimaryDark" Padding="16">
-            <WrapPanel>
-                <TextBlock Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
-            </WrapPanel>
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button Width="72" Height="48" Margin="8,0,8,0"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                    Command="{Binding Path=CancelCommand}"
+                                    ToolTip="Continue">
+                        <materialDesign:PackIcon Kind="Cancel" Width="36" Height="36" />
+                    </Button>
+                    <Button Width="72" Height="48" Margin="8,0,8,0"
+                                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                    Command="{Binding Path=NextCommand}"
+                                    ToolTip="Continue">
+                        <materialDesign:PackIcon Kind="{Binding Path=ContinueIcon}" Width="36" Height="36" />
+                    </Button>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+            </DockPanel>
         </materialDesign:ColorZone>
         <materialDesign:Transitioner SelectedIndex="{Binding CurrentStep}" Grid.ColumnSpan="2" Grid.Row="1">
             <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
                 <DockPanel>
-                    <DockPanel  DockPanel.Dock="Bottom">
-                        <Button DockPanel.Dock="Right"  Width="48" Height="48" Margin="8,0,8,0"
-                                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                    Command="{Binding Path=NextCommand}"
-                                    ToolTip="Continue">
-                            <materialDesign:PackIcon Kind="ArrowRightBold" />
-                        </Button>
-                        <Button DockPanel.Dock="Left"  Width="48" Height="48" Margin="8,0,8,0"
-                                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                    Command="{Binding Path=CancelCommand}"
-                                    ToolTip="Continue">
-                            <materialDesign:PackIcon Kind="Cancel" />
-                        </Button>
-                    </DockPanel>
-
                     <ComboBox Margin="0,-8,0,-8" HorizontalAlignment="Center" VerticalAlignment="Center" ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Recorder Type"  />
                 </DockPanel>
             </materialDesign:TransitionerSlide>
@@ -68,10 +67,6 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Grid.Row="0" Margin="16">
                         <TextBox Text="{Binding Path=Name}" Margin="16" materialDesign:HintAssist.Hint="Recorder Name" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
@@ -118,21 +113,6 @@
                     </StackPanel>
 
                     <local:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="1" Grid.Row="0" />
-
-                    <DockPanel Grid.ColumnSpan="2" Grid.Row="1" >
-                        <Button DockPanel.Dock="Right"  Width="48" Height="48" Margin="8,0,8,0"
-                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                Command="{Binding Path=NextCommand}"
-                                ToolTip="Continue">
-                            <materialDesign:PackIcon Kind="ArrowRightBold" />
-                        </Button>
-                        <Button DockPanel.Dock="Left"  Width="48" Height="48" Margin="8,0,8,0"
-                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                Command="{Binding Path=CancelCommand}"
-                                ToolTip="Continue">
-                            <materialDesign:PackIcon Kind="Cancel" />
-                        </Button>
-                    </DockPanel>
                 </Grid>
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>

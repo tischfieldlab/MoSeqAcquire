@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.ViewModels;
 using MoSeqAcquire.ViewModels.Commands;
@@ -87,6 +88,17 @@ namespace MoSeqAcquire.Views
                 }
             }
         }
+        public PackIconKind ContinueIcon
+        {
+            get
+            {
+                if(this.CurrentStep == 1)
+                {
+                    return PackIconKind.Check;
+                }
+                return PackIconKind.ArrowRightBold;
+            }
+        }
         public int CurrentStep
         {
             get => this.currentStep;
@@ -112,25 +124,34 @@ namespace MoSeqAcquire.Views
         public ICommand NextCommand => new ActionCommand(
             (param) =>
             {
-                if (this.selectedRecorderType != null)
+                if (this.CurrentStep == 0)
                 {
-                    this.RecorderViewModel = new RecorderViewModel(this.rootViewModel, this.selectedRecorderType);
-                    this.CurrentStep = 1;
-                    this.NotifyPropertyChanged(null);
+                    if (this.selectedRecorderType != null)
+                    {
+                        this.RecorderViewModel = new RecorderViewModel(this.rootViewModel, this.selectedRecorderType);
+                        this.CurrentStep = 1;
+                        this.NotifyPropertyChanged(null);
+                    }
+                }
+                else if(this.CurrentStep == 1)
+                {
+                    this.rootViewModel.Recorder.AddRecorder(this.RecorderViewModel);
+                    this.Completed?.Invoke(this, new EventArgs());
                 }
             },
             (param) =>
             {
-                return this.selectedRecorderType != null;
+                if (this.CurrentStep == 0)
+                {
+                    return this.selectedRecorderType != null;
+                }
+                else if(this.CurrentStep == 1)
+                {
+                    return true;
+                }
+                return false;
             }
         );
-        public ICommand CompleteCommand => new ActionCommand(
-            (param) =>
-            {
-                this.rootViewModel.Recorder.AddRecorder(this.RecorderViewModel);
-                this.Completed?.Invoke(this, new EventArgs());
-            }
-         );
         
     }
 }
