@@ -20,17 +20,18 @@ namespace MoSeqAcquire.Models.Recording
     {
         protected string name;
         protected Channel channel;
-        protected BufferBlock<ChannelFrame> back_buffer;
+        protected BufferBlock<ChannelFrame> backBuffer;
+        protected Func<ActionBlock<ChannelFrame>> sinkFactory;
         protected ActionBlock<ChannelFrame> sink;
 
-        public MediaWriterPin(MediaType mediaType, ChannelCapacity Capacity, ActionBlock<ChannelFrame> Worker)
+        public MediaWriterPin(MediaType mediaType, ChannelCapacity Capacity, Func<ActionBlock<ChannelFrame>> WorkerFactory)
         {
             this.MediaType = mediaType;
             this.Capacity = Capacity;
-            this.sink = Worker;
+            this.sinkFactory = WorkerFactory;
             this.name = this.MediaType.ToString() + " Pin";
         }
-        public MediaWriterPin(string name, MediaType mediaType, ChannelCapacity Capacity, ActionBlock<ChannelFrame> Worker): this(mediaType, Capacity, Worker)
+        public MediaWriterPin(string name, MediaType mediaType, ChannelCapacity Capacity, Func<ActionBlock<ChannelFrame>> WorkerFactory) : this(mediaType, Capacity, WorkerFactory)
         {
             this.name = name;
         }
@@ -47,13 +48,14 @@ namespace MoSeqAcquire.Models.Recording
         }
         public void Connect()
         {
-            this.back_buffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true, });
-            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.back_buffer);
-            this.back_buffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
+            this.backBuffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true, });
+            this.sink = this.sinkFactory.Invoke();
+            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.backBuffer);
+            this.backBuffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
         }
         public Task Disconnect()
         {
-            this.back_buffer.Complete();
+            this.backBuffer.Complete();
             return this.sink.Completion;
         }
     }
@@ -131,7 +133,17 @@ namespace MoSeqAcquire.Models.Recording
                 Name = this.Name,
                 Provider = this.Specification.TypeName,
                 Config = this.Settings.GetSnapshot(),
-                Pins = this.Pins.Values.Select(mwp => new ProtocolRecorderPin() { Name = mwp.Name, Channel = mwp.Channel.FullName }).ToList()
+                Pins = this.Pins.Values.Select(mwp => new ProtocolRecorderPin() { Name = mwp.Name, Channel = mwp.Channel != null ? mwp.Channel.FullName : null }).ToList()
+            };
+        }
+        public RecordingDevice GetDeviceInfo()
+        {
+            return new RecordingDevice()
+            {
+                Name = this.Name,
+                Provider = this.Specification.TypeName,
+                Config = this.Settings.GetSnapshot(),
+                Records = this.GetChannelFileMap().Select(kvp => new RecordingRecord() { Filename = kvp.Key, Channels = kvp.Value.Select(c => c.FullName).ToList() }).ToList()
             };
         }
         public static MediaWriter FromProtocolRecorder(ProtocolRecorder protocolRecorder)

@@ -31,10 +31,6 @@ namespace MoSeqAcquire.ViewModels.Commands
             {
                 recorderViewModel = parameter as RecorderViewModel;
             }
-            else if(this.ViewModel.Recorder.SelectedRecorder != null)
-            {
-                recorderViewModel = this.ViewModel.Recorder.SelectedRecorder;
-            }
             
             var dialog = new RecorderEditor();
             dialog.DataContext = new RecorderEditorViewModel(this.ViewModel, recorderViewModel);

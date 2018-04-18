@@ -13,18 +13,18 @@ namespace MoSeqAcquire.Models.Recording
         protected bool isInitialized;
         protected bool isRecording;
         protected IRecordingLengthStrategy terminator;
-        protected List<IMediaWriter> _writers;
+        protected List<MediaWriter> _writers;
 
         public event EventHandler RecordingStarted;
         public event EventHandler RecordingFinished;
 
         public RecordingManager()
         {
-            this._writers = new List<IMediaWriter>();
+            this._writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
         }
 
-        public void AddRecorder(IMediaWriter Writer)
+        public void AddRecorder(MediaWriter Writer)
         {
             if (this.isInitialized)
             {
@@ -33,7 +33,7 @@ namespace MoSeqAcquire.Models.Recording
             Writer.RequestDestinationBase += this.ReplyToDestinationRequest;
             this._writers.Add(Writer);
         }
-        public void RemoveRecorder(IMediaWriter Writer)
+        public void RemoveRecorder(MediaWriter Writer)
         {
             if (this.isInitialized)
             {
@@ -75,22 +75,25 @@ namespace MoSeqAcquire.Models.Recording
 
         public void Initialize(GeneralRecordingSettings GeneralSettings)
         {
-            this.isInitialized = true;
-            this.GeneralSettings = GeneralSettings;
+            this.isInitialized = true;            
+        }
+        protected IRecordingLengthStrategy TerminatorFactory()
+        {
+            IRecordingLengthStrategy terminator;
             switch (this.GeneralSettings.RecordingMode)
             {
                 case RecordingMode.TimeCount:
-                    this.terminator = new TimeBasedRecordingLength(TimeSpan.FromSeconds(this.GeneralSettings.RecordingSeconds));
+                    terminator = new TimeBasedRecordingLength(TimeSpan.FromSeconds(this.GeneralSettings.RecordingSeconds));
                     break;
                 case RecordingMode.Indeterminate:
                 default:
-                    this.terminator = new IndeterminantRecordingLength();
+                    terminator = new IndeterminantRecordingLength();
                     break;
             }
-            this.terminator.TriggerStop += this.Terminator_TriggerStop;
-            this.terminator.PropertyChanged += this.Terminator_PropertyChanged;
+            terminator.TriggerStop += this.Terminator_TriggerStop;
+            terminator.PropertyChanged += this.Terminator_PropertyChanged;
+            return terminator;
         }
-
 
 
         public void Reset()
@@ -103,13 +106,19 @@ namespace MoSeqAcquire.Models.Recording
             {
                 throw new InvalidOperationException("Recording Manager must be initialized before starting!");
             }
-            
-            this.IsRecording = true;
+
+            this.WriteRecordingInfo();
+
+            this.terminator = this.TerminatorFactory();
+            this.terminator.TriggerStop += this.Terminator_TriggerStop;
+            this.terminator.PropertyChanged += this.Terminator_PropertyChanged;
             this.terminator.Start();
+
             foreach (var r in this._writers)
             {
                 r.Start();
             }
+            this.IsRecording = true;
             this.RecordingStarted?.Invoke(this, new EventArgs());
         }
         public void Stop()
@@ -125,27 +134,21 @@ namespace MoSeqAcquire.Models.Recording
             this.terminator.Stop();
             this.terminator.TriggerStop -= this.Terminator_TriggerStop;
             this.terminator.PropertyChanged -= this.Terminator_PropertyChanged;
+            this.terminator = null;
+
             this.IsRecording = false;
             this.RecordingFinished?.Invoke(this, new EventArgs());
         }
 
-        protected RecordingSummary WriteRecordingInfo()
+        protected void WriteRecordingInfo()
         {
             var summary = new RecordingSummary();
-            summary.Recordings = new List<RecordingRecord>();
             foreach(var writer in this._writers)
             {
-                foreach (var mapItem in writer.GetChannelFileMap()) {
-                    var record = new RecordingRecord()
-                    {
-                        Name = writer.Name,
-                        Filename = mapItem.Key,
-                        Channels = mapItem.Value.Select(c => c.FullName).ToList()
-                    };
-                    summary.Recordings.Add(record);
-                }
+                summary.Recorders.Add(writer.GetDeviceInfo());
             }
-            return summary;
+            string dest = Path.Combine(this.ReplyToDestinationRequest(), "info.xml");
+            RecordingInfoWriter.Write(dest, summary);
         }
 
 
@@ -165,12 +168,27 @@ namespace MoSeqAcquire.Models.Recording
 
     public class RecordingSummary
     {
-        public List<RecordingRecord> Recordings { get; set; }
+        public RecordingSummary()
+        {
+            this.Recorders = new List<RecordingDevice>();
+        }
+        public List<RecordingDevice> Recorders { get; set; }
     }
+    public class RecordingDevice : RecorderInfo
+    {
+        public RecordingDevice()
+        {
+            this.Records = new List<RecordingRecord>();
+        }
+        public List<RecordingRecord> Records { get; set; }
+
+    }
+
     public class RecordingRecord
     {
-        public string Name { get; set; }
         public string Filename { get; set; }
         public List<string> Channels { get; set; }
     }
+
+    
 }

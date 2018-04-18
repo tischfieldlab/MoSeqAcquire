@@ -21,5 +21,7 @@ namespace MoSeqAcquire.Models.Attributes
         {
             get => this.methodName;
         }
+        public string DisplayPath { get; set; }
+        public string ValuePath { get; set; }
     }
 }

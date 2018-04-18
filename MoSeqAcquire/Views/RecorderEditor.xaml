@@ -42,13 +42,14 @@
                     <Button Width="72" Height="48" Margin="8,0,8,0"
                                     Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Command="{Binding Path=CancelCommand}"
-                                    ToolTip="Continue">
+                                    ToolTip="Cancel">
                         <materialDesign:PackIcon Kind="Cancel" Width="36" Height="36" />
                     </Button>
                     <Button Width="72" Height="48" Margin="8,0,8,0"
                                     Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                     Command="{Binding Path=NextCommand}"
-                                    ToolTip="Continue">
+                                    ToolTip="{Binding Path=ContinueHelp}">
+                        
                         <materialDesign:PackIcon Kind="{Binding Path=ContinueIcon}" Width="36" Height="36" />
                     </Button>
                 </StackPanel>

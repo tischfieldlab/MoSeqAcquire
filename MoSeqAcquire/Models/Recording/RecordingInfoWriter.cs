@@ -1,6 +1,4 @@
-﻿using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Recording;
-using MoSeqAcquire.Models.Management;
+﻿using MoSeqAcquire.Models.Management;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,26 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace MoSeqAcquire.Models.Management
+namespace MoSeqAcquire.Models.Recording
 {
-    class MediaSettingsWriter
+    class RecordingInfoWriter
     {
 
-        public static void WriteProtocol(string filename, Protocol Configuration)
+        public static void Write(string filename, RecordingSummary Configuration)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Protocol), GetSerializedTypes());
+            XmlSerializer serializer = new XmlSerializer(typeof(RecordingSummary), GetSerializedTypes());
             using (TextWriter writer = new StreamWriter(filename))
             {
                 serializer.Serialize(writer, Configuration);
             }
         }
-        public static Protocol ReadProtocol(string filename)
+        public static RecordingSummary Read(string filename)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Protocol), GetSerializedTypes());
-            Protocol configuration;
+            XmlSerializer serializer = new XmlSerializer(typeof(RecordingSummary), GetSerializedTypes());
+            RecordingSummary configuration;
             using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
-                configuration = (Protocol)serializer.Deserialize(fs);
+                configuration = (RecordingSummary)serializer.Deserialize(fs);
             }
             return configuration;
         }
