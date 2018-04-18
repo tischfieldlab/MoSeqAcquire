@@ -36,6 +36,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         protected void Initialize()
         {
+            this.Name = this.rootViewModel.Recorder.GetNextDefaultRecorderName();
             this.loadChannels();
             this.settings = new PropertyCollection(this.writer.Settings);
             var pins = new List<RecorderPinViewModel>();

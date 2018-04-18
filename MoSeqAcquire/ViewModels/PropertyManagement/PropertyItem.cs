@@ -49,6 +49,30 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
                 return null;
             }
         }
+        public string ChoicesDisplayPath
+        {
+            get
+            {
+                ChoicesMethodAttribute attr = this.propertyInfo.GetCustomAttribute<ChoicesMethodAttribute>();
+                if (attr != null)
+                {
+                    return attr.DisplayPath;
+                }
+                return null;
+            }
+        }
+        public string ChoicesValuePath
+        {
+            get
+            {
+                ChoicesMethodAttribute attr = this.propertyInfo.GetCustomAttribute<ChoicesMethodAttribute>();
+                if (attr != null)
+                {
+                    return attr.ValuePath;
+                }
+                return null;
+            }
+        }
         public string DisplayName
         {
             get

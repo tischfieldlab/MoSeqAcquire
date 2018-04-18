@@ -18,8 +18,11 @@
         <DataTemplate x:Key="TextBoxEditor">
             <TextBox Text="{Binding Path=Value}" HorizontalAlignment="Stretch" />
         </DataTemplate>
-        <DataTemplate x:Key="ComboBoxEditor">
+        <DataTemplate x:Key="EnumComboBoxEditor">
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
+        </DataTemplate>
+        <DataTemplate x:Key="CollectionComboBoxEditor">
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="{Binding Path=ChoicesDisplayPath}" SelectedValuePath="{Binding Path=ChoicesValuePath}" />
         </DataTemplate>
         <DataTemplate x:Key="NumericEditor">
             <mac:NumericUpDown Value="{Binding Path=Value}" />

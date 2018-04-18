@@ -26,7 +26,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
-            this.PopulateAvailableRecorderTypes();
 
             this._recordingManager = new RecordingManager();
             this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
@@ -37,23 +36,14 @@ namespace MoSeqAcquire.ViewModels.Recording
             Validator.AddRequiredRule(() => this.GeneralSettings.Directory, "Directory cannot be empty!");
 
         }
-        protected void PopulateAvailableRecorderTypes()
-        {
-            this.AvailableRecorderTypes = new ReadOnlyObservableCollection<AvailableRecorderTypeViewModel>(new ObservableCollection<AvailableRecorderTypeViewModel>(ProtocolHelpers.FindRecorderTypes().Select(t => new AvailableRecorderTypeViewModel(t))));
-        }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
 
 
         #region support typed recorder creation
-        public ReadOnlyObservableCollection<AvailableRecorderTypeViewModel> AvailableRecorderTypes { get; protected set; }
         public void AddRecorder(Type RecorderType)
         {
             var recorder = new RecorderViewModel(this.rootViewModel, RecorderType);
-            recorder.Name = "New Recorder";
-            this.Recorders.Add(recorder);
-            this.SelectedRecorder = recorder;
-
-            this._recordingManager.AddRecorder(recorder.Writer);
+            this.AddRecorder(recorder);
         }
         public void AddRecorder(RecorderViewModel Recorder)
         {
@@ -70,6 +60,22 @@ namespace MoSeqAcquire.ViewModels.Recording
                 this.SelectedRecorder = this.Recorders.ElementAtOrDefault(currIdx - 1);
             }
         }
+        public string GetNextDefaultRecorderName()
+        {
+            string namebase = "Recorder";
+            string realname = "";
+            int count = 1;
+            while (count < int.MaxValue)
+            {
+                realname = namebase + " " + count.ToString();
+                if (this.recorders.Count(rvm => rvm.Name.Equals(realname)) == 0)
+                {
+                    break;
+                }
+                count++;
+            }
+            return realname;
+        }
         #endregion
 
         public ObservableCollection<RecorderViewModel> Recorders { get => this.recorders; }
@@ -81,7 +87,10 @@ namespace MoSeqAcquire.ViewModels.Recording
 
 
 
-
+        public GeneralRecordingSettings GeneralSettings
+        {
+            get => this._recordingManager.GeneralSettings;
+        }
         public bool IsRecording
         {
             get
@@ -90,11 +99,6 @@ namespace MoSeqAcquire.ViewModels.Recording
                 return this._recordingManager.IsRecording;
             }
         }
-        public GeneralRecordingSettings GeneralSettings
-        {
-            get => this._recordingManager.GeneralSettings;
-        }
-
         public TimeSpan? Duration { get => this._recordingManager?.Duration; }
         public double? Progress { get => this._recordingManager?.Progress; }
         public TimeSpan? TimeRemaining { get => this._recordingManager?.TimeRemaining; }

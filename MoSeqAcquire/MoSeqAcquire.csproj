@@ -168,6 +168,7 @@
     <Compile Include="Models\Recording\RawDataWriter\RawDataWriterSettings.cs" />
     <Compile Include="Models\Recording\RecorderSpecification.cs" />
     <Compile Include="Models\Recording\RecorderSettings.cs" />
+    <Compile Include="Models\Recording\RecordingInfoWriter.cs" />
     <Compile Include="Models\Recording\RecordingManager.cs" />
     <Compile Include="Models\Recording\TimeBasedRecordingLength.cs" />
     <Compile Include="Models\Management\ExperimentMetadata.cs" />

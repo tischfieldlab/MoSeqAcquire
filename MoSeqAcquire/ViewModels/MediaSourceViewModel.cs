@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Acquisition.DirectShow;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.ViewModels.PropertyManagement;
 
@@ -50,6 +52,10 @@ namespace MoSeqAcquire.ViewModels
                 {
                     this.RetrieveChannels();
                     this.IsReady = true;
+                    if(this.MediaSource is DirectShowSource)
+                    {
+                        (this.MediaSource as DirectShowSource).Device.DisplayPropertyPage(new WindowInteropHelper(Application.Current.MainWindow).Handle);
+                    }
                 });
             });
         }

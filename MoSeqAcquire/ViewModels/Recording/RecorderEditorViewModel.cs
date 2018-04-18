@@ -34,31 +34,24 @@ namespace MoSeqAcquire.ViewModels.Recording
             {
                 this.CurrentStep = 0;
             }
-
         }
         public string Header
         {
-            get
-            {
-                if (RecorderViewModel is null)
-                {
-                    return "Select New Recorder Type";
-                }
-                else
-                {
-                    return "Configure " + this.RecorderViewModel.Specification.DisplayName;
-                }
-            }
+            get => this.RecorderViewModel is null ? "Select New Recorder Type" : "Configure " + this.RecorderViewModel.Specification.DisplayName;
         }
         public PackIconKind ContinueIcon
         {
+            get => this.CurrentStep == 1 ? PackIconKind.Check : PackIconKind.ArrowRightBold;
+        }
+        public string ContinueHelp
+        {
             get
             {
-                if (this.CurrentStep == 1)
+                if(this.CurrentStep == 1)
                 {
-                    return PackIconKind.Check;
+                    return "Finish";
                 }
-                return PackIconKind.ArrowRightBold;
+                return "Continue";
             }
         }
         public int CurrentStep

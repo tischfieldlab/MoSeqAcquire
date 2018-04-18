@@ -85,11 +85,9 @@
                         <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
                                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                                     Command="{Binding Path=Root.Commands.AddRecorder}"
-                                    ToolTip="Remove Recorder">
+                                    ToolTip="Add New Recorder">
                             <materialDesign:PackIcon Kind="Plus"  />
                         </Button>
-                        <ComboBox Margin="0,-8,0,-8" DockPanel.Dock="Right" ItemsSource="{Binding Path=AvailableRecorderTypes}" SelectedValue="{Binding Path=SelectedRecorderType}" DisplayMemberPath="Name" SelectedValuePath="RecorderType" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="Recorder Type"  />
-
                         <TextBlock Text="Recorders" VerticalAlignment="Center" />
                     </DockPanel>
                 </GroupBox.Header>

@@ -23,10 +23,10 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 
         public MPEGVideoWriter() : base()
         {
-            this.videoPin = new MediaWriterPin(MediaType.Video, ChannelCapacity.Single, this.GetVideoActionBlock());
+            this.videoPin = new MediaWriterPin(MediaType.Video, ChannelCapacity.Single, this.GetVideoActionBlock);
             this.RegisterPin(this.videoPin);
 
-            this.audioPin = new MediaWriterPin(MediaType.Audio, ChannelCapacity.Single, this.GetAudioActionBlock());
+            this.audioPin = new MediaWriterPin(MediaType.Audio, ChannelCapacity.Single, this.GetAudioActionBlock);
             this.RegisterPin(this.audioPin);
         }
         protected override string Ext { get => "mp4"; }
@@ -50,6 +50,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
         public override void Stop()
         {
             base.Stop();
+            this.writer.Flush();
             this.writer.Close();
         }
         

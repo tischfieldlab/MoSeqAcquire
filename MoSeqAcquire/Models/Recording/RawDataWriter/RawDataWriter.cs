@@ -26,7 +26,8 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
 
         public RawDataWriter() : base()
         {
-            this.dataPin = new MediaWriterPin(MediaType.Any, ChannelCapacity.Single, this.GetActionBlock());
+            this.dataPin = new MediaWriterPin(MediaType.Any, ChannelCapacity.Multiple, this.GetActionBlock);
+            this.RegisterPin(this.dataPin);
         }
         
         protected override string Ext

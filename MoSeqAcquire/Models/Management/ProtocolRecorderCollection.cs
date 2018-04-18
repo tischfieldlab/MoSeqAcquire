@@ -37,8 +37,7 @@ namespace MoSeqAcquire.Models.Management
 
     }
 
-    [XmlRoot("Recorder")]
-    public class ProtocolRecorder
+    public class RecorderInfo
     {
         [XmlAttribute]
         public string Name { get; set; }
@@ -46,6 +45,12 @@ namespace MoSeqAcquire.Models.Management
         public string Provider { get; set; }
         [XmlElement]
         public ConfigSnapshot Config { get; set; }
+    }
+
+    [XmlRoot("Recorder")]
+    public class ProtocolRecorder : RecorderInfo
+    {
+
         [XmlArray("Pins")]
         [XmlArrayItem("Pin")]
         public List<ProtocolRecorderPin> Pins { get; set; }

@@ -46,7 +46,7 @@ namespace MoSeqAcquire.Views
         {
             FrameworkElement elemnt = container as FrameworkElement;
             PropertyItem pi = item as PropertyItem;
-            Type pit = pi.Value.GetType();
+            Type pit = pi.ValueType;
             if (pit.Equals(typeof(bool)))
             {
                 return elemnt.FindResource("CheckboxEditor") as DataTemplate;
@@ -57,7 +57,11 @@ namespace MoSeqAcquire.Views
             }
             else if (pit.IsEnum)
             {
-                return elemnt.FindResource("ComboBoxEditor") as DataTemplate;
+                return elemnt.FindResource("EnumComboBoxEditor") as DataTemplate;
+            }
+            else if(pi.Choices != null)
+            {
+                return elemnt.FindResource("CollectionComboBoxEditor") as DataTemplate;
             }
             else
             {
