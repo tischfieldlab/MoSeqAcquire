@@ -24,8 +24,14 @@
         <DataTemplate x:Key="CollectionComboBoxEditor">
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="{Binding Path=ChoicesDisplayPath}" SelectedValuePath="{Binding Path=ChoicesValuePath}" />
         </DataTemplate>
+        <DataTemplate x:Key="RangeEditor">
+            <Slider TickFrequency="{Binding Path=StepValue}" Orientation="Horizontal" TickPlacement="BottomRight" Minimum="{Binding Path=MinValue}" Maximum="{Binding Path=MaxValue}" Value="{Binding Path=Value}" Style="{StaticResource MaterialDesignDiscreteSlider}" />
+        </DataTemplate>
         <DataTemplate x:Key="NumericEditor">
             <mac:NumericUpDown Value="{Binding Path=Value}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AutoCheckboxTemplate">
+            <CheckBox IsChecked="{Binding Path=IsAutomatic}" IsEnabled="{Binding Path=SupportsAutomatic}" />
         </DataTemplate>
         <local:PropertyItemDataTemplateSelector x:Key="PropertyItemDataTemplateSelector" />
     </UserControl.Resources>
@@ -41,6 +47,7 @@
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" />
                     <GridViewColumn Header="Value" CellTemplateSelector="{StaticResource PropertyItemDataTemplateSelector}" />
+                    <GridViewColumn Header="Auto" CellTemplate="{StaticResource AutoCheckboxTemplate}" />
                 </GridView>
             </ListView.View>
         </ListView>

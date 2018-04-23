@@ -55,7 +55,7 @@
                             </GroupBox.HeaderTemplate>
                             <materialDesign:DrawerHost Name="dh" Margin="-9">
                                 <materialDesign:DrawerHost.RightDrawerContent>
-                                    
+
                                     <local:PropertyView SelectedObject="{Binding ConfigItems}" MaxHeight="250" />
                                 </materialDesign:DrawerHost.RightDrawerContent>
                                 <Grid>

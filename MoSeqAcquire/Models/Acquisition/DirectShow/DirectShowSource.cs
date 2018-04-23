@@ -1,4 +1,5 @@
 ﻿using Accord.Video.DirectShow;
+using MoSeqAcquire.Models.Acquisition.DirectShow.Internal;
 using MoSeqAcquire.Models.Attributes;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Name = "Direct Show Device";
             this.Config = new DirectShowConfig(this);
         }
-        public VideoCaptureDevice Device { get; protected set; }
+        public ExVideoCaptureDevice Device { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()
         {
             var items = new List<Tuple<string, string>>();
@@ -38,8 +39,11 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             }
             this.Name = videoDevices.Find(fi => fi.MonikerString.Equals(DeviceId)).Name;
             this.Status = "Initializing";
-            this.Device = new VideoCaptureDevice(DeviceId);
+            this.Device = new ExVideoCaptureDevice(DeviceId);
+            //this.Config.ReadState();
+
             this.RegisterChannel(new DirectShowVideoChannel(this));
+
             this.IsInitialized = true;
 
             return true;

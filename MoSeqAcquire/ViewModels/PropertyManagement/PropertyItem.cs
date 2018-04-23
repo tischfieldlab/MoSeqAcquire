@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -33,6 +34,50 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
                 this.NotifyPropertyChanged("Value");
             }
         }
+        public object DefaultValue
+        {
+            get
+            {
+                DefaultValueAttribute attr = this.propertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+                if (attr != null)
+                {
+                    return attr.Value;
+                }
+                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
+                if (rma != null)
+                {
+                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Default;
+                }
+                return null;
+            }
+        }
+        public string DisplayName
+        {
+            get
+            {
+                DisplayNameAttribute attr = this.propertyInfo.GetCustomAttribute<DisplayNameAttribute>();
+                if (attr != null)
+                {
+                    return attr.DisplayName;
+                }
+                return this.propertyName;
+            }
+        }
+        public string Category
+        {
+            get
+            {
+                CategoryAttribute attr = this.propertyInfo.GetCustomAttribute<CategoryAttribute>();
+                if (attr != null)
+                {
+                    return attr.Category;
+                }
+                return null;
+            }
+        }
+
+
+        #region Choices
         public IEnumerable<object> Choices
         {
             get
@@ -73,29 +118,95 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
                 return null;
             }
         }
-        public string DisplayName
+        #endregion
+
+        #region Range
+        public bool SupportsRange
         {
             get
             {
-                DisplayNameAttribute attr = this.propertyInfo.GetCustomAttribute<DisplayNameAttribute>();
-                if (attr != null)
+                RangeAttribute ra = this.propertyInfo.GetCustomAttribute<RangeAttribute>();
+                if (ra != null)
                 {
-                    return attr.DisplayName;
+                    return true;
                 }
-                return this.propertyName;
+                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
+                if (rma != null)
+                {
+                    return true;
+                }
+                return false;
             }
         }
-        public string Category
+        public object MinValue
         {
             get
             {
-                CategoryAttribute attr = this.propertyInfo.GetCustomAttribute<CategoryAttribute>();
-                if (attr != null)
+                RangeAttribute ra = this.propertyInfo.GetCustomAttribute<RangeAttribute>();
+                if (ra != null)
                 {
-                    return attr.Category;
+                    return ra.Minimum;
+                }
+                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
+                if (rma != null)
+                {
+                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Min;
                 }
                 return null;
             }
         }
+        public object MaxValue
+        {
+            get
+            {
+                RangeAttribute ra = this.propertyInfo.GetCustomAttribute<RangeAttribute>();
+                if (ra != null)
+                {
+                    return ra.Maximum;
+                }
+                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
+                if (rma != null)
+                {
+                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Max;
+                }
+                return null;
+            }
+        }
+        public object StepValue
+        {
+            get
+            {
+                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
+                if (rma != null)
+                {
+                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Step;
+                }
+                return null;
+            }
+        }
+        #endregion
+
+        #region Automatic
+        public bool SupportsAutomatic
+        {
+            get
+            {
+                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
+                if (rma != null)
+                {
+                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).AllowsAuto;
+                }
+                return false;
+            }
+        }
+        public bool IsAutomatic
+        {
+            get
+            {
+               
+                return false;
+            }
+        }
+        #endregion
     }
 }
