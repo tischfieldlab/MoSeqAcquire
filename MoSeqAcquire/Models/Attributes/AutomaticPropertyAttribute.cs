@@ -1,8 +1,6 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Recording;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,18 +8,18 @@ using System.Threading.Tasks;
 namespace MoSeqAcquire.Models.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class RangeMethodAttribute : Attribute
+    public class AutomaticPropertyAttribute : Attribute
     {
-        string methodName;
-
-        public RangeMethodAttribute(string methodName)
+        string propertyName;
+        
+        public AutomaticPropertyAttribute(string propertyName)
         {
-            this.methodName = methodName;
+            this.propertyName = propertyName;
         }
 
-        public string MethodName
+        public string PropertyName
         {
-            get => this.methodName;
+            get => this.propertyName;
         }
     }
 }

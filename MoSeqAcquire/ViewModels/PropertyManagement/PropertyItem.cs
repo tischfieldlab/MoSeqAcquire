@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.ViewModels.PropertyManagement
 {
-    public class PropertyItem : BaseViewModel
+    public class PropertyItem : BaseViewModel//, ICustomTypeDescriptor
     {
         protected string propertyName;
         protected object sourceObject;
@@ -46,7 +47,7 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
                 RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
                 if (rma != null)
                 {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Default;
+                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IDefaultInfo).Default;
                 }
                 return null;
             }
@@ -194,7 +195,7 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
                 RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
                 if (rma != null)
                 {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).AllowsAuto;
+                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IAutomaticInfo).AllowsAuto;
                 }
                 return false;
             }
@@ -203,8 +204,20 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
         {
             get
             {
-               
+                AutomaticPropertyAttribute apa = this.propertyInfo.GetCustomAttribute<AutomaticPropertyAttribute>();
+                if (apa != null)
+                {
+                    return (bool)this.sourceObject.GetType().GetProperty(apa.PropertyName).GetValue(this.sourceObject);
+                }
                 return false;
+            }
+            set
+            {
+                AutomaticPropertyAttribute apa = this.propertyInfo.GetCustomAttribute<AutomaticPropertyAttribute>();
+                if (apa != null)
+                {
+                    this.sourceObject.GetType().GetProperty(apa.PropertyName).SetValue(this.sourceObject, value);
+                }
             }
         }
         #endregion

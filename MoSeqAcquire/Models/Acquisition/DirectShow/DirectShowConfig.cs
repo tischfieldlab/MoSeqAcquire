@@ -74,25 +74,20 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             return this.Source.Device.VideoCapabilities;
         }
 
-        [RangeMethod("BrightnessRange")]
-        public int Brightness
+        //[RangeMethod("BrightnessRange")]
+        public ComplexProperty Brightness
         {
-            get => brightness.Value;
-            set
-            {
-                this.brightness.Value = value;
-                this.NotifyPropertyChanged();
-            }
+            get => brightness;
         }
-        public PropertyCapability BrightnessRange()
+        /*public PropertyCapability BrightnessRange()
         {
             return this.brightness.Capability;
-        }
+        }*/
 
         [RangeMethod("ContrastRange")]
         public int Contrast
         {
-            get => contrast.Value;
+            get => (int)contrast.Value;
             set
             {
                 this.contrast.Value = value;
@@ -107,7 +102,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("HueRange")]
         public int Hue
         {
-            get => hue.Value;
+            get => (int)hue.Value;
             set
             {
                 this.hue.Value = value;
@@ -122,7 +117,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("SaturationRange")]
         public int Saturation
         {
-            get => saturation.Value;
+            get => (int)saturation.Value;
             set
             {
                 this.saturation.Value = value;
@@ -137,7 +132,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("SharpnessRange")]
         public int Sharpness
         {
-            get => sharpness.Value;
+            get => (int)sharpness.Value;
             set
             {
                 this.sharpness.Value = value;
@@ -152,7 +147,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("GammaRange")]
         public int Gamma
         {
-            get => gamma.Value;
+            get => (int)gamma.Value;
             set
             {
                 this.gamma.Value = value;
@@ -167,7 +162,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("ColorEnableRange")]
         public int ColorEnable
         {
-            get => colorEnable.Value;
+            get => (int)colorEnable.Value;
             set
             {
                 this.colorEnable.Value = value;
@@ -182,7 +177,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("WhiteBalanceRange")]
         public int WhiteBalance
         {
-            get => whiteBalance.Value;
+            get => (int)whiteBalance.Value;
             set
             {
                 this.whiteBalance.Value = value;
@@ -197,7 +192,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("BacklightCompensationRange")]
         public int BacklightCompensation
         {
-            get => backlightCompensation.Value;
+            get => (int)backlightCompensation.Value;
             set
             {
                 this.backlightCompensation.Value = value;
@@ -212,7 +207,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("GainRange")]
         public int Gain
         {
-            get => gain.Value;
+            get => (int)gain.Value;
             set
             {
                 this.gain.Value = value;
@@ -227,7 +222,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("DigitalMultiplierRange")]
         public int DigitalMultiplier
         {
-            get => digitalMultiplier.Value;
+            get => (int)digitalMultiplier.Value;
             set
             {
                 this.digitalMultiplier.Value = value;
@@ -242,7 +237,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [RangeMethod("DigitalMultiplierLimitRange")]
         public int DigitalMultiplierLimit
         {
-            get => digitalMultiplierLimit.Value;
+            get => (int)digitalMultiplierLimit.Value;
             set
             {
                 this.digitalMultiplierLimit.Value = value;
@@ -255,14 +250,20 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
 
         [RangeMethod("WhiteBalanceComponentRange")]
+        [AutomaticProperty("IsWhiteBalanceComponentAutomatic")]
         public int WhiteBalanceComponent
         {
-            get => whiteBalanceComponent.Value;
+            get => (int)whiteBalanceComponent.Value;
             set
             {
                 this.whiteBalanceComponent.Value = value;
                 this.NotifyPropertyChanged();
             }
+        }
+        public bool IsWhiteBalanceComponentAutomatic
+        {
+            get => this.whiteBalanceComponent.IsAutomatic;
+            set => this.whiteBalanceComponent.IsAutomatic = value;
         }
         public PropertyCapability WhiteBalanceComponentRange()
         {
@@ -272,7 +273,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         [ChoicesMethod("PowerlineFrequencyChoices",DisplayPath ="Item1", ValuePath ="Item2" )]
         public int PowerlineFrequency
         {
-            get => powerlineFrequency.Value;
+            get => (int)powerlineFrequency.Value;
             set
             {
                 this.powerlineFrequency.Value = value;
@@ -295,11 +296,10 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
     }
 
-    class ProcAmpPropInfo
+    class ProcAmpPropInfo : ComplexProperty
     {
         protected DirectShowSource source;
         protected VideoProcAmpProperty property;
-        protected PropertyCapability capability;
 
         protected int currentValue;
         protected VideoProcAmpFlags currentFlags;
@@ -310,7 +310,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.source = Source;
             this.property = Property;
         }
-        public int Value
+        public override object Value
         {
             get
             {
@@ -319,11 +319,11 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             }
             set
             {
-                this.currentValue = value;
+                this.currentValue = (int)value;
                 this.PushCurrentValue();
             }
         }
-        public bool IsAutomatic
+        public override bool IsAutomatic
         {
             get
             {
@@ -343,51 +343,21 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 this.PushCurrentValue();
             }
         }
-        public PropertyCapability Capability
-        {
-            get
-            {
-                if (this.capability == null)
-                {
-                    this.ReadCapability();
-                }
-                return this.capability;
-            }
-        }
-        public int Min
-        {
-            get => (int)this.Capability.Min;
-        }
-        public int Max
-        {
-            get => (int)this.Capability.Max;
-        }
-        public int Step
-        {
-            get => (int)this.Capability.Step;
-        }
-        public bool IsSupported
-        {
-            get => this.Capability.IsSupported;
-        }
-        public bool AllowsAuto
-        {
-            get => this.Capability.AllowsAuto;
-        }
-        protected void PushCurrentValue()
+        
+        protected override void PushCurrentValue()
         {
             this.source.Device.SetVideoProcAmpProperty(this.property, this.currentValue, this.currentFlags);
         }
-        protected void ReadCurrentValue()
+        protected override void ReadCurrentValue()
         {
             this.source.Device.GetVideoProcAmpProperty(this.property, out this.currentValue, out this.currentFlags);
         }
-        protected void ReadCapability()
+        protected override PropertyCapability ReadCapability()
         {
             int min, max, step, dflt;
             VideoProcAmpFlags flgs;
             this.source.Device.GetVideoProcAmpRange(property, out min, out max, out step, out dflt, out flgs);
-            this.capability = new PropertyCapability()
+            return new PropertyCapability()
             {
                 Min = min,
                 Max = max,
@@ -396,6 +366,90 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 AllowsAuto = (flgs.HasFlag(VideoProcAmpFlags.Auto) ? true : false),
                 IsSupported = (flgs.HasFlag(VideoProcAmpFlags.None) ? false : true)
             };
+        }
+
+        public override void ResetValue()
+        {
+            this.currentValue = (int)this.Default;
+            this.PushCurrentValue();
+        }
+    }
+    class CameraControlPropInfo : ComplexProperty
+    {
+        protected DirectShowSource source;
+        protected CameraControlProperty property;
+
+        protected int currentValue;
+        protected CameraControlFlags currentFlags;
+
+
+        public CameraControlPropInfo(DirectShowSource Source, CameraControlProperty Property)
+        {
+            this.source = Source;
+            this.property = Property;
+        }
+        public override object Value
+        {
+            get
+            {
+                this.ReadCurrentValue();
+                return this.currentValue;
+            }
+            set
+            {
+                this.currentValue = (int)value;
+                this.PushCurrentValue();
+            }
+        }
+        public override bool IsAutomatic
+        {
+            get
+            {
+                this.ReadCurrentValue();
+                return this.currentFlags.HasFlag(CameraControlFlags.Auto);
+            }
+            set
+            {
+                if (value)
+                {
+                    this.currentFlags |= CameraControlFlags.Auto;
+                }
+                else
+                {
+                    this.currentFlags &= ~CameraControlFlags.Auto;
+                }
+                this.PushCurrentValue();
+            }
+        }
+
+        protected override void PushCurrentValue()
+        {
+            this.source.Device.SetCameraProperty(this.property, this.currentValue, this.currentFlags);
+        }
+        protected override void ReadCurrentValue()
+        {
+            this.source.Device.GetCameraProperty(this.property, out this.currentValue, out this.currentFlags);
+        }
+        protected override PropertyCapability ReadCapability()
+        {
+            int min, max, step, dflt;
+            CameraControlFlags flgs;
+            this.source.Device.GetCameraPropertyRange(property, out min, out max, out step, out dflt, out flgs);
+            return new PropertyCapability()
+            {
+                Min = min,
+                Max = max,
+                Step = step,
+                Default = dflt,
+                AllowsAuto = (flgs.HasFlag(CameraControlFlags.Auto) ? true : false),
+                IsSupported = (flgs.HasFlag(CameraControlFlags.None) ? false : true)
+            };
+        }
+
+        public override void ResetValue()
+        {
+            this.currentValue = (int)this.Default;
+            this.PushCurrentValue();
         }
     }
 }
