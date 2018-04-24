@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Media;
 using Microsoft.Kinect;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
@@ -87,6 +88,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                     {
                         FrameId = imageFrame.FrameNumber,
                         Timestamp = imageFrame.Timestamp,
+                        AbsoluteTime = PreciseDatetime.Now,
                         Width = imageFrame.Width,
                         Height = imageFrame.Height,
                         BytesPerPixel = imageFrame.BytesPerPixel,

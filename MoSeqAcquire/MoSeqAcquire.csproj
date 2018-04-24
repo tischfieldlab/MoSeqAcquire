@@ -154,6 +154,7 @@
     <Compile Include="Models\Acquisition\DirectShow\Internal\ExVideoCaptureDevice.cs" />
     <Compile Include="Models\Acquisition\DirectShow\Internal\IAMVideoProcAmp.cs" />
     <Compile Include="Models\Acquisition\DirectShow\Internal\VideoProcAmpProperty.cs" />
+    <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
     <Compile Include="Models\Attributes\ChoicesMethodAttribute.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Models\DrawingExtensions.cs" />
     <Compile Include="Models\Attributes\AttributeExtensions.cs" />
     <Compile Include="Models\Attributes\KnownTypeAttribute.cs" />
+    <Compile Include="Models\Playback\MediaTimelineController.cs" />
     <Compile Include="Models\Recording\IMediaWriter.cs" />
     <Compile Include="Models\Recording\IndeterminantRecordingLength.cs" />
     <Compile Include="Models\Recording\IRecordingLengthStrategy.cs" />

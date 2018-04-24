@@ -1,5 +1,6 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,6 +65,7 @@ namespace MoSeqAcquire.Models.Recording
     public abstract class MediaWriter : IMediaWriter
     {
         private Dictionary<string, MediaWriterPin> _pins;
+        private DateTime _epoch;
 
         public MediaWriter()
         {
@@ -87,7 +89,7 @@ namespace MoSeqAcquire.Models.Recording
         {
             this._pins.Add(Pin.Name, Pin);
         }
-
+        public DateTime Epoch { get => this._epoch; }
         public bool IsRecording { get; protected set; }
         public MediaWriterStats Stats { get; protected set; }
         public RecorderSpecification Specification { get; protected set; }
@@ -106,6 +108,7 @@ namespace MoSeqAcquire.Models.Recording
         
         public virtual void Start()
         {
+            this._epoch = PreciseDatetime.Now;
             this._pins.Values.ForEach(mwp => mwp.Connect());
             this.IsRecording = true;
             this.Stats.Start();

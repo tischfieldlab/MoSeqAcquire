@@ -90,7 +90,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
                                                     (IntPtr)first);
                             lock (this.lockobject)
                             {
-                                this.writer.WriteVideoFrame(bmp);
+                                this.writer.WriteVideoFrame(bmp, (meta.AbsoluteTime - this.Epoch));
                             }
                         }
                     }

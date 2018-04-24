@@ -31,6 +31,7 @@ namespace MoSeqAcquire.Models.Acquisition
     {
         public int FrameId { get; set; }
         public long Timestamp { get; set; }
+        public DateTime AbsoluteTime { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int BytesPerPixel { get; set; }
