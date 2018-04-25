@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,7 +38,12 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
             this.sourceObject
                 .GetType()
                 .GetProperties()
-                .Select(p => new PropertyItem(this.sourceObject, p.Name))
+                .Select<PropertyInfo, PropertyItem>((p) => {
+                    if (typeof(ComplexProperty).IsAssignableFrom(p.PropertyType)) {
+                        return new ComplexPropertyItem(this.sourceObject, p.Name);
+                    }
+                    return new SimplePropertyItem(this.sourceObject, p.Name);
+                })
                 .ForEach(pi => this.Add(pi));
         }
     }

@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Configuration
 {
-    public abstract class ComplexProperty : IRangeInfo, IDefaultInfo, IAutomaticInfo, ISupportInfo
+    public abstract class ComplexProperty : IRangeInfo, IDefaultInfo, IAutomaticInfo, ISupportInfo, IChoicesProvider
     {
         private PropertyCapability capability;
+
+        public abstract object Value { get; set; }
+        public abstract bool IsAutomatic { get; set; }
+        public abstract void ResetValue();
+
+        protected abstract void PushCurrentValue();
+        protected abstract void ReadCurrentValue();
+        protected abstract PropertyCapability ReadCapability();
+
 
         public PropertyCapability Capability
         {
@@ -25,18 +34,9 @@ namespace MoSeqAcquire.Models.Configuration
         {
             get => (int)this.Capability.Default;
         }
-        public object Min
-        {
-            get => (int)this.Capability.Min;
-        }
-        public object Max
-        {
-            get => (int)this.Capability.Max;
-        }
-        public object Step
-        {
-            get => (int)this.Capability.Step;
-        }
+
+        
+
         public bool IsSupported
         {
             get => this.Capability.IsSupported;
@@ -46,51 +46,46 @@ namespace MoSeqAcquire.Models.Configuration
             get => this.Capability.AllowsAuto;
         }
 
-
-        public abstract object Value{ get; set; }
-        public abstract bool IsAutomatic { get; set; }
-        public abstract void ResetValue();
-
-        protected abstract void PushCurrentValue();
-        protected abstract void ReadCurrentValue();
-        protected abstract PropertyCapability ReadCapability();
-    }
-
-
-    public class DelegateComplexProperty : ComplexProperty
-    {
-        private Action push;
-        private Action pull;
-        private Func<PropertyCapability> query;
-    
-        public DelegateComplexProperty(Action push, Action pull, Func<PropertyCapability> query)
+        #region IRangeInfo Implementation
+        public bool HasRange
         {
-            this.push = push;
-            this.pull = pull;
-            this.query = query;
+            get => (this.Capability is IRangeInfo);
         }
-
-        public override object Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override bool IsAutomatic { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override void ResetValue()
+        public object Min
         {
-            throw new NotImplementedException();
+            get => (this.Capability as IRangeInfo).Min;
         }
-
-        protected override void PushCurrentValue()
+        public object Max
         {
-            throw new NotImplementedException();
+            get => (this.Capability as IRangeInfo).Max;
         }
-
-        protected override PropertyCapability ReadCapability()
+        public object Step
         {
-            return this.query.Invoke();
+            get => (this.Capability as IRangeInfo).Step;
         }
+        #endregion
 
-        protected override void ReadCurrentValue()
+
+        #region IChoicesProvider Implementation
+        public bool HasChoices
         {
-            throw new NotImplementedException();
+            get => (this.Capability is IChoicesProvider);
         }
+        public IEnumerable<object> Choices
+        {
+            get => (this.Capability as IChoicesProvider).Choices;
+        }
+        public string DisplayPath
+        {
+            get => (this.Capability as IChoicesProvider).DisplayPath;
+        }
+        public string ValuePath
+        {
+            get => (this.Capability as IChoicesProvider).ValuePath;
+        }
+        #endregion
+
+
+
     }
 }

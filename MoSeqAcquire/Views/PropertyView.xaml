@@ -8,10 +8,12 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mac="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
+             xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+        <conv:GenericConverter x:Key="GenericConverter" />
         <DataTemplate x:Key="CheckboxEditor">
             <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
         </DataTemplate>
@@ -25,7 +27,12 @@
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="{Binding Path=ChoicesDisplayPath}" SelectedValuePath="{Binding Path=ChoicesValuePath}" />
         </DataTemplate>
         <DataTemplate x:Key="RangeEditor">
-            <Slider TickFrequency="{Binding Path=StepValue}" Orientation="Horizontal" TickPlacement="BottomRight" Minimum="{Binding Path=MinValue}" Maximum="{Binding Path=MaxValue}" Value="{Binding Path=Value}" Style="{StaticResource MaterialDesignDiscreteSlider}" />
+            <Slider Orientation="Horizontal" TickPlacement="BottomRight"
+                    Style="{StaticResource MaterialDesignDiscreteSlider}"
+                    TickFrequency="{Binding Path=StepValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                    Maximum="{Binding Path=MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                    Minimum="{Binding Path=MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                    Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
         </DataTemplate>
         <DataTemplate x:Key="NumericEditor">
             <mac:NumericUpDown Value="{Binding Path=Value}" />

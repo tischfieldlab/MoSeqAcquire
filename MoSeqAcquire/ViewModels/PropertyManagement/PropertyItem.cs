@@ -8,10 +8,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace MoSeqAcquire.ViewModels.PropertyManagement
 {
-    public class PropertyItem : BaseViewModel//, ICustomTypeDescriptor
+    public abstract class PropertyItem : BaseViewModel
     {
         protected string propertyName;
         protected object sourceObject;
@@ -23,35 +24,16 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
             this.sourceObject = SourceObject;
             this.propertyInfo = this.sourceObject.GetType().GetProperty(this.PropertyName);
         }
-        public Type ValueType { get => this.propertyInfo.PropertyType; }
         public string PropertyName { get => this.propertyName; }
 
-        public object Value
-        {
-            get => this.propertyInfo.GetValue(this.sourceObject);
-            set
-            {
-                this.propertyInfo.SetValue(this.sourceObject, Convert.ChangeType(value, this.ValueType));
-                this.NotifyPropertyChanged("Value");
-            }
-        }
-        public object DefaultValue
+        public virtual TypeConverter Converter
         {
             get
             {
-                DefaultValueAttribute attr = this.propertyInfo.GetCustomAttribute<DefaultValueAttribute>();
-                if (attr != null)
-                {
-                    return attr.Value;
-                }
-                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
-                if (rma != null)
-                {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IDefaultInfo).Default;
-                }
-                return null;
+                return TypeDescriptor.GetConverter(this.ValueType);
             }
         }
+
         public string DisplayName
         {
             get
@@ -78,148 +60,26 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
         }
 
 
-        #region Choices
-        public IEnumerable<object> Choices
-        {
-            get
-            {
-                if (typeof(Enum).IsAssignableFrom(this.ValueType))
-                {
-                    return Enum.GetValues(this.ValueType) as IEnumerable<object>;
-                }
-                ChoicesMethodAttribute cma = this.propertyInfo.GetCustomAttribute<ChoicesMethodAttribute>();
-                if (cma != null)
-                {
-                    return this.sourceObject.GetType().GetMethod(cma.MethodName).Invoke(this.sourceObject, null) as IEnumerable<object>;
-                }
-                return null;
-            }
-        }
-        public string ChoicesDisplayPath
-        {
-            get
-            {
-                ChoicesMethodAttribute attr = this.propertyInfo.GetCustomAttribute<ChoicesMethodAttribute>();
-                if (attr != null)
-                {
-                    return attr.DisplayPath;
-                }
-                return null;
-            }
-        }
-        public string ChoicesValuePath
-        {
-            get
-            {
-                ChoicesMethodAttribute attr = this.propertyInfo.GetCustomAttribute<ChoicesMethodAttribute>();
-                if (attr != null)
-                {
-                    return attr.ValuePath;
-                }
-                return null;
-            }
-        }
-        #endregion
+        public abstract Type ValueType { get; }
+        public abstract object Value { get; set; }
+        public abstract object DefaultValue { get; }
 
-        #region Range
-        public bool SupportsRange
-        {
-            get
-            {
-                RangeAttribute ra = this.propertyInfo.GetCustomAttribute<RangeAttribute>();
-                if (ra != null)
-                {
-                    return true;
-                }
-                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
-                if (rma != null)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-        public object MinValue
-        {
-            get
-            {
-                RangeAttribute ra = this.propertyInfo.GetCustomAttribute<RangeAttribute>();
-                if (ra != null)
-                {
-                    return ra.Minimum;
-                }
-                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
-                if (rma != null)
-                {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Min;
-                }
-                return null;
-            }
-        }
-        public object MaxValue
-        {
-            get
-            {
-                RangeAttribute ra = this.propertyInfo.GetCustomAttribute<RangeAttribute>();
-                if (ra != null)
-                {
-                    return ra.Maximum;
-                }
-                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
-                if (rma != null)
-                {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Max;
-                }
-                return null;
-            }
-        }
-        public object StepValue
-        {
-            get
-            {
-                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
-                if (rma != null)
-                {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Step;
-                }
-                return null;
-            }
-        }
-        #endregion
+      
+        public abstract bool SupportsChoices { get; }
+        public abstract IEnumerable<object> Choices { get; }
+        public abstract string ChoicesDisplayPath { get; }
+        public abstract string ChoicesValuePath { get; }
 
-        #region Automatic
-        public bool SupportsAutomatic
-        {
-            get
-            {
-                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
-                if (rma != null)
-                {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IAutomaticInfo).AllowsAuto;
-                }
-                return false;
-            }
-        }
-        public bool IsAutomatic
-        {
-            get
-            {
-                AutomaticPropertyAttribute apa = this.propertyInfo.GetCustomAttribute<AutomaticPropertyAttribute>();
-                if (apa != null)
-                {
-                    return (bool)this.sourceObject.GetType().GetProperty(apa.PropertyName).GetValue(this.sourceObject);
-                }
-                return false;
-            }
-            set
-            {
-                AutomaticPropertyAttribute apa = this.propertyInfo.GetCustomAttribute<AutomaticPropertyAttribute>();
-                if (apa != null)
-                {
-                    this.sourceObject.GetType().GetProperty(apa.PropertyName).SetValue(this.sourceObject, value);
-                }
-            }
-        }
-        #endregion
+
+        public abstract bool SupportsRange { get; }
+        public abstract object MinValue { get; }
+        public abstract object MaxValue { get; }
+        public abstract object StepValue { get; }
+        
+
+        public abstract bool SupportsAutomatic { get; }
+        public abstract bool IsAutomatic { get; set; }
+
     }
+    
 }

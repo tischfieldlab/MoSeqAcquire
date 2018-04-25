@@ -196,8 +196,10 @@
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
+    <Compile Include="ViewModels\PropertyManagement\ComplexPropertyItem.cs" />
     <Compile Include="ViewModels\PropertyManagement\PropertyCollection.cs" />
     <Compile Include="ViewModels\PropertyManagement\PropertyItem.cs" />
+    <Compile Include="ViewModels\PropertyManagement\SimplePropertyItem.cs" />
     <Compile Include="ViewModels\Recording\AvailableRecorderTypeViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderEditorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderPinViewModel.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Views\Controls\UnitTextBox.xaml.cs">
       <DependentUpon>UnitTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Converters\GenericConverter.cs" />
     <Compile Include="Views\Converters\TimeSpanFormatConverter.cs" />
     <Compile Include="Views\Converters\AdditionConverter.cs" />
     <Compile Include="Views\Converters\BooleanInvertConverter.cs" />

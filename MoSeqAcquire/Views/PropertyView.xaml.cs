@@ -55,7 +55,7 @@ namespace MoSeqAcquire.Views
             {
                 return elemnt.FindResource("EnumComboBoxEditor") as DataTemplate;
             }
-            else if(pi.Choices != null)
+            else if(pi.SupportsChoices)
             {
                 return elemnt.FindResource("CollectionComboBoxEditor") as DataTemplate;
             }

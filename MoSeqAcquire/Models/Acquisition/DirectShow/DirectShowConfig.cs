@@ -270,7 +270,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             return this.whiteBalanceComponent.Capability;
         }
 
-        [ChoicesMethod("PowerlineFrequencyChoices",DisplayPath ="Item1", ValuePath ="Item2" )]
+        //[ChoicesMethod("PowerlineFrequencyChoices",DisplayPath ="Item1", ValuePath ="Item2" )]
         public int PowerlineFrequency
         {
             get => (int)powerlineFrequency.Value;
@@ -280,7 +280,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 this.NotifyPropertyChanged();
             }
         }
-        public IEnumerable<Tuple<string, int>> PowerlineFrequencyChoices()
+        /*public IEnumerable<Tuple<string, int>> PowerlineFrequencyChoices()
         {
             var pfc = this.powerlineFrequency.Capability;
             var choices = new List<Tuple<string, int>>();
@@ -289,7 +289,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 choices.Add(new Tuple<string, int>(i + " Hz", i));
             }
             return choices;
-        }
+        }*/
 
 
 
@@ -319,7 +319,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             }
             set
             {
-                this.currentValue = (int)value;
+                this.currentValue = Convert.ToInt32(value);
                 this.PushCurrentValue();
             }
         }
@@ -357,7 +357,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             int min, max, step, dflt;
             VideoProcAmpFlags flgs;
             this.source.Device.GetVideoProcAmpRange(property, out min, out max, out step, out dflt, out flgs);
-            return new PropertyCapability()
+            return new RangedPropertyCapability()
             {
                 Min = min,
                 Max = max,
@@ -397,7 +397,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             }
             set
             {
-                this.currentValue = (int)value;
+                this.currentValue = Convert.ToInt32(value);
                 this.PushCurrentValue();
             }
         }
@@ -435,7 +435,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             int min, max, step, dflt;
             CameraControlFlags flgs;
             this.source.Device.GetCameraPropertyRange(property, out min, out max, out step, out dflt, out flgs);
-            return new PropertyCapability()
+            return new RangedPropertyCapability()
             {
                 Min = min,
                 Max = max,
