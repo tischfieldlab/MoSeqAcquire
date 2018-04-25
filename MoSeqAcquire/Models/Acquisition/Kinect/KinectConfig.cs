@@ -521,9 +521,10 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         string valueProperty;
         string minProperty;
         string maxProperty;
+        string autoProperty;
         T currentValue;
 
-        public RangedKinectPropertyItem(KinectManager Source, string valueProperty, string minProperty, string maxProperty)
+        public RangedKinectPropertyItem(KinectManager Source, string valueProperty, string minProperty, string maxProperty, string autoProperty)
         {
             this.valueProperty = valueProperty;
             this.minProperty = minProperty;
@@ -543,7 +544,17 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                 this.PushCurrentValue();
             }
         }
-        public override bool IsAutomatic { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override bool IsAutomatic
+        {
+            get
+            {
+                return (bool)this.GetPropertyValue(this.source.Sensor, this.autoProperty);
+            }
+            set
+            {
+                this.SetPropertyValue(this.source.Sensor, this.autoProperty, value);
+            }
+        }
 
         public override void ResetValue()
         {
@@ -561,11 +572,17 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
         protected override PropertyCapability ReadCapability()
         {
-            return new RangedPropertyCapability()
+            var capability = new RangedPropertyCapability()
             {
+                IsSupported = true,
                 Min = this.GetPropertyValue(this.source.Sensor, this.minProperty),
-                Max = this.GetPropertyValue(this.source.Sensor, this.maxProperty)
+                Max = this.GetPropertyValue(this.source.Sensor, this.maxProperty),
             };
+            if(this.autoProperty != null)
+            {
+                capability.AllowsAuto = true;
+            }
+            return capability;
         }
         public object GetPropertyValue(object src, string propName)
         {
