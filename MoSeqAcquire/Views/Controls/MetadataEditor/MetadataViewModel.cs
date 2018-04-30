@@ -31,5 +31,6 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             e.DataContext = o as MetadataItem;
             e.Show();
         });
+        
     }
 }

@@ -26,20 +26,5 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             InitializeComponent();
             this.propertyTypeCombobox.ItemsSource = AvailableTypes;
         }
-
-        private void add_choice(object sender, RoutedEventArgs e)
-        {
-            var vm = this.DataContext as MetadataItem;
-            object val = null;
-            if(vm.ValueType == typeof(string))
-            {
-                val = "";
-            }
-            else
-            {
-                val = Activator.CreateInstance(vm.ValueType);
-            }
-            vm.Choices.Add(val);
-        }
     }
 }

@@ -23,7 +23,7 @@
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
         </DataTemplate>
         <DataTemplate x:Key="CollectionComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="{Binding Path=ChoicesDisplayPath}" SelectedValuePath="{Binding Path=ChoicesValuePath}" />
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="Value" SelectedValuePath="Value" />
         </DataTemplate>
         <DataTemplate x:Key="RangeEditor">
             <DockPanel>
@@ -92,8 +92,12 @@
                         Header="Type" IsReadOnly="True"
                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
                 <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
-                <DataGridTemplateColumn Header="Value" CellTemplateSelector="{StaticResource MetadataItemDataTemplateSelector}" CellEditingTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}">
-                    
+                <DataGridTemplateColumn Header="Value" CellEditingTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Value}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 
             </DataGrid.Columns>
