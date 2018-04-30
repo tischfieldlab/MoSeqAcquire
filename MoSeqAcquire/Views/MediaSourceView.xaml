@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
-             
+             xmlns:cont="clr-namespace:MoSeqAcquire.Views.Controls"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              xmlns:MoSeqAcquire="clr-namespace:MoSeqAcquire" x:Class="MoSeqAcquire.Views.MediaSourceView"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -56,7 +56,7 @@
                             <materialDesign:DrawerHost Name="dh" Margin="-9">
                                 <materialDesign:DrawerHost.RightDrawerContent>
 
-                                    <local:PropertyView SelectedObject="{Binding ConfigItems}" MaxHeight="250" />
+                                    <cont:PropertyView SelectedObject="{Binding Config}" MaxHeight="250" />
                                 </materialDesign:DrawerHost.RightDrawerContent>
                                 <Grid>
                                     <Grid HorizontalAlignment="Stretch"  Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityInvertConverter}}">

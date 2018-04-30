@@ -1,17 +1,11 @@
-﻿using MoSeqAcquire.Models.Attributes;
-using MoSeqAcquire.Models.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using MoSeqAcquire.Models.Configuration;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MoSeqAcquire.ViewModels.PropertyManagement
+namespace MoSeqAcquire.Views.Controls.PropertyInspector
 {
-    public class PropertyCollection : ObservableCollection<PropertyItem>
+    class PropertyCollection : ObservableCollection<PropertyItem>
     {
         protected object sourceObject;
 
@@ -35,6 +29,10 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
 
         protected void Initialize()
         {
+            if(this.sourceObject == null)
+            {
+                return;
+            }
             this.sourceObject
                 .GetType()
                 .GetProperties()

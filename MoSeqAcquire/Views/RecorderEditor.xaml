@@ -113,7 +113,7 @@
                         </ItemsControl>
                     </StackPanel>
 
-                    <local:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="1" Grid.Row="0" />
+                    <ctrl:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="1" Grid.Row="0" />
                 </Grid>
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>

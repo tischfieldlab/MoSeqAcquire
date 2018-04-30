@@ -78,6 +78,10 @@
                         <TextBox Text="{Binding Path=GeneralSettings.Basename}" />
                     </DockPanel>
                 </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                    <ctrl:MetadataView />
+                </StackPanel>
             </Grid>
             <GroupBox >
                 <GroupBox.Header>

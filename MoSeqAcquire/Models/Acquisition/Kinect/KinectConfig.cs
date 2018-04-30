@@ -526,9 +526,11 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
 
         public RangedKinectPropertyItem(KinectManager Source, string valueProperty, string minProperty, string maxProperty, string autoProperty)
         {
+            this.source = Source;
             this.valueProperty = valueProperty;
             this.minProperty = minProperty;
             this.maxProperty = maxProperty;
+            this.autoProperty = autoProperty;
         }
 
         public override object Value

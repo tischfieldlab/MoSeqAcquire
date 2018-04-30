@@ -7,7 +7,6 @@ using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Recording;
-using MoSeqAcquire.ViewModels.PropertyManagement;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -16,7 +15,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected MoSeqAcquireViewModel rootViewModel;
 
         protected MediaWriter writer;
-        protected PropertyCollection settings;
 
         protected ObservableCollection<SelectableChannelViewModel> availableChannels;
         protected ObservableCollection<ChannelViewModel> selectedChannels;
@@ -38,7 +36,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this.Name = this.rootViewModel.Recorder.GetNextDefaultRecorderName();
             this.loadChannels();
-            this.settings = new PropertyCollection(this.writer.Settings);
             var pins = new List<RecorderPinViewModel>();
             foreach (var wp in this.writer.Pins.Values)
             {
@@ -89,7 +86,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public RecorderSpecification Specification { get => this.writer.Specification; }
         public IEnumerable<RecorderPinViewModel> RecorderPins { get; protected set; }
-        public PropertyCollection Settings { get => this.settings; }
+        public RecorderSettings Settings { get => this.writer.Settings; }
         public ObservableCollection<SelectableChannelViewModel> AvailableChannels { get => this.availableChannels; }
         public ObservableCollection<ChannelViewModel> SelectedChannels { get => this.selectedChannels; }
         public MediaWriterStats Stats { get; protected set; }

@@ -30,6 +30,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         private ProcAmpPropInfo whiteBalanceComponent;
         private ProcAmpPropInfo powerlineFrequency;
 
+        private CameraControlPropInfo exposure;
+        private CameraControlPropInfo focus;
+        private CameraControlPropInfo iris;
+        private CameraControlPropInfo pan;
+        private CameraControlPropInfo roll;
+        private CameraControlPropInfo tilt;
+        private CameraControlPropInfo zoom;
+
 
         public DirectShowConfig(DirectShowSource Source)
         {
@@ -48,7 +56,15 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.digitalMultiplier = new ProcAmpPropInfo(this.Source, VideoProcAmpProperty.DigitalMultiplier);
             this.digitalMultiplierLimit = new ProcAmpPropInfo(this.Source, VideoProcAmpProperty.DigitalMultiplierLimit);
             this.whiteBalanceComponent = new ProcAmpPropInfo(this.Source, VideoProcAmpProperty.WhiteBalanceComponent);
-            this.powerlineFrequency = new ProcAmpPropInfo(this.Source, VideoProcAmpProperty.PowerlineFrequency);
+            this.powerlineFrequency = new PowerLineFrequencyProperty(this.Source);
+
+            this.exposure = new CameraControlPropInfo(this.Source, CameraControlProperty.Exposure);
+            this.focus = new CameraControlPropInfo(this.Source, CameraControlProperty.Focus);
+            this.iris = new CameraControlPropInfo(this.Source, CameraControlProperty.Iris);
+            this.pan = new CameraControlPropInfo(this.Source, CameraControlProperty.Pan);
+            this.roll = new CameraControlPropInfo(this.Source, CameraControlProperty.Roll);
+            this.tilt = new CameraControlPropInfo(this.Source, CameraControlProperty.Tilt);
+            this.zoom = new CameraControlPropInfo(this.Source, CameraControlProperty.Zoom);
         }
         protected DirectShowSource Source { get; set; }
         public override void ReadState()
@@ -74,225 +90,29 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             return this.Source.Device.VideoCapabilities;
         }
 
-        //[RangeMethod("BrightnessRange")]
-        public ComplexProperty Brightness
-        {
-            get => brightness;
-        }
-        /*public PropertyCapability BrightnessRange()
-        {
-            return this.brightness.Capability;
-        }*/
-
-        [RangeMethod("ContrastRange")]
-        public int Contrast
-        {
-            get => (int)contrast.Value;
-            set
-            {
-                this.contrast.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability ContrastRange()
-        {
-            return this.contrast.Capability;
-        }
-
-        [RangeMethod("HueRange")]
-        public int Hue
-        {
-            get => (int)hue.Value;
-            set
-            {
-                this.hue.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability HueRange()
-        {
-            return this.hue.Capability;
-        }
-
-        [RangeMethod("SaturationRange")]
-        public int Saturation
-        {
-            get => (int)saturation.Value;
-            set
-            {
-                this.saturation.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability SaturationRange()
-        {
-            return this.saturation.Capability;
-        }
-
-        [RangeMethod("SharpnessRange")]
-        public int Sharpness
-        {
-            get => (int)sharpness.Value;
-            set
-            {
-                this.sharpness.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability SharpnessRange()
-        {
-            return this.sharpness.Capability;
-        }
-
-        [RangeMethod("GammaRange")]
-        public int Gamma
-        {
-            get => (int)gamma.Value;
-            set
-            {
-                this.gamma.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability GammaRange()
-        {
-            return this.gamma.Capability;
-        }
-
-        [RangeMethod("ColorEnableRange")]
-        public int ColorEnable
-        {
-            get => (int)colorEnable.Value;
-            set
-            {
-                this.colorEnable.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability ColorEnableRange()
-        {
-            return this.colorEnable.Capability;
-        }
-
-        [RangeMethod("WhiteBalanceRange")]
-        public int WhiteBalance
-        {
-            get => (int)whiteBalance.Value;
-            set
-            {
-                this.whiteBalance.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability WhiteBalanceRange()
-        {
-            return this.whiteBalance.Capability;
-        }
-
-        [RangeMethod("BacklightCompensationRange")]
-        public int BacklightCompensation
-        {
-            get => (int)backlightCompensation.Value;
-            set
-            {
-                this.backlightCompensation.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability BacklightCompensationRange()
-        {
-            return this.backlightCompensation.Capability;
-        }
-
-        [RangeMethod("GainRange")]
-        public int Gain
-        {
-            get => (int)gain.Value;
-            set
-            {
-                this.gain.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability GainRange()
-        {
-            return this.gain.Capability;
-        }
-
-        [RangeMethod("DigitalMultiplierRange")]
-        public int DigitalMultiplier
-        {
-            get => (int)digitalMultiplier.Value;
-            set
-            {
-                this.digitalMultiplier.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability DigitalMultiplierRange()
-        {
-            return this.digitalMultiplier.Capability;
-        }
-
-        [RangeMethod("DigitalMultiplierLimitRange")]
-        public int DigitalMultiplierLimit
-        {
-            get => (int)digitalMultiplierLimit.Value;
-            set
-            {
-                this.digitalMultiplierLimit.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public PropertyCapability DigitalMultiplierLimitRange()
-        {
-            return this.digitalMultiplierLimit.Capability;
-        }
-
-        [RangeMethod("WhiteBalanceComponentRange")]
-        [AutomaticProperty("IsWhiteBalanceComponentAutomatic")]
-        public int WhiteBalanceComponent
-        {
-            get => (int)whiteBalanceComponent.Value;
-            set
-            {
-                this.whiteBalanceComponent.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        public bool IsWhiteBalanceComponentAutomatic
-        {
-            get => this.whiteBalanceComponent.IsAutomatic;
-            set => this.whiteBalanceComponent.IsAutomatic = value;
-        }
-        public PropertyCapability WhiteBalanceComponentRange()
-        {
-            return this.whiteBalanceComponent.Capability;
-        }
-
-        //[ChoicesMethod("PowerlineFrequencyChoices",DisplayPath ="Item1", ValuePath ="Item2" )]
-        public int PowerlineFrequency
-        {
-            get => (int)powerlineFrequency.Value;
-            set
-            {
-                this.powerlineFrequency.Value = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-        /*public IEnumerable<Tuple<string, int>> PowerlineFrequencyChoices()
-        {
-            var pfc = this.powerlineFrequency.Capability;
-            var choices = new List<Tuple<string, int>>();
-            for (int i = (int)pfc.Min; i < (int)pfc.Max; i += (int)pfc.Step)
-            {
-                choices.Add(new Tuple<string, int>(i + " Hz", i));
-            }
-            return choices;
-        }*/
+        public ComplexProperty Brightness { get => this.brightness; }
+        public ComplexProperty Contrast { get => this.contrast; }
+        public ComplexProperty Hue { get => this.hue; }
+        public ComplexProperty Saturation { get => this.saturation; }
+        public ComplexProperty Sharpness { get => this.sharpness; }
+        public ComplexProperty Gamma { get => this.gamma; }
+        public ComplexProperty ColorEnable { get => this.colorEnable; }
+        public ComplexProperty WhiteBalance { get => this.whiteBalance; }
+        public ComplexProperty BacklightCompensation { get => this.backlightCompensation; }
+        public ComplexProperty Gain { get => this.gain; }
+        public ComplexProperty DigitalMultiplier { get => this.digitalMultiplier; }
+        public ComplexProperty DigitalMultiplierLimit { get => this.digitalMultiplierLimit; }
+        public ComplexProperty WhiteBalanceComponent { get => this.whiteBalanceComponent; }
+        public ComplexProperty PowerlineFrequency { get => this.powerlineFrequency; }
 
 
-
+        public ComplexProperty Exposure { get => this.exposure; }
+        public ComplexProperty Focus { get => this.focus; }
+        public ComplexProperty Iris { get => this.iris; }
+        public ComplexProperty Pan { get => this.pan; }
+        public ComplexProperty Roll { get => this.roll; }
+        public ComplexProperty Tilt { get => this.tilt; }
+        public ComplexProperty Zoom { get => this.zoom; }
 
     }
 
@@ -334,11 +154,11 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             {
                 if (value)
                 {
-                    this.currentFlags |= VideoProcAmpFlags.Auto;
+                    this.currentFlags = VideoProcAmpFlags.Auto;
                 }
                 else
                 {
-                    this.currentFlags &= ~VideoProcAmpFlags.Auto;
+                    this.currentFlags = VideoProcAmpFlags.Manual;
                 }
                 this.PushCurrentValue();
             }
@@ -350,6 +170,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         protected override void ReadCurrentValue()
         {
+            
             this.source.Device.GetVideoProcAmpProperty(this.property, out this.currentValue, out this.currentFlags);
         }
         protected override PropertyCapability ReadCapability()
@@ -364,7 +185,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 Step = step,
                 Default = dflt,
                 AllowsAuto = (flgs.HasFlag(VideoProcAmpFlags.Auto) ? true : false),
-                IsSupported = (flgs.HasFlag(VideoProcAmpFlags.None) ? false : true)
+                IsSupported = (flgs.Equals(VideoProcAmpFlags.None) ? false : true)
             };
         }
 
@@ -372,6 +193,31 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         {
             this.currentValue = (int)this.Default;
             this.PushCurrentValue();
+        }
+    }
+    class PowerLineFrequencyProperty : ProcAmpPropInfo
+    {
+        public PowerLineFrequencyProperty(DirectShowSource Source) : base(Source, VideoProcAmpProperty.PowerlineFrequency)
+        {
+        }
+
+        protected override PropertyCapability ReadCapability()
+        {
+            var baseCap = (RangedPropertyCapability)base.ReadCapability();
+            return new ChoicesPropertyCapability()
+            {
+                Choices = new List<object>()
+                {
+                    new Tuple<string, int>("Disabled", 0),
+                    new Tuple<string, int>("50 Hz", 1),
+                    new Tuple<string, int>("60 Hz", 2)
+                },
+                DisplayPath = "Item1",
+                ValuePath = "Item2",
+                Default = baseCap.Default,
+                AllowsAuto = baseCap.AllowsAuto,
+                IsSupported = baseCap.IsSupported
+            };
         }
     }
     class CameraControlPropInfo : ComplexProperty
@@ -412,11 +258,11 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             {
                 if (value)
                 {
-                    this.currentFlags |= CameraControlFlags.Auto;
+                    this.currentFlags = CameraControlFlags.Auto;
                 }
                 else
                 {
-                    this.currentFlags &= ~CameraControlFlags.Auto;
+                    this.currentFlags = CameraControlFlags.Manual;
                 }
                 this.PushCurrentValue();
             }
@@ -442,7 +288,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 Step = step,
                 Default = dflt,
                 AllowsAuto = (flgs.HasFlag(CameraControlFlags.Auto) ? true : false),
-                IsSupported = (flgs.HasFlag(CameraControlFlags.None) ? false : true)
+                IsSupported = (flgs.Equals(CameraControlFlags.None) ? false : true)
             };
         }
 

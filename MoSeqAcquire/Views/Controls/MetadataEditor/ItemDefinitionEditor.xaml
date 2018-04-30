@@ -1,0 +1,85 @@
+﻿<Window x:Class="MoSeqAcquire.Views.Controls.MetadataEditor.ItemDefinitionEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MoSeqAcquire.Views.Controls.MetadataEditor"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+             xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
+             xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
+             mc:Ignorable="d" 
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Window.Resources>
+        
+    </Window.Resources>
+    <Grid>
+        <StackPanel Margin="16">
+
+            <TextBox materialDesign:HintAssist.Hint="Property Name" Text="{Binding Path=Name}" />
+            <ComboBox Name="propertyTypeCombobox" materialDesign:HintAssist.Hint="Property Type" SelectedItem="{Binding Path=ValueType}" />
+            <TextBox materialDesign:HintAssist.Hint="Units" Text="{Binding Path=Units}" />
+            <TextBox materialDesign:HintAssist.Hint="Default" />
+
+            <GroupBox>
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Constraints" />
+                        <ComboBox materialDesign:HintAssist.Hint="Constraint Type" ItemsSource="{mve:Enumeration {x:Type local:ConstraintMode}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Constraint}"  />
+                    </StackPanel>
+                </GroupBox.Header>
+                <GroupBox.Resources>
+                    <DataTemplate x:Key="choicesTemplate">
+                        <DockPanel>
+                            <ListBox ItemsSource="{Binding Path=Choices}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
+                                            Click="add_choice"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                            ToolTip="Add Choice">
+                                <materialDesign:PackIcon Kind="Plus"  />
+                            </Button>
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="rangeTemplate">
+                        <StackPanel>
+                            <TextBox materialDesign:HintAssist.Hint="Minimum" Text="{Binding Path=MinValue}" />
+                            <TextBox materialDesign:HintAssist.Hint="Maximum" Text="{Binding Path=MaxValue}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </GroupBox.Resources>
+                <ContentControl Content="{Binding }">
+                    <ContentControl.Style>
+                        <Style TargetType="{x:Type ContentControl}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Constraint}" Value="Choices">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource choicesTemplate}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Constraint}" Value="Range">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource rangeTemplate}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </GroupBox>
+            <GroupBox Header="Validation">
+
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</Window>

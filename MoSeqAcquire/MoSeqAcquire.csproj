@@ -154,6 +154,7 @@
     <Compile Include="Models\Acquisition\DirectShow\Internal\ExVideoCaptureDevice.cs" />
     <Compile Include="Models\Acquisition\DirectShow\Internal\IAMVideoProcAmp.cs" />
     <Compile Include="Models\Acquisition\DirectShow\Internal\VideoProcAmpProperty.cs" />
+    <Compile Include="Models\Metadata\RecordingMetadata.cs" />
     <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
@@ -196,10 +197,22 @@
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
-    <Compile Include="ViewModels\PropertyManagement\ComplexPropertyItem.cs" />
-    <Compile Include="ViewModels\PropertyManagement\PropertyCollection.cs" />
-    <Compile Include="ViewModels\PropertyManagement\PropertyItem.cs" />
-    <Compile Include="ViewModels\PropertyManagement\SimplePropertyItem.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
+      <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\MetadataEditor\MetadataCollection.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\MetadataItem.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\MetadataItemEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\MetadataItemDataTemplateSelector.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\MetadataView.xaml.cs">
+      <DependentUpon>MetadataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\MetadataEditor\MetadataViewModel.cs" />
+    <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
+    <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />
+    <Compile Include="Views\Controls\PropertyInspector\PropertyItem.cs" />
+    <Compile Include="Views\Controls\PropertyInspector\PropertyItemDataTemplateSelector.cs" />
+    <Compile Include="Views\Controls\PropertyInspector\SimplePropertyItem.cs" />
     <Compile Include="ViewModels\Recording\AvailableRecorderTypeViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderEditorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderPinViewModel.cs" />
@@ -297,7 +310,7 @@
     <Compile Include="Views\NewMediaSourceDialog.xaml.cs">
       <DependentUpon>NewMediaSourceDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PropertyView.xaml.cs">
+    <Compile Include="Views\Controls\PropertyInspector\PropertyView.xaml.cs">
       <DependentUpon>PropertyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RecorderEditor.xaml.cs">
@@ -324,7 +337,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\PromptDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\MetadataEditor\MetadataView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -356,7 +377,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\PropertyView.xaml">
+    <Page Include="Views\Controls\PropertyInspector\PropertyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -416,10 +437,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\openHS.png" />
-    <Resource Include="Images\saveHS.png" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />

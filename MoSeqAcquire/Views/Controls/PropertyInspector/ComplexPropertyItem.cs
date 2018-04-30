@@ -1,13 +1,10 @@
 ﻿using MoSeqAcquire.Models.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MoSeqAcquire.ViewModels.PropertyManagement
+namespace MoSeqAcquire.Views.Controls.PropertyInspector
 {
-    public class ComplexPropertyItem : PropertyItem
+    class ComplexPropertyItem : PropertyItem
     {
         protected ComplexProperty complexProperty;
 
@@ -24,12 +21,20 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
         public override object Value
         {
             get => this.complexProperty.Value;
-            set => this.complexProperty.Value = value;
+            set
+            {
+                this.complexProperty.Value = value;
+                this.NotifyPropertyChanged();
+            }
         }
 
         public override object DefaultValue
         {
             get => this.complexProperty.Default;
+        }
+        public override bool IsEnabled
+        {
+            get => this.complexProperty.IsSupported;
         }
 
         public override bool SupportsChoices
@@ -80,7 +85,11 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
         public override bool IsAutomatic
         {
             get => this.complexProperty.IsAutomatic;
-            set => this.complexProperty.IsAutomatic = value;
+            set
+            {
+                this.complexProperty.IsAutomatic = value;
+                this.NotifyPropertyChanged("IsAutomatic");
+            }
         }
     }
 }

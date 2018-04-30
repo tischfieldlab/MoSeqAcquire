@@ -1,18 +1,12 @@
-﻿using MoSeqAcquire.Models.Attributes;
-using MoSeqAcquire.Models.Configuration;
+﻿using MoSeqAcquire.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
-namespace MoSeqAcquire.ViewModels.PropertyManagement
+namespace MoSeqAcquire.Views.Controls.PropertyInspector
 {
-    public abstract class PropertyItem : BaseViewModel
+    abstract class PropertyItem : BaseViewModel
     {
         protected string propertyName;
         protected object sourceObject;
@@ -63,6 +57,7 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
         public abstract Type ValueType { get; }
         public abstract object Value { get; set; }
         public abstract object DefaultValue { get; }
+        public abstract bool IsEnabled { get; }
 
       
         public abstract bool SupportsChoices { get; }

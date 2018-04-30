@@ -4,14 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MoSeqAcquire.ViewModels.PropertyManagement
+namespace MoSeqAcquire.Views.Controls.PropertyInspector
 {
-    public class SimplePropertyItem : PropertyItem//, ICustomTypeDescriptor
+    class SimplePropertyItem : PropertyItem
     {
 
         public SimplePropertyItem(object SourceObject, string PropertyName) : base(SourceObject, PropertyName)
@@ -46,6 +43,7 @@ namespace MoSeqAcquire.ViewModels.PropertyManagement
                 return null;
             }
         }
+        public override bool IsEnabled => true;
 
 
         #region Choices

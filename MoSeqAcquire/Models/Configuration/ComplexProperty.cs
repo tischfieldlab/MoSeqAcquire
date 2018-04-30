@@ -9,7 +9,10 @@ namespace MoSeqAcquire.Models.Configuration
     public abstract class ComplexProperty : IRangeInfo, IDefaultInfo, IAutomaticInfo, ISupportInfo, IChoicesProvider
     {
         private PropertyCapability capability;
-
+        public Type ValueType
+        {
+            get => this.Value.GetType();
+        }
         public abstract object Value { get; set; }
         public abstract bool IsAutomatic { get; set; }
         public abstract void ResetValue();
