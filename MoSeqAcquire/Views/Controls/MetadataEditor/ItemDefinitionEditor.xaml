@@ -34,7 +34,7 @@
             <TextBox materialDesign:HintAssist.Hint="Property Name" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=Name}" />
             <ComboBox Name="propertyTypeCombobox" materialDesign:HintAssist.Hint="Property Type" materialDesign:HintAssist.IsFloating="True" SelectedItem="{Binding Path=ValueType}" />
             <TextBox materialDesign:HintAssist.Hint="Units" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=Units}" />
-            <TextBox materialDesign:HintAssist.Hint="Default" materialDesign:HintAssist.IsFloating="True"  />
+            <TextBox materialDesign:HintAssist.Hint="Default Value" materialDesign:HintAssist.IsFloating="True"  />
         </StackPanel>
         <GroupBox Grid.Column="0" Grid.Row="1" Margin="16">
             <GroupBox.Header>
