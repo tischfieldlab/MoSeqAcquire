@@ -63,14 +63,20 @@
                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="16">
                     <DockPanel Margin="16">
                         <Label Width="140" DockPanel.Dock="Left">Recording Length</Label>
-                        <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingFrameCount}" Units="Frames" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
-                        <ctrl:UnitTextBox Width="100" DockPanel.Dock="Right" Value="{Binding Path=GeneralSettings.RecordingSeconds}" Units="Seconds" Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
+                        <TextBox Width="100" DockPanel.Dock="Right" 
+                                 materialDesign:HintAssist.Hint="# Frames"  materialDesign:HintAssist.IsFloating="True"
+                                 Text="{Binding Path=GeneralSettings.RecordingFrameCount}" 
+                                 Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
+                        <TextBox Width="100" DockPanel.Dock="Right" 
+                                 materialDesign:HintAssist.Hint="# Seconds" materialDesign:HintAssist.IsFloating="True"
+                                 Text="{Binding Path=GeneralSettings.RecordingSeconds}" 
+                                 Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
                         <ComboBox Width="200" ItemsSource="{Binding Source={mve:Enumeration {x:Type mio:RecordingMode}}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
                     </DockPanel>
 
                     <DockPanel Margin="16">
                         <Label Width="140">Destination Directory</Label>
-                        <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" />
+                        <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" materialDesign:HintAssist.Hint="Destination Directory" materialDesign:HintAssist.IsFloating="True" />
                     </DockPanel>
 
                     <DockPanel  Margin="16">
@@ -79,9 +85,12 @@
                     </DockPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                <GroupBox Grid.Row="1" Grid.ColumnSpan="2">
+                    <GroupBox.Header>
+                        <TextBlock Text="Recording Metadata" />
+                    </GroupBox.Header>
                     <ctrl:MetadataView />
-                </StackPanel>
+                </GroupBox>
             </Grid>
             <GroupBox >
                 <GroupBox.Header>

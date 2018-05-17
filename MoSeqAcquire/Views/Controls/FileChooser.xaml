@@ -12,17 +12,6 @@
         <TextBox Name="PathText" Text="{Binding Path=SelectedPath, ElementName=RootFC, Mode=TwoWay}" IsReadOnly="{Binding Path=ForcePickerUse, ElementName=RootFC, Mode=OneWay}" AllowDrop="True" Drop="PathText_Drop" MouseDoubleClick="buttonClicked" HorizontalAlignment="Stretch" />
         <Button Name="SelectButton"  Click="buttonClicked" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignToolForegroundButton}">
             <materialDesign:PackIcon Name="ButtonImage" Width="24" Height="24" />
-            <!--<Image Name="ButtonImage" Width="24" Height="24">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled"  Value="False">
-                                <Setter Property="Opacity" Value="0.6" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>-->
         </Button>
     </Grid>
 </UserControl>

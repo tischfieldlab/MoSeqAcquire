@@ -40,6 +40,10 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
                 {
                     return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IDefaultInfo).Default;
                 }
+                if (this.ValueType.IsValueType)
+                {
+                    return Activator.CreateInstance(this.ValueType);
+                }
                 return null;
             }
         }
@@ -176,10 +180,10 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
         {
             get
             {
-                RangeMethodAttribute rma = this.propertyInfo.GetCustomAttribute<RangeMethodAttribute>();
-                if (rma != null)
+                AutomaticPropertyAttribute apa = this.propertyInfo.GetCustomAttribute<AutomaticPropertyAttribute>();
+                if (apa != null)
                 {
-                    return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IAutomaticInfo).AllowsAuto;
+                    return (apa as IAutomaticInfo).AllowsAuto;
                 }
                 return false;
             }

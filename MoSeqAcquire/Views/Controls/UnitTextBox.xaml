@@ -3,20 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters" Name="RootFC" >
     <UserControl.Resources>
-        <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
+        </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="23" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <TextBox Name="ValueText" Text="{Binding Path=Value, ElementName=RootFC, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Padding="{Binding Path=ValuePadding, ElementName=RootFC, Mode=OneWay}" />
-        <TextBlock Name="UnitsText" Text="{Binding Path=Units, ElementName=RootFC, Mode=OneWay}"  VerticalAlignment="Center" Padding="5,0" Foreground="Gray" Margin="{Binding Path=UnitsMargin, ElementName=RootFC, Mode=OneWay}" >
+    <Grid HorizontalAlignment="Stretch" >
+        <TextBox Name="ValueText" HorizontalAlignment="Stretch"
+                 Text="{Binding Path=Value, ElementName=RootFC, Mode=TwoWay}" 
+                 Padding="{Binding Path=ValuePadding, ElementName=RootFC, Mode=OneWay}" />
+        
+        <TextBlock Name="UnitsText" VerticalAlignment="Center" Padding="5,0" Foreground="Gray"
+                   Text="{Binding Path=Units, ElementName=RootFC, Mode=OneWay}"
+                   Margin="{Binding Path=UnitsMargin, ElementName=RootFC, Mode=OneWay}" >
             <TextBlock.Style>
                 <Style>
                     <Style.Triggers>

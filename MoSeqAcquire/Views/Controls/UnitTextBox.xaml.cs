@@ -59,44 +59,50 @@ namespace MoSeqAcquire.Views.Controls
         {
             get
             {
+                Thickness thickness;
                 if (this.UnitsText != null)
                 {
                     switch (this.UnitsAlignment)
                     {
                         case UnitAlignment.Left:
-                            return new Thickness(0, 0, 0, 0);
+                            thickness = new Thickness(0, 0, 0, 0); break;
 
                         case UnitAlignment.Right:
                         default:
-                            return new Thickness(-1 * this.UnitsText.ActualWidth, 0, 0, 0);
+                            thickness = new Thickness(-1 * this.UnitsText.ActualWidth, 0, 0, 0); break;
                     }
                 }
                 else
                 {
-                    return new Thickness();
+                    thickness = new Thickness();
                 }
+                Console.WriteLine("Units Margin: " + thickness.ToString());
+                return thickness;
             }
         }
         public Thickness ValuePadding
         {
             get
             {
+                Thickness thickness;
                 if (this.UnitsText != null)
                 {
                     switch (this.UnitsAlignment)
                     {
                         case UnitAlignment.Left:
-                            return new Thickness(this.UnitsText.ActualWidth, 0, 0, 0);
+                            thickness = new Thickness(this.UnitsText.ActualWidth, 0, 0, 0); break;
 
                         case UnitAlignment.Right:
                         default:
-                            return new Thickness(0, 0, this.UnitsText.ActualWidth, 0);
+                            thickness = new Thickness(0, 0, this.UnitsText.ActualWidth, 0); break;
                     }
                 }
                 else
                 {
-                    return new Thickness();
+                    thickness = new Thickness();
                 }
+                Console.WriteLine("Value Padding: " + thickness.ToString());
+                return thickness;
             }
         }
 

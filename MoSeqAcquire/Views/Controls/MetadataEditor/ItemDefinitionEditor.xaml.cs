@@ -19,12 +19,11 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
     /// <summary>
     /// Interaction logic for ItemDefinitionEditor.xaml
     /// </summary>
-    public partial class ItemDefinitionEditor : Window
+    public partial class ItemDefinitionEditor : UserControl
     {
-        public ItemDefinitionEditor(ObservableCollection<Type> AvailableTypes)
+        public ItemDefinitionEditor()
         {
             InitializeComponent();
-            this.propertyTypeCombobox.ItemsSource = AvailableTypes;
         }
     }
 }

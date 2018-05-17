@@ -20,10 +20,10 @@
             <TextBox Text="{Binding Path=Value}" HorizontalAlignment="Stretch" />
         </DataTemplate>
         <DataTemplate x:Key="EnumComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" Background="{DynamicResource MaterialDesignPaper}" />
         </DataTemplate>
         <DataTemplate x:Key="CollectionComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="{Binding Path=ChoicesDisplayPath}" SelectedValuePath="{Binding Path=ChoicesValuePath}" />
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="{Binding Path=ChoicesDisplayPath}" SelectedValuePath="{Binding Path=ChoicesValuePath}"  Background="{DynamicResource MaterialDesignPaper}" />
         </DataTemplate>
         <DataTemplate x:Key="RangeEditor">
             <DockPanel>
@@ -46,6 +46,7 @@
         </DataTemplate>
         <DataTemplate x:Key="ResetButtonTemplate">
             <Button Width="24" Height="24"
+                    Command="{Binding Path=ResetCommand, Mode=OneWay}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="Reset to Default Value"
                     Margin="4">

@@ -1,5 +1,6 @@
 ﻿using MoSeqAcquire.ViewModels;
 using MoSeqAcquire.ViewModels.Commands;
+using MvvmValidation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
         Choices,
         Range
     }
-    public class MetadataItem : BaseViewModel
+    public class MetadataItem : ValidatingBaseViewModel
     {
         protected string name;
         protected Type valueType;
@@ -28,6 +29,8 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             this.name = Name;
             this.valueType = ValueType;
             this.Choices = new ObservableCollection<ChoiceOption>();
+            this.Validator.AddRule(nameof(this.Name), () => RuleResult.Assert(!string.IsNullOrEmpty(this.Name), "Name is required"));
+            this.Validator.AddRule(nameof(this.Value), () => RuleResult.Assert(this.ValueType.IsAssignableFrom(this.Value.GetType()), "Value is not a valid " + this.ValueType.Name));
         }
 
         public virtual TypeConverter Converter
@@ -46,7 +49,38 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
         public Type ValueType
         {
             get => this.valueType;
-            set => this.SetField(ref this.valueType, value);
+            set
+            {
+                this.SetField(ref this.valueType, value);
+                this.CoerceAllValues();
+            }
+        }
+        protected void CoerceAllValues()
+        {
+            
+            this.Value = this.CoerceValue(this.value, this.ValueType);
+            foreach (var c in this.Choices)
+            {
+                c.Value = this.CoerceValue(c.Value, this.ValueType);
+            }
+            
+        }
+        protected object CoerceValue(object value, Type type)
+        {
+            try
+            {
+                return Convert.ChangeType(value, type);
+            } 
+            catch (FormatException e)
+            {
+                try
+                {
+                    return TypeDescriptor.GetConverter(value.GetType()).ConvertTo(value, type);
+                }catch(NotSupportedException e2)
+                {
+                    return Activator.CreateInstance(type);
+                }
+            }
         }
         public object Value
         {

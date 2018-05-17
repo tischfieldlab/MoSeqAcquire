@@ -204,10 +204,16 @@
     <Compile Include="Views\Controls\MetadataEditor\MetadataItem.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemEditorDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemDataTemplateSelector.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\MetadataGrid.xaml.cs">
+      <DependentUpon>MetadataGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\MetadataEditor\MetadataView.xaml.cs">
       <DependentUpon>MetadataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\MetadataEditor\MetadataViewModel.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\Rules\BaseRule.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\Rules\RangeRule.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyItem.cs" />
@@ -340,6 +346,10 @@
     <Page Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\MetadataEditor\MetadataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\PromptDialog.xaml">
       <Generator>MSBuild:Compile</Generator>

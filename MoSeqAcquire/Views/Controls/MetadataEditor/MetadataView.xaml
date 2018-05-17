@@ -12,95 +12,19 @@
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <conv:GenericConverter x:Key="GenericConverter" />
-        <DataTemplate x:Key="CheckboxEditor">
-            <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
-        </DataTemplate>
-        <DataTemplate x:Key="TextBoxEditor">
-            <TextBox Text="{Binding Path=Value}" HorizontalAlignment="Stretch" />
-        </DataTemplate>
-        <DataTemplate x:Key="EnumComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
-        </DataTemplate>
-        <DataTemplate x:Key="CollectionComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="Value" SelectedValuePath="Value" />
-        </DataTemplate>
-        <DataTemplate x:Key="RangeEditor">
-            <DockPanel>
-                <TextBox DockPanel.Dock="Right"
-                         Text="{Binding Path=Value, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                         IsReadOnly="True" />
-                <Slider Orientation="Horizontal" TickPlacement="BottomRight"
-                        Style="{StaticResource MaterialDesignDiscreteSlider}"
-                        TickFrequency="{Binding Path=StepValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Maximum="{Binding Path=MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Minimum="{Binding Path=MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="NumericEditor">
-            <mac:NumericUpDown Value="{Binding Path=Value}" />
-        </DataTemplate>
-        <DataTemplate x:Key="AutoCheckboxTemplate">
-            <CheckBox IsChecked="{Binding Path=IsAutomatic}" IsEnabled="{Binding Path=SupportsAutomatic}" />
-        </DataTemplate>
-        <DataTemplate x:Key="ResetButtonTemplate">
-            <Button Width="24" Height="24"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="Reset to Default Value"
-                    Margin="4">
-                <materialDesign:PackIcon Kind="BackupRestore" />
-            </Button>
-        </DataTemplate>
+
         <local:MetadataItemDataTemplateSelector x:Key="MetadataItemDataTemplateSelector" />
         <local:MetadataItemEditorDataTemplateSelector x:Key="MetadataItemEditorDataTemplateSelector" />
     </UserControl.Resources>
-    <Grid>
-        <Button Panel.ZIndex="99" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="16" Click="add_item" >
-            <materialDesign:PackIcon Kind="Plus" />
-        </Button>
-        <DataGrid
-              Margin="0 8 0 0"
-              ItemsSource="{Binding ElementName=pv, Path=InnerViewModel.Items}"
-              CanUserSortColumns="False"
-              CanUserAddRows="True"
-              AutoGenerateColumns="False"
-              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
-              materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Actions">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
-                                        Command="{Binding ElementName=pv, Path=InnerViewModel.EditItemDefinition}"
-                                        CommandParameter="{Binding}"
-                                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                        ToolTip="Edit Item Details">
-                                    <materialDesign:PackIcon Kind="Pencil"  />
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn
-                        Binding="{Binding Path=Name}"
-                        Header="Property" IsReadOnly="True"
-                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
-                <DataGridTextColumn
-                        Binding="{Binding Path=ValueType.Name}"
-                        Header="Type" IsReadOnly="True"
-                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
-                <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
-                <DataGridTemplateColumn Header="Value" CellEditingTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Value}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-            </DataGrid.Columns>
-        </DataGrid>
+    <Grid DataContext="{Binding ElementName=pv, Path=InnerViewModel}">
+        <materialDesign:Transitioner SelectedIndex="{Binding Path=CurrentIndex, Mode=OneWay}" Grid.ColumnSpan="2" Grid.Row="1">
+            <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+                <local:MetadataGrid />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+                <local:ItemDefinitionEditor />
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
+        
     </Grid>
 </UserControl>

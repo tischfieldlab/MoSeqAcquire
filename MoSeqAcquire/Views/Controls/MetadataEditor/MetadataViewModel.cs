@@ -10,8 +10,18 @@ using System.Windows.Input;
 
 namespace MoSeqAcquire.Views.Controls.MetadataEditor
 {
+    public enum MetadataViewState
+    {
+        Grid = 0,
+        Property = 1
+    }
+
+
     public class MetadataViewModel : BaseViewModel
     {
+        protected MetadataViewState currentState;
+        protected MetadataItem currentItem;
+
         public MetadataViewModel()
         {
             this.AvailableTypes = new ObservableCollection<Type>()
@@ -19,17 +29,47 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                 typeof(bool), typeof(int), typeof(double), typeof(string)
             };
             this.Items = new MetadataCollection(null);
+            this.CurrentState = MetadataViewState.Grid;
+        }
+
+        public MetadataViewState CurrentState
+        {
+            get => this.currentState;
+            set
+            {
+                this.SetField(ref this.currentState, value);
+                this.NotifyPropertyChanged("CurrentIndex");
+            }
+        }
+        public int CurrentIndex
+        {
+            get => (int)this.currentState;
         }
 
         public ObservableCollection<Type> AvailableTypes { get; protected set; }
 
         public MetadataCollection Items { get; protected set; }
+        public MetadataItem CurrentItem
+        {
+            get => this.currentItem;
+            set => this.SetField(ref this.currentItem, value);
+        }
 
+        public ICommand NewItemCommand => new ActionCommand((p) =>
+        {
+            this.Items.Add(new MetadataItem("New Item", typeof(string)) { Value = "Some Value" });
+        });
         public ICommand EditItemDefinition => new ActionCommand((o) =>
         {
-            var e = new ItemDefinitionEditor(this.AvailableTypes);
-            e.DataContext = o as MetadataItem;
-            e.Show();
+            this.CurrentState = MetadataViewState.Property;
+        });
+        public ICommand RemoveItem => new ActionCommand((o) =>
+        {
+            this.Items.Remove(o as MetadataItem);
+        });
+        public ICommand HomeViewCommand => new ActionCommand((o) =>
+        {
+            this.CurrentState = MetadataViewState.Grid;
         });
         
     }

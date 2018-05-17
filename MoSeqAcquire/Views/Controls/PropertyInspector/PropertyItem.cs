@@ -1,8 +1,10 @@
 ﻿using MoSeqAcquire.ViewModels;
+using MoSeqAcquire.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace MoSeqAcquire.Views.Controls.PropertyInspector
 {
@@ -74,6 +76,11 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
 
         public abstract bool SupportsAutomatic { get; }
         public abstract bool IsAutomatic { get; set; }
+
+        public virtual ICommand ResetCommand => new ActionCommand((p) =>
+        {
+            this.Value = this.DefaultValue;
+        });
 
     }
     
