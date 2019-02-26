@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SynapseAPI;
 
@@ -15,11 +16,14 @@ namespace SynapseAPITests
         }
 
         [TestMethod]
-        public void TestMethodMode()
+        public void TestModeToggle()
         {
             Assert.AreEqual(SynapseMode.Idle, this.client.Mode);
             this.client.Mode = SynapseMode.Preview;
             Assert.AreEqual(SynapseMode.Preview, this.client.Mode);
+            Thread.Sleep(3000);
+            this.client.Mode = SynapseMode.Idle;
+            Assert.AreEqual(SynapseMode.Idle, this.client.Mode);
         }
         [TestMethod]
         public void TestMethod2()
