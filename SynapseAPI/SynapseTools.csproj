@@ -7,8 +7,8 @@
     <ProjectGuid>{CCAEB2AA-DB1A-47EB-937E-C3258A20B2F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SynapseAPI</RootNamespace>
-    <AssemblyName>SynapseAPI</AssemblyName>
+    <RootNamespace>SynapseTools</RootNamespace>
+    <AssemblyName>SynapseTools</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="SynapseAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TdtUdp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

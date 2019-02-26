@@ -10,7 +10,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace SynapseAPI
+namespace SynapseTools
 {
 
     public enum SynapseMode

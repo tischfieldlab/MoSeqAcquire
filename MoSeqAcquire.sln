@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoSeqAcquire", "MoSeqAcquir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hdf5DotNetTools", "..\Hdf5DotnetTools\Hdf5DotNetTools\Hdf5DotNetTools.csproj", "{ADCC9AD9-EE46-4237-9220-95EAEA143D17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynapseAPI", "SynapseAPI\SynapseAPI.csproj", "{CCAEB2AA-DB1A-47EB-937E-C3258A20B2F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynapseTools", "SynapseAPI\SynapseTools.csproj", "{CCAEB2AA-DB1A-47EB-937E-C3258A20B2F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynapseAPITests", "SynapseAPITests\SynapseAPITests.csproj", "{4264A131-4D1B-46EA-8743-3AEA3844BE36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynapseToolsTests", "SynapseAPITests\SynapseToolsTests.csproj", "{4264A131-4D1B-46EA-8743-3AEA3844BE36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

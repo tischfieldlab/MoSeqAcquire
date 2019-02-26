@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SynapseAPI;
+using SynapseTools;
 
-namespace SynapseAPITests
+namespace SynapseToolsTests
 {
     [TestClass]
-    public class SynapseApiTests
+    public class TestSynapseApi
     {
         protected SynapseClient client;
-        public SynapseApiTests()
+        public TestSynapseApi()
         {
             this.client = SynapseClient.GetClient();
         }
