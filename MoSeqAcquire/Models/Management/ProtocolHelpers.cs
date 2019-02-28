@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,9 +16,10 @@ namespace MoSeqAcquire.Models.Management
     {
         public static IEnumerable<Type> FindProviderTypes()
         {
-            return Assembly.GetExecutingAssembly()
+            return ExtractPluginsImplementing<MediaSource>(Properties.Settings.Default.MediaSourcePluginPaths);
+            /*return Assembly.GetExecutingAssembly()
                 .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(MediaSource).IsAssignableFrom(t));
+                .Where(t => !t.IsAbstract && typeof(MediaSource).IsAssignableFrom(t));*/
         }
         public static IEnumerable<Type> GetKnownTypesForProviders()
         {
@@ -26,9 +29,11 @@ namespace MoSeqAcquire.Models.Management
 
         public static IEnumerable<Type> FindRecorderTypes()
         {
-            return Assembly.GetExecutingAssembly()
+            return ExtractPluginsImplementing<IMediaWriter>(Properties.Settings.Default.RecorderPluginPaths);
+            /*return Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(t => !t.IsAbstract && typeof(IMediaWriter).IsAssignableFrom(t));
+                */
         }
         public static IEnumerable<Type> GetKnownTypesForRecorders()
         {
@@ -38,6 +43,58 @@ namespace MoSeqAcquire.Models.Management
         public static IEnumerable<Type> GetKnownTypes()
         {
             return GetKnownTypesForProviders().Concat(GetKnownTypesForRecorders());
+        }
+
+
+
+
+
+        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths)
+        {
+            List<Type> availableTypes = new List<Type>();
+            foreach (Assembly currentAssembly in FindAssemblies(SearchPaths))
+            {
+                availableTypes.AddRange(currentAssembly.GetTypes());
+            }
+            List<Type> filteredList = availableTypes.FindAll(delegate (Type t)
+            {
+                return !t.IsAbstract && typeof(T).IsAssignableFrom(t); // t.IsSubclassOf(typeof(T));
+            });
+            return filteredList;
+        }
+        public static List<Assembly> FindAssemblies(StringCollection SearchPaths)
+        {
+            Dictionary<String, Assembly> plugInAssemblyList = new Dictionary<String, Assembly>();
+            foreach (var path in SearchPaths)
+            {
+                Console.WriteLine("Searching path \"" + path + "\" for plugins");
+                var assemblies = FindAssembliesForPath(path);
+                foreach (var a in assemblies)
+                {
+                    if (!plugInAssemblyList.ContainsKey(a.FullName))
+                    {
+                        plugInAssemblyList.Add(a.FullName, a);
+                    }
+                }
+            }
+            return plugInAssemblyList.Values.ToList();
+        }
+        public static List<Assembly> FindAssembliesForPath(String Path)
+        {
+            List<Assembly> assemblyList = new List<Assembly>();
+            DirectoryInfo dInfo = new DirectoryInfo(Path);
+            if (dInfo.Exists)
+            {
+                FileInfo[] files = dInfo.GetFiles("*.dll");
+                if (null != files)
+                {
+                    foreach (FileInfo file in files)
+                    {
+                        assemblyList.Add(Assembly.LoadFile(file.FullName));
+                    }
+                }
+            }
+            return assemblyList;
         }
     }
 }

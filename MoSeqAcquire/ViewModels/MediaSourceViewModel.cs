@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Acquisition.DirectShow;
 using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.ViewModels
@@ -47,7 +46,7 @@ namespace MoSeqAcquire.ViewModels
                 }
                 this.MediaSource.Config.ApplySnapshot(mediaSource.Config);
                 this.MediaSource.Start();
-                Application.Current.Dispatcher.Invoke(() =>
+                /*Application.Current.Dispatcher.Invoke(() =>
                 {
                     this.RetrieveChannels();
                     this.IsReady = true;
@@ -55,7 +54,7 @@ namespace MoSeqAcquire.ViewModels
                     {
                         (this.MediaSource as DirectShowSource).Device.DisplayPropertyPage(new WindowInteropHelper(Application.Current.MainWindow).Handle);
                     }
-                });
+                });*/
             });
         }
         public Task InitTask { get; protected set; }

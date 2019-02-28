@@ -76,10 +76,6 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.0.1044, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.4.0.1044\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Kinect, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Kinect.Toolkit">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\Assemblies\Microsoft.Kinect.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="ModernUI.Xceed.Toolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
       <Private>True</Private>
@@ -147,13 +143,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\Acquisition\DirectShow\DirectShowConfig.cs" />
-    <Compile Include="Models\Acquisition\DirectShow\DirectShowSource.cs" />
-    <Compile Include="Models\Acquisition\DirectShow\DirectShowVideoChannel.cs" />
-    <Compile Include="Models\Acquisition\DirectShow\DirectShowChannel.cs" />
-    <Compile Include="Models\Acquisition\DirectShow\Internal\ExVideoCaptureDevice.cs" />
-    <Compile Include="Models\Acquisition\DirectShow\Internal\IAMVideoProcAmp.cs" />
-    <Compile Include="Models\Acquisition\DirectShow\Internal\VideoProcAmpProperty.cs" />
     <Compile Include="Models\Metadata\RecordingMetadata.cs" />
     <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
@@ -188,6 +177,7 @@
     <Compile Include="Models\Management\ProtocolRecorderCollection.cs" />
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenThemeDialogCommand.cs" />
@@ -270,11 +260,6 @@
     <Compile Include="Models\Acquisition\BusChannel.cs" />
     <Compile Include="Models\Acquisition\Channel.cs" />
     <Compile Include="Models\Acquisition\ChannelFrame.cs" />
-    <Compile Include="Models\Acquisition\Kinect\KinectChannel.cs" />
-    <Compile Include="Models\Acquisition\Kinect\KinectColorChannel.cs" />
-    <Compile Include="Models\Acquisition\Kinect\KinectConfig.cs" />
-    <Compile Include="Models\Acquisition\Kinect\KinectSoundChannel.cs" />
-    <Compile Include="Models\Acquisition\Kinect\KinectDepthChannel.cs" />
     <Compile Include="Models\Acquisition\MediaBus.cs" />
     <Compile Include="Models\Acquisition\MediaSource.cs" />
     <Compile Include="Models\Acquisition\MediaSourceConfig.cs" />
@@ -409,7 +394,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Acquisition\Kinect\KinectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -436,17 +420,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="KinectManagement">
-      <Guid>{B167C0CB-E5E7-40FC-BA4E-6711286A2FDE}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />

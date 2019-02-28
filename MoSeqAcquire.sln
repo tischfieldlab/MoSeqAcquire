@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoSeqAcquire", "MoSeqAcquir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hdf5DotNetTools", "..\Hdf5DotnetTools\Hdf5DotNetTools\Hdf5DotNetTools.csproj", "{ADCC9AD9-EE46-4237-9220-95EAEA143D17}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MediaSources", "MediaSources", "{848150FF-2DD4-4C88-91D3-817B7FC8547C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectShow", "MediaSources\DirectShow\DirectShow.csproj", "{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinect360", "MediaSources\Kinect360\Kinect360.csproj", "{FF0A8391-0E37-473F-AB73-FA66B14036DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,9 +37,29 @@ Global
 		{ADCC9AD9-EE46-4237-9220-95EAEA143D17}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADCC9AD9-EE46-4237-9220-95EAEA143D17}.Release|x64.ActiveCfg = Release|x64
 		{ADCC9AD9-EE46-4237-9220-95EAEA143D17}.Release|x64.Build.0 = Release|x64
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Debug|x64.Build.0 = Debug|Any CPU
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Release|x64.ActiveCfg = Release|Any CPU
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}.Release|x64.Build.0 = Release|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Debug|x64.Build.0 = Debug|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7BA83073-4DFB-44CB-81BC-8FD9083F51BE} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
+		{FF0A8391-0E37-473F-AB73-FA66B14036DF} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6786BB0-2164-48DF-9EDB-D0D34E984B4E}
