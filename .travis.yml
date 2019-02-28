@@ -2,4 +2,4 @@ os: windows
 language: csharp
 solution: MoSeqAcquire.sln
 before_install:
-	- choco install dotnet4.6.2
+    - choco install dotnet4.6.2
