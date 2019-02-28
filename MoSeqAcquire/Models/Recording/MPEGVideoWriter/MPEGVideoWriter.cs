@@ -36,12 +36,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             this.writer = new VideoFileWriter();
             var vChanMeta = this.videoPin.Channel.Metadata as VideoChannelMetadata;
             var conf = this.Settings as MPEGVideoWriterSettings;
-            this.writer.Open(this.FilePath);
-            this.writer.Width = vChanMeta.Width;
-            this.writer.Height = vChanMeta.Height;
-            this.writer.FrameRate = new Accord.Math.Rational(30);
-            this.writer.VideoCodec = conf.VideoCodec;
-            this.writer.BitRate = conf.VideoBitrate;
+            this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height, new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate);
             //conf.AudioCodec, conf.AudioBitrate, 16000, 1);
 
             base.Start();
