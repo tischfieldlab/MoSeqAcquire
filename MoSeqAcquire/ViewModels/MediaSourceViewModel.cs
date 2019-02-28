@@ -46,15 +46,15 @@ namespace MoSeqAcquire.ViewModels
                 }
                 this.MediaSource.Config.ApplySnapshot(mediaSource.Config);
                 this.MediaSource.Start();
-                /*Application.Current.Dispatcher.Invoke(() =>
+                Application.Current.Dispatcher.Invoke(() =>
                 {
                     this.RetrieveChannels();
                     this.IsReady = true;
-                    if(this.MediaSource is DirectShowSource)
+                    /*if(this.MediaSource is DirectShowSource)
                     {
                         (this.MediaSource as DirectShowSource).Device.DisplayPropertyPage(new WindowInteropHelper(Application.Current.MainWindow).Handle);
-                    }
-                });*/
+                    }*/
+                });
             });
         }
         public Task InitTask { get; protected set; }

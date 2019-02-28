@@ -30,7 +30,7 @@ namespace MoSeqAcquire.ViewModels.Commands
             {
                 var ps = new ProtocolSource()
                 {
-                    Provider = info.Provider.FullName,
+                    Provider = info.Provider.AssemblyQualifiedName,
                     DeviceId = info.DeviceId
                 };
 

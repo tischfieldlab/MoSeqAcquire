@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF0A8391-0E37-473F-AB73-FA66B14036DF}</ProjectGuid>
+    <ProjectGuid>{26E1D815-420A-432E-A06C-73FED15AAF20}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kinect360</RootNamespace>
-    <AssemblyName>Kinect360</AssemblyName>
+    <RootNamespace>RawDataWriter</RootNamespace>
+    <AssemblyName>RawDataWriter</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\MediaSources\Kinect360\</OutputPath>
+    <OutputPath>..\..\bin\Debug\Recorders\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,12 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Kinect, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Dataflow.4.9.0\lib\netstandard2.0\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,25 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KinectChannel.cs" />
-    <Compile Include="KinectColorChannel.cs" />
-    <Compile Include="KinectConfig.cs" />
-    <Compile Include="KinectDepthChannel.cs" />
-    <Compile Include="KinectManager.cs" />
-    <Compile Include="KinectSoundChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RawDataWriter.cs" />
+    <Compile Include="RawDataWriterSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MoSeqAcquire\MoSeqAcquire.csproj">
-      <Project>{bf8fdfec-1160-4f80-a276-e8d9aed4f064}</Project>
+      <Project>{BF8FDFEC-1160-4F80-A276-E8D9AED4F064}</Project>
       <Name>MoSeqAcquire</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Threading.Tasks.Dataflow">
-      <Version>4.9.0</Version>
-    </PackageReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

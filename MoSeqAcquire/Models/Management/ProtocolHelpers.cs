@@ -67,7 +67,6 @@ namespace MoSeqAcquire.Models.Management
             Dictionary<String, Assembly> plugInAssemblyList = new Dictionary<String, Assembly>();
             foreach (var path in SearchPaths)
             {
-                Console.WriteLine("Searching path \"" + path + "\" for plugins");
                 var assemblies = FindAssembliesForPath(path);
                 foreach (var a in assemblies)
                 {
@@ -81,16 +80,22 @@ namespace MoSeqAcquire.Models.Management
         }
         public static List<Assembly> FindAssembliesForPath(String Path)
         {
+            Console.WriteLine("Searching path \"" + Path + "\" for plugins");
             List<Assembly> assemblyList = new List<Assembly>();
             DirectoryInfo dInfo = new DirectoryInfo(Path);
             if (dInfo.Exists)
             {
-                FileInfo[] files = dInfo.GetFiles("*.dll");
+                FileInfo[] files = dInfo.GetFiles("*.dll", SearchOption.AllDirectories);
                 if (null != files)
                 {
                     foreach (FileInfo file in files)
                     {
-                        assemblyList.Add(Assembly.LoadFile(file.FullName));
+                        Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
+                        try
+                        {
+                            assemblyList.Add(Assembly.LoadFile(file.FullName));
+                        }
+                        catch { }
                     }
                 }
             }
