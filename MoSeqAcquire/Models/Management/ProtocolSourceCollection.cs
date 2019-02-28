@@ -19,7 +19,7 @@ namespace MoSeqAcquire.Models.Management
         {
             base.Add(new ProtocolSource()
             {
-                Provider = Type.FullName,
+                Provider = Type.AssemblyQualifiedName,
                 DeviceId = DeviceId,
                 Config = Settings
             });

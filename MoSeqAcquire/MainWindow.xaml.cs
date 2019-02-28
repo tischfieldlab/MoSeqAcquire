@@ -1,6 +1,4 @@
-﻿using Hdf5DotNetTools;
-using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Acquisition.Kinect;
+﻿using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.ViewModels;
 using MoSeqAcquire.Views;

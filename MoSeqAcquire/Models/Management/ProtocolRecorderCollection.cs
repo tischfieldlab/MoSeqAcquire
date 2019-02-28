@@ -30,7 +30,7 @@ namespace MoSeqAcquire.Models.Management
         {
             base.Add(new ProtocolRecorder()
             {
-                Provider = Type.FullName,
+                Provider = Type.AssemblyQualifiedName,
                 Config = Settings
             });
         }

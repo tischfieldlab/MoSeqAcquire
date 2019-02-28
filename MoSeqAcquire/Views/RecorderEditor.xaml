@@ -9,6 +9,7 @@
         xmlns:ctrl="clr-namespace:MoSeqAcquire.Views.Controls"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:swd="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
+        xmlns:ext="clr-namespace:MoSeqAcquire.Views.Extensions"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -76,9 +77,17 @@
                             <ItemsControl.Resources>
                                 <DataTemplate DataType="{x:Type mvmr:SingleCapacityRecorderPin}">
                                     <ComboBox Margin="16" materialDesign:ComboBoxAssist.ClassicMode="True"  materialDesign:HintAssist.Hint="{Binding Path=PinName}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                      ItemsSource="{Binding Path=AvailableChannels}"
                                       SelectedValue="{Binding Path=SelectedChannel}" SelectedValuePath="Channel"
                                       DisplayMemberPath="Channel.FullName">
+                                        <ComboBox.Resources>
+                                            <ext:BindingProxy x:Key="proxy" Data="{Binding}" />
+                                        </ComboBox.Resources>
+                                        <ComboBox.ItemsSource>
+                                            <CompositeCollection>
+                                                <ComboBoxItem >Select a Channel</ComboBoxItem>
+                                                <CollectionContainer Collection="{Binding Path=Data.AvailableChannels, Source={StaticResource proxy}}" />
+                                            </CompositeCollection>
+                                        </ComboBox.ItemsSource>
                                     </ComboBox>
                                 </DataTemplate>
                                 <DataTemplate DataType="{x:Type mvmr:MultipleCapacityRecorderPin}">

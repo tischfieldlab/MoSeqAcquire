@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Configuration;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Kinect;
-using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Configuration;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
