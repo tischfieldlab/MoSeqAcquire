@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawDataWriter", "Recorders\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDF5Writer", "Recorders\HDF5Writer\HDF5Writer.csproj", "{49DB32D2-448B-4371-8172-739F1BB5D8A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynapseCapture", "MediaSources\SynapseCapture\SynapseCapture.csproj", "{0E4E7506-DC73-4788-A944-A68F73DF6F5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,14 @@ Global
 		{49DB32D2-448B-4371-8172-739F1BB5D8A1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49DB32D2-448B-4371-8172-739F1BB5D8A1}.Release|x64.ActiveCfg = Release|Any CPU
 		{49DB32D2-448B-4371-8172-739F1BB5D8A1}.Release|x64.Build.0 = Release|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Debug|x64.Build.0 = Debug|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +105,7 @@ Global
 		{0ED7502F-663F-456C-B6FE-F336C393689B} = {E262988C-6FB7-41C9-BE90-46AF7748EF3A}
 		{26E1D815-420A-432E-A06C-73FED15AAF20} = {E262988C-6FB7-41C9-BE90-46AF7748EF3A}
 		{49DB32D2-448B-4371-8172-739F1BB5D8A1} = {E262988C-6FB7-41C9-BE90-46AF7748EF3A}
+		{0E4E7506-DC73-4788-A944-A68F73DF6F5B} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6786BB0-2164-48DF-9EDB-D0D34E984B4E}

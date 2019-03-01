@@ -13,7 +13,8 @@ namespace MoSeqAcquire.Models.Acquisition
     {
         Any,
         Audio,
-        Video
+        Video,
+        Data
     }
 
     public abstract class Channel

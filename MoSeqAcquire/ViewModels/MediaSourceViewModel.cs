@@ -80,6 +80,9 @@ namespace MoSeqAcquire.ViewModels
                     case MediaType.Audio:
                         this._channels.Add(new AudioChannelViewModel(c));
                         break;
+                    case MediaType.Data:
+                        this._channels.Add(new DataChannelViewModel(c));
+                        break;
                 }
             }
         }
