@@ -9,7 +9,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         public KinectColorChannel(KinectManager Kinect) : base(Kinect)
         {
             this.Name = "Color Channel";
-            this.DeviceName = "Microsoft Kinect";
+            this.DeviceName = "Microsoft Kinect XBOne";
             Kinect.Sensor.ColorFrameReady += Sensor_ColorFrameReady;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(byte);

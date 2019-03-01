@@ -1,4 +1,6 @@
 ﻿using MoSeqAcquire.Models.Utility;
+using Microsoft.Kinect;
+using System.Windows.Media;
 
 namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
 {
@@ -8,7 +10,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         {
             this.Name = "Depth Channel";
             this.DeviceName = "Microsoft Kinect";
-            Kinect.Sensor.DepthFrameReady += this.Sensor_DepthFrameReady;
+            Kinect.Sensor.DepthFrameSource.FrameCaptured += this.Sensor_DepthFrameReady;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(short);
         }
@@ -70,32 +72,43 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         }
 
         private short[] _pixelData;
-        private void Sensor_DepthFrameReady(object sender, DepthImageFrameReadyEventArgs e)
+        private void Sensor_DepthFrameReady(object sender, FrameCapturedEventArgs e)
         {
-            using (DepthImageFrame imageFrame = e.OpenDepthImageFrame())
+            DepthFrameSource frameSource = (DepthFrameSource)sender;
+            if (e.FrameType == FrameSourceTypes.Depth)
             {
-                if (imageFrame != null)
+                var meta = new VideoChannelFrameMetadata()
                 {
-                    var meta = new VideoChannelFrameMetadata()
-                    {
-                        FrameId = imageFrame.FrameNumber,
-                        Timestamp = imageFrame.Timestamp,
-                        AbsoluteTime = PreciseDatetime.Now,
-                        Width = imageFrame.Width,
-                        Height = imageFrame.Height,
-                        BytesPerPixel = imageFrame.BytesPerPixel,
-                        PixelFormat = PixelFormats.Gray16,
-                        TotalBytes = imageFrame.PixelDataLength * imageFrame.BytesPerPixel
-                    };
+                    //FrameId =
+                    Timestamp = e.RelativeTime.Ticks,
+                    AbsoluteTime = PreciseDatetime.Now,
+                    Width = 
+                };
+            }
+            //using (DepthImageFrame imageFrame = e.OpenDepthImageFrame())
+            //{
+            //    if (imageFrame != null)
+            //    {
+            //        var meta = new VideoChannelFrameMetadata()
+            //        {
+            //            FrameId = imageFrame.FrameNumber,
+            //            Timestamp = imageFrame.Timestamp,
+            //            AbsoluteTime = PreciseDatetime.Now,
+            //            Width = imageFrame.Width,
+            //            Height = imageFrame.Height,
+            //            BytesPerPixel = imageFrame.BytesPerPixel,
+            //            PixelFormat = PixelFormats.Gray16,
+            //            TotalBytes = imageFrame.PixelDataLength * imageFrame.BytesPerPixel
+            //        };
 
-                    if (this._pixelData == null || this._pixelData.Length != imageFrame.PixelDataLength)
-                    {
-                        this._pixelData = new short[imageFrame.PixelDataLength];
-                    }
+            //        if (this._pixelData == null || this._pixelData.Length != imageFrame.PixelDataLength)
+            //        {
+            //            this._pixelData = new short[imageFrame.PixelDataLength];
+            //        }
 
-                    imageFrame.CopyPixelDataTo(this._pixelData);
-                    this.Buffer.Post(new ChannelFrame(this._pixelData, meta));
-                }
+            //        imageFrame.CopyPixelDataTo(this._pixelData);
+            //        this.Buffer.Post(new ChannelFrame(this._pixelData, meta));
+            //    }
             }
         }
     }
