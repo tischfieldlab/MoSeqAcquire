@@ -31,23 +31,24 @@ namespace MoSeqAcquire.ViewModels
                         }
                         float[] data = frame.FrameData as float[];
                         var max = data.Max();
-                        int width = (int)(this.Stream.Width / frame.FrameData.Length);
+                        int width = (int)(this.Stream.PixelWidth / frame.FrameData.Length);
 
-                        int stride = (int)(this.Stream.Width * this.Stream.Format.BitsPerPixel + 7) / 8;
+                        int stride = (int)(this.Stream.PixelWidth * this.Stream.Format.BitsPerPixel + 7) / 8;
                         this.Stream.WritePixels(
                                 new Int32Rect(0, 0, 100, 100),
-                                new short[100 * 100],
+                                new ushort[100 * 100],
                                 stride,
                                 0);
                         try
                         {
+                            int height;
                             for (int i = 0; i < data.Length; i++)
                             {
                                 stride = (int)(width * this.Stream.Format.BitsPerPixel + 7) / 8;
-                                var height = (int)((data[i] / max) * 100);
+                                height = (int)((data[i] / max) * 100);
                                 this.Stream.WritePixels(
-                                    new Int32Rect(i * width, 0, width, stride),
-                                    Enumerable.Repeat(short.MaxValue, width * height).ToArray(),
+                                    new Int32Rect(i * width, this.Stream.PixelHeight - height, width, height),
+                                    Enumerable.Repeat(ushort.MaxValue, width * height).ToArray(),
                                     stride,
                                     0);
                             }
