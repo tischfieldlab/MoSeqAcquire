@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawDataWriter", "Recorders\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDF5Writer", "Recorders\HDF5Writer\HDF5Writer.csproj", "{49DB32D2-448B-4371-8172-739F1BB5D8A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectXBOne", "KinectXBOne\KinectXBOne.csproj", "{FB02C844-A2DB-4869-A421-51DAA1A10777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectXBOne", "MediaSources\KinectXBOne\KinectXBOne.csproj", "{FB02C844-A2DB-4869-A421-51DAA1A10777}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
