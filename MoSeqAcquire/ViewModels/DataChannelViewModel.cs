@@ -32,6 +32,7 @@ namespace MoSeqAcquire.ViewModels
                         float[] data = frame.FrameData as float[];
                         var max = data.Max();
                         int width = (int)(this.Stream.PixelWidth / frame.FrameData.Length);
+                        int half = (this.Stream.PixelHeight / 2);
 
                         int stride = (int)(this.Stream.PixelWidth * this.Stream.Format.BitsPerPixel + 7) / 8;
                         this.Stream.WritePixels(
@@ -45,15 +46,26 @@ namespace MoSeqAcquire.ViewModels
                             for (int i = 0; i < data.Length; i++)
                             {
                                 stride = (int)(width * this.Stream.Format.BitsPerPixel + 7) / 8;
-                                height = (int)((data[i] / max) * 100);
-                                this.Stream.WritePixels(
-                                    new Int32Rect(i * width, this.Stream.PixelHeight - height, width, height),
-                                    Enumerable.Repeat(ushort.MaxValue, width * height).ToArray(),
-                                    stride,
-                                    0);
+                                height = (int)((data[i] / max) * half);
+                                if (height < 0)
+                                {
+                                    this.Stream.WritePixels(
+                                        new Int32Rect(i * width, half/*Stream.PixelHeight + height*/, width, -height),
+                                        Enumerable.Repeat(ushort.MaxValue, width * -height).ToArray(),
+                                        stride,
+                                        0);
+                                }
+                                else
+                                {
+                                    this.Stream.WritePixels(
+                                        new Int32Rect(i * width, half - height, width, height),
+                                        Enumerable.Repeat(ushort.MaxValue, width * height).ToArray(),
+                                        stride,
+                                        0);
+                                }
                             }
                         }
-                        catch { }
+                        catch (Exception e){ }
                         
                         this.FrameRate.Increment();
                     }));
