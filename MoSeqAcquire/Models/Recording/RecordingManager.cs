@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Timers;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Recording
 {
@@ -13,13 +14,15 @@ namespace MoSeqAcquire.Models.Recording
         protected bool isInitialized;
         protected bool isRecording;
         protected IRecordingLengthStrategy terminator;
+        private TriggerBus triggerBus;
         protected List<MediaWriter> _writers;
 
         public event EventHandler RecordingStarted;
         public event EventHandler RecordingFinished;
 
-        public RecordingManager()
+        public RecordingManager(TriggerBus triggerBus)
         {
+            this.triggerBus = triggerBus;
             this._writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
         }
