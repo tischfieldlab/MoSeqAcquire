@@ -12,36 +12,52 @@ namespace MoSeqAcquire.ViewModels.Triggers
     {
         protected MoSeqAcquireViewModel rootViewModel;
         protected ObservableCollection<TriggerViewModel> triggers;
+        protected ReadOnlyObservableCollection<TriggerViewModel> ro_triggers;
         protected TriggerViewModel selectedTrigger;
 
         public TriggerManagerViewModel(MoSeqAcquireViewModel RootViewModel)
         {
             this.rootViewModel = RootViewModel;
             this.triggers = new ObservableCollection<TriggerViewModel>();
-            this.PopulateAvailableTriggerTypes();
-            this.PopulateAvailableActionTypes();
+            this.ro_triggers = new ReadOnlyObservableCollection<TriggerViewModel>(this.triggers);
+            this.PopulateAvailableTypes();
         }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public ObservableCollection<TriggerViewModel> Triggers { get => this.triggers; }
+        public ReadOnlyObservableCollection<TriggerViewModel> Triggers { get => this.ro_triggers; }
         public TriggerViewModel SelectedTrigger
         {
             get => this.selectedTrigger;
             set => this.SetField(ref this.selectedTrigger, value);
         }
 
-        public ReadOnlyObservableCollection<AvailableTriggerTypeViewModel> AvailableTriggerTypes { get; protected set; }
-        protected void PopulateAvailableTriggerTypes()
+        public void AddTrigger()
         {
-            var oc = new ObservableCollection<AvailableTriggerTypeViewModel>(ProtocolHelpers.FindTriggerTypes().Select(t => new AvailableTriggerTypeViewModel(t)));
-            this.AvailableTriggerTypes = new ReadOnlyObservableCollection<AvailableTriggerTypeViewModel>(oc);
+            var vm = new TriggerViewModel(this.Root);
+            //vm.PropertyChanged += trigger_PropertyChanged;
+            this.triggers.Add(new TriggerViewModel(this.Root));
         }
 
-        public ReadOnlyObservableCollection<AvailableActionTypeViewModel> AvailableActionTypes { get; protected set; }
-        protected void PopulateAvailableActionTypes()
+        public void RemoveTrigger(TriggerViewModel Trigger)
         {
-            var oc = new ObservableCollection<AvailableActionTypeViewModel>(ProtocolHelpers.FindTriggerActions().Select(t => new AvailableActionTypeViewModel(t)));
-            this.AvailableActionTypes = new ReadOnlyObservableCollection<AvailableActionTypeViewModel>(oc);
+            this.triggers.Remove(Trigger);
         }
+
+
+        
+
+        public ReadOnlyObservableCollection<AvailableTriggerTypeViewModel> AvailableTriggerTypes { get; protected set; }
+        public ReadOnlyObservableCollection<AvailableActionTypeViewModel> AvailableActionTypes { get; protected set; }
+        protected void PopulateAvailableTypes()
+        {
+            var oc1 = new ObservableCollection<AvailableTriggerTypeViewModel>(ProtocolHelpers.FindTriggerTypes().Select(t => new AvailableTriggerTypeViewModel(t)));
+            this.AvailableTriggerTypes = new ReadOnlyObservableCollection<AvailableTriggerTypeViewModel>(oc1);
+
+            var oc2 = new ObservableCollection<AvailableActionTypeViewModel>(ProtocolHelpers.FindTriggerActions().Select(t => new AvailableActionTypeViewModel(t)));
+            this.AvailableActionTypes = new ReadOnlyObservableCollection<AvailableActionTypeViewModel>(oc2);
+        }
+
+        
+
     }
 
 }

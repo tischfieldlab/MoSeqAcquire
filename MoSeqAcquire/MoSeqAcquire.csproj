@@ -161,8 +161,9 @@
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Core\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
+    <Compile Include="ViewModels\Commands\RemoveTriggerCommand.cs" />
     <Compile Include="ViewModels\Commands\AddTriggerCommand.cs" />
     <Compile Include="ViewModels\Commands\EditTriggerConfigCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenThemeDialogCommand.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
+    <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>

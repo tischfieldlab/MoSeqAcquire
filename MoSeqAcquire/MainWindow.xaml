@@ -68,7 +68,7 @@
                         </GroupBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="REVIEW">
+                <!--<TabItem Header="REVIEW">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200" />
@@ -76,7 +76,7 @@
                         </Grid.ColumnDefinitions>
                         <v:DirectoryTreeView />
                     </Grid>
-                </TabItem>
+                </TabItem>-->
             </dragablz:TabablzControl>
         </dockablz:Layout>
     </Grid>

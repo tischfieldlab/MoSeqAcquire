@@ -21,7 +21,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Triggers.Triggers.Add(new TriggerViewModel(this.ViewModel));
+            this.ViewModel.Triggers.AddTrigger();
         }
     }
 }

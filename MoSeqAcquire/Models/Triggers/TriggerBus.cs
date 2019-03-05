@@ -9,20 +9,24 @@ namespace MoSeqAcquire.Models.Triggers
 {
     public class TriggerBus
     {
-        protected List<Type> triggers;
         protected Dictionary<Type, List<TriggerAction>> subscribers;
 
-        public void Register<TTrigger>() where TTrigger : Trigger
+        public TriggerBus()
         {
-            this.triggers.Add(typeof(TTrigger));
+            this.subscribers = new Dictionary<Type, List<TriggerAction>>();
         }
-        public void Subscribe<TTrigger>(TriggerAction triggerAction) where TTrigger : Trigger
+        
+        public void Subscribe(Type Trigger, TriggerAction triggerAction)
         {
-            if (!this.subscribers.ContainsKey(typeof(TTrigger)))
+            if (!this.subscribers.ContainsKey(Trigger))
             {
-                this.subscribers[typeof(TTrigger)] = new List<TriggerAction>();
+                this.subscribers[Trigger] = new List<TriggerAction>();
             }
-            this.subscribers[typeof(TTrigger)].Add(triggerAction);
+            this.subscribers[Trigger].Add(triggerAction);
+        }
+        public void Unsubscribe(Type Trigger, TriggerAction triggerAction)
+        {
+            this.subscribers[Trigger].Remove(triggerAction);
         }
 
         public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : Trigger

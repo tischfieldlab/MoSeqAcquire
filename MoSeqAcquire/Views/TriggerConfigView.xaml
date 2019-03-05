@@ -19,7 +19,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="RecorderEditor" Height="450" Width="800">
+        Title="Edit Trigger Configuration" Height="450" Width="800">
     <Window.Resources>
 
     </Window.Resources>
@@ -35,20 +35,18 @@
                                     Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Command="{Binding Path=CancelCommand}"
                                     ToolTip="Cancel">
-                        <materialDesign:PackIcon Kind="Cancel" Width="36" Height="36" />
-                    </Button>
-                    <Button Width="72" Height="48" Margin="8,0,8,0"
-                                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                    Command="{Binding Path=NextCommand}"
-                                    ToolTip="{Binding Path=ContinueHelp}">
-                        
-                        <materialDesign:PackIcon Kind="{Binding Path=ContinueIcon}" Width="36" Height="36" />
+                        <materialDesign:PackIcon Kind="Close" Width="36" Height="36" />
                     </Button>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                    <TextBlock  VerticalAlignment="Center" Text="{Binding Path=TriggerType.Name}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
-                    <materialDesign:PackIcon Kind="{Binding Path=React}" Width="36" Height="36" />
-                    <TextBlock  VerticalAlignment="Center" Text="{Binding Path=ActionType.Name}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                <StackPanel  DockPanel.Dock="Left">
+                    <WrapPanel>
+                        <materialDesign:PackIcon Kind="AlarmLight" Width="36" Height="36" />
+                        <TextBlock  VerticalAlignment="Center" Text="{Binding Path=TriggerType.Name}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <materialDesign:PackIcon Kind="Engine" Width="36" Height="36" />
+                        <TextBlock  VerticalAlignment="Center" Text="{Binding Path=ActionType.Name}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                    </WrapPanel>
                 </StackPanel>
             </DockPanel>
         </materialDesign:ColorZone>

@@ -40,6 +40,13 @@
                         ToolTip="Edit Trigger Configuration">
                     <materialDesign:PackIcon Kind="Settings"  />
                 </Button>
+                <Button Width="24" Height="24" Margin="8,0,8,0"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                        Command="{Binding Path=Root.Commands.RemoveTrigger}"
+                        CommandParameter="{Binding}"
+                        ToolTip="Remove Trigger">
+                    <materialDesign:PackIcon Kind="Close"  />
+                </Button>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>

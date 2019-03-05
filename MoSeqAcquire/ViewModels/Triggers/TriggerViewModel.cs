@@ -13,6 +13,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected Type triggerType;
         protected Type actionType;
         protected TriggerAction trigger;
+        protected bool isRegistered;
 
 
         public TriggerViewModel(MoSeqAcquireViewModel RootViewModel)
@@ -27,6 +28,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             {
                 this.trigger = (TriggerAction)Activator.CreateInstance(this.actionType);
             }
+            this.RegisterTrigger();
         }
 
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
@@ -34,7 +36,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         public Type TriggerType
         {
             get => this.triggerType;
-            set => this.SetField(ref this.triggerType, value);
+            set => this.SetField(ref this.triggerType, value, this.DeregisterTrigger);
         }
         public Type ActionType
         {
@@ -42,5 +44,25 @@ namespace MoSeqAcquire.ViewModels.Triggers
             set => this.SetField(ref this.actionType, value);
         }
         public TriggerConfig Settings { get => this.trigger.Config; }
+
+        protected void DeregisterTrigger()
+        {
+            if (this.isRegistered)
+            {
+                this.Root.TriggerBus.Unsubscribe(this.triggerType, this.trigger);
+                this.isRegistered = false;
+            }
+        }
+        protected void RegisterTrigger()
+        {
+            if (!this.isRegistered)
+            {
+                if (this.triggerType != null && this.actionType != null)
+                {
+                    this.Root.TriggerBus.Subscribe(this.triggerType, this.trigger);
+                    this.isRegistered = true;
+                }
+            }
+        }
     }
 }

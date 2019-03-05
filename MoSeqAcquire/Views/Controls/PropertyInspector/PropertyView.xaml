@@ -39,13 +39,13 @@
             </DockPanel>
         </DataTemplate>
         <DataTemplate x:Key="NumericEditor">
-            <mac:NumericUpDown Value="{Binding Path=Value}" />
+            <mac:NumericUpDown Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}" />
         </DataTemplate>
         <DataTemplate x:Key="AutoCheckboxTemplate">
-            <CheckBox IsChecked="{Binding Path=IsAutomatic}" IsEnabled="{Binding Path=SupportsAutomatic}" />
+            <CheckBox IsChecked="{Binding Path=IsAutomatic}" IsEnabled="{Binding Path=SupportsAutomatic}" HorizontalAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="ResetButtonTemplate">
-            <Button Width="24" Height="24"
+            <Button Width="24" Height="24" HorizontalAlignment="Center"
                     Command="{Binding Path=ResetCommand, Mode=OneWay}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="Reset to Default Value"
