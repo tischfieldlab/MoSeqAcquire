@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Performance
 {
-    public interface IFrameRateProvider
+    public interface IPerformanceProvider { }
+    public interface IFrameRateProvider : IPerformanceProvider
     {
         double FrameRate { get; }
     }
-    public interface ITotalFrameCountProvider
+    public interface ITotalFrameCountProvider : IPerformanceProvider
     {
         long TotalFrames { get; }
     }
-    public interface IDurationProvider
+    public interface IDurationProvider : IPerformanceProvider
     {
         TimeSpan Duration { get; }
     }
-    public interface ITimeRemainingProvider
+    public interface ITimeRemainingProvider : IPerformanceProvider
     {
         TimeSpan? TimeRemaining { get; }
     }
-    public interface IProgressProvider
+    public interface IProgressProvider : IPerformanceProvider
     {
         double? Progress { get; }
     }

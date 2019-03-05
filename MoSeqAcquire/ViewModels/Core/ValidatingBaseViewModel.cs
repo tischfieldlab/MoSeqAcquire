@@ -3,20 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MoSeqAcquire.Models;
 using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels
 {
-    public abstract class BaseViewModel : ObservableObject
-    {
-        public BaseViewModel()
-        {
-            Validator = new ValidationHelper();
-        }
-        protected ValidationHelper Validator { get; private set; }
-    }
-
     public class ValidatingBaseViewModel : BaseViewModel, INotifyDataErrorInfo
     {
         private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }

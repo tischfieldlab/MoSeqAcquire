@@ -1,7 +1,9 @@
 ﻿using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.ViewModels.Commands;
 using MoSeqAcquire.ViewModels.Recording;
+using MoSeqAcquire.ViewModels.Triggers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,16 +18,20 @@ namespace MoSeqAcquire.ViewModels
         public MoSeqAcquireViewModel()
         {
             this.Theme = new ThemeViewModel();
+            this.TriggerBus = new TriggerBus();
             this.MediaSources = new ObservableCollection<MediaSourceViewModel>();
             this.Recorder = new RecordingManagerViewModel(this);
+            this.Triggers = new TriggerManagerViewModel(this);
             
             this.Commands = new CommandLibrary(this);
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
         public CommandLibrary Commands { get; protected set; }
         public ThemeViewModel Theme { get; protected set; }
+        public TriggerBus TriggerBus { get; protected set; }
         public ObservableCollection<MediaSourceViewModel> MediaSources { get; protected set; }
         public RecordingManagerViewModel Recorder { get; protected set; }
+        public TriggerManagerViewModel Triggers { get; protected set; }
 
 
         public Protocol GenerateProtocol()

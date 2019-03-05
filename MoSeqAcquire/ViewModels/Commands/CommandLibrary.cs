@@ -21,6 +21,10 @@ namespace MoSeqAcquire.ViewModels.Commands
             this.RegisterCommand<EditRecorderCommand>();
             this.RegisterCommand<RemoveRecorderCommand>();
 
+            this.RegisterCommand<AddTriggerCommand>();
+            this.RegisterCommand<EditTriggerConfigCommand>();
+            this.RegisterCommand<RemoveTriggerCommand>();
+
             this.RegisterCommand<StartRecordingCommand>();
             this.RegisterCommand<StopRecordingCommand>();
 
@@ -36,6 +40,10 @@ namespace MoSeqAcquire.ViewModels.Commands
         public AddRecorderCommand AddRecorder { get => this.GetCommand<AddRecorderCommand>(); }
         public EditRecorderCommand EditRecorder { get => this.GetCommand<EditRecorderCommand>(); }
         public RemoveRecorderCommand RemoveRecorder { get => this.GetCommand<RemoveRecorderCommand>(); }
+
+        public AddTriggerCommand AddTrigger { get => this.GetCommand<AddTriggerCommand>(); }
+        public EditTriggerConfigCommand EditTriggerConfig { get => this.GetCommand<EditTriggerConfigCommand>(); }
+        public RemoveTriggerCommand RemoveTrigger { get => this.GetCommand<RemoveTriggerCommand>(); }
 
         public StartRecordingCommand StartRecording { get => this.GetCommand<StartRecordingCommand>(); }
         public StopRecordingCommand StopRecording { get => this.GetCommand<StopRecordingCommand>(); }

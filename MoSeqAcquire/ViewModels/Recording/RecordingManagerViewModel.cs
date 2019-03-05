@@ -27,7 +27,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
 
-            this._recordingManager = new RecordingManager();
+            this._recordingManager = new RecordingManager(this.rootViewModel.TriggerBus);
             this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
             this.RegisterRules();
         }
