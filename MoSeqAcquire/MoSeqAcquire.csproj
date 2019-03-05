@@ -126,7 +126,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Metadata\RecordingMetadata.cs" />
-    <Compile Include="Models\Triggers\TriggerAction.cs" />
     <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
