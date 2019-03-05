@@ -33,6 +33,29 @@
                 </StackPanel>
             </Border>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DataChannelViewModel}">
+            <Border CornerRadius="5" Background="DarkSlateGray" Margin="5">
+                <StackPanel >
+                    <Border CornerRadius="5,5,0,0" >
+                        <WrapPanel Margin="5">
+                            <CheckBox IsChecked="{Binding Path=Enabled}"/>
+                            <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                        </WrapPanel>
+                    </Border>
+                    <Grid Background="DarkGray">
+                        <Grid MaxWidth="200" MaxHeight="150" Margin="10" >
+                            <Image Source="{Binding Path=Stream}"  />
+                            <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.5" X2="0.5" Y1="0.0" Y2="1.0" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.0" X2="1.0" Y1="0.5" Y2="0.5" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        </Grid>
+                    </Grid>
+                    <DockPanel Margin="5">
+                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Path=ShowCrosshairs}">Show Crosshairs</CheckBox>
+                        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding FrameRate.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:AudioChannelViewModel}">
             <Border CornerRadius="5" Background="DarkGray" Margin="5">
                 <StackPanel >
