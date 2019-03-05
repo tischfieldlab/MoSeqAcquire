@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Triggers", "Triggers", "{E1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynapseTriggers", "Triggers\SynapseTriggers\SynapseTriggers.csproj", "{36213CF0-706B-48A8-ABDC-A88965101E5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptingTriggers", "ScriptingTriggers\ScriptingTriggers.csproj", "{F695B199-3061-4C08-80E2-535C0BE78F23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptingTriggers", "Triggers\ScriptingTriggers\ScriptingTriggers.csproj", "{F695B199-3061-4C08-80E2-535C0BE78F23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
