@@ -30,22 +30,4 @@ namespace MoSeqAcquire.Models.Triggers
             this.subscribers[typeof(TTrigger)].ForEach(t => t.Action.Invoke(trigger));
         }
     }
-
-
-    public abstract class Trigger
-    {
-        public string Name { get; }
-        
-    }
-
-    public abstract class TriggerConfig : BaseConfiguration { }
-
-    public class TriggerAction
-    {
-        public TriggerConfig Config { get; set; }
-        public Action<Trigger> Action { get; }
-    }
-
-
-    public class RecordingStartedTrigger : Trigger { }
 }

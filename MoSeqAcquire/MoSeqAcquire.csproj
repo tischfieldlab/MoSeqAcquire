@@ -127,7 +127,9 @@
     </ApplicationDefinition>
     <Compile Include="Models\Metadata\RecordingMetadata.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />
-    <Compile Include="Models\Triggers\Class1.cs" />
+    <Compile Include="Models\Triggers\Trigger.cs" />
+    <Compile Include="Models\Triggers\TriggerAction.cs" />
+    <Compile Include="Models\Triggers\TriggerBus.cs" />
     <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
@@ -161,6 +163,8 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddTriggerCommand.cs" />
+    <Compile Include="ViewModels\Commands\EditTriggerConfigCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenThemeDialogCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveMediaSourceCommand.cs" />
     <Compile Include="ViewModels\Commands\AddMediaSourceCommand.cs" />
@@ -168,6 +172,12 @@
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
+    <Compile Include="ViewModels\Recording\RecorderProduct.cs" />
+    <Compile Include="ViewModels\Recording\SelectableChannelViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
@@ -284,6 +294,12 @@
     <Compile Include="Views\Controls\PropertyInspector\PropertyView.xaml.cs">
       <DependentUpon>PropertyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TriggerConfigView.xaml.cs">
+      <DependentUpon>TriggerConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TriggerManagerView.xaml.cs">
+      <DependentUpon>TriggerManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RecorderEditor.xaml.cs">
       <DependentUpon>RecorderEditor.xaml</DependentUpon>
     </Compile>
@@ -355,6 +371,14 @@
     <Page Include="Views\Controls\PropertyInspector\PropertyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TriggerConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TriggerManagerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RecorderEditor.xaml">
       <SubType>Designer</SubType>

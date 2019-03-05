@@ -109,6 +109,7 @@ namespace MoSeqAcquire.Models.Recording
             {
                 throw new InvalidOperationException("Recording Manager must be initialized before starting!");
             }
+            this.triggerBus.Trigger(new BeforeRecordingStartedTrigger());
 
             this.WriteRecordingInfo();
 
@@ -123,6 +124,7 @@ namespace MoSeqAcquire.Models.Recording
             }
             this.IsRecording = true;
             this.RecordingStarted?.Invoke(this, new EventArgs());
+            this.triggerBus.Trigger(new AfterRecordingStartedTrigger());
         }
         public void Stop()
         {
@@ -130,6 +132,7 @@ namespace MoSeqAcquire.Models.Recording
             {
                 throw new InvalidOperationException("Recording Manager must be started before stopping!");
             }
+            this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
             foreach (var r in this._writers)
             {
                 r.Stop();
@@ -141,6 +144,7 @@ namespace MoSeqAcquire.Models.Recording
 
             this.IsRecording = false;
             this.RecordingFinished?.Invoke(this, new EventArgs());
+            this.triggerBus.Trigger(new AfterRecordingFinishedTrigger());
         }
 
         protected void WriteRecordingInfo()
@@ -167,6 +171,11 @@ namespace MoSeqAcquire.Models.Recording
             this.Stop();
         }
     }
+
+    public class BeforeRecordingStartedTrigger : Trigger { }
+    public class AfterRecordingStartedTrigger : Trigger { }
+    public class BeforeRecordingFinishedTrigger : Trigger { }
+    public class AfterRecordingFinishedTrigger : Trigger { }
 
 
     public class RecordingSummary
