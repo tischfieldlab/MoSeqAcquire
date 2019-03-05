@@ -58,13 +58,17 @@
 
 
                         <v:MediaSourceView HorizontalAlignment="Stretch" Grid.Column="0" Margin="8" />
+                        
 
-                        <GroupBox Header="Recording Console" Grid.Column="1" DataContext="{Binding Path=Recorder}" Margin="8">
-                            <v:RecordingConsoleView />
+                        <GroupBox Header="Recording Console" Grid.Column="1" Margin="8">
+                            <StackPanel>
+                                <v:RecordingConsoleView DataContext="{Binding Path=Recorder}" />
+                                <v:TriggerManagerView DataContext="{Binding Path=Triggers}" />
+                            </StackPanel>
                         </GroupBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="REVIEW">
+                <!--<TabItem Header="REVIEW">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200" />
@@ -72,7 +76,7 @@
                         </Grid.ColumnDefinitions>
                         <v:DirectoryTreeView />
                     </Grid>
-                </TabItem>
+                </TabItem>-->
             </dragablz:TabablzControl>
         </dockablz:Layout>
     </Grid>
