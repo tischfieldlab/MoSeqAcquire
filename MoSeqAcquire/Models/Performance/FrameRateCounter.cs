@@ -44,6 +44,5 @@ namespace MoSeqAcquire.Models.Performance
             }
         }
         public double FrameRate { get; protected set; }
-
     }
 }
