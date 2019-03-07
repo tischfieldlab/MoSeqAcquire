@@ -28,7 +28,7 @@
                     </Grid>
                     <DockPanel Margin="5">
                         <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Path=ShowCrosshairs}">Show Crosshairs</CheckBox>
-                        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding FrameRate.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
+                        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </DockPanel>
                 </StackPanel>
             </Border>
@@ -51,7 +51,7 @@
                     </Grid>
                     <DockPanel Margin="5">
                         <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Path=ShowCrosshairs}">Show Crosshairs</CheckBox>
-                        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding FrameRate.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
+                        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </DockPanel>
                 </StackPanel>
             </Border>
@@ -69,7 +69,7 @@
                     <!--<Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" MaxWidth="400" MaxHeight="100" Margin="10"  />
                     <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="400" MaxHeight="100" Margin="10"  />-->
                     <WrapPanel>
-                        <TextBlock Text="{Binding FrameRate.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
+                        <TextBlock Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>

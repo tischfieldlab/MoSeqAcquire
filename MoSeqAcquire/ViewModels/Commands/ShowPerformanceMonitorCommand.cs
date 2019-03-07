@@ -1,4 +1,5 @@
-﻿using MoSeqAcquire.ViewModels.Recording;
+﻿using MoSeqAcquire.ViewModels.Performance;
+using MoSeqAcquire.ViewModels.Recording;
 using MoSeqAcquire.Views;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         public override void Execute(object parameter)
         {
             var dialog = new PerformanceMonitor();
-            dialog.DataContext = new PerformanceMonitorViewModel();
+            dialog.DataContext = new PerformanceMonitorViewModel(this.ViewModel);
             dialog.Show();
         }
     }

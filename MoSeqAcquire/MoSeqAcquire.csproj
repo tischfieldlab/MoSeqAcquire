@@ -180,7 +180,11 @@
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
     <Compile Include="ViewModels\DataChannelViewModel.cs" />
-    <Compile Include="ViewModels\PerformanceMonitorViewModel.cs" />
+    <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
+    <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
+    <Compile Include="ViewModels\Performance\PerformanceMonitorPreviewAdapter.cs" />
+    <Compile Include="ViewModels\Performance\PerformanceMonitorMediaBusAdapter.cs" />
+    <Compile Include="ViewModels\Performance\PerformanceMonitorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderProduct.cs" />
     <Compile Include="ViewModels\Recording\SelectableChannelViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />

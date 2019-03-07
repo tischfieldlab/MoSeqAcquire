@@ -46,6 +46,7 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Path=Category}" />
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}" />
                     <GridViewColumn Header="Frame Rate" DisplayMemberBinding="{Binding Path=Performance.FrameRate, StringFormat=\{0:F3\}}" />
                     <GridViewColumn Header="Total Frames" DisplayMemberBinding="{Binding Path=Performance.TotalFrames}" />

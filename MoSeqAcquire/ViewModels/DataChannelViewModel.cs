@@ -82,7 +82,7 @@ namespace MoSeqAcquire.ViewModels
                             }
                         }
                         
-                        this.FrameRate.Increment();
+                        this.Performance.Increment();
                     }));
                 })
             );

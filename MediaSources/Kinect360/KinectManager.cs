@@ -78,10 +78,10 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         public override void Stop()
         {
             if(!this.IsInitialized) { return; }
+            base.Stop();
             this.Sensor.ColorStream.Disable();
             this.Sensor.DepthStream.Disable();
-            this.FindChannel<KinectSoundChannel>().Enabled = false;
-            base.Stop();
+            this.FindChannel<KinectSoundChannel>().Enabled = false;   
         }
 
         

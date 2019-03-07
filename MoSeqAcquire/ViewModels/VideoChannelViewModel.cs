@@ -34,7 +34,7 @@ namespace MoSeqAcquire.ViewModels
                             meta.Stride,
                             0);
                         
-                        this.FrameRate.Increment();
+                        this.Performance.Increment();
                     }));
                 })
             );

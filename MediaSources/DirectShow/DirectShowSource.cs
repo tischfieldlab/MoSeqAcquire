@@ -56,9 +56,9 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         public override void Stop()
         {
             if (!this.IsInitialized) { return; }
+            base.Stop();
             this.Device.SignalToStop();
             this.Device.WaitForStop();
-            base.Stop();
         }
     }
 }

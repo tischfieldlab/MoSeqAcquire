@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Performance;
+using MoSeqAcquire.Models.Recording;
 
 namespace MoSeqAcquire.ViewModels
 {
@@ -18,7 +19,8 @@ namespace MoSeqAcquire.ViewModels
         {
             this.channel = channel;
             this.BindChannel();
-            this.FrameRate = new FrameRateCounter();
+            this.Performance = new TotalFrameCounter();
+            this.Performance.Start();
         }
         public abstract void BindChannel();
         
@@ -27,6 +29,6 @@ namespace MoSeqAcquire.ViewModels
         public string DeviceName { get => this.channel.DeviceName; }
         public string FullName { get => this.channel.FullName; }
         public bool Enabled { get => this.channel.Enabled; set => this.channel.Enabled = value; }
-        public FrameRateCounter FrameRate { get; protected set; }
+        public TotalFrameCounter Performance { get; protected set; }
     }
 }

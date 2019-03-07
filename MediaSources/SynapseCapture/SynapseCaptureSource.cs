@@ -41,17 +41,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         public override void Start()
         {
-            //this.Device.Start();
             this.FindChannel<SynapseCaptureChannel>().Enabled = true;
             base.Start();
         }
         public override void Stop()
         {
             if (!this.IsInitialized) { return; }
-            this.FindChannel<SynapseCaptureChannel>().Enabled = false;
-            //this.Device.SignalToStop();
-            //this.Device.WaitForStop();
             base.Stop();
+            this.FindChannel<SynapseCaptureChannel>().Enabled = false;
         }
     }
 }
