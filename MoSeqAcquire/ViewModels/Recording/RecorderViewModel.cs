@@ -18,7 +18,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         protected ObservableCollection<SelectableChannelViewModel> availableChannels;
         protected ObservableCollection<ChannelViewModel> selectedChannels;
-        
+
         public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
         {
             this.rootViewModel = RootViewModel;
@@ -48,7 +48,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             }
             this.RecorderPins = pins;
         }
-        
+
         protected void loadChannels()
         {
             var channels = this.rootViewModel.MediaSources.SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)));
@@ -70,9 +70,9 @@ namespace MoSeqAcquire.ViewModels.Recording
                 .ForEach(cvm => this.SelectedChannels.Add(cvm));
         }
 
-        
-        
-        
+
+
+
         public string Name
         {
             get => this.writer.Name;
@@ -89,7 +89,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         public RecorderSettings Settings { get => this.writer.Settings; }
         public ObservableCollection<SelectableChannelViewModel> AvailableChannels { get => this.availableChannels; }
         public ObservableCollection<ChannelViewModel> SelectedChannels { get => this.selectedChannels; }
-        public MediaWriterStats Stats { get; protected set; }
+        public MediaWriterStats Performance { get => this.writer.Performance; }
 
         public IEnumerable<RecorderProduct> Products
         {

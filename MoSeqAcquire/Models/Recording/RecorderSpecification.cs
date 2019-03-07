@@ -16,7 +16,7 @@ namespace MoSeqAcquire.Models.Recording
             this.RecorderType = Type;
         }
         public Type RecorderType { get; protected set; }
-        public string TypeName { get => this.RecorderType.FullName; }
+        public string TypeName { get => this.RecorderType.AssemblyQualifiedName; }
         public string DisplayName
         {
             get

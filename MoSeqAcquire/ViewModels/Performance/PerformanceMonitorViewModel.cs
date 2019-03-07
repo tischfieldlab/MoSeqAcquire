@@ -26,6 +26,7 @@ namespace MoSeqAcquire.ViewModels.Performance
         {
             new PerformanceMonitorMediaBusAdapter(this);
             new PerformanceMonitorPreviewAdapter(this);
+            new PerformanceMonitorRecorderAdapter(this);
         }
     }
 }

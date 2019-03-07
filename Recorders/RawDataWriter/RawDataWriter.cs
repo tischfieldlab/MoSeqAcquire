@@ -68,7 +68,7 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
                 this.writer = new BinaryWriter(this.file);
             }
             this.IsRecording = true;
-            this.Stats.Start();
+            this.Performance.Start();
         }
 
         public override void Stop()
@@ -95,7 +95,7 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
                 {
                     this.writer.Write(frame.FrameData as byte[]);
                 }
-                this.Stats.Increment();
+                this.Performance.Increment();
             });
         }
     }

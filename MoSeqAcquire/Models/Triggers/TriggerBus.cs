@@ -31,7 +31,10 @@ namespace MoSeqAcquire.Models.Triggers
 
         public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : Trigger
         {
-            this.subscribers[typeof(TTrigger)].ForEach(t => t.Action.Invoke(trigger));
+            if (this.subscribers.ContainsKey(typeof(TTrigger)))
+            {
+                this.subscribers[typeof(TTrigger)].ForEach(t => t.Action.Invoke(trigger));
+            }
         }
     }
 }

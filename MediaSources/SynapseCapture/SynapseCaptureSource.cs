@@ -49,6 +49,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             if (!this.IsInitialized) { return; }
             base.Stop();
             this.FindChannel<SynapseCaptureChannel>().Enabled = false;
+            this.Device.Close();
         }
     }
 }

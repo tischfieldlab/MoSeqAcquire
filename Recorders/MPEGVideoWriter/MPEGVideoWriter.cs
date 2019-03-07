@@ -89,7 +89,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
                             }
                         }
                     }
-                    this.Stats.Increment();
+                    this.Performance.Increment();
                 }
             });
         }

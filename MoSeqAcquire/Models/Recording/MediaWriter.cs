@@ -23,7 +23,7 @@ namespace MoSeqAcquire.Models.Recording
             this._pins = new Dictionary<string, MediaWriterPin>();
             this.Specification = new RecorderSpecification(this.GetType());
             this.Settings = this.Specification.SettingsFactory();
-            this.Stats = new MediaWriterStats(this.Name);
+            this.Performance = new MediaWriterStats(this.Name);
         }
         public event DestinationBaseResponse RequestDestinationBase;
         protected string RequestBaseDestination()
@@ -42,7 +42,7 @@ namespace MoSeqAcquire.Models.Recording
         }
         public DateTime Epoch { get => this._epoch; }
         public bool IsRecording { get; protected set; }
-        public MediaWriterStats Stats { get; protected set; }
+        public MediaWriterStats Performance { get; protected set; }
         public RecorderSpecification Specification { get; protected set; }
 
         public virtual string FilePath
@@ -62,13 +62,13 @@ namespace MoSeqAcquire.Models.Recording
             this._epoch = PreciseDatetime.Now;
             this._pins.Values.ForEach(mwp => mwp.Connect());
             this.IsRecording = true;
-            this.Stats.Start();
+            this.Performance.Start();
         }
 
         public virtual void Stop()
         {
             this._pins.Values.ForEach(mwp => mwp.Disconnect().Wait());
-            this.Stats.Stop();
+            this.Performance.Stop();
             this.IsRecording = false;
         }
 

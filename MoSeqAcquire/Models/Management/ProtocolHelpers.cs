@@ -44,12 +44,6 @@ namespace MoSeqAcquire.Models.Management
         }
         #endregion
 
-        public static IEnumerable<Type> GetKnownTypes()
-        {
-            return GetKnownTypesForProviders().Concat(GetKnownTypesForRecorders());
-        }
-
-
         #region TriggerProviders
         public static IEnumerable<Type> FindTriggerTypes()
         {
@@ -61,7 +55,10 @@ namespace MoSeqAcquire.Models.Management
         }
         #endregion
 
-
+        public static IEnumerable<Type> GetKnownTypes()
+        {
+            return GetKnownTypesForProviders().Concat(GetKnownTypesForRecorders());
+        }
 
         public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool IncludeSelf=true)
         {
@@ -107,7 +104,7 @@ namespace MoSeqAcquire.Models.Management
         }
         public static List<Assembly> FindAssembliesForPath(String Path)
         {
-            Console.WriteLine("Searching path \"" + Path + "\" for plugins");
+            //Console.WriteLine("Searching path \"" + Path + "\" for plugins");
             List<Assembly> assemblyList = new List<Assembly>();
             DirectoryInfo dInfo = new DirectoryInfo(Path);
             if (dInfo.Exists)
@@ -117,7 +114,7 @@ namespace MoSeqAcquire.Models.Management
                 {
                     foreach (FileInfo file in files)
                     {
-                        Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
+                        //Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
                         try
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));

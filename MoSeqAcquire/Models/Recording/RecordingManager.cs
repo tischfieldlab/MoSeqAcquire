@@ -143,6 +143,7 @@ namespace MoSeqAcquire.Models.Recording
             this.terminator = null;
 
             this.IsRecording = false;
+            this.Reset();
             this.RecordingFinished?.Invoke(this, new EventArgs());
             this.triggerBus.Trigger(new AfterRecordingFinishedTrigger());
         }
@@ -158,9 +159,6 @@ namespace MoSeqAcquire.Models.Recording
             RecordingInfoWriter.Write(dest, summary);
         }
 
-
-
-
         private void Terminator_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             this.NotifyPropertyChanged(null);
@@ -171,36 +169,4 @@ namespace MoSeqAcquire.Models.Recording
             this.Stop();
         }
     }
-
-    public class BeforeRecordingStartedTrigger : Trigger { }
-    public class AfterRecordingStartedTrigger : Trigger { }
-    public class BeforeRecordingFinishedTrigger : Trigger { }
-    public class AfterRecordingFinishedTrigger : Trigger { }
-
-
-    public class RecordingSummary
-    {
-        public RecordingSummary()
-        {
-            this.Recorders = new List<RecordingDevice>();
-        }
-        public List<RecordingDevice> Recorders { get; set; }
-    }
-    public class RecordingDevice : RecorderInfo
-    {
-        public RecordingDevice()
-        {
-            this.Records = new List<RecordingRecord>();
-        }
-        public List<RecordingRecord> Records { get; set; }
-
-    }
-
-    public class RecordingRecord
-    {
-        public string Filename { get; set; }
-        public List<string> Channels { get; set; }
-    }
-
-    
 }
