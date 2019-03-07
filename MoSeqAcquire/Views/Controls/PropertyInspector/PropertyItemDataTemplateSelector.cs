@@ -31,6 +31,14 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
                 }
                 return elemnt.FindResource("NumericEditor") as DataTemplate;
             }
+            /*else if (pit.Equals(typeof(int)))
+            {
+                if (pi.SupportsRange)
+                {
+                    return elemnt.FindResource("RangeEditor") as DataTemplate;
+                }
+                return elemnt.FindResource("NumericEditor") as DataTemplate;
+            }*/
 
             else
             {

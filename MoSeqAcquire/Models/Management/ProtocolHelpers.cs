@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Management
 {
     public static class ProtocolHelpers
     {
+        #region MediaSourceProviders
         public static IEnumerable<Type> FindProviderTypes()
         {
             return ExtractPluginsImplementing<MediaSource>(Properties.Settings.Default.MediaSourcePluginPaths);
@@ -25,8 +27,9 @@ namespace MoSeqAcquire.Models.Management
         {
             return FindProviderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
         }
+        #endregion
 
-
+        #region RecorderProviders
         public static IEnumerable<Type> FindRecorderTypes()
         {
             return ExtractPluginsImplementing<IMediaWriter>(Properties.Settings.Default.RecorderPluginPaths);
@@ -39,6 +42,7 @@ namespace MoSeqAcquire.Models.Management
         {
             return FindRecorderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
         }
+        #endregion
 
         public static IEnumerable<Type> GetKnownTypes()
         {
@@ -46,12 +50,26 @@ namespace MoSeqAcquire.Models.Management
         }
 
 
+        #region TriggerProviders
+        public static IEnumerable<Type> FindTriggerTypes()
+        {
+            return ExtractPluginsImplementing<Trigger>(Properties.Settings.Default.RecorderPluginPaths);
+        }
+        public static IEnumerable<Type> FindTriggerActions()
+        {
+            return ExtractPluginsImplementing<TriggerAction>(Properties.Settings.Default.RecorderPluginPaths);
+        }
+        #endregion
 
 
 
-        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths)
+        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool IncludeSelf=true)
         {
             List<Type> availableTypes = new List<Type>();
+            if (IncludeSelf)
+            {
+                availableTypes.AddRange(Assembly.GetExecutingAssembly().GetTypes());
+            }
             foreach (Assembly currentAssembly in FindAssemblies(SearchPaths))
             {
                 availableTypes.AddRange(currentAssembly.GetTypes());
@@ -60,6 +78,15 @@ namespace MoSeqAcquire.Models.Management
             {
                 return !t.IsAbstract && typeof(T).IsAssignableFrom(t); // t.IsSubclassOf(typeof(T));
             });
+            Console.WriteLine("Found the following plugins implementing \"" + typeof(T).AssemblyQualifiedName + "\":");
+            if(filteredList.Count > 0)
+            {
+                Console.WriteLine(string.Join("\n", filteredList));
+            }
+            else
+            {
+                Console.WriteLine("None found!");
+            }
             return filteredList;
         }
         public static List<Assembly> FindAssemblies(StringCollection SearchPaths)

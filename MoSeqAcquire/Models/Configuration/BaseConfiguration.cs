@@ -1,10 +1,47 @@
-﻿using System.Linq;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
+using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Models.Configuration
 {
     public abstract class BaseConfiguration : ObservableObject, IConfigSnapshotProvider
     {
+        public void ApplyDefaults()
+        {
+            this.GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                .ForEach((pi) =>
+                {
+                    if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                    {
+                        ComplexProperty prop = (ComplexProperty)pi.GetValue(this);
+                        prop.Value = prop.Default;
+                    }
+                    else
+                    {
+                        DefaultValueAttribute attr = pi.GetCustomAttribute<DefaultValueAttribute>();
+                        if (attr != null)
+                        {
+                            pi.SetValue(this, attr.Value);
+                            return;
+                        }
+                        RangeMethodAttribute rma = pi.GetCustomAttribute<RangeMethodAttribute>();
+                        if (rma != null)
+                        {
+                            pi.SetValue(this, (this.GetType().GetMethod(rma.MethodName).Invoke(this, null) as IDefaultInfo).Default);
+                            return;
+                        }
+                        if (pi.PropertyType.IsValueType)
+                        {
+                            pi.SetValue(this, Activator.CreateInstance(pi.PropertyType));
+                            return;
+                        }
+                    }
+                });
+        }
         public ConfigSnapshot GetSnapshot()
         {
             var state = new ConfigSnapshot();
@@ -13,7 +50,8 @@ namespace MoSeqAcquire.Models.Configuration
                 .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
                 .ForEach((pi) => {
                     ConfigSnapshotSetting setting;
-                    if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType)) {
+                    if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                    {
                         ComplexProperty prop = (ComplexProperty)pi.GetValue(this);
                         setting = new ConfigSnapshotSetting()
                         {
