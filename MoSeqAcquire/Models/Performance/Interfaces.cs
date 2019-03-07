@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Performance
 {
-    public interface IPerformanceProvider { }
+    public interface IAggregatePerformanceProvider
+    {
+        List<IPerformanceProvider> GetPerformances();
+    }
+    public interface IPerformanceProvider
+    {
+    }
     public interface IFrameRateProvider : IPerformanceProvider
     {
         double FrameRate { get; }

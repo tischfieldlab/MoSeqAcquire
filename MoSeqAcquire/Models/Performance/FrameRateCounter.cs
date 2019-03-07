@@ -15,22 +15,20 @@ namespace MoSeqAcquire.Models.Performance
         private long __countSinceLast;
         private object lockobject = new object();
 
-        public FrameRateCounter()
+        public FrameRateCounter(double Interval = 1000)
         {
             this.__lastTime = DateTime.Now;
             this.__timer = new Timer()
             {
-                Interval = 1000,
+                Interval = Interval,
                 AutoReset = true,
                 Enabled = true
             };
             this.__timer.Elapsed += this.compute_framerate;
         }
-
         private void compute_framerate(object sender, ElapsedEventArgs e)
         {
-            var seconds = (e.SignalTime - this.__lastTime).TotalSeconds;
-            this.FrameRate = this.__countSinceLast / seconds;
+            this.FrameRate = this.__countSinceLast / (e.SignalTime - this.__lastTime).TotalSeconds;
             this.__countSinceLast = 0;
             this.__lastTime = e.SignalTime;
             this.NotifyPropertyChanged("FrameRate");

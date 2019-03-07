@@ -32,7 +32,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 80,
                             Height = 60,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -41,7 +41,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 320,
                             Height = 240,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -51,7 +51,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -102,7 +102,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                     }
 
                     imageFrame.CopyPixelDataTo(this._pixelData);
-                    this.Buffer.Post(new ChannelFrame(this._pixelData, meta));
+                    this.PostFrame(new ChannelFrame(this._pixelData, meta));
                 }
             }
         }

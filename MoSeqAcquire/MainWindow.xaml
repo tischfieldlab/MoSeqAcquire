@@ -41,6 +41,7 @@
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Theme" Command="{Binding Path=Commands.OpenThemeDialog}" />
+                <MenuItem Header="Performance" Command="{Binding Path=Commands.ShowPerformanceMonitor}" />
             </MenuItem>
         </Menu>
 

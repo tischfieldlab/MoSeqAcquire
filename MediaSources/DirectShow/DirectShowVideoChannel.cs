@@ -31,7 +31,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 {
                     Width = this.Device.Device.VideoResolution.FrameSize.Width,
                     Height = this.Device.Device.VideoResolution.FrameSize.Height,
-                    FramesPerSecond = this.Device.Device.VideoResolution.MaximumFrameRate,
+                    TargetFramesPerSecond = this.Device.Device.VideoResolution.MaximumFrameRate,
                     BytesPerPixel = this.Device.Device.VideoResolution.BitCount / 8,
                 };
             }
@@ -67,7 +67,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 }
                 Marshal.Copy(bmpData.Scan0, this._copyBuffer, 0, bytes);
                 
-                this.Buffer.Post(new ChannelFrame(this._copyBuffer, meta));
+                this.PostFrame(new ChannelFrame(this._copyBuffer, meta));
             }
         }
     }

@@ -17,8 +17,9 @@ namespace MoSeqAcquire.Models.Recording
         private long __countSinceLast;
         private static readonly object lockobject = new object();
 
-        public MediaWriterStats(double Interval=1000)
-        {            
+        public MediaWriterStats(string Name, double Interval=1000)
+        {
+            this.Name = Name;
             this.__timer = new Timer()
             {
                 Interval = Interval,
@@ -26,6 +27,7 @@ namespace MoSeqAcquire.Models.Recording
             };
             this.__timer.Elapsed += this.compute_framerate;
         }
+        public string Name { get; set; }
         public void Start()
         {
             this.__started = this.__lastTime = DateTime.Now;

@@ -7,11 +7,22 @@ using System.Threading.Tasks.Dataflow;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
+    public class SourceAvailabilityEventArgs : EventArgs
+    {
+        public SourceAvailabilityEventArgs(MediaSource Source)
+        {
+            this.Source = Source;
+        }
+        public MediaSource Source { get; set; }
+    }
+
     public class MediaBus
     {
         private List<BusChannel> __channels;
         private List<MediaSource> __sources;
 
+        public event EventHandler<SourceAvailabilityEventArgs> SourcePublished;
+        public event EventHandler<SourceAvailabilityEventArgs> SourceUnPublished;
 
         #region Singleton
         private static MediaBus __instance;
@@ -49,6 +60,7 @@ namespace MoSeqAcquire.Models.Acquisition
                     this.__channels.Add(new BusChannel(Source, c));
                 }
             }
+            this.SourcePublished?.Invoke(this, new SourceAvailabilityEventArgs(Source));
         }
         public void UnPublish(MediaSource Source)
         {
@@ -60,6 +72,7 @@ namespace MoSeqAcquire.Models.Acquisition
                 }
                 this.__sources.Remove(Source);
             }
+            this.SourceUnPublished?.Invoke(this, new SourceAvailabilityEventArgs(Source));
         }
         public void Subscribe<TChannelType>(ITargetBlock<ChannelFrame> Action)
         {

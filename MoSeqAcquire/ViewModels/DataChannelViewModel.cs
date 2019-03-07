@@ -30,42 +30,57 @@ namespace MoSeqAcquire.ViewModels
                             this.Stream = new WriteableBitmap(100, 100, 96, 96, PixelFormats.Gray16, null);
                         }
                         float[] data = frame.FrameData as float[];
-                        var max = data.Max();
+                        var max = data.Select(x => Math.Abs(x)).Max();
                         int width = (int)(this.Stream.PixelWidth / frame.FrameData.Length);
                         int half = (this.Stream.PixelHeight / 2);
+                        int wholestride = (int)(this.Stream.PixelWidth * this.Stream.Format.BitsPerPixel + 7) / 8;
+                        int widthstride = (int)(width * this.Stream.Format.BitsPerPixel + 7) / 8;
+                        Int32Rect rect = new Int32Rect(0, 0, 100, 100);
 
-                        int stride = (int)(this.Stream.PixelWidth * this.Stream.Format.BitsPerPixel + 7) / 8;
                         this.Stream.WritePixels(
-                                new Int32Rect(0, 0, 100, 100),
+                                rect,
                                 new ushort[100 * 100],
-                                stride,
+                                wholestride,
                                 0);
-                        try
+                        
+                        int height;
+                        for (int i = 0; i < data.Length; i++)
                         {
-                            int height;
-                            for (int i = 0; i < data.Length; i++)
+                            height = (int)((data[i] / max) * half);
+                            if (height < 0)
                             {
-                                stride = (int)(width * this.Stream.Format.BitsPerPixel + 7) / 8;
-                                height = (int)((data[i] / max) * half);
-                                if (height < 0)
+                                try
                                 {
+                                    rect.X = i * width;
+                                    rect.Y = half;
+                                    rect.Width = width;
+                                    rect.Height = -height;
                                     this.Stream.WritePixels(
-                                        new Int32Rect(i * width, half/*Stream.PixelHeight + height*/, width, -height),
+                                        rect,
                                         Enumerable.Repeat(ushort.MaxValue, width * -height).ToArray(),
-                                        stride,
+                                        widthstride,
                                         0);
                                 }
-                                else
+                                catch (Exception e) { }
+                            }
+                            else
+                            {
+                                try
                                 {
+                                    rect.X = i * width;
+                                    rect.Y = half - height;
+                                    rect.Width = width;
+                                    rect.Height = height;
                                     this.Stream.WritePixels(
-                                        new Int32Rect(i * width, half - height, width, height),
+                                        rect,
                                         Enumerable.Repeat(ushort.MaxValue, width * height).ToArray(),
-                                        stride,
+                                        widthstride,
                                         0);
                                 }
+                                catch (Exception e) { }
+
                             }
                         }
-                        catch (Exception e){ }
                         
                         this.FrameRate.Increment();
                     }));

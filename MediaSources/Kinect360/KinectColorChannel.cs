@@ -40,7 +40,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Bgr32
                         };
@@ -49,7 +49,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -58,7 +58,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 1280,
                             Height = 960,
-                            FramesPerSecond = 12,
+                            TargetFramesPerSecond = 12,
                             BytesPerPixel = 32,
                             PixelFormat = PixelFormats.Bgr32
                         };
@@ -68,7 +68,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 32,
                             PixelFormat = PixelFormats.Bgr32
                         };
@@ -116,7 +116,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                     {
                         meta.PixelFormat = PixelFormats.Gray16;
                     }
-                    this.Buffer.Post(new ChannelFrame(imageFrame.GetRawPixelData(), meta));
+                    this.PostFrame(new ChannelFrame(imageFrame.GetRawPixelData(), meta));
                 }
             }
         }

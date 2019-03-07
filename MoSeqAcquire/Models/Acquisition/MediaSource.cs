@@ -4,10 +4,11 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Performance;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    public abstract class MediaSource
+    public abstract class MediaSource : IAggregatePerformanceProvider
     {
         public List<Channel> Channels;
 
@@ -50,6 +51,11 @@ namespace MoSeqAcquire.Models.Acquisition
                 }
             }
             return default(T);
+        }
+
+        public List<IPerformanceProvider> GetPerformances()
+        {
+            return this.Channels.Select(c => c.Performance).ToList<IPerformanceProvider>();
         }
     }
 }

@@ -11,14 +11,14 @@ using MoSeqAcquire.Models.Performance;
 
 namespace MoSeqAcquire.ViewModels
 {
-    public abstract class ChannelViewModel : BaseViewModel
+    public abstract class ChannelViewModel : BaseViewModel, IPerformanceProvider
     {
         protected Channel channel;
         public ChannelViewModel(Channel channel)
         {
             this.channel = channel;
-            this.FrameRate = new FrameRateCounter();
             this.BindChannel();
+            this.FrameRate = new FrameRateCounter();
         }
         public abstract void BindChannel();
         

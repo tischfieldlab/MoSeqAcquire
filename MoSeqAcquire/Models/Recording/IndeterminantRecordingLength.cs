@@ -30,6 +30,7 @@ namespace MoSeqAcquire.Models.Recording
             };
             this.timer.Elapsed += this.check_condition;
         }
+        public string Name { get => "Indeterminate Recording Length"; }
         public void Start()
         {
             this.startTime = DateTime.UtcNow;

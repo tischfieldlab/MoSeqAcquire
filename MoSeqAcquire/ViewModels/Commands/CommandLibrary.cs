@@ -16,6 +16,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         protected override void InitializeCommands()
         {
             this.RegisterCommand<OpenThemeDialogCommand>();
+            this.RegisterCommand<ShowPerformanceMonitorCommand>();
 
             this.RegisterCommand<AddRecorderCommand>();
             this.RegisterCommand<EditRecorderCommand>();
@@ -36,6 +37,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         }
 
         public OpenThemeDialogCommand OpenThemeDialog { get => this.GetCommand<OpenThemeDialogCommand>(); }
+        public ShowPerformanceMonitorCommand ShowPerformanceMonitor { get => this.GetCommand<ShowPerformanceMonitorCommand>(); }
 
         public AddRecorderCommand AddRecorder { get => this.GetCommand<AddRecorderCommand>(); }
         public EditRecorderCommand EditRecorder { get => this.GetCommand<EditRecorderCommand>(); }

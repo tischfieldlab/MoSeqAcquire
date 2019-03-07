@@ -16,7 +16,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.MediaType = MediaType.Data;
             this.DataType = typeof(float);
 
-            int delay = 100;
             var cancellationTokenSource = new CancellationTokenSource();
             var token = cancellationTokenSource.Token;
             var listener = Task.Factory.StartNew(() =>
@@ -26,15 +25,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                     // poll hardware
                     if (this.Enabled)
                     {
-                        this.Buffer.Post(new ChannelFrame(this.Device.Device.Receive<float>()));
+                        this.PostFrame(new ChannelFrame(this.Device.Device.Receive<float>()));
                     }
 
-                    Thread.Sleep(delay);
                     if (token.IsCancellationRequested)
+                    {
                         break;
+                    }
                 }
-
-                // cleanup, e.g. close connection
             }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
         public SynapseCaptureSource Device { get; protected set; }

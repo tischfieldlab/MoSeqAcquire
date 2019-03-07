@@ -17,7 +17,7 @@ namespace MoSeqAcquire.Models.Recording
         private static readonly object lockobject = new object();
 
         public TotalFrameCounter(double Interval=1000)
-        {            
+        {
             this.__timer = new Timer()
             {
                 Interval = Interval,
@@ -38,8 +38,7 @@ namespace MoSeqAcquire.Models.Recording
         {
             lock (lockobject)
             {
-                var seconds = (e.SignalTime - this.__lastTime).TotalSeconds;
-                this.FrameRate = this.__countSinceLast / seconds;
+                this.FrameRate = this.__countSinceLast / (e.SignalTime - this.__lastTime).TotalSeconds;
                 this.__totalCount += this.__countSinceLast;
                 this.__countSinceLast = 0;
                 this.__lastTime = e.SignalTime;

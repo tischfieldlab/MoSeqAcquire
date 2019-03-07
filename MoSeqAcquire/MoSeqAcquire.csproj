@@ -125,9 +125,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Acquisition\AudioChannelFrameMetadata.cs" />
+    <Compile Include="Models\Acquisition\ChannelFrameMetadata.cs" />
+    <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
     <Compile Include="Models\Metadata\RecordingMetadata.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />
+    <Compile Include="Models\Recording\MediaWriterPin.cs" />
     <Compile Include="Models\Triggers\Trigger.cs" />
     <Compile Include="Models\Triggers\TriggerAction.cs" />
     <Compile Include="Models\Triggers\TriggerBus.cs" />
@@ -162,6 +166,7 @@
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\Commands\ShowPerformanceMonitorCommand.cs" />
     <Compile Include="ViewModels\Core\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveTriggerCommand.cs" />
@@ -299,6 +304,9 @@
     <Compile Include="Views\Controls\PropertyInspector\PropertyView.xaml.cs">
       <DependentUpon>PropertyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PerformanceMonitor.xaml.cs">
+      <DependentUpon>PerformanceMonitor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
     </Compile>
@@ -376,6 +384,10 @@
     <Page Include="Views\Controls\PropertyInspector\PropertyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PerformanceMonitor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\TriggerConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -26,6 +26,7 @@ namespace MoSeqAcquire.Models.Recording
             };
             this.timer.Elapsed += this.check_condition;
         }
+        public string Name { get => "Time-based Recording Length"; }
         public void Start()
         {
             this.startTime = DateTime.UtcNow;
