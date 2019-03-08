@@ -79,7 +79,7 @@ namespace MoSeqAcquire.ViewModels
                         }
                     }
                 });
-            });
+            }, TaskScheduler.Default);
         }
     }
 

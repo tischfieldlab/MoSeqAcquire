@@ -42,7 +42,7 @@ namespace MoSeqAcquire.ViewModels
                     {
                         this.NotifyPropertyChanged("CurrentStatus");
                     });
-                    Thread.Sleep(500);
+                    Thread.Sleep(100);
                 }
                 this.MediaSource.Config.ApplySnapshot(mediaSource.Config);
                 this.MediaSource.Start();

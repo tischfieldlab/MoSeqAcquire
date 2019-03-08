@@ -60,31 +60,40 @@ namespace MoSeqAcquire.Models.Management
             return GetKnownTypesForProviders().Concat(GetKnownTypesForRecorders());
         }
 
-        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool IncludeSelf=true)
+        private static Dictionary<Type, List<Type>> __pluginTypeCache = new Dictionary<Type, List<Type>>();
+        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool IncludeSelf=true, bool UseCache=true)
         {
-            List<Type> availableTypes = new List<Type>();
-            if (IncludeSelf)
+            if (UseCache && __pluginTypeCache.ContainsKey(typeof(T)))
             {
-                availableTypes.AddRange(Assembly.GetExecutingAssembly().GetTypes());
-            }
-            foreach (Assembly currentAssembly in FindAssemblies(SearchPaths))
-            {
-                availableTypes.AddRange(currentAssembly.GetTypes());
-            }
-            List<Type> filteredList = availableTypes.FindAll(delegate (Type t)
-            {
-                return !t.IsAbstract && typeof(T).IsAssignableFrom(t); // t.IsSubclassOf(typeof(T));
-            });
-            Console.WriteLine("Found the following plugins implementing \"" + typeof(T).AssemblyQualifiedName + "\":");
-            if(filteredList.Count > 0)
-            {
-                Console.WriteLine(string.Join("\n", filteredList));
+                return __pluginTypeCache[typeof(T)];
             }
             else
             {
-                Console.WriteLine("None found!");
+                List<Type> availableTypes = new List<Type>();
+                if (IncludeSelf)
+                {
+                    availableTypes.AddRange(Assembly.GetExecutingAssembly().GetTypes());
+                }
+                foreach (Assembly currentAssembly in FindAssemblies(SearchPaths))
+                {
+                    availableTypes.AddRange(currentAssembly.GetTypes());
+                }
+                List<Type> filteredList = availableTypes.FindAll(delegate (Type t)
+                {
+                    return !t.IsAbstract && typeof(T).IsAssignableFrom(t); // t.IsSubclassOf(typeof(T));
+                });
+                Console.WriteLine("Found the following plugins implementing \"" + typeof(T).AssemblyQualifiedName + "\":");
+                if (filteredList.Count > 0)
+                {
+                    Console.WriteLine(string.Join("\n", filteredList));
+                }
+                else
+                {
+                    Console.WriteLine("None found!");
+                }
+                __pluginTypeCache[typeof(T)] = filteredList;
+                return filteredList;
             }
-            return filteredList;
         }
         public static List<Assembly> FindAssemblies(StringCollection SearchPaths)
         {
