@@ -25,12 +25,24 @@ namespace MoSeqAcquire.Models.Management
         public static Protocol ReadProtocol(string filename)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Protocol), GetSerializedTypes());
+            serializer.UnknownNode += new XmlNodeEventHandler(serializer_UnknownNode);
+            serializer.UnknownAttribute += new XmlAttributeEventHandler(serializer_UnknownAttribute);
             Protocol configuration;
             using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
                 configuration = (Protocol)serializer.Deserialize(fs);
             }
             return configuration;
+        }
+
+        private static void serializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
+        {
+            var x = 1;
+        }
+
+        private static void serializer_UnknownNode(object sender, XmlNodeEventArgs e)
+        {
+            var x = 1;
         }
 
         protected static Type[] GetSerializedTypes()

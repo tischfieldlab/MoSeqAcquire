@@ -12,13 +12,16 @@ using MoSeqAcquire.Models.Recording;
 
 namespace MoSeqAcquire.Models.Management
 {
+    [XmlRoot("Recordings")]
     public class ProtocolRecordingsSetup
     {
         public ProtocolRecordingsSetup()
         {
             this.Recorders = new ProtocolRecorderCollection();
         }
+        [XmlElement("GeneralSettings")]
         public ConfigSnapshot GeneralSettings { get; set; }
+        [XmlElement("Recorders")]
         public ProtocolRecorderCollection Recorders { get; protected set; }
     }
 
@@ -39,11 +42,11 @@ namespace MoSeqAcquire.Models.Management
 
     public class RecorderInfo
     {
-        [XmlAttribute]
+        [XmlAttribute("Name")]
         public string Name { get; set; }
-        [XmlElement]
+        [XmlElement("Provider")]
         public string Provider { get; set; }
-        [XmlElement]
+        [XmlElement("Config")]
         public ConfigSnapshot Config { get; set; }
     }
 
@@ -52,7 +55,7 @@ namespace MoSeqAcquire.Models.Management
     {
 
         [XmlArray("Pins")]
-        [XmlArrayItem("Pin")]
+        [XmlArrayItem("Pin", typeof(ProtocolRecorderPin))]
         public List<ProtocolRecorderPin> Pins { get; set; }
 
         public Type GetProviderType()
@@ -61,11 +64,12 @@ namespace MoSeqAcquire.Models.Management
         }
     }
 
+    [XmlRoot("Pin")]
     public class ProtocolRecorderPin
     {
-        [XmlAttribute]
+        [XmlAttribute("Name")]
         public string Name { get; set; }
-        [XmlAttribute]
+        [XmlAttribute("Channel")]
         public string Channel { get; set; }
     }
 }
