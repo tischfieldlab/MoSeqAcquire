@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>basic</Name>
+  <Locked>false</Locked>
+  <Sources>
+    <Source>
+      <Provider>MoSeqAcquire.Models.Acquisition.DirectShow.DirectShowSource, DirectShow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Provider>
+      <DeviceId>@device:pnp:\\?\usb#vid_046d&amp;pid_0843&amp;mi_00#6&amp;1d90bb46&amp;0&amp;0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global</DeviceId>
+      <Config>
+        <Setting Name="ImageFormat" Type="Accord.Video.DirectShow.VideoCapabilities"></Setting>
+        <Setting Name="Brightness" Type="System.Int32">128</Setting>
+        <Setting Name="Contrast" Type="System.Int32">128</Setting>
+        <Setting Name="Hue" Type="System.Int32">0</Setting>
+        <Setting Name="Saturation" Type="System.Int32">128</Setting>
+        <Setting Name="Sharpness" Type="System.Int32">128</Setting>
+        <Setting Name="Gamma" Type="System.Int32">0</Setting>
+        <Setting Name="ColorEnable" Type="System.Int32">0</Setting>
+        <Setting Name="WhiteBalance" Automatic="True" Type="System.Int32">3370</Setting>
+        <Setting Name="BacklightCompensation" Type="System.Int32">0</Setting>
+        <Setting Name="Gain" Type="System.Int32">255</Setting>
+        <Setting Name="DigitalMultiplier" Type="System.Int32">0</Setting>
+        <Setting Name="DigitalMultiplierLimit" Type="System.Int32">0</Setting>
+        <Setting Name="WhiteBalanceComponent" Type="System.Int32">0</Setting>
+        <Setting Name="PowerlineFrequency" Type="System.Int32">2</Setting>
+        <Setting Name="Exposure" Automatic="True" Type="System.Int32">-4</Setting>
+        <Setting Name="Focus" Automatic="True" Type="System.Int32">0</Setting>
+        <Setting Name="Iris" Type="System.Int32">0</Setting>
+        <Setting Name="Pan" Type="System.Int32">0</Setting>
+        <Setting Name="Roll" Type="System.Int32">0</Setting>
+        <Setting Name="Tilt" Type="System.Int32">0</Setting>
+        <Setting Name="Zoom" Type="System.Int32">100</Setting>
+      </Config>
+    </Source>
+  </Sources>
+  <Recordings>
+    <GeneralSettings>
+      <Setting Name="Directory" Type="System.String">C:\temp</Setting>
+      <Setting Name="Basename" Type="System.String">test</Setting>
+      <Setting Name="RecordingMode" Type="MoSeqAcquire.Models.Recording.RecordingMode">TimeCount</Setting>
+      <Setting Name="RecordingFrameCount" Type="System.Int32">0</Setting>
+      <Setting Name="RecordingSeconds" Type="System.Int32">30</Setting>
+    </GeneralSettings>
+    <Recorders>
+      <ProtocolRecorder Name="Recorder 1">
+        <Provider>MoSeqAcquire.Models.Recording.MPEGVideoWriter.MPEGVideoWriter, MPEGVideoWriter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Provider>
+        <Pins>
+          <Pin Name="Video Pin" Channel="Logitech Webcam C930e - Video Channel" />
+          <Pin Name="Audio Pin" />
+        </Pins>
+        <Config>
+          <Setting Name="VideoCodec" Type="Accord.Video.FFMPEG.VideoCodec">MPEG4</Setting>
+          <Setting Name="VideoBitrate" Type="System.Int32">4000000</Setting>
+          <Setting Name="AudioCodec" Type="Accord.Video.FFMPEG.AudioCodec">MP3</Setting>
+          <Setting Name="AudioBitrate" Type="System.Int32">0</Setting>
+        </Config>
+      </ProtocolRecorder>
+    </Recorders>
+  </Recordings>
+</Protocol>

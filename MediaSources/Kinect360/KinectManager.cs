@@ -6,22 +6,26 @@ using System.Threading.Tasks;
 using Microsoft.Kinect;
 using System.Configuration;
 using MoSeqAcquire.Models.Attributes;
+using System.ComponentModel;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect
 {
     //[KnownType(typeof(KinectConfigSnapshot))]
-    [KnownType(typeof(ColorImageFormat))]
+    /*[KnownType(typeof(ColorImageFormat))]
     [KnownType(typeof(DepthImageFormat))]
     [KnownType(typeof(PowerLineFrequency))]
     [KnownType(typeof(BacklightCompensationMode))]
-    [KnownType(typeof(DepthRange))]
+    [KnownType(typeof(DepthRange))]*/
+    [DisplayName("Direct Show Source")]
+    [SettingsImplementation(typeof(KinectConfig))]
     public class KinectManager : MediaSource
     {
         public KinectManager() : base()
         {
             this.Name = "Kinect";
-            this.Config = new KinectConfig(this);
         }
+        public KinectSensor Sensor { get; set; }
+
         public override List<Tuple<string, string>> ListAvailableDevices()
         {
             var items = new List<Tuple<string, string>>();
@@ -31,6 +35,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
             return items;
         }
+
         public override bool Initalize(string DeviceId)
         {
             this.DeviceId = DeviceId;
@@ -83,9 +88,5 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Sensor.DepthStream.Disable();
             this.FindChannel<KinectSoundChannel>().Enabled = false;   
         }
-
-        
-
-        public KinectSensor Sensor { get; set; }
     }
 }

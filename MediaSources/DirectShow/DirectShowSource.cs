@@ -3,6 +3,7 @@ using MoSeqAcquire.Models.Acquisition.DirectShow.Internal;
 using MoSeqAcquire.Models.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,13 @@ using System.Threading.Tasks;
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     //[KnownType(typeof(DirectShowConfigSnapshot))]
+    [DisplayName("Direct Show Source")]
+    [SettingsImplementation(typeof(DirectShowConfig))]
     public class DirectShowSource : MediaSource
     {
-        public DirectShowSource()
+        public DirectShowSource() : base()
         {
             this.Name = "Direct Show Device";
-            this.Config = new DirectShowConfig(this);
         }
         public ExVideoCaptureDevice Device { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()

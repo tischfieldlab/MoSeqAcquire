@@ -15,8 +15,11 @@ namespace MoSeqAcquire.Models.Acquisition
 
         public MediaSource()
         {
+            this.Specification = new MediaSourceSpecification(this.GetType());
             this.Channels = new List<Channel>();
+            this.Config = this.Specification.SettingsFactory(this);
         }
+        public MediaSourceSpecification Specification { get; protected set; }
         public string Name { get; set; }
         public string DeviceId { get; set; }
         public string Status { get; protected set; }

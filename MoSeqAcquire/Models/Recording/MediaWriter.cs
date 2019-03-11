@@ -1,17 +1,14 @@
-﻿using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Management;
-using MoSeqAcquire.Models.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
+using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Recording
 {
-    
+
 
     public abstract class MediaWriter : IMediaWriter
     {

@@ -27,7 +27,7 @@ namespace MoSeqAcquireTests2
         [TestMethod]
         public void Test_File()
         {
-            var f = @"C:\Users\thackray\Desktop\test_protocol.xml";
+            var f = @"test_protocol1.xml";
             var deserialized = MediaSettingsWriter.ReadProtocol(f);
             var serialized = MediaSettingsWriter.WriteProtocol(deserialized);
             Console.Write(serialized);
@@ -40,6 +40,20 @@ namespace MoSeqAcquireTests2
         {
             var protocol = new Protocol("test");
             protocol.Sources.Add(typeof(DirectShowSource), "test-device-id", new ConfigSnapshot());
+
+            var serialized = MediaSettingsWriter.WriteProtocol(protocol);
+            Console.Write(serialized);
+            var deserialized = MediaSettingsWriter.ProtocolFromString(serialized);
+
+            Assert.AreEqual(protocol, deserialized);
+        }
+
+        [TestMethod]
+        public void Test_Src_Config()
+        {
+            var protocol = new Protocol("test");
+            protocol.Sources.Add(typeof(DirectShowSource), "test-device-id", new ConfigSnapshot());
+            protocol.Sources[0].Config.Add("test", 10, false);
 
             var serialized = MediaSettingsWriter.WriteProtocol(protocol);
             Console.Write(serialized);
@@ -76,8 +90,8 @@ namespace MoSeqAcquireTests2
                 Provider = typeof(MPEGVideoWriter).AssemblyQualifiedName,
                 Config = new ConfigSnapshot()
             };
-            rec.Config.Add("Bitrate", false, 400000);
-            rec.Config.Add("VideoCodec", false, Accord.Video.FFMPEG.VideoCodec.MPEG4);
+            rec.Config.Add("Bitrate", 400000, false);
+            rec.Config.Add("VideoCodec", Accord.Video.FFMPEG.VideoCodec.MPEG4, false);
             protocol.Recordings.Recorders.Add(rec);
 
             var serialized = MediaSettingsWriter.WriteProtocol(protocol);

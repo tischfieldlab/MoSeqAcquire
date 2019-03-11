@@ -18,7 +18,7 @@ namespace MoSeqAcquire.Models.Management
         }
         public static string WriteProtocol(Protocol Configuration)
         {
-            using (var writer = new StringWriter())
+            using (var writer = new UTF8StringWriter())
             {
                 WriteProtocol(writer, Configuration);
                 return writer.ToString();
@@ -76,5 +76,10 @@ namespace MoSeqAcquire.Models.Management
             return types.ToArray();
         }
 
+    }
+
+    public sealed class UTF8StringWriter : StringWriter
+    {
+        public override Encoding Encoding { get => Encoding.UTF8; }
     }
 }

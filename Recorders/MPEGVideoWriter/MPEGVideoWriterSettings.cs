@@ -22,6 +22,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             get => this.videoCodec;
             set => this.SetField(ref this.videoCodec, value);
         }
+
         public int VideoBitrate
         {
             get => this.videoBitrate;
@@ -33,6 +34,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             get => this.audioCodec;
             set => this.SetField(ref this.audioCodec, value);
         }
+
         public int AudioBitrate
         {
             get => this.audioBitrate;

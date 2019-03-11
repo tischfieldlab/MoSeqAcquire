@@ -2,19 +2,20 @@
 using SynapseTools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
-    //[KnownType(typeof(DirectShowConfigSnapshot))]
+    [DisplayName("Synapse Capture Source")]
+    [SettingsImplementation(typeof(SynapseCaptureConfig))]
     public class SynapseCaptureSource : MediaSource
     {
-        public SynapseCaptureSource()
+        public SynapseCaptureSource() : base()
         {
             this.Name = "Direct Show Device";
-            this.Config = new SynapseCaptureConfig(this);
         }
         public TdtUdp Device { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()

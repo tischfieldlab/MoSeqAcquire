@@ -21,7 +21,8 @@ namespace MoSeqAcquire.Models.Acquisition
     public abstract class Channel
     {
         public Channel() {
-            var blockoptions = new DataflowBlockOptions() {
+            var blockoptions = new DataflowBlockOptions()
+            {
                 EnsureOrdered = true
             };
             this.Buffer = new BufferBlock<ChannelFrame>(blockoptions);

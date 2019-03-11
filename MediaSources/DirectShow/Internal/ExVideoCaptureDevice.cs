@@ -174,7 +174,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow.Internal
             {
                 var field = typeof(ExVideoCaptureDevice).BaseType.GetField("sync", BindingFlags.Instance | BindingFlags.NonPublic);
                 return field.GetValue(this);
-                //this.GetType().GetField("sync", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
             }
         }
     }

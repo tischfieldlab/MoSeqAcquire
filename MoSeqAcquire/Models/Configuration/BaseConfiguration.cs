@@ -76,6 +76,7 @@ namespace MoSeqAcquire.Models.Configuration
                         {
                             Name = pi.Name,
                             Value = prop.Value,
+                            ValueType = prop.ValueType,
                             Automatic = prop.AllowsAuto ? (bool?)prop.IsAutomatic : null
                         };
                     }
@@ -85,6 +86,7 @@ namespace MoSeqAcquire.Models.Configuration
                         {
                             Name = pi.Name,
                             Value = pi.GetValue(this),
+                            ValueType = pi.PropertyType,
                             Automatic = null
                         };
                     }

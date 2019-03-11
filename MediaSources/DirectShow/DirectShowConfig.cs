@@ -42,7 +42,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         public DirectShowConfig(DirectShowSource Source)
         {
             this.Source = Source;
-
             this.brightness = new ProcAmpPropInfo(this.Source, VideoProcAmpProperty.Brightness);
             this.contrast = new ProcAmpPropInfo(this.Source, VideoProcAmpProperty.Contrast);
             this.hue = new ProcAmpPropInfo(this.Source, VideoProcAmpProperty.Hue);

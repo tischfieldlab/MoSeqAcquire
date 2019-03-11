@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -13,13 +14,24 @@ namespace MoSeqAcquire.Models.Configuration
     {
         public ConfigSnapshot() { }
 
-        public void Add(string Name, bool? Automatic, object Value)
+        public void Add(string Name, Type ValueType, object Value, bool? Automatic)
         {
             this.Add(Name, new ConfigSnapshotSetting()
             {
                 Name = Name,
                 Automatic = Automatic,
-                Value = Value
+                Value = Value,
+                ValueType = ValueType
+            });
+        }
+        public void Add(string Name, object Value, bool? Automatic)
+        {
+            this.Add(Name, new ConfigSnapshotSetting()
+            {
+                Name = Name,
+                Automatic = Automatic,
+                Value = Value,
+                ValueType = Value.GetType()
             });
         }
 
@@ -40,33 +52,40 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public void ReadXml(XmlReader reader)
         {
+            bool isEmptyElement = reader.IsEmptyElement;
+            string selfName = reader.Name;
 
-            bool wasEmpty = reader.IsEmptyElement;
-            string openName = reader.Name;
+            reader.ReadStartElement();
 
-            if (wasEmpty)
-                return;
-            reader.Read();
-            while (true)
+            if (!isEmptyElement)
             {
-                if (reader.Name == "setting" && reader.NodeType == XmlNodeType.Element)
+                while (true)
                 {
-                    var setting = new ConfigSnapshotSetting();
-                    setting.ReadXml(reader);
-                    this.Add(setting.Name, setting);
-                }
-                else
-                {
-                    break;
+                    if (reader.Name == "Setting" && reader.NodeType == XmlNodeType.Element)
+                    {
+                        var setting = new ConfigSnapshotSetting();
+                        setting.ReadXml(reader);
+                        this.Add(setting.Name, setting);
+                    }
+                    else if(reader.Name.Equals(selfName) && reader.NodeType == XmlNodeType.EndElement)
+                    {
+                        reader.ReadEndElement();
+                        return;
+                    }
                 }
             }
-            reader.ReadEndElement();
         }
         public void WriteXml(System.Xml.XmlWriter writer)
         {
+            /*var list = new List<ConfigSnapshotSetting>(this.Values);
+            XmlSerializer serializer = new XmlSerializer(list.GetType());
+            serializer.Serialize(writer, list);*/
+
             foreach (string key in this.Keys)
             {
+                writer.WriteStartElement("Setting");
                 this[key].WriteXml(writer);
+                writer.WriteEndElement();
             }
         }
         #endregion
@@ -74,8 +93,11 @@ namespace MoSeqAcquire.Models.Configuration
 
     public class ConfigSnapshotSetting : IXmlSerializable
     {
+        public ConfigSnapshotSetting() { }
+
         public string Name { get; set; }
         public bool? Automatic { get; set; }
+        public Type ValueType { get; set; }
         public object Value { get; set; }
 
         public XmlSchema GetSchema()
@@ -104,67 +126,78 @@ namespace MoSeqAcquire.Models.Configuration
         public void ReadXml(XmlReader reader)
         {
             var knownTypes = ProtocolHelpers.GetKnownTypes();
+            reader.MoveToContent();
 
-           
-            this.Name = reader.GetAttribute("name");
-            string valueTypeString = reader.GetAttribute("type");
-                
-            var auto = reader.GetAttribute("automatic");
+            //Read setting name
+            this.Name = reader.GetAttribute("Name");
+
+            //Read setting value type
+            string valueTypeString = reader.GetAttribute("Type");
+            this.ValueType = knownTypes.FirstOrDefault(t => t.FullName.Equals(valueTypeString)); //try to find in known types
+            if (this.ValueType == null)
+            {
+                this.ValueType = System.Type.GetType(valueTypeString); //fall back to this method
+            }
+
+            if(this.ValueType == null)
+            {
+                throw new ArgumentException("valuetype is null!");
+            }
+
+            //Read setting automatic-ness
+            string auto = reader.GetAttribute("Automatic");
             if(auto != null)
             {
                 this.Automatic = bool.Parse(auto);
             }
-            reader.Read();
-            string valueString = reader.Value;
 
-            Type valueType = knownTypes.FirstOrDefault(t => t.FullName.Equals(valueTypeString)); //try to find in known types
-            if (valueType == null)
-            {
-                valueType = System.Type.GetType(valueTypeString); //fall back to this method
-            }
+            bool isEmptyElement = reader.IsEmptyElement;
+            reader.ReadStartElement();
 
-            if (valueType != null)
+            if (!isEmptyElement)
             {
-                if (typeof(Enum).IsAssignableFrom(valueType))
+                string valueString = reader.ReadContentAsString();
+                reader.ReadEndElement();
+
+
+                if (this.ValueType != null)
                 {
-                    this.Value = Enum.Parse(valueType, valueString);
-                }
-                else if (typeof(IConvertible).IsAssignableFrom(valueType))
-                {
-                    this.Value = Convert.ChangeType(valueString, valueType);
-                }
-                else
-                {
-                    this.Value = valueString;
+                    if (typeof(Enum).IsAssignableFrom(this.ValueType))
+                    {
+                        this.Value = Enum.Parse(this.ValueType, valueString);
+                    }
+                    else if (typeof(IConvertible).IsAssignableFrom(this.ValueType))
+                    {
+                        this.Value = Convert.ChangeType(valueString, this.ValueType);
+                    }
+                    else
+                    {
+                        this.Value = valueString;
+                    }
                 }
             }
-            if(!(reader.Name == "setting" && reader.NodeType == XmlNodeType.EndElement))
+            else
             {
-                reader.Read();
+                var x = 1;
             }
-            reader.ReadEndElement();
-            return;
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteStartElement("setting");
-            writer.WriteAttributeString("name", this.Name);
+            writer.WriteAttributeString("Name", this.Name);
             if (this.Automatic != null)
             {
-                writer.WriteAttributeString("automatic", this.Automatic.ToString());
+                writer.WriteAttributeString("Automatic", this.Automatic.ToString());
             }
+            writer.WriteAttributeString("Type", this.ValueType.FullName);
             if (this.Value != null)
             {
-                writer.WriteAttributeString("type", this.Value.GetType().FullName);
                 writer.WriteRaw(this.Value.ToString());
             }
             else
             {
-                writer.WriteAttributeString("type", "");
-                writer.WriteRaw("");
+                writer.WriteRaw(string.Empty);
             }
-            writer.WriteEndElement();
         }
     }
 }
