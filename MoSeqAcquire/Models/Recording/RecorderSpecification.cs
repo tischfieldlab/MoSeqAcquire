@@ -58,6 +58,7 @@ namespace MoSeqAcquire.Models.Recording
                         }
                     }
                 }
+                types.AddRange(this.SettingsFactory().GetKnownTypes());
                 return types;
             }
         }

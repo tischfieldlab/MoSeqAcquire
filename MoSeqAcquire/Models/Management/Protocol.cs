@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 
 namespace MoSeqAcquire.Models.Management
 {
+    [XmlRoot("Protocol")]
     public class Protocol
     {
         public static readonly string Extension = "xml";
@@ -25,10 +26,28 @@ namespace MoSeqAcquire.Models.Management
         public string Name { get; set; }
         public bool Locked { get; set; }
 
+        [XmlArray("Sources")]
         public ProtocolSourceCollection Sources { get; set; }
         public ProtocolRecordingsSetup Recordings { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            var pcol = obj as Protocol;
 
+            if (!this.Name.Equals(pcol.Name))
+                return false;
+            if (!this.Locked.Equals(pcol.Locked))
+                return false;
+            if (!this.Sources.SequenceEqual(pcol.Sources))
+                return false;
+            if (!this.Recordings.Equals(pcol.Recordings))
+                return false;
+            return true;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         /*public void RegisterProvider(Type Provider, ConfigSnapshot Config)
         {

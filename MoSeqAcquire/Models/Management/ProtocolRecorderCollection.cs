@@ -1,31 +1,48 @@
-﻿using System;
-using System.Collections;
+﻿using MoSeqAcquire.Models.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Configuration;
-using MoSeqAcquire.Models.Recording;
 
 namespace MoSeqAcquire.Models.Management
 {
-    [XmlRoot("Recordings")]
+
     public class ProtocolRecordingsSetup
     {
         public ProtocolRecordingsSetup()
         {
+            this.GeneralSettings = new ConfigSnapshot();
             this.Recorders = new ProtocolRecorderCollection();
         }
-        [XmlElement("GeneralSettings")]
+        
         public ConfigSnapshot GeneralSettings { get; set; }
-        [XmlElement("Recorders")]
-        public ProtocolRecorderCollection Recorders { get; protected set; }
+
+  
+        public ProtocolRecorderCollection Recorders { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var prs = obj as ProtocolRecordingsSetup;
+
+            if (!this.GeneralSettings.Equals(prs.GeneralSettings))
+                return false;
+            if (!this.Recorders.SequenceEqual(prs.Recorders))
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 91812158;
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigSnapshot>.Default.GetHashCode(GeneralSettings);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ProtocolRecorderCollection>.Default.GetHashCode(Recorders);
+            return hashCode;
+        }
     }
 
-    [XmlRoot("Recorders")]
+    
     public class ProtocolRecorderCollection : Collection<ProtocolRecorder>
     {
 
@@ -40,36 +57,79 @@ namespace MoSeqAcquire.Models.Management
 
     }
 
-    public class RecorderInfo
+    public class ProtocolRecorder
     {
+        public ProtocolRecorder()
+        {
+            this.Pins = new List<ProtocolRecorderPin>();
+            this.Config = new ConfigSnapshot();
+        }
         [XmlAttribute("Name")]
         public string Name { get; set; }
-        [XmlElement("Provider")]
         public string Provider { get; set; }
-        [XmlElement("Config")]
-        public ConfigSnapshot Config { get; set; }
-    }
-
-    [XmlRoot("Recorder")]
-    public class ProtocolRecorder : RecorderInfo
-    {
 
         [XmlArray("Pins")]
-        [XmlArrayItem("Pin", typeof(ProtocolRecorderPin))]
         public List<ProtocolRecorderPin> Pins { get; set; }
+        public ConfigSnapshot Config { get; set; }
+        
 
         public Type GetProviderType()
         {
             return Type.GetType(this.Provider);
         }
+        public override bool Equals(object obj)
+        {
+            var recorder = obj as ProtocolRecorder;
+
+            if (!string.Equals(this.Name, recorder.Name))
+                return false;
+            if (!string.Equals(this.Provider, recorder.Provider))
+                return false;
+            if (!this.Pins.SequenceEqual(recorder.Pins))
+                return false;
+            if (!this.Config.Equals(recorder.Config))
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -719071386;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Provider);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<ProtocolRecorderPin>>.Default.GetHashCode(Pins);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigSnapshot>.Default.GetHashCode(Config);
+            return hashCode;
+        }
     }
 
-    [XmlRoot("Pin")]
+    [XmlType("Pin")]
     public class ProtocolRecorderPin
     {
         [XmlAttribute("Name")]
         public string Name { get; set; }
         [XmlAttribute("Channel")]
         public string Channel { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var pin = obj as ProtocolRecorderPin;
+
+            if (!string.Equals(this.Name, pin.Name))
+                return false;
+            if (!string.Equals(this.Channel, pin.Channel))
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -2055277510;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Channel);
+            return hashCode;
+        }
     }
 }

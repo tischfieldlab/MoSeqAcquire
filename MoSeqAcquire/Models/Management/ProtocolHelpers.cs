@@ -19,9 +19,6 @@ namespace MoSeqAcquire.Models.Management
         public static IEnumerable<Type> FindProviderTypes()
         {
             return ExtractPluginsImplementing<MediaSource>(Properties.Settings.Default.MediaSourcePluginPaths);
-            /*return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(MediaSource).IsAssignableFrom(t));*/
         }
         public static IEnumerable<Type> GetKnownTypesForProviders()
         {
@@ -33,14 +30,13 @@ namespace MoSeqAcquire.Models.Management
         public static IEnumerable<Type> FindRecorderTypes()
         {
             return ExtractPluginsImplementing<IMediaWriter>(Properties.Settings.Default.RecorderPluginPaths);
-            /*return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(IMediaWriter).IsAssignableFrom(t));
-                */
         }
         public static IEnumerable<Type> GetKnownTypesForRecorders()
         {
-            return FindRecorderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
+            //return FindRecorderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
+            return FindRecorderTypes()
+                .Select(t => new RecorderSpecification(t))
+                .SelectMany((rs) => rs.KnownTypes);
         }
         #endregion
 
@@ -57,7 +53,10 @@ namespace MoSeqAcquire.Models.Management
 
         public static IEnumerable<Type> GetKnownTypes()
         {
-            return GetKnownTypesForProviders().Concat(GetKnownTypesForRecorders());
+            var allTypes = new List<Type>();
+            allTypes.AddRange(GetKnownTypesForProviders());
+            allTypes.AddRange(GetKnownTypesForRecorders());
+            return allTypes;
         }
 
         private static Dictionary<Type, List<Type>> __pluginTypeCache = new Dictionary<Type, List<Type>>();
@@ -95,9 +94,21 @@ namespace MoSeqAcquire.Models.Management
                 return filteredList;
             }
         }
-        public static List<Assembly> FindAssemblies(StringCollection SearchPaths)
+        public static List<Assembly> FindAssemblies(StringCollection SearchPaths, bool InlcudeCwd = true)
         {
             Dictionary<String, Assembly> plugInAssemblyList = new Dictionary<String, Assembly>();
+            if (InlcudeCwd)
+            {
+                var cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var assemblies = FindAssembliesForPath(cwd);
+                foreach (var a in assemblies)
+                {
+                    if (!plugInAssemblyList.ContainsKey(a.FullName))
+                    {
+                        plugInAssemblyList.Add(a.FullName, a);
+                    }
+                }
+            }
             foreach (var path in SearchPaths)
             {
                 var assemblies = FindAssembliesForPath(path);
@@ -113,7 +124,7 @@ namespace MoSeqAcquire.Models.Management
         }
         public static List<Assembly> FindAssembliesForPath(String Path)
         {
-            //Console.WriteLine("Searching path \"" + Path + "\" for plugins");
+            Console.WriteLine("Searching path \"" + Path + "\" for plugins");
             List<Assembly> assemblyList = new List<Assembly>();
             DirectoryInfo dInfo = new DirectoryInfo(Path);
             if (dInfo.Exists)
@@ -123,7 +134,7 @@ namespace MoSeqAcquire.Models.Management
                 {
                     foreach (FileInfo file in files)
                     {
-                        //Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
+                        Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
                         try
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));

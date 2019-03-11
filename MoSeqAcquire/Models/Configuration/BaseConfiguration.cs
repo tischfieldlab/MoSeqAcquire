@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,24 @@ namespace MoSeqAcquire.Models.Configuration
 {
     public abstract class BaseConfiguration : ObservableObject, IConfigSnapshotProvider
     {
+        public List<Type> GetKnownTypes()
+        {
+            return this.GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                .Select((pi) =>
+                {
+                    if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                    {
+                        ComplexProperty prop = (ComplexProperty)pi.GetValue(this);
+                        return prop.ValueType;
+                    }
+                    else
+                    {
+                        return pi.PropertyType;
+                    }
+                }).Distinct().ToList();
+        }
         public void ApplyDefaults()
         {
             this.GetType()

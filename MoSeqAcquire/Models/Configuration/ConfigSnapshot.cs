@@ -13,6 +13,26 @@ namespace MoSeqAcquire.Models.Configuration
     {
         public ConfigSnapshot() { }
 
+        public void Add(string Name, bool? Automatic, object Value)
+        {
+            this.Add(Name, new ConfigSnapshotSetting()
+            {
+                Name = Name,
+                Automatic = Automatic,
+                Value = Value
+            });
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.SequenceEqual(obj as ConfigSnapshot);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         #region IXmlSerializable Members
         public XmlSchema GetSchema()
         {
@@ -20,7 +40,6 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public void ReadXml(XmlReader reader)
         {
-            var knownTypes = ProtocolHelpers.GetKnownTypes();
 
             bool wasEmpty = reader.IsEmptyElement;
             string openName = reader.Name;
@@ -38,9 +57,10 @@ namespace MoSeqAcquire.Models.Configuration
                 }
                 else
                 {
-                    return;
+                    break;
                 }
             }
+            reader.ReadEndElement();
         }
         public void WriteXml(System.Xml.XmlWriter writer)
         {
@@ -61,6 +81,24 @@ namespace MoSeqAcquire.Models.Configuration
         public XmlSchema GetSchema()
         {
             return null;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var css = obj as ConfigSnapshotSetting;
+
+            if (!this.Name.Equals(css.Name))
+                return false;
+            if (!this.Automatic.Equals(css.Automatic))
+                return false;
+            if (!this.Value.Equals(css.Value))
+                return false;
+
+            return true;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public void ReadXml(XmlReader reader)
