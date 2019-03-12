@@ -45,7 +45,7 @@ namespace MoSeqAcquire.Models.Acquisition
         {
             this.pullers[PropertyName] = action as Func<object>;
         }
-        public void RegisterRange<T>(string PropertyName, Func<Tuple<T,T>> action) where T : IComparable
+        public void RegisterRange<T>(string PropertyName, Func<Tuple<IComparable, IComparable>> action) where T : IComparable
         {
             this.ranges[PropertyName] = action;
         }
