@@ -120,5 +120,20 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                 }
             }
         }
+
+        private void BindConfig()
+        {
+            KinectConfig cfg = this.Kinect.Config as KinectConfig;
+            ColorCameraSettings ccs = this.Kinect.Sensor.ColorStream.CameraSettings;
+
+
+            cfg.Register<bool>(nameof(cfg.AutoExposure), 
+                               (v) => { ccs.AutoExposure = v; },
+                               () => { return ccs.AutoExposure; });
+
+            cfg.Register<bool>(nameof(cfg.AutoWhiteBalance),
+                               (v) => { ccs.AutoWhiteBalance = v; },
+                               () => { return ccs.AutoWhiteBalance; });
+        }
     }
 }

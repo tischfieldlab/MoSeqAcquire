@@ -127,6 +127,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Acquisition\AudioChannelFrameMetadata.cs" />
     <Compile Include="Models\Acquisition\ChannelFrameMetadata.cs" />
+    <Compile Include="Models\Acquisition\MediaSourceConfigMediator.cs" />
     <Compile Include="Models\Acquisition\MediaSourceSpecification.cs" />
     <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
     <Compile Include="Models\Metadata\RecordingMetadata.cs" />

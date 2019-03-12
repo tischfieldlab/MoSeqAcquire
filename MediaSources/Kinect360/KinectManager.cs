@@ -88,5 +88,19 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             this.Sensor.DepthStream.Disable();
             this.FindChannel<KinectSoundChannel>().Enabled = false;   
         }
+
+
+
+        protected void bindConfig()
+        {
+            KinectConfig cfg = this.Config as KinectConfig;
+
+            cfg.RegisterPull<bool>(nameof(cfg.AutoExposure), () => {
+                return this.Sensor.ColorStream.CameraSettings.AutoExposure;
+            });
+            cfg.RegisterPush<bool>(nameof(cfg.AutoExposure), (v) => {
+                this.Sensor.ColorStream.CameraSettings.AutoExposure = v;
+            });
+        }
     }
 }

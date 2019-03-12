@@ -82,14 +82,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         protected KinectSensor Sensor { get => Kinect.Sensor; }
         protected ColorCameraSettings ColorCameraSettings { get => Sensor.ColorStream.CameraSettings; }
 
-        protected bool CheckRange<T>(T value, T min, T max) where T : IComparable
-        {
-            if (value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0)
-            {
-                return true;
-            }
-            return false;
-        }
+        
 
         #region Kinect Settings
         [Category("Kinect Settings")]

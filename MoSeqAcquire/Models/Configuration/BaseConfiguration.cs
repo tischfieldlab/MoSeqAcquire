@@ -9,11 +9,15 @@ namespace MoSeqAcquire.Models.Configuration
 {
     public abstract class BaseConfiguration : ObservableObject, IConfigSnapshotProvider
     {
-        public List<Type> GetKnownTypes()
+        protected IEnumerable<PropertyInfo> GetConfigurationProperties()
         {
             return this.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType));
+        }
+        public List<Type> GetKnownTypes()
+        {
+            return this.GetConfigurationProperties()
                 .Select((pi) =>
                 {
                     if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
@@ -29,9 +33,7 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public void ApplyDefaults()
         {
-            this.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+            this.GetConfigurationProperties()
                 .ForEach((pi) =>
                 {
                     if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
@@ -64,9 +66,7 @@ namespace MoSeqAcquire.Models.Configuration
         public ConfigSnapshot GetSnapshot()
         {
             var state = new ConfigSnapshot();
-            this.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+            this.GetConfigurationProperties()
                 .ForEach((pi) => {
                     ConfigSnapshotSetting setting;
                     if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
@@ -116,6 +116,10 @@ namespace MoSeqAcquire.Models.Configuration
                     {
                         prop.SetValue(this, snapshot[key].Value);
                     }
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Configuration has no property " + key);
                 }
             }
             this.NotifyPropertyChanged(null);

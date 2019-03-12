@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Configuration
 {
-    public abstract class ComplexProperty : IRangeInfo, IDefaultInfo, IAutomaticInfo, ISupportInfo, IChoicesProvider
+    public abstract class ComplexProperty 
+        : IRangeInfo, IDefaultInfo, IAutomaticInfo, ISupportInfo, IChoicesProvider
     {
         private PropertyCapability capability;
         public Type ValueType
@@ -68,7 +69,6 @@ namespace MoSeqAcquire.Models.Configuration
         }
         #endregion
 
-
         #region IChoicesProvider Implementation
         public bool HasChoices
         {
@@ -87,8 +87,6 @@ namespace MoSeqAcquire.Models.Configuration
             get => (this.Capability as IChoicesProvider).ValuePath;
         }
         #endregion
-
-
 
     }
 }
