@@ -15,7 +15,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         public KinectDepthChannel(KinectManager Kinect) : base(Kinect)
         {
             this.Name = "Depth Channel";
-            this.DeviceName = "Microsoft Kinect";
+            this.DeviceName = "Microsoft Kinect XBOX 360";
             Kinect.Sensor.DepthFrameReady += this.Sensor_DepthFrameReady;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(short);

@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KinectChannel.cs" />
     <Compile Include="KinectConfig.cs" />
+    <Compile Include="KinectDepthChannel.cs" />
     <Compile Include="KinectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

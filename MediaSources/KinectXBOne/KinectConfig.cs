@@ -17,7 +17,6 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         protected KinectManager Kinect { get; set; }
         protected KinectSensor Sensor { get; set; }
 
-
         public KinectConfig(KinectManager Kinect)
         {
             this.Kinect = Kinect;
@@ -27,7 +26,6 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         {
             this.colorFrameSource = this.Sensor.ColorFrameSource;
             this.depthFrameSource = this.Sensor.DepthFrameSource;
-
         }
 
         /// <summary>
@@ -46,6 +44,10 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
 
             return false;
         }
+
+        #region Kinect Settings
+
+        #endregion
 
         #region Kinect Depth Settings
         /// <summary>

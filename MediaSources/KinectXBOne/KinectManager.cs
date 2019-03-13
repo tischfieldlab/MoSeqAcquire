@@ -11,15 +11,16 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
     public class KinectManager : MediaSource
     {
         public KinectSensor Sensor { get; set; }
-        protected ColorFrameReader colorFrameReader { get; set; }
-        protected DepthFrameReader depthFrameReader { get; set; }
-        protected AudioBeamFrameReader audioFrameReader { get; set; }
-        protected InfraredFrameReader infraredFrameReader { get; set; }
+        public ColorFrameReader colorFrameReader { get; set; }
+        public DepthFrameReader depthFrameReader { get; set; }
+        public AudioBeamFrameReader audioFrameReader { get; set; }
+        public InfraredFrameReader infraredFrameReader { get; set; }
 
         public KinectManager()
         {
             this.Name = "Kinect XBOX One";
             this.Config = new KinectConfig(this);
+            this.IsInitialized = false;
         }
 
         /// <summary>
@@ -67,13 +68,12 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
                 this.Status = "Disconnected";
             }
 
-            if (this.Sensor == null) return false;
+            if (this.Sensor == null) { return false; }
 
             this.Config.ReadState();
             //this.RegisterChannel(new KinectDepthChannel(this));
             //this.RegisterChannel(new KinectColorChannel(this));
             //this.RegisterChannel(new KinectSoundChannel(this));
-            this.IsInitialized = true;
             return true;
         }
 
@@ -84,11 +84,19 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         {
             if (this.IsInitialized) return;
 
+            // Opening the sensor and all other sources for reading
+            // TODO(jared): Maybe make this toggleable depending on what the user wants, to 
+            // save some computations?
+
+            // TODO(jared): Check on the values of IsActive and IsPaused once these OpenReader()
+            // methods are called.
             this.Sensor.Open();
             this.colorFrameReader = this.Sensor.ColorFrameSource.OpenReader();
             this.depthFrameReader = this.Sensor.DepthFrameSource.OpenReader();
             this.audioFrameReader = this.Sensor.AudioSource.OpenReader();
             this.infraredFrameReader = this.Sensor.InfraredFrameSource.OpenReader();
+
+            this.IsInitialized = true;
 
             base.Start();
         }
