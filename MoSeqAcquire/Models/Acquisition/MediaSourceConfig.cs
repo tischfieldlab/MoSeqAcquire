@@ -8,6 +8,7 @@ namespace MoSeqAcquire.Models.Acquisition
 {
     public abstract class MediaSourceConfig : BaseConfiguration
     {
+        protected Dictionary<string, ComplexProperty> propertyBackers;
         protected Dictionary<string, Action<object>> pushers;
         protected Dictionary<string, Func<object>> pullers;
         protected Dictionary<string, Func<Tuple<IComparable, IComparable>>> ranges;
@@ -56,6 +57,10 @@ namespace MoSeqAcquire.Models.Acquisition
                 return true;
             }
             return false;
+        }
+        public void BindProperty(string PropertyName, ComplexProperty property)
+        {
+            this.propertyBackers.Add(PropertyName, property);
         }
 
         public abstract void ReadState();
