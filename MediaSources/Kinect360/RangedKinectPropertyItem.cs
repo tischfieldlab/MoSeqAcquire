@@ -24,6 +24,21 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             this.maxProperty = maxProperty;
             this.autoProperty = autoProperty;
         }
+        public RangedKinectPropertyItem(KinectManager Source, string valueProperty, string autoProperty)
+        {
+            this.source = Source;
+            this.valueProperty = valueProperty;
+            this.minProperty = "Min" + valueProperty;
+            this.maxProperty = "Max" + valueProperty;
+            this.autoProperty = autoProperty;
+        }
+        public RangedKinectPropertyItem(KinectManager Source, string valueProperty)
+        {
+            this.source = Source;
+            this.valueProperty = valueProperty;
+            this.minProperty = "Min" + valueProperty;
+            this.maxProperty = "Max" + valueProperty;
+        }
 
         public override object Value
         {
@@ -42,10 +57,12 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         {
             get
             {
+                if (this.autoProperty == null) { return false; }
                 return (bool)this.GetPropertyValue(this.source.Sensor, this.autoProperty);
             }
             set
             {
+                if (this.autoProperty == null) { return; }
                 this.SetPropertyValue(this.source.Sensor, this.autoProperty, value);
             }
         }

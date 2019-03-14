@@ -22,7 +22,8 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
     {
         public KinectManager() : base()
         {
-            this.Name = "Kinect";
+            this.Name = "Kinect360";
+            this.BindConfig();
         }
         public KinectSensor Sensor { get; set; }
 
@@ -91,11 +92,15 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
 
 
 
-        protected void bindConfig()
+        protected void BindConfig()
         {
             KinectConfig cfg = this.Config as KinectConfig;
 
-            //cfg.RegisterComplexProperty(nameof(cfg.ElevationAngle), new RangedKinectPropertyItem(this,))
+            //sensor level
+            cfg.RegisterComplexProperty(nameof(cfg.ElevationAngle), new RangedKinectPropertyItem(this, nameof(this.Sensor.ElevationAngle)));
+
+            //color camera level
+            cfg.RegisterComplexProperty(nameof(cfg.Brightness), new RangedKinectPropertyItem(this, nameof(this.Sensor.ElevationAngle)));
 
             /*
             cfg.RegisterPull<bool>(nameof(cfg.AutoExposure), () => {

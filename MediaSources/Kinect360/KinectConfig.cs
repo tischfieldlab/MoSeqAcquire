@@ -129,7 +129,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             get => depthImageFormat;
             set
             {
-                if (depthImageFormat != value && DepthImageFormat.Undefined != value)
+                if (DepthImageFormat.Undefined != value)
                 {
                     //this.Sensor.DepthStream.Enable(value);
                     SetField(ref depthImageFormat, value, () => { this.Sensor.DepthStream.Enable(value); });
