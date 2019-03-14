@@ -39,6 +39,20 @@ namespace MoSeqAcquire.Models.Configuration
             get => (int)this.Capability.Default;
         }
 
+        public bool Validate(object Value)
+        {
+            if (this.HasRange)
+            {
+                if ((Value as IComparable).CompareTo(this.Min as IComparable) < 0
+                 && (Value as IComparable).CompareTo(this.Max as IComparable) > 0)
+                    return false;
+            }
+            else if (this.HasChoices)
+            {
+                if (!this.Choices.Contains(Value)) return false;
+            }
+            return true;
+        }
         
 
         public bool IsSupported

@@ -8,7 +8,7 @@ using System.Configuration;
 using MoSeqAcquire.Models.Attributes;
 using System.ComponentModel;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     //[KnownType(typeof(KinectConfigSnapshot))]
     /*[KnownType(typeof(ColorImageFormat))]
@@ -95,12 +95,15 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             KinectConfig cfg = this.Config as KinectConfig;
 
+            //cfg.RegisterComplexProperty(nameof(cfg.ElevationAngle), new RangedKinectPropertyItem(this,))
+
+            /*
             cfg.RegisterPull<bool>(nameof(cfg.AutoExposure), () => {
                 return this.Sensor.ColorStream.CameraSettings.AutoExposure;
             });
             cfg.RegisterPush<bool>(nameof(cfg.AutoExposure), (v) => {
                 this.Sensor.ColorStream.CameraSettings.AutoExposure = v;
-            });
+            });*/
         }
     }
 }

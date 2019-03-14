@@ -18,6 +18,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         public DirectShowSource() : base()
         {
             this.Name = "Direct Show Device";
+            this.BindConfig();
         }
         public ExVideoCaptureDevice Device { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()
@@ -42,7 +43,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Name = videoDevices.Find(fi => fi.MonikerString.Equals(DeviceId)).Name;
             this.Status = "Initializing";
             this.Device = new ExVideoCaptureDevice(DeviceId);
-            //this.Config.ReadState();
+            
 
             this.RegisterChannel(new DirectShowVideoChannel(this));
 
@@ -61,6 +62,37 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             base.Stop();
             this.Device.SignalToStop();
             this.Device.WaitForStop();
+        }
+
+        protected void BindConfig()
+        {
+            var cfg = this.Config as DirectShowConfig;
+            cfg.RegisterComplexProperty(nameof(cfg.ImageFormat), new VideoCapabilitiesProperty(this));
+            cfg.RegisterComplexProperty(nameof(cfg.PowerlineFrequency), new PowerLineFrequencyProperty(this));
+
+
+            cfg.RegisterComplexProperty(nameof(cfg.Brightness), new ProcAmpPropInfo(this, VideoProcAmpProperty.Brightness));
+            cfg.RegisterComplexProperty(nameof(cfg.Contrast), new ProcAmpPropInfo(this, VideoProcAmpProperty.Contrast));
+            cfg.RegisterComplexProperty(nameof(cfg.Hue), new ProcAmpPropInfo(this, VideoProcAmpProperty.Hue));
+            cfg.RegisterComplexProperty(nameof(cfg.Saturation), new ProcAmpPropInfo(this, VideoProcAmpProperty.Saturation));
+            cfg.RegisterComplexProperty(nameof(cfg.Sharpness), new ProcAmpPropInfo(this, VideoProcAmpProperty.Sharpness));
+            cfg.RegisterComplexProperty(nameof(cfg.Gamma), new ProcAmpPropInfo(this, VideoProcAmpProperty.Gamma));
+            cfg.RegisterComplexProperty(nameof(cfg.ColorEnable), new ProcAmpPropInfo(this, VideoProcAmpProperty.ColorEnable));
+            cfg.RegisterComplexProperty(nameof(cfg.WhiteBalance), new ProcAmpPropInfo(this, VideoProcAmpProperty.WhiteBalance));
+            cfg.RegisterComplexProperty(nameof(cfg.BacklightCompensation), new ProcAmpPropInfo(this, VideoProcAmpProperty.BacklightCompensation));
+            cfg.RegisterComplexProperty(nameof(cfg.Gain), new ProcAmpPropInfo(this, VideoProcAmpProperty.Gain));
+            cfg.RegisterComplexProperty(nameof(cfg.DigitalMultiplier), new ProcAmpPropInfo(this, VideoProcAmpProperty.DigitalMultiplier));
+            cfg.RegisterComplexProperty(nameof(cfg.DigitalMultiplierLimit), new ProcAmpPropInfo(this, VideoProcAmpProperty.DigitalMultiplierLimit));
+            cfg.RegisterComplexProperty(nameof(cfg.WhiteBalanceComponent), new ProcAmpPropInfo(this, VideoProcAmpProperty.WhiteBalanceComponent));
+            
+
+            cfg.RegisterComplexProperty(nameof(cfg.Exposure), new CameraControlPropInfo(this, CameraControlProperty.Exposure));
+            cfg.RegisterComplexProperty(nameof(cfg.Focus), new CameraControlPropInfo(this, CameraControlProperty.Focus));
+            cfg.RegisterComplexProperty(nameof(cfg.Iris), new CameraControlPropInfo(this, CameraControlProperty.Iris));
+            cfg.RegisterComplexProperty(nameof(cfg.Pan), new CameraControlPropInfo(this, CameraControlProperty.Pan));
+            cfg.RegisterComplexProperty(nameof(cfg.Roll), new CameraControlPropInfo(this, CameraControlProperty.Roll));
+            cfg.RegisterComplexProperty(nameof(cfg.Tilt), new CameraControlPropInfo(this, CameraControlProperty.Tilt));
+            cfg.RegisterComplexProperty(nameof(cfg.Zoom), new CameraControlPropInfo(this, CameraControlProperty.Zoom));
         }
     }
 }

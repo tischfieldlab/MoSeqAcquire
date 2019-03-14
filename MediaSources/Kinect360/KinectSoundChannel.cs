@@ -9,7 +9,7 @@ using System.Threading.Tasks.Dataflow;
 using System.Windows.Media;
 using Microsoft.Kinect;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     public class KinectSoundChannel : KinectChannel
     {

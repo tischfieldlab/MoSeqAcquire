@@ -8,7 +8,7 @@ using System.Windows.Media;
 using Microsoft.Kinect;
 using MoSeqAcquire.Models.Utility;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     public class KinectDepthChannel : KinectChannel
     {
