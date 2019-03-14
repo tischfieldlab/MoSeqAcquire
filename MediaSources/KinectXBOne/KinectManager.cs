@@ -4,17 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
+using MoSeqAcquire.Models.Acquisition.KinectXBone;
 using MoSeqAcquire.Models.Attributes;
 
-namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
+namespace MoSeqAcquire.Models.Acquisition.KinectXBone
 {
     public class KinectManager : MediaSource
     {
         public KinectSensor Sensor { get; set; }
-        public ColorFrameReader colorFrameReader { get; set; }
-        public DepthFrameReader depthFrameReader { get; set; }
-        public AudioBeamFrameReader audioFrameReader { get; set; }
-        public InfraredFrameReader infraredFrameReader { get; set; }
 
         public KinectManager()
         {
@@ -71,7 +68,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
             if (this.Sensor == null) { return false; }
 
             this.Config.ReadState();
-            //this.RegisterChannel(new KinectDepthChannel(this));
+            this.RegisterChannel(new KinectDepthChannel(this));
             //this.RegisterChannel(new KinectColorChannel(this));
             //this.RegisterChannel(new KinectSoundChannel(this));
             return true;
@@ -91,11 +88,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
             // TODO(jared): Check on the values of IsActive and IsPaused once these OpenReader()
             // methods are called.
             this.Sensor.Open();
-            this.colorFrameReader = this.Sensor.ColorFrameSource.OpenReader();
-            this.depthFrameReader = this.Sensor.DepthFrameSource.OpenReader();
-            this.audioFrameReader = this.Sensor.AudioSource.OpenReader();
-            this.infraredFrameReader = this.Sensor.InfraredFrameSource.OpenReader();
-
+            this.FindChannel<KinectDepthChannel>().Enabled = true;
             this.IsInitialized = true;
 
             base.Start();
@@ -108,10 +101,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         {
             if (!this.IsInitialized) return;
 
-            this.colorFrameReader.Dispose();
-            this.depthFrameReader.Dispose();
-            this.audioFrameReader.Dispose();
-            this.infraredFrameReader.Dispose();
+            this.FindChannel<KinectDepthChannel>().Dispose();
             this.Sensor.Close();
 
             base.Stop();

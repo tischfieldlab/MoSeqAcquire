@@ -7,12 +7,13 @@ using MoSeqAcquire.Models.Configuration;
 using Microsoft.Kinect;
 using System.ComponentModel;
 
-namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
+namespace MoSeqAcquire.Models.Acquisition.KinectXBone
 {
     public class KinectConfig : MediaSourceConfig
     {
         protected DepthFrameSource depthFrameSource;
         protected ColorFrameSource colorFrameSource;
+        protected InfraredFrameSource infraredFrameSource;
 
         protected KinectManager Kinect { get; set; }
         protected KinectSensor Sensor { get; set; }
@@ -24,8 +25,9 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
 
         public override void ReadState()
         {
-            this.colorFrameSource = this.Sensor.ColorFrameSource;
-            this.depthFrameSource = this.Sensor.DepthFrameSource;
+        //    this.colorFrameSource = this.Sensor.ColorFrameSource;
+        //    this.depthFrameSource = this.Sensor.DepthFrameSource;
+        //    this.infraredFrameSource = this.Sensor.InfraredFrameSource;
         }
 
         /// <summary>
@@ -67,6 +69,8 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
             }
         }
         #endregion
+
+
 
     }
 

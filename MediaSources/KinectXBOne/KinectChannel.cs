@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
+namespace MoSeqAcquire.Models.Acquisition.KinectXBone
 {
     public abstract class KinectChannel : Channel
     {
@@ -14,5 +14,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBOne
         {
             this.Kinect = Kinect;
         }
+
+        public abstract void Dispose();
     }
 }
