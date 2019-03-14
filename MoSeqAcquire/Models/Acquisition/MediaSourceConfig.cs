@@ -3,36 +3,66 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows.Annotations;
+using System.Linq;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
     public abstract class MediaSourceConfig : BaseConfiguration
     {
-        protected Dictionary<string, Action<object>> pushers;
-        protected Dictionary<string, Func<object>> pullers;
-        protected Dictionary<string, Func<Tuple<IComparable, IComparable>>> ranges;
+        protected Dictionary<string, ComplexProperty> backingProperties;
+        //protected Dictionary<string, Action<object>> pushers;
+        //protected Dictionary<string, Func<object>> pullers;
+        //protected Dictionary<string, Func<Tuple<IComparable, IComparable>>> ranges;
 
         public MediaSourceConfig()
         {
+            this.backingProperties = new Dictionary<string, ComplexProperty>();
         }
-        protected new bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        public ComplexProperty GetComplexProperty(string PropertyName)
         {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            if (this.ranges.ContainsKey(propertyName))
+            if (this.IsPropertyComplex(PropertyName))
             {
-                var min_max = (Tuple<IComparable, IComparable>)this.ranges[propertyName].DynamicInvoke();
-                if (!this.CheckRange((IComparable)value, min_max.Item1, min_max.Item2)) return false;
+                return this.backingProperties[PropertyName];
             }
-            if (this.pushers.ContainsKey(propertyName))
+            return null;
+        }
+        public bool IsPropertyComplex(string PropertyName)
+        {
+            return this.backingProperties.ContainsKey(PropertyName)
+                && this.backingProperties[PropertyName] != null;
+        }
+        public void RegisterComplexProperty(string PropertyName, ComplexProperty BackingProperty)
+        {
+            this.backingProperties[PropertyName] = BackingProperty;
+        }
+        protected bool SetField<T>(T value, [CallerMemberName] string propertyName = null)
+        {
+            if (!this.IsPropertyComplex(propertyName))
             {
-                //to do: check return value for success, else rollback
-                this.pushers[propertyName].Invoke(value);
+                throw new ArgumentException(propertyName + " is not backed by a complex property!");
             }
-            field = value;
+            var bp = this.GetComplexProperty(propertyName);
+
+            if (EqualityComparer<T>.Default.Equals((T)bp.Value, value))
+                return false;
+
+            if (!bp.Validate(value))
+                return false;
+
+            bp.Value = value;
             NotifyPropertyChanged(propertyName);
             return true;
         }
-        public void Register<T>(string PropertyName, Action<T> push, Func<T> pull)
+        protected T GetField<T>([CallerMemberName] string propertyName = null)
+        {
+            if (!this.IsPropertyComplex(propertyName))
+            {
+                throw new ArgumentException(propertyName + " is not backed by a complex property!");
+            }
+            var bp = this.GetComplexProperty(propertyName);
+            return (T)bp.Value;
+        }
+        /*public void Register<T>(string PropertyName, Action<T> push, Func<T> pull)
         {
             this.RegisterPull(PropertyName, pull);
             this.RegisterPush(PropertyName, push);
@@ -48,10 +78,11 @@ namespace MoSeqAcquire.Models.Acquisition
         public void RegisterRange<T>(string PropertyName, Func<Tuple<IComparable, IComparable>> action) where T : IComparable
         {
             this.ranges[PropertyName] = action;
-        }
-        protected bool CheckRange<T>(T value, T min, T max) where T : IComparable
+        }*/
+        protected bool CheckRange(object value, object min, object max)
         {
-            if (value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0)
+            if ((value as IComparable).CompareTo(min as IComparable) >= 0 
+             && (value as IComparable).CompareTo(max as IComparable) <= 0)
             {
                 return true;
             }

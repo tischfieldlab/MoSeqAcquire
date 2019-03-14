@@ -62,7 +62,7 @@ namespace MoSeqAcquire.Models.Acquisition
         public MediaSourceConfig SettingsFactory(MediaSource Owner)
         {
             var sit = this.SourceType.GetCustomAttribute<SettingsImplementationAttribute>();
-            return Activator.CreateInstance(sit.SettingsImplementation, Owner) as MediaSourceConfig;
+            return Activator.CreateInstance(sit.SettingsImplementation) as MediaSourceConfig;
         }
         public MediaSource Factory()
         {

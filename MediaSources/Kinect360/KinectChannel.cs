@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Kinect;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     public abstract class KinectChannel : Channel
     {

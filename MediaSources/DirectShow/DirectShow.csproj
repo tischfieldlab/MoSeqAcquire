@@ -7,7 +7,7 @@
     <ProjectGuid>{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DirectShow</RootNamespace>
+    <RootNamespace>MoSeqAcquire.Models.Acquisition.DirectShow</RootNamespace>
     <AssemblyName>DirectShow</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CameraControlPropInfo.cs" />
     <Compile Include="DirectShowChannel.cs" />
     <Compile Include="DirectShowConfig.cs" />
     <Compile Include="DirectShowSource.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Internal\ExVideoCaptureDevice.cs" />
     <Compile Include="Internal\IAMVideoProcAmp.cs" />
     <Compile Include="Internal\VideoProcAmpProperty.cs" />
+    <Compile Include="ProcAmpPropInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

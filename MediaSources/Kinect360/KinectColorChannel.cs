@@ -9,7 +9,7 @@ using System.Windows.Media;
 using Microsoft.Kinect;
 using MoSeqAcquire.Models.Utility;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     public class KinectColorChannel : KinectChannel
     {
@@ -126,7 +126,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             KinectConfig cfg = this.Kinect.Config as KinectConfig;
             ColorCameraSettings ccs = this.Kinect.Sensor.ColorStream.CameraSettings;
 
-
+            /*
             cfg.Register<bool>(nameof(cfg.AutoExposure), 
                                (v) => { ccs.AutoExposure = v; },
                                () => { return ccs.AutoExposure; });
@@ -134,6 +134,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             cfg.Register<bool>(nameof(cfg.AutoWhiteBalance),
                                (v) => { ccs.AutoWhiteBalance = v; },
                                () => { return ccs.AutoWhiteBalance; });
+                               */
         }
     }
 }
