@@ -125,7 +125,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             KinectConfig cfg = this.Kinect.Config as KinectConfig;
             ColorCameraSettings ccs = this.Kinect.Sensor.ColorStream.CameraSettings;
-            ccs.
 
 
             cfg.Register<bool>(nameof(cfg.AutoExposure), 

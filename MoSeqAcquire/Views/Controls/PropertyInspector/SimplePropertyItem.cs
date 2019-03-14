@@ -201,7 +201,7 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
             }
             set
             {
-                AutomaticPropertyAttribute apa = this.propertyInfo.Attributes. .GetCustomAttribute<AutomaticPropertyAttribute>();
+                AutomaticPropertyAttribute apa = this.propertyInfo.GetCustomAttribute<AutomaticPropertyAttribute>();
                 if (apa != null)
                 {
                     this.sourceObject.GetType().GetProperty(apa.PropertyName).SetValue(this.sourceObject, value);
