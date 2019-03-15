@@ -16,7 +16,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
     [KnownType(typeof(PowerLineFrequency))]
     [KnownType(typeof(BacklightCompensationMode))]
     [KnownType(typeof(DepthRange))]*/
-    [DisplayName("Direct Show Source")]
+    [DisplayName("Kinect 360")]
     [SettingsImplementation(typeof(KinectConfig))]
     public class KinectManager : MediaSource
     {
@@ -51,7 +51,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                         this.Status = potentialSensor.Status.ToString();
                         if (potentialSensor.Status == KinectStatus.Connected)
                         {
-                            
                             this.Sensor = potentialSensor;
                             break;
                         }
@@ -95,20 +94,40 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         protected void BindConfig()
         {
             KinectConfig cfg = this.Config as KinectConfig;
+            ColorImageStream cis = this.Sensor.ColorStream;
+            ColorCameraSettings ccs = cis.CameraSettings;
+
+            DepthImageStream dis = this.Sensor.DepthStream;
 
             //sensor level
-            cfg.RegisterComplexProperty(nameof(cfg.ElevationAngle), new RangedKinectPropertyItem(this, nameof(this.Sensor.ElevationAngle)));
+            cfg.RegisterComplexProperty(nameof(cfg.ElevationAngle), new RangedKinectPropertyItem(this.Sensor, nameof(this.Sensor.ElevationAngle)));
 
             //color camera level
-            cfg.RegisterComplexProperty(nameof(cfg.Brightness), new RangedKinectPropertyItem(this, nameof(this.Sensor.ElevationAngle)));
+            cfg.RegisterComplexProperty(nameof(cfg.Brightness), new RangedKinectPropertyItem(ccs, nameof(ccs.Brightness)));
+            cfg.RegisterComplexProperty(nameof(cfg.Contrast), new RangedKinectPropertyItem(ccs, nameof(ccs.Contrast)));
+            cfg.RegisterComplexProperty(nameof(cfg.Saturation), new RangedKinectPropertyItem(ccs, nameof(ccs.Saturation)));
+            cfg.RegisterComplexProperty(nameof(cfg.Sharpness), new RangedKinectPropertyItem(ccs, nameof(ccs.Sharpness)));
+            cfg.RegisterComplexProperty(nameof(cfg.WhiteBalance), new RangedKinectPropertyItem(ccs, nameof(ccs.WhiteBalance), nameof(ccs.AutoWhiteBalance)));
+            cfg.RegisterComplexProperty(nameof(cfg.ExposureTime), new RangedKinectPropertyItem(ccs, nameof(ccs.ExposureTime), nameof(ccs.AutoExposure)));
+            cfg.RegisterComplexProperty(nameof(cfg.FrameInterval), new RangedKinectPropertyItem(ccs, nameof(ccs.FrameInterval)));
+            cfg.RegisterComplexProperty(nameof(cfg.Gain), new RangedKinectPropertyItem(ccs, nameof(ccs.Gain)));
+            cfg.RegisterComplexProperty(nameof(cfg.Gamma), new RangedKinectPropertyItem(ccs, nameof(ccs.Gamma)));
+            cfg.RegisterComplexProperty(nameof(cfg.Hue), new RangedKinectPropertyItem(ccs, nameof(ccs.Hue)));
+            cfg.RegisterComplexProperty(nameof(cfg.ColorImageFormat), new EnumKinectPropertyItem(cis, nameof(cis.Format)));
+            cfg.RegisterComplexProperty(nameof(cfg.PowerLineFrequency), new EnumKinectPropertyItem(ccs, nameof(ccs.PowerLineFrequency)));
+            cfg.RegisterComplexProperty(nameof(cfg.BacklightCompensationMode), new EnumKinectPropertyItem(ccs, nameof(ccs.BacklightCompensationMode)));
 
-            /*
-            cfg.RegisterPull<bool>(nameof(cfg.AutoExposure), () => {
-                return this.Sensor.ColorStream.CameraSettings.AutoExposure;
-            });
-            cfg.RegisterPush<bool>(nameof(cfg.AutoExposure), (v) => {
-                this.Sensor.ColorStream.CameraSettings.AutoExposure = v;
-            });*/
+            //depth camera level
+            cfg.RegisterComplexProperty(nameof(cfg.DepthImageFormat), new EnumKinectPropertyItem(dis, nameof(dis.Format)));
+            cfg.RegisterComplexProperty(nameof(cfg.DepthRange), new EnumKinectPropertyItem(dis, nameof(dis.Range)));
+            cfg.RegisterComplexProperty(nameof(cfg.ForceInfraredEmitterOff), new SimpleKinectPropertyItem(dis, nameof(dis.Range)));
+
+            //audio device level
+            cfg.RegisterComplexProperty(nameof(cfg.BeamAngleMode), new EnumKinectPropertyItem(dis, nameof(dis.Range)));
+            cfg.RegisterComplexProperty(nameof(cfg.AutomaticGainControlEnabled), new SimpleKinectPropertyItem(dis, nameof(dis.Range)));
+            cfg.RegisterComplexProperty(nameof(cfg.NoiseSuppression), new SimpleKinectPropertyItem(dis, nameof(dis.Range)));
+
+
         }
     }
 }

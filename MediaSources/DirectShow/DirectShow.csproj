@@ -56,6 +56,7 @@
     <Compile Include="Internal\VideoProcAmpProperty.cs" />
     <Compile Include="ProcAmpPropInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VideoCapabilitiesProperty.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MoSeqAcquire\MoSeqAcquire.csproj">

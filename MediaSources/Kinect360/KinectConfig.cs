@@ -11,23 +11,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         protected bool forceInfraredEmitterOff;
         protected int elevationAngle;
 
-        protected ColorImageFormat colorImageFormat;
-        protected DepthImageFormat depthImageFormat;
-        protected double brightness;
-        protected double contrast;
-        private double saturation;
-        private double sharpness;
-        private int whiteBalance;
-        private double exposureTime;
-        private double frameInterval;
-        private double gain;
-        private double gamma;
-        private double hue;
-        private PowerLineFrequency powerLineFrequency;
-        private bool autoExposure;
-        private bool autoWhiteBalance;
-        private BacklightCompensationMode backlightCompensationMode;
-        private DepthRange depthRange;
+        
 
         private bool automaticGainControlEnabled;
         private BeamAngleMode beamAngleMode;
@@ -47,27 +31,8 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             //this.elevationAngle = this.Kinect.Sensor.ElevationAngle;
             this.forceInfraredEmitterOff = this.Sensor.ForceInfraredEmitterOff;
 
-            this.colorImageFormat = this.Sensor.ColorStream.Format;
-            this.depthImageFormat = this.Sensor.DepthStream.Format;
 
-            //Color Camera level settings
-            this.brightness = this.ColorCameraSettings.Brightness;
-            this.contrast = this.ColorCameraSettings.Contrast;
-            this.saturation = this.ColorCameraSettings.Saturation;
-            this.sharpness = this.ColorCameraSettings.Sharpness;
-            this.whiteBalance = this.ColorCameraSettings.WhiteBalance;
-            this.exposureTime = this.ColorCameraSettings.ExposureTime;
-            this.frameInterval = this.ColorCameraSettings.FrameInterval;
-            this.gain = this.ColorCameraSettings.Gain;
-            this.gamma = this.ColorCameraSettings.Gamma;
-            this.hue = this.ColorCameraSettings.Hue;
-            this.powerLineFrequency = this.ColorCameraSettings.PowerLineFrequency;
-            this.autoExposure = this.ColorCameraSettings.AutoExposure;
-            this.autoWhiteBalance = this.ColorCameraSettings.AutoWhiteBalance;
-            this.backlightCompensationMode = this.ColorCameraSettings.BacklightCompensationMode;
-
-            this.depthRange = this.Kinect.Sensor.DepthStream.Range;
-
+            //audio
             this.automaticGainControlEnabled = this.Kinect.Sensor.AudioSource.AutomaticGainControlEnabled;
             this.beamAngleMode = this.Kinect.Sensor.AudioSource.BeamAngleMode;
             this.echoCancellationMode = this.Kinect.Sensor.AudioSource.EchoCancellationMode;
@@ -104,311 +69,136 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
 
         [Category("Kinect Settings")]
         [DisplayName("Elevation Angle")]
-        [ConfigurationProperty("elevationAngle", DefaultValue = 0, IsRequired = false)]
-        //[IntegerValidator(MaxValue=this.Kinect.Sensor.MaxElevationAngle, MinValue=this.Kinect.Sensor.MinElevationAngle)]
         public int ElevationAngle
         {
-            get => elevationAngle;
-            set
-            {
-                if (elevationAngle != value && this.CheckRange(value, this.Sensor.MinElevationAngle, this.Sensor.MaxElevationAngle))
-                {
-                    //this.Sensor.ElevationAngle = value;
-                    SetField(ref elevationAngle, value, () => { this.Sensor.ElevationAngle = value; });
-                }
-            }
+            get => this.GetField<int>();
+            set => this.SetField<int>(value);
         }
         #endregion
 
         #region Kinect Depth Camera Settings
         [Category("Depth Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the depth image format.")]
         public DepthImageFormat DepthImageFormat
         {
-            get => depthImageFormat;
-            set
-            {
-                if (DepthImageFormat.Undefined != value)
-                {
-                    //this.Sensor.DepthStream.Enable(value);
-                    SetField(ref depthImageFormat, value, () => { this.Sensor.DepthStream.Enable(value); });
-                }
-            }
+            get => this.GetField<DepthImageFormat>();
+            set => this.SetField<DepthImageFormat>(value);
         }
 
         [Category("Depth Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the backlight compensation setting of the camera.")]
         public DepthRange DepthRange
         {
-            get => depthRange;
-            set
-            {
-                if (depthRange != value)
-                {
-                    this.Sensor.DepthStream.Range = value;
-                    SetField(ref depthRange, value);
-                }
-
-            }
+            get => this.GetField<DepthRange>();
+            set => this.SetField<DepthRange>(value);
         }
         #endregion
 
         #region Kinect Color Camera settings
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the brightness of the camera.")]
         public ColorImageFormat ColorImageFormat
         {
-            get => colorImageFormat;
-            set
-            {
-                if (colorImageFormat != value && ColorImageFormat.Undefined != value)
-                {
-                    //this.Sensor.ColorStream.Enable(value);
-                    SetField(ref colorImageFormat, value, () => { this.Sensor.ColorStream.Enable(value); });
-                }
-
-            }
+            get => this.GetField<ColorImageFormat>();
+            set => this.SetField<ColorImageFormat>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the brightness of the camera.")]
         public double Brightness
         {
-            get => brightness;
-            set
-            {
-                if (brightness != value && this.CheckRange(value, this.ColorCameraSettings.MinBrightness, this.ColorCameraSettings.MaxBrightness))
-                {
-                    this.ColorCameraSettings.Brightness = value;
-                    SetField(ref brightness, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the contrast of the camera.")]
         public double Contrast
         {
-            get => contrast;
-            set
-            {
-                if (contrast != value && this.CheckRange(value, this.ColorCameraSettings.MinContrast, this.ColorCameraSettings.MaxContrast))
-                {
-                    this.ColorCameraSettings.Contrast = value;
-                    SetField(ref contrast, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the saturation of the camera.")]
         public double Saturation
         {
-            get => saturation;
-            set
-            {
-                if (saturation != value && this.CheckRange(value, this.ColorCameraSettings.MinSaturation, this.ColorCameraSettings.MaxSaturation))
-                {
-                    this.ColorCameraSettings.Saturation = value;
-                    SetField(ref saturation, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the sharpness of the camera.")]
         public double Sharpness
         {
-            get => sharpness;
-            set
-            {
-                if (sharpness != value && this.CheckRange(value, this.ColorCameraSettings.MinSharpness, this.ColorCameraSettings.MaxSharpness))
-                {
-                    this.ColorCameraSettings.Sharpness = value;
-                    SetField(ref sharpness, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the white balance of the camera.")]
         public int WhiteBalance
         {
-            get => whiteBalance;
-            set
-            {
-                if (whiteBalance != value && this.CheckRange(value, this.ColorCameraSettings.MinWhiteBalance, this.ColorCameraSettings.MaxWhiteBalance))
-                {
-                    this.ColorCameraSettings.WhiteBalance = value;
-                    SetField(ref whiteBalance, value);
-                }
-
-            }
+            get => this.GetField<int>();
+            set => this.SetField<int>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the exposure time of the camera.")]
         public double ExposureTime
         {
-            get => exposureTime;
-            set
-            {
-                if (exposureTime != value && this.CheckRange(value, this.ColorCameraSettings.MinExposureTime, this.ColorCameraSettings.MaxExposureTime))
-                {
-                    this.ColorCameraSettings.ExposureTime = value;
-                    SetField(ref exposureTime, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the frame interval of the camera.")]
         public double FrameInterval
         {
-            get => frameInterval;
-            set
-            {
-                if (frameInterval != value && this.CheckRange(value, this.ColorCameraSettings.MinFrameInterval, this.ColorCameraSettings.MaxFrameInterval))
-                {
-                    this.ColorCameraSettings.FrameInterval = value;
-                    SetField(ref frameInterval, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the gain of the camera.")]
         public double Gain
         {
-            get => gain;
-            set
-            {
-                if (gain != value && this.CheckRange(value, this.ColorCameraSettings.MinGain, this.ColorCameraSettings.MaxGain))
-                {
-                    this.ColorCameraSettings.Gain = value;
-                    SetField(ref gain, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the gamma of the camera.")]
         public double Gamma
         {
-            get => gamma;
-            set
-            {
-                if (gamma != value && this.CheckRange(value, this.ColorCameraSettings.MinGamma, this.ColorCameraSettings.MaxGamma))
-                {
-                    this.ColorCameraSettings.Gamma = value;
-                    SetField(ref gamma, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the hue of the camera.")]
         public double Hue
         {
-            get => hue;
-            set
-            {
-                if (hue != value && this.CheckRange(value, this.ColorCameraSettings.MinHue, this.ColorCameraSettings.MaxHue))
-                {
-                    this.ColorCameraSettings.Hue = value;
-                    SetField(ref hue, value);
-                }
-
-            }
+            get => this.GetField<double>();
+            set => this.SetField<double>(value);
         }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the Power Line Frequency of the camera.")]
         public PowerLineFrequency PowerLineFrequency
         {
-            get => powerLineFrequency;
-            set
-            {
-                if (powerLineFrequency != value)
-                {
-                    this.ColorCameraSettings.PowerLineFrequency = value;
-                    SetField(ref powerLineFrequency, value);
-                }
-
-            }
+            get => this.GetField<PowerLineFrequency>();
+            set => this.SetField<PowerLineFrequency>(value);
         }
 
-        [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
-        [Description("Sets the autoexposure setting of the camera.")]
-        public bool AutoExposure
-        {
-            get => autoExposure;
-            set
-            {
-                if (autoExposure != value)
-                {
-                    this.ColorCameraSettings.AutoExposure = value;
-                    SetField(ref autoExposure, value);
-                }
 
-            }
-        }
 
         [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
-        [Description("Sets the auto white exposure setting of the camera.")]
-        public bool AutoWhiteBalance
-        {
-            get => autoWhiteBalance;
-            set
-            {
-                if (autoWhiteBalance != value)
-                {
-                    this.ColorCameraSettings.AutoWhiteBalance = value;
-                    SetField(ref autoWhiteBalance, value);
-                }
-
-            }
-        }
-
-        [Category("Color Camera Settings")]
-        //[DefaultValue(0d)]
         [Description("Sets the backlight compensation setting of the camera.")]
         public BacklightCompensationMode BacklightCompensationMode
         {
-            get => backlightCompensationMode;
-            set
-            {
-                if (backlightCompensationMode != value)
-                {
-                    this.ColorCameraSettings.BacklightCompensationMode = value;
-                    SetField(ref backlightCompensationMode, value);
-                }
-
-            }
+            get => this.GetField<BacklightCompensationMode>();
+            set => this.SetField<BacklightCompensationMode>(value);
         }
         #endregion
 

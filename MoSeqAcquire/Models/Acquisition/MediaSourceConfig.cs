@@ -10,9 +10,6 @@ namespace MoSeqAcquire.Models.Acquisition
     public abstract class MediaSourceConfig : BaseConfiguration
     {
         protected Dictionary<string, ComplexProperty> backingProperties;
-        //protected Dictionary<string, Action<object>> pushers;
-        //protected Dictionary<string, Func<object>> pullers;
-        //protected Dictionary<string, Func<Tuple<IComparable, IComparable>>> ranges;
 
         public MediaSourceConfig()
         {
