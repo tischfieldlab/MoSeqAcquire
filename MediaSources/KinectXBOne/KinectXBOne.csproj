@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KinectChannel.cs" />
+    <Compile Include="KinectColorChannel.cs" />
     <Compile Include="KinectConfig.cs" />
     <Compile Include="KinectDepthChannel.cs" />
     <Compile Include="KinectManager.cs" />

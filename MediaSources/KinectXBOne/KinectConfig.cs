@@ -18,6 +18,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
         protected KinectManager Kinect { get; set; }
         protected KinectSensor Sensor { get; set; }
 
+
         public KinectConfig(KinectManager Kinect)
         {
             this.Kinect = Kinect;
@@ -70,7 +71,21 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
         }
         #endregion
 
-
+        #region Kinect Color Settings
+        [Category("Color Camera Settings")]
+        [Description("Sets the color image format.")]
+        public ColorFrameSource ColorFrameSource
+        {
+            get => this.colorFrameSource;
+            set
+            {
+                if (value != null && colorFrameSource != value)
+                {
+                    SetField(ref colorFrameSource, value);
+                }
+            }
+        }
+        #endregion
 
     }
 
