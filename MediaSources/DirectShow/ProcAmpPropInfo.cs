@@ -58,11 +58,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
         protected override void PushCurrentValue()
         {
+            if (!this.IsSupported)
+                return;
             this.source.Device.SetVideoProcAmpProperty(this.property, this.currentValue, this.currentFlags);
         }
         protected override void ReadCurrentValue()
         {
-
+            if (!this.IsSupported)
+                return;
             this.source.Device.GetVideoProcAmpProperty(this.property, out this.currentValue, out this.currentFlags);
         }
         protected override PropertyCapability ReadCapability()

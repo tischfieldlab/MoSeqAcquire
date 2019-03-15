@@ -13,25 +13,12 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     public class DirectShowConfig : MediaSourceConfig
     {
-        //private VideoCapabilities imageFormat;
-
-
-        public DirectShowConfig()
-        {
-        }
-        //protected DirectShowSource Source { get; set; }
-        public override void ReadState()
-        {
-            
-        }
-
         [DisplayName("Image Format")]
         public VideoCapabilities ImageFormat
         {
             get => this.GetField<VideoCapabilities>();
             set => this.SetField<VideoCapabilities>(value);
         }
-
         public int Brightness
         {
             get => this.GetField<int>();
@@ -102,8 +89,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             get => this.GetField<int>();
             set => this.SetField<int>(value);
         }
-
-
         public int Exposure
         {
             get => this.GetField<int>();
@@ -140,35 +125,4 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             set => this.SetField<int>(value);
         }
     }
-
-
-
-
-
-    class PowerLineFrequencyProperty : ProcAmpPropInfo
-    {
-        public PowerLineFrequencyProperty(DirectShowSource Source) : base(Source, VideoProcAmpProperty.PowerlineFrequency)
-        {
-        }
-
-        protected override PropertyCapability ReadCapability()
-        {
-            var baseCap = (RangedPropertyCapability)base.ReadCapability();
-            return new ChoicesPropertyCapability()
-            {
-                Choices = new List<object>()
-                {
-                    new Tuple<string, int>("Disabled", 0),
-                    new Tuple<string, int>("50 Hz", 1),
-                    new Tuple<string, int>("60 Hz", 2)
-                },
-                DisplayPath = "Item1",
-                ValuePath = "Item2",
-                Default = baseCap.Default,
-                AllowsAuto = baseCap.AllowsAuto,
-                IsSupported = baseCap.IsSupported
-            };
-        }
-    }
-    
 }

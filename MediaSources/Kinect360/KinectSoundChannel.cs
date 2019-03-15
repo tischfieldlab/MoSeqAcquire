@@ -47,7 +47,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             {
                 if (this.__isEnabled != value)
                 {
-                    if (this.__isEnabled)
+                    if (this.__isEnabled) //TODO: This logic looks a little fishy....
                     {
                         this.__isEnabled = false;
                         if (null != readingThread)
@@ -85,6 +85,19 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                 int readCount = this.InnerStream.Read(this.__data, 0, this.__data.Length);                
                 this.PostFrame(new ChannelFrame(this.__data));
             }
+        }
+
+        internal override void BindConfig()
+        {
+            KinectConfig cfg = this.Kinect.Config as KinectConfig;
+            KinectAudioSource kas = this.Kinect.Sensor.AudioSource;
+
+            cfg.RegisterComplexProperty(nameof(cfg.BeamAngleMode), new EnumKinectPropertyItem(kas, nameof(kas.BeamAngleMode)));
+            cfg.RegisterComplexProperty(nameof(cfg.ManualBeamAngle), new RangedKinectPropertyItem(kas, nameof(kas.ManualBeamAngle), nameof(KinectAudioSource.MinBeamAngle), nameof(KinectAudioSource.MaxBeamAngle)));
+            cfg.RegisterComplexProperty(nameof(cfg.AutomaticGainControlEnabled), new SimpleKinectPropertyItem(kas, nameof(kas.AutomaticGainControlEnabled)));
+            cfg.RegisterComplexProperty(nameof(cfg.NoiseSuppression), new SimpleKinectPropertyItem(kas, nameof(kas.NoiseSuppression)));
+            cfg.RegisterComplexProperty(nameof(cfg.EchoCancellationMode), new EnumKinectPropertyItem(kas, nameof(kas.EchoCancellationMode)));
+            cfg.RegisterComplexProperty(nameof(cfg.EchoCancellationSpeakerIndex), new SimpleKinectPropertyItem(kas, nameof(kas.EchoCancellationSpeakerIndex)));
         }
     }
 }

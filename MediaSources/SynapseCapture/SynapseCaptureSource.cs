@@ -32,7 +32,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Name = "SynapseUDP";
             this.Status = "Initializing";
             this.Device = new TdtUdp("localhost");
-            this.Config.ReadState();
 
             this.RegisterChannel(new SynapseCaptureChannel(this));
 

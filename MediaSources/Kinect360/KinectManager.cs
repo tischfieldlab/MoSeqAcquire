@@ -23,7 +23,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         public KinectManager() : base()
         {
             this.Name = "Kinect360";
-            this.BindConfig();
         }
         public KinectSensor Sensor { get; set; }
 
@@ -62,11 +61,12 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                 this.Status = KinectStatus.Disconnected.ToString();
             }
             if (this.Sensor == null) { return false; }
-
-            this.Config.ReadState();
+            
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
             this.RegisterChannel(new KinectSoundChannel(this));
+            this.BindConfig();
+
             this.IsInitialized = true;
             return true;
         }
@@ -94,40 +94,13 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         protected void BindConfig()
         {
             KinectConfig cfg = this.Config as KinectConfig;
-            ColorImageStream cis = this.Sensor.ColorStream;
-            ColorCameraSettings ccs = cis.CameraSettings;
 
-            DepthImageStream dis = this.Sensor.DepthStream;
-
-            //sensor level
+            //sensor level config
+            cfg.RegisterComplexProperty(nameof(cfg.ForceInfraredEmitterOff), new SimpleKinectPropertyItem(this.Sensor, nameof(this.Sensor.ForceInfraredEmitterOff)));
             cfg.RegisterComplexProperty(nameof(cfg.ElevationAngle), new RangedKinectPropertyItem(this.Sensor, nameof(this.Sensor.ElevationAngle)));
 
-            //color camera level
-            cfg.RegisterComplexProperty(nameof(cfg.Brightness), new RangedKinectPropertyItem(ccs, nameof(ccs.Brightness)));
-            cfg.RegisterComplexProperty(nameof(cfg.Contrast), new RangedKinectPropertyItem(ccs, nameof(ccs.Contrast)));
-            cfg.RegisterComplexProperty(nameof(cfg.Saturation), new RangedKinectPropertyItem(ccs, nameof(ccs.Saturation)));
-            cfg.RegisterComplexProperty(nameof(cfg.Sharpness), new RangedKinectPropertyItem(ccs, nameof(ccs.Sharpness)));
-            cfg.RegisterComplexProperty(nameof(cfg.WhiteBalance), new RangedKinectPropertyItem(ccs, nameof(ccs.WhiteBalance), nameof(ccs.AutoWhiteBalance)));
-            cfg.RegisterComplexProperty(nameof(cfg.ExposureTime), new RangedKinectPropertyItem(ccs, nameof(ccs.ExposureTime), nameof(ccs.AutoExposure)));
-            cfg.RegisterComplexProperty(nameof(cfg.FrameInterval), new RangedKinectPropertyItem(ccs, nameof(ccs.FrameInterval)));
-            cfg.RegisterComplexProperty(nameof(cfg.Gain), new RangedKinectPropertyItem(ccs, nameof(ccs.Gain)));
-            cfg.RegisterComplexProperty(nameof(cfg.Gamma), new RangedKinectPropertyItem(ccs, nameof(ccs.Gamma)));
-            cfg.RegisterComplexProperty(nameof(cfg.Hue), new RangedKinectPropertyItem(ccs, nameof(ccs.Hue)));
-            cfg.RegisterComplexProperty(nameof(cfg.ColorImageFormat), new EnumKinectPropertyItem(cis, nameof(cis.Format)));
-            cfg.RegisterComplexProperty(nameof(cfg.PowerLineFrequency), new EnumKinectPropertyItem(ccs, nameof(ccs.PowerLineFrequency)));
-            cfg.RegisterComplexProperty(nameof(cfg.BacklightCompensationMode), new EnumKinectPropertyItem(ccs, nameof(ccs.BacklightCompensationMode)));
-
-            //depth camera level
-            cfg.RegisterComplexProperty(nameof(cfg.DepthImageFormat), new EnumKinectPropertyItem(dis, nameof(dis.Format)));
-            cfg.RegisterComplexProperty(nameof(cfg.DepthRange), new EnumKinectPropertyItem(dis, nameof(dis.Range)));
-            cfg.RegisterComplexProperty(nameof(cfg.ForceInfraredEmitterOff), new SimpleKinectPropertyItem(dis, nameof(dis.Range)));
-
-            //audio device level
-            cfg.RegisterComplexProperty(nameof(cfg.BeamAngleMode), new EnumKinectPropertyItem(dis, nameof(dis.Range)));
-            cfg.RegisterComplexProperty(nameof(cfg.AutomaticGainControlEnabled), new SimpleKinectPropertyItem(dis, nameof(dis.Range)));
-            cfg.RegisterComplexProperty(nameof(cfg.NoiseSuppression), new SimpleKinectPropertyItem(dis, nameof(dis.Range)));
-
-
+            //let each channel bind config
+            this.Channels.ForEach((c) => (c as KinectChannel).BindConfig());
         }
     }
 }

@@ -91,7 +91,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                 {
                     this.InnerStream.Enable();
                 }
-                this.Kinect.Config.ReadState();
             }
         }
 
@@ -121,20 +120,25 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             }
         }
 
-        private void BindConfig()
+        internal override void BindConfig()
         {
             KinectConfig cfg = this.Kinect.Config as KinectConfig;
-            ColorCameraSettings ccs = this.Kinect.Sensor.ColorStream.CameraSettings;
+            ColorImageStream cis = this.InnerStream;
+            ColorCameraSettings ccs = cis.CameraSettings;
 
-            /*
-            cfg.Register<bool>(nameof(cfg.AutoExposure), 
-                               (v) => { ccs.AutoExposure = v; },
-                               () => { return ccs.AutoExposure; });
-
-            cfg.Register<bool>(nameof(cfg.AutoWhiteBalance),
-                               (v) => { ccs.AutoWhiteBalance = v; },
-                               () => { return ccs.AutoWhiteBalance; });
-                               */
+            cfg.RegisterComplexProperty(nameof(cfg.Brightness), new RangedKinectPropertyItem(ccs, nameof(ccs.Brightness)));
+            cfg.RegisterComplexProperty(nameof(cfg.Contrast), new RangedKinectPropertyItem(ccs, nameof(ccs.Contrast)));
+            cfg.RegisterComplexProperty(nameof(cfg.Saturation), new RangedKinectPropertyItem(ccs, nameof(ccs.Saturation)));
+            cfg.RegisterComplexProperty(nameof(cfg.Sharpness), new RangedKinectPropertyItem(ccs, nameof(ccs.Sharpness)));
+            cfg.RegisterComplexProperty(nameof(cfg.WhiteBalance), new RangedKinectPropertyItem(ccs, nameof(ccs.WhiteBalance), nameof(ccs.AutoWhiteBalance)));
+            cfg.RegisterComplexProperty(nameof(cfg.ExposureTime), new RangedKinectPropertyItem(ccs, nameof(ccs.ExposureTime), nameof(ccs.AutoExposure)));
+            cfg.RegisterComplexProperty(nameof(cfg.FrameInterval), new RangedKinectPropertyItem(ccs, nameof(ccs.FrameInterval)));
+            cfg.RegisterComplexProperty(nameof(cfg.Gain), new RangedKinectPropertyItem(ccs, nameof(ccs.Gain)));
+            cfg.RegisterComplexProperty(nameof(cfg.Gamma), new RangedKinectPropertyItem(ccs, nameof(ccs.Gamma)));
+            cfg.RegisterComplexProperty(nameof(cfg.Hue), new RangedKinectPropertyItem(ccs, nameof(ccs.Hue)));
+            cfg.RegisterComplexProperty(nameof(cfg.ColorImageFormat), new EnumKinectPropertyItem(cis, nameof(cis.Format)));
+            cfg.RegisterComplexProperty(nameof(cfg.PowerLineFrequency), new EnumKinectPropertyItem(ccs, nameof(ccs.PowerLineFrequency)));
+            cfg.RegisterComplexProperty(nameof(cfg.BacklightCompensationMode), new EnumKinectPropertyItem(ccs, nameof(ccs.BacklightCompensationMode)));
         }
     }
 }

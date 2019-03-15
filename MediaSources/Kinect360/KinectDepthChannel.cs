@@ -73,7 +73,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                 {
                     this.InnerStream.Enable();
                 }
-                this.Kinect.Config.ReadState();
             }
         }
 
@@ -105,6 +104,15 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     this.PostFrame(new ChannelFrame(this._pixelData, meta));
                 }
             }
+        }
+
+        internal override void BindConfig()
+        {
+            KinectConfig cfg = this.Kinect.Config as KinectConfig;
+            DepthImageStream dis = this.InnerStream;
+
+            cfg.RegisterComplexProperty(nameof(cfg.DepthImageFormat), new EnumKinectPropertyItem(dis, nameof(dis.Format)));
+            cfg.RegisterComplexProperty(nameof(cfg.DepthRange), new EnumKinectPropertyItem(dis, nameof(dis.Range)));
         }
     }
 }

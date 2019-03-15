@@ -22,6 +22,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Device.Device.NewFrame += this.Device_NewFrame;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(byte);
+            this.Enabled = true;
         }
         public override ChannelMetadata Metadata
         {
@@ -41,6 +42,9 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         private byte[] _copyBuffer;
         private void Device_NewFrame(object sender, Accord.Video.NewFrameEventArgs e)
         {
+            if (!this.Enabled)
+                return;
+
             if (e.Frame != null)
             {
                 var frame = e.Frame;
@@ -52,10 +56,10 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                     Height = e.Frame.Height,
                     BytesPerPixel = Image.GetPixelFormatSize(e.Frame.PixelFormat) / 8,
                     PixelFormat = e.Frame.PixelFormat.ToMediaPixelFormat(),
-                    //TotalBytes = imageFrame.PixelDataLength * imageFrame.BytesPerPixel
                 };
                 meta.TotalBytes = meta.Width * meta.Height * meta.BytesPerPixel;
-                //e.Frame.RotateFlip(RotateFlipType.RotateNoneFlipX)
+
+
                 Rectangle rect = new Rectangle(0, 0, e.Frame.Width, e.Frame.Height);
                 BitmapData bmpData = e.Frame.LockBits(rect, ImageLockMode.ReadOnly, e.Frame.PixelFormat);
 

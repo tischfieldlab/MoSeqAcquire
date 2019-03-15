@@ -18,7 +18,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         public DirectShowSource() : base()
         {
             this.Name = "Direct Show Device";
-            this.BindConfig();
+            
         }
         public ExVideoCaptureDevice Device { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()
@@ -46,7 +46,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             
 
             this.RegisterChannel(new DirectShowVideoChannel(this));
-
+            this.BindConfig();
             this.IsInitialized = true;
 
             return true;
@@ -54,6 +54,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         public override void Start()
         {
             this.Device.Start();
+            
             base.Start();
         }
         public override void Stop()

@@ -15,6 +15,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             this.Kinect = Kinect;
         }
         public KinectManager Kinect { get; protected set; }
+        internal abstract void BindConfig();
     }
     
 }

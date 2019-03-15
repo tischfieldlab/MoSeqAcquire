@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Kinect;
 
 namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
@@ -39,7 +40,19 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             else
             {
                 var prop = src.GetType().GetProperty(propName);
-                return prop != null ? prop.GetValue(src, null) : null;
+                if (prop != null)
+                {
+                    if (prop.GetGetMethod().IsStatic)
+                    {
+                        return prop.GetValue(null, null);
+                    }
+                    else
+                    {
+                        //return prop.GetValue(src, null);
+                        return src.GetType().InvokeMember(propName, System.Reflection.BindingFlags.GetProperty, null, src, null);
+                    }
+                }
+                return null;
             }
         }
         protected void SetPropertyValue(object src, string propName, object value)
@@ -57,7 +70,14 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                 var prop = src.GetType().GetProperty(propName);
                 if (prop != null)
                 {
-                    prop.SetValue(src, value);
+                    if (prop.GetSetMethod().IsStatic)
+                    {
+                        prop.SetValue(null, value);
+                    }
+                    else
+                    {
+                        prop.SetValue(src, value);
+                    }
                 }
             }
         }

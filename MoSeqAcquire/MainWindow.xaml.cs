@@ -26,12 +26,16 @@ namespace MoSeqAcquire
     /// </summary>
     public partial class MainWindow : Window
     {
-
-
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = new MoSeqAcquireViewModel();
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Application.Current.Shutdown();
         }
     }
 }

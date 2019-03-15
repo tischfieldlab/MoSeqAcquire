@@ -59,33 +59,5 @@ namespace MoSeqAcquire.Models.Acquisition
             var bp = this.GetComplexProperty(propertyName);
             return (T)bp.Value;
         }
-        /*public void Register<T>(string PropertyName, Action<T> push, Func<T> pull)
-        {
-            this.RegisterPull(PropertyName, pull);
-            this.RegisterPush(PropertyName, push);
-        }
-        public void RegisterPush<T>(string PropertyName, Action<T> action)
-        {
-            this.pushers[PropertyName] = action as Action<object>;
-        }
-        public void RegisterPull<T>(string PropertyName, Func<T> action)
-        {
-            this.pullers[PropertyName] = action as Func<object>;
-        }
-        public void RegisterRange<T>(string PropertyName, Func<Tuple<IComparable, IComparable>> action) where T : IComparable
-        {
-            this.ranges[PropertyName] = action;
-        }*/
-        protected bool CheckRange(object value, object min, object max)
-        {
-            if ((value as IComparable).CompareTo(min as IComparable) >= 0 
-             && (value as IComparable).CompareTo(max as IComparable) <= 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public abstract void ReadState();
     }
 }

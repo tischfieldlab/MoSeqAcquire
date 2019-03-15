@@ -22,6 +22,13 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             this.maxProperty = maxProperty;
             this.autoProperty = autoProperty;
         }
+        public RangedKinectPropertyItem(object Source, string valueProperty, string minProperty, string maxProperty)
+        {
+            this.source = Source;
+            this.valueProperty = valueProperty;
+            this.minProperty = minProperty;
+            this.maxProperty = maxProperty;
+        }
         public RangedKinectPropertyItem(object Source, string valueProperty, string autoProperty)
         {
             this.source = Source;

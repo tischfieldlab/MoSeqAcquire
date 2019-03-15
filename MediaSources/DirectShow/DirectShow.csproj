@@ -54,6 +54,7 @@
     <Compile Include="Internal\ExVideoCaptureDevice.cs" />
     <Compile Include="Internal\IAMVideoProcAmp.cs" />
     <Compile Include="Internal\VideoProcAmpProperty.cs" />
+    <Compile Include="PowerLineFrequencyProperty.cs" />
     <Compile Include="ProcAmpPropInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VideoCapabilitiesProperty.cs" />
