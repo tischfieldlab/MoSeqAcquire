@@ -41,7 +41,7 @@
       <Setting Name="RecordingSeconds" Type="System.Int32">30</Setting>
     </GeneralSettings>
     <Recorders>
-      <ProtocolRecorder Name="Recorder 1">
+      <Recorder Name="Recorder 1">
         <Provider>MoSeqAcquire.Models.Recording.MPEGVideoWriter.MPEGVideoWriter, MPEGVideoWriter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Provider>
         <Pins>
           <Pin Name="Video Pin" Channel="Logitech Webcam C930e - Video Channel" />
@@ -53,7 +53,7 @@
           <Setting Name="AudioCodec" Type="Accord.Video.FFMPEG.AudioCodec">MP3</Setting>
           <Setting Name="AudioBitrate" Type="System.Int32">0</Setting>
         </Config>
-      </ProtocolRecorder>
+      </Recorder>
     </Recorders>
   </Recordings>
 </Protocol>

@@ -28,6 +28,7 @@ namespace SynapseTriggers
             }
         }
     }
+
     public class SetSynapseModeConfig : BaseSynapseTriggerConfig
     {
         protected SynapseMode mode;

@@ -33,7 +33,7 @@ namespace MoSeqAcquire.Models.Triggers
         {
             if (this.subscribers.ContainsKey(typeof(TTrigger)))
             {
-                this.subscribers[typeof(TTrigger)].ForEach(t => t.Action.Invoke(trigger));
+                this.subscribers[typeof(TTrigger)].ForEach(t => Task.Run(() => t.Action.Invoke(trigger)));
             }
         }
     }

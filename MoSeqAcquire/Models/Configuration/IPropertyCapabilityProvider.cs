@@ -8,5 +8,7 @@ namespace MoSeqAcquire.Models.Configuration
 {
     public interface IPropertyCapabilityProvider
     {
+        bool IsPropertyComplex(string PropertyName);
+        ComplexProperty GetComplexProperty(string PropertyName);
     }
 }

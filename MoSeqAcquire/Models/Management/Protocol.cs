@@ -22,13 +22,14 @@ namespace MoSeqAcquire.Models.Management
             this.Name = Name;
             this.Sources = new ProtocolSourceCollection();
             this.Recordings = new ProtocolRecordingsSetup();
+            this.Triggers = new ProtocolTriggerCollection();
         }
         public string Name { get; set; }
         public bool Locked { get; set; }
 
-        [XmlArray("Sources")]
         public ProtocolSourceCollection Sources { get; set; }
         public ProtocolRecordingsSetup Recordings { get; set; }
+        public ProtocolTriggerCollection Triggers { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -42,29 +43,13 @@ namespace MoSeqAcquire.Models.Management
                 return false;
             if (!this.Recordings.Equals(pcol.Recordings))
                 return false;
+            if (!this.Triggers.Equals(pcol.Triggers))
+                return false;
             return true;
         }
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-
-        /*public void RegisterProvider(Type Provider, ConfigSnapshot Config)
-        {
-            List<ProtocolItem> items = this.GetCollectionForType(Provider);
-
-            var position = items.FindIndex(s => s.GetProviderType() == Provider);
-            if(position == -1)
-            {
-                items.Add(new ProtocolItem(){
-                    Provider = Provider.AssemblyQualifiedName,
-                    Config = Config
-                });
-            }
-            else
-            {
-                items.ElementAt(position).Config = Config;
-            }
-        }   */
     }
 }

@@ -22,13 +22,13 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         public override bool IsAutomatic
         {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get => false;
+            set { return; }
         }
 
         public override void ResetValue()
         {
-            throw new NotImplementedException();
+            return;
         }
 
         protected override PropertyCapability ReadCapability()

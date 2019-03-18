@@ -37,8 +37,10 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
                 .GetType()
                 .GetProperties()
                 .Select<PropertyInfo, PropertyItem>((p) => {
-                    if (typeof(ComplexProperty).IsAssignableFrom(p.PropertyType)) {
-                        return new ComplexPropertyItem(this.sourceObject, p.Name);
+                    if (typeof(IPropertyCapabilityProvider).IsAssignableFrom(this.sourceObject.GetType())
+                    && (this.sourceObject as IPropertyCapabilityProvider).IsPropertyComplex(p.Name)) {
+
+                        return new ComplexPropertyItem(this.sourceObject, p.Name, (this.sourceObject as IPropertyCapabilityProvider).GetComplexProperty(p.Name));
                     }
                     return new SimplePropertyItem(this.sourceObject, p.Name);
                 })

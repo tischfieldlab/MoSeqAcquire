@@ -43,6 +43,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Name = videoDevices.Find(fi => fi.MonikerString.Equals(DeviceId)).Name;
             this.Status = "Initializing";
             this.Device = new ExVideoCaptureDevice(DeviceId);
+            this.Device.VideoResolution = this.Device.VideoCapabilities.Last();
             
 
             this.RegisterChannel(new DirectShowVideoChannel(this));

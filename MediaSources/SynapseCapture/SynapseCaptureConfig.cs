@@ -11,6 +11,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     public class SynapseCaptureConfig : MediaSourceConfig
     {
-
+        public string Hostname { get; set; }
+        public int Port { get; set; }
     }
 }

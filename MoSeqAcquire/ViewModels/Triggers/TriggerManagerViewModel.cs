@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.ViewModels.Triggers
@@ -34,6 +35,14 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             var vm = new TriggerViewModel(this.Root);
             //vm.PropertyChanged += trigger_PropertyChanged;
+            this.triggers.Add(new TriggerViewModel(this.Root));
+        }
+        public void AddTrigger(Type TriggerType, Type TriggerAction, ConfigSnapshot config)
+        {
+            var vm = new TriggerViewModel(this.Root);
+            vm.ActionType = TriggerAction;
+            vm.TriggerType = TriggerType;
+            vm.Settings.ApplySnapshot(config);
             this.triggers.Add(new TriggerViewModel(this.Root));
         }
 

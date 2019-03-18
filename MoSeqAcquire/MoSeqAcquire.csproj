@@ -130,6 +130,7 @@
     <Compile Include="Models\Acquisition\MediaSourceSpecification.cs" />
     <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
     <Compile Include="Models\Configuration\IPropertyCapabilityProvider.cs" />
+    <Compile Include="Models\Management\ProtocolTriggerCollection.cs" />
     <Compile Include="Models\Metadata\RecordingMetadata.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />

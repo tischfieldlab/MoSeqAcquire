@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    public abstract class MediaSourceConfig : BaseConfiguration
+    public abstract class MediaSourceConfig : BaseConfiguration, IPropertyCapabilityProvider
     {
         protected Dictionary<string, ComplexProperty> backingProperties;
 

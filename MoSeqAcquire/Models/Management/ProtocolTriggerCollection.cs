@@ -7,45 +7,45 @@ using System.Xml.Serialization;
 namespace MoSeqAcquire.Models.Management
 {
     [XmlRoot("Sources")]
-    public class ProtocolSourceCollection : Collection<ProtocolSource>
+    public class ProtocolTriggerCollection : Collection<ProtocolTrigger>
     {
-        public void Add(Type Type, string DeviceId, ConfigSnapshot Settings)
+        public void Add(Type EventType, Type ActionType, ConfigSnapshot Settings)
         {
-            base.Add(new ProtocolSource()
+            base.Add(new ProtocolTrigger()
             {
-                Provider = Type.AssemblyQualifiedName,
-                DeviceId = DeviceId,
+                Event = EventType.AssemblyQualifiedName,
+                Action = ActionType.AssemblyQualifiedName,
                 Config = Settings
             });
         }
     }
 
-    [XmlType("Source")]
-    public class ProtocolSource
+    [XmlType("Trigger")]
+    public class ProtocolTrigger
     {
+        [XmlAttribute]
+        public string Event { get; set; }
         [XmlElement]
-        public string Provider { get; set; }
-        [XmlElement]
-        public string DeviceId { get; set; }
+        public string Action { get; set; }
         [XmlElement]
         public ConfigSnapshot Config { get; set; }
         
 
-        public Type GetProviderType()
+        public Type GetEventType()
         {
-            return Type.GetType(this.Provider);
+            return Type.GetType(this.Event);
         }
-        public MediaSource Create()
+        public Type GetActionType()
         {
-            return (MediaSource)Activator.CreateInstance(this.GetProviderType());
+            return Type.GetType(this.Action);
         }
         public override bool Equals(object obj)
         {
-            var source = obj as ProtocolSource;
+            var source = obj as ProtocolTrigger;
 
-            if (!this.Provider.Equals(source.Provider))
+            if (!this.Event.Equals(source.Event))
                 return false;
-            if (!this.DeviceId.Equals(source.DeviceId))
+            if (!this.Action.Equals(source.Action))
                 return false;
             if (!this.Config.Equals(source.Config))
                 return false;

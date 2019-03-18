@@ -17,7 +17,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         {
             get
             {
-                return this.GetPropertyValue(this.source, this.valueProperty);
+                return this.GetPropertyValue(this.source, this.valueProperty);;
             }
             set
             {
@@ -29,57 +29,65 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         protected override void ReadCurrentValue() { throw new NotImplementedException(); }
         protected object GetPropertyValue(object src, string propName)
         {
-            if (src == null) throw new ArgumentException("Value cannot be null.", "src");
-            if (propName == null) throw new ArgumentException("Value cannot be null.", "propName");
+            //needs to run on worker thread
+            return Task.Run(() =>
+            {
+                if (src == null) throw new ArgumentException("Value cannot be null.", "src");
+                if (propName == null) throw new ArgumentException("Value cannot be null.", "propName");
 
-            if (propName.Contains("."))//complex type nested
-            {
-                var temp = propName.Split(new char[] { '.' }, 2);
-                return GetPropertyValue(GetPropertyValue(src, temp[0]), temp[1]);
-            }
-            else
-            {
-                var prop = src.GetType().GetProperty(propName);
-                if (prop != null)
+                if (propName.Contains("."))//complex type nested
                 {
-                    if (prop.GetGetMethod().IsStatic)
-                    {
-                        return prop.GetValue(null, null);
-                    }
-                    else
-                    {
-                        //return prop.GetValue(src, null);
-                        return src.GetType().InvokeMember(propName, System.Reflection.BindingFlags.GetProperty, null, src, null);
-                    }
+                    var temp = propName.Split(new char[] { '.' }, 2);
+                    return GetPropertyValue(GetPropertyValue(src, temp[0]), temp[1]);
                 }
-                return null;
-            }
+                else
+                {
+                    var prop = src.GetType().GetProperty(propName);
+                    if (prop != null)
+                    {
+                        if (prop.GetGetMethod().IsStatic)
+                        {
+                            return prop.GetValue(null, null);
+                        }
+                        else
+                        {
+
+                            return prop.GetValue(src, null);
+                            //return src.GetType().InvokeMember(propName, System.Reflection.BindingFlags.GetProperty, null, src, null);
+                        }
+                    }
+                    return null;
+                }
+            }).Result;
         }
         protected void SetPropertyValue(object src, string propName, object value)
         {
-            if (src == null) throw new ArgumentException("Value cannot be null.", "src");
-            if (propName == null) throw new ArgumentException("Value cannot be null.", "propName");
+            Task.Run(() =>
+            {
+                if (src == null) throw new ArgumentException("Value cannot be null.", "src");
+                if (propName == null) throw new ArgumentException("Value cannot be null.", "propName");
 
-            if (propName.Contains("."))//complex type nested
-            {
-                var temp = propName.Split(new char[] { '.' }, 2);
-                SetPropertyValue(GetPropertyValue(src, temp[0]), temp[1], value);
-            }
-            else
-            {
-                var prop = src.GetType().GetProperty(propName);
-                if (prop != null)
+                if (propName.Contains("."))//complex type nested
                 {
-                    if (prop.GetSetMethod().IsStatic)
+                    var temp = propName.Split(new char[] { '.' }, 2);
+                    SetPropertyValue(GetPropertyValue(src, temp[0]), temp[1], value);
+                }
+                else
+                {
+                    var prop = src.GetType().GetProperty(propName);
+                    if (prop != null)
                     {
-                        prop.SetValue(null, value);
-                    }
-                    else
-                    {
-                        prop.SetValue(src, value);
+                        if (prop.GetSetMethod().IsStatic)
+                        {
+                            prop.SetValue(null, value);
+                        }
+                        else
+                        {
+                            prop.SetValue(src, value);
+                        }
                     }
                 }
-            }
+            }).Wait();
         }
     }
 }

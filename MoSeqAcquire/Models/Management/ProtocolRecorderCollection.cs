@@ -45,7 +45,6 @@ namespace MoSeqAcquire.Models.Management
     
     public class ProtocolRecorderCollection : Collection<ProtocolRecorder>
     {
-
         public void Add(Type Type, ConfigSnapshot Settings)
         {
             base.Add(new ProtocolRecorder()
@@ -54,9 +53,9 @@ namespace MoSeqAcquire.Models.Management
                 Config = Settings
             });
         }
-
     }
 
+    [XmlType("Recorder")]
     public class ProtocolRecorder
     {
         public ProtocolRecorder()
