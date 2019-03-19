@@ -36,7 +36,7 @@ namespace MoSeqAcquire.Views
         {
             this.__dialogResult = new AddMediaSourceDialogResult()
             {
-                Provider = (this.DataContext as NewMediaSourceDialogViewModel).SelectedProvider,
+                Provider = (this.DataContext as NewMediaSourceDialogViewModel).SelectedProvider.Type,
                 DeviceId = (this.DataContext as NewMediaSourceDialogViewModel).SelectedDevice.DeviceId
             };
             this.DialogResult = true;
@@ -63,14 +63,18 @@ namespace MoSeqAcquire.Views
     public class NewMediaSourceDialogViewModel : BaseViewModel
     {
         
-        protected Type selectedProvider;
+        protected ProviderViewModel selectedProvider;
         protected DeviceItemViewModel selectedDevice;
         protected IEnumerable<DeviceItemViewModel> availableDevices;
         protected bool isBusy;
 
         public NewMediaSourceDialogViewModel()
         {
-            this.AvailableProviders = ProtocolHelpers.FindProviderTypes();
+            this.AvailableProviders = ProtocolHelpers.FindProviderTypes()
+                                                     .Select(cs => new ProviderViewModel() {
+                                                         Name = cs.DisplayName,
+                                                         Type = cs.ComponentType
+                                                     });
             this.PropertyChanged += (s, e) =>
             {
                 if ("SelectedProvider".Equals(e.PropertyName) || "SelectedDevice".Equals(e.PropertyName))
@@ -88,8 +92,8 @@ namespace MoSeqAcquire.Views
         {
             get => this.SelectedProvider != null && this.SelectedDevice != null;
         }
-        public IEnumerable<Type> AvailableProviders { get; protected set; }
-        public Type SelectedProvider
+        public IEnumerable<ProviderViewModel> AvailableProviders { get; protected set; }
+        public ProviderViewModel SelectedProvider
         {
             get => this.selectedProvider;
             set
@@ -117,7 +121,7 @@ namespace MoSeqAcquire.Views
                 IEnumerable<DeviceItemViewModel> devices = null;
                 if (this.selectedProvider != null)
                 {
-                    var provider = (MediaSource)Activator.CreateInstance(this.selectedProvider, new object[] { });
+                    var provider = (MediaSource)Activator.CreateInstance(this.selectedProvider.Type, new object[] { });
                     devices = provider.ListAvailableDevices()
                                       .Where(i => MediaBus.Instance.Sources.Count(ms => ms.DeviceId.Equals(i.Item2)) == 0)
                                       .Select(i => new DeviceItemViewModel(i.Item1, i.Item2));
@@ -129,6 +133,11 @@ namespace MoSeqAcquire.Views
                 });
             });
         }
+    }
+    public class ProviderViewModel
+    {
+        public string Name { get; set; }
+        public Type Type { get; set; }
     }
     public class DeviceItemViewModel
     {

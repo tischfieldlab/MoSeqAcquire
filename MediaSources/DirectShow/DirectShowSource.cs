@@ -68,7 +68,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
         protected void BindConfig()
         {
-            var cfg = this.Config as DirectShowConfig;
+            var cfg = this.Settings as DirectShowConfig;
             cfg.RegisterComplexProperty(nameof(cfg.ImageFormat), new VideoCapabilitiesProperty(this));
             cfg.RegisterComplexProperty(nameof(cfg.PowerlineFrequency), new PowerLineFrequencyProperty(this));
 

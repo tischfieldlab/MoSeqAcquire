@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Triggers;
 using SynapseTools;
 
 namespace SynapseTriggers
 {
+    [SettingsImplementation(typeof(SetSynapseModeConfig))]
     public class SetSynapseMode : BaseSynapseTrigger
     {
         public SetSynapseMode()

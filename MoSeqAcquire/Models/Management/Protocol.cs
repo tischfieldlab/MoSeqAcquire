@@ -43,7 +43,7 @@ namespace MoSeqAcquire.Models.Management
                 return false;
             if (!this.Recordings.Equals(pcol.Recordings))
                 return false;
-            if (!this.Triggers.Equals(pcol.Triggers))
+            if (!this.Triggers.SequenceEqual(pcol.Triggers))
                 return false;
             return true;
         }

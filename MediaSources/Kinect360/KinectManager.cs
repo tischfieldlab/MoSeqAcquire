@@ -93,7 +93,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
 
         protected void BindConfig()
         {
-            KinectConfig cfg = this.Config as KinectConfig;
+            KinectConfig cfg = this.Settings as KinectConfig;
 
             //sensor level config
             cfg.RegisterComplexProperty(nameof(cfg.ForceInfraredEmitterOff), new SimpleKinectPropertyItem(this.Sensor, nameof(this.Sensor.ForceInfraredEmitterOff)));

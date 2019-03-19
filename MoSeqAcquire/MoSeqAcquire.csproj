@@ -130,6 +130,8 @@
     <Compile Include="Models\Acquisition\MediaSourceSpecification.cs" />
     <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
     <Compile Include="Models\Configuration\IPropertyCapabilityProvider.cs" />
+    <Compile Include="Models\Core\Component.cs" />
+    <Compile Include="Models\Core\ComponentSpecification.cs" />
     <Compile Include="Models\Management\ProtocolTriggerCollection.cs" />
     <Compile Include="Models\Metadata\RecordingMetadata.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
@@ -155,7 +157,6 @@
     <Compile Include="Models\DrawingExtensions.cs" />
     <Compile Include="Models\Attributes\AttributeExtensions.cs" />
     <Compile Include="Models\Attributes\KnownTypeAttribute.cs" />
-    <Compile Include="Models\Playback\MediaTimelineController.cs" />
     <Compile Include="Models\Recording\IMediaWriter.cs" />
     <Compile Include="Models\Recording\IndeterminantRecordingLength.cs" />
     <Compile Include="Models\Recording\IRecordingLengthStrategy.cs" />

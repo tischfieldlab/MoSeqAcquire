@@ -14,10 +14,10 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
     public class DirectShowConfig : MediaSourceConfig
     {
         [DisplayName("Image Format")]
-        public VideoCapabilities ImageFormat
+        public string ImageFormat
         {
-            get => this.GetField<VideoCapabilities>();
-            set => this.SetField<VideoCapabilities>(value);
+            get => this.GetField<string>();
+            set => this.SetField<string>(value);
         }
         public int Brightness
         {

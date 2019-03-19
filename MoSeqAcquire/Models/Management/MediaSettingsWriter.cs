@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using System.Linq;
 
 namespace MoSeqAcquire.Models.Management
 {
@@ -69,11 +70,7 @@ namespace MoSeqAcquire.Models.Management
 
         protected static Type[] GetSerializedTypes()
         {
-            var types = new List<Type>();
-            types.Add(typeof(RecorderSettings));
-            types.AddRange(ProtocolHelpers.GetKnownTypesForRecorders());
-            types.AddRange(ProtocolHelpers.GetKnownTypesForProviders());
-            return types.ToArray();
+            return ProtocolHelpers.GetKnownTypes().ToArray();
         }
 
     }

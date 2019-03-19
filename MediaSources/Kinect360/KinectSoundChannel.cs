@@ -89,7 +89,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
 
         internal override void BindConfig()
         {
-            KinectConfig cfg = this.Kinect.Config as KinectConfig;
+            KinectConfig cfg = this.Kinect.Settings as KinectConfig;
             KinectAudioSource kas = this.Kinect.Sensor.AudioSource;
 
             cfg.RegisterComplexProperty(nameof(cfg.BeamAngleMode), new EnumKinectPropertyItem(kas, nameof(kas.BeamAngleMode)));

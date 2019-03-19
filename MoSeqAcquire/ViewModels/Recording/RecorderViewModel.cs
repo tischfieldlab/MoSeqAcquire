@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Recording;
 
@@ -23,7 +24,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this.rootViewModel = RootViewModel;
             var spec = new RecorderSpecification(RecorderType);
-            this.writer = spec.Factory();
+            this.writer = spec.Factory() as MediaWriter;
             this.Initialize();
         }
         public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolRecorder Recorder)
@@ -84,9 +85,9 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public MediaWriter Writer { get => this.writer; }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public RecorderSpecification Specification { get => this.writer.Specification; }
+        public RecorderSpecification Specification { get => this.writer.Specification as RecorderSpecification; }
         public IEnumerable<RecorderPinViewModel> RecorderPins { get; protected set; }
-        public RecorderSettings Settings { get => this.writer.Settings; }
+        public BaseConfiguration Settings { get => this.writer.Settings; }
         public ObservableCollection<SelectableChannelViewModel> AvailableChannels { get => this.availableChannels; }
         public ObservableCollection<ChannelViewModel> SelectedChannels { get => this.selectedChannels; }
         public MediaWriterStats Performance { get => this.writer.Performance; }

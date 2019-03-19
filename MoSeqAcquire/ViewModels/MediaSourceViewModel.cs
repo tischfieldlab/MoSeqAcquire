@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.ViewModels
@@ -44,7 +45,7 @@ namespace MoSeqAcquire.ViewModels
                     });
                     Thread.Sleep(100);
                 }
-                this.MediaSource.Config.ApplySnapshot(mediaSource.Config);
+                this.MediaSource.Settings.ApplySnapshot(mediaSource.Config);
                 this.MediaSource.Start();
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -89,7 +90,7 @@ namespace MoSeqAcquire.ViewModels
         }
 
         public MediaSource MediaSource { get; protected set; }
-        public MediaSourceConfig Config { get => this.isReady ? MediaSource.Config : null; }
+        public BaseConfiguration Config { get => this.isReady ? MediaSource.Settings : null; }
         public ReadOnlyObservableCollection<ChannelViewModel> Channels { get => this._ro_Channels; }
     }
 }

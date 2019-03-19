@@ -17,8 +17,13 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         public override object Value
         {
-            get => this.source.Device.VideoResolution;
-            set => this.source.Device.VideoResolution = (VideoCapabilities)value;
+            get => this.source.Device.VideoResolution.ToString();
+            set
+            {
+                this.source.Device.VideoResolution = this.source.Device.VideoCapabilities
+                                                                       .Where(vc => vc.ToString().Equals(value))
+                                                                       .First();
+            }
         }
         public override bool IsAutomatic
         {
@@ -33,13 +38,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
         protected override PropertyCapability ReadCapability()
         {
-            return new ChoicesPropertyCapability()
+            var cpc = new ChoicesPropertyCapability()
             {
                 IsSupported = true,
                 AllowsAuto = false,
-                Choices = this.source.Device.VideoCapabilities,
-                Default = this.source.Device.VideoCapabilities[0]
+                Choices = this.source.Device.VideoCapabilities.Select(vc => vc.ToString())
             };
+            cpc.Default = cpc.Choices.Last();
+            return cpc;
         }
 
         protected override void ReadCurrentValue()

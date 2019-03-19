@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Utility;
 
@@ -10,7 +11,7 @@ namespace MoSeqAcquire.Models.Recording
 {
 
 
-    public abstract class MediaWriter : IMediaWriter
+    public abstract class MediaWriter : Component, IMediaWriter
     {
         private Dictionary<string, MediaWriterPin> _pins;
         private DateTime _epoch;
@@ -19,7 +20,7 @@ namespace MoSeqAcquire.Models.Recording
         {
             this._pins = new Dictionary<string, MediaWriterPin>();
             this.Specification = new RecorderSpecification(this.GetType());
-            this.Settings = this.Specification.SettingsFactory();
+            this.Settings = (RecorderSettings)this.Specification.SettingsFactory();
             this.Performance = new MediaWriterStats(this.Name);
         }
         public event DestinationBaseResponse RequestDestinationBase;
@@ -28,7 +29,7 @@ namespace MoSeqAcquire.Models.Recording
             return this.RequestDestinationBase?.Invoke();
         }
         public string Name { get; set; }
-        public RecorderSettings Settings { get; }
+        //public RecorderSettings Settings { get; }
         public IReadOnlyDictionary<string, MediaWriterPin> Pins
         {
             get => this._pins;
@@ -40,7 +41,6 @@ namespace MoSeqAcquire.Models.Recording
         public DateTime Epoch { get => this._epoch; }
         public bool IsRecording { get; protected set; }
         public MediaWriterStats Performance { get; protected set; }
-        public RecorderSpecification Specification { get; protected set; }
 
         public virtual string FilePath
         {

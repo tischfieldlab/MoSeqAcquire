@@ -26,7 +26,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         {
             get
             {
-                var conf = this.Kinect.Config as KinectConfig;
+                var conf = this.Kinect.Settings as KinectConfig;
                 switch (conf.ColorImageFormat)
                 {
                     case ColorImageFormat.RawBayerResolution1280x960Fps12:
@@ -122,7 +122,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
 
         internal override void BindConfig()
         {
-            KinectConfig cfg = this.Kinect.Config as KinectConfig;
+            KinectConfig cfg = this.Kinect.Settings as KinectConfig;
             ColorImageStream cis = this.InnerStream;
             ColorCameraSettings ccs = cis.CameraSettings;
 

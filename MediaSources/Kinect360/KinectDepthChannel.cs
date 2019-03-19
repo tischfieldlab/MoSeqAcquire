@@ -24,7 +24,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         {
             get
             {
-                var conf = this.Kinect.Config as KinectConfig;
+                var conf = this.Kinect.Settings as KinectConfig;
                 switch (conf.DepthImageFormat)
                 {
                     case DepthImageFormat.Resolution80x60Fps30:
@@ -108,7 +108,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
 
         internal override void BindConfig()
         {
-            KinectConfig cfg = this.Kinect.Config as KinectConfig;
+            KinectConfig cfg = this.Kinect.Settings as KinectConfig;
             DepthImageStream dis = this.InnerStream;
 
             cfg.RegisterComplexProperty(nameof(cfg.DepthImageFormat), new EnumKinectPropertyItem(dis, nameof(dis.Format)));

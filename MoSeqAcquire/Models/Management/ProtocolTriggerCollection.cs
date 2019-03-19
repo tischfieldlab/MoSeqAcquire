@@ -1,6 +1,7 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
@@ -52,9 +53,14 @@ namespace MoSeqAcquire.Models.Management
 
             return true;
         }
+
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            var hashCode = 469444749;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Event);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Action);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigSnapshot>.Default.GetHashCode(Config);
+            return hashCode;
         }
     }
 }

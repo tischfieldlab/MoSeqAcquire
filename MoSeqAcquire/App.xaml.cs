@@ -20,8 +20,7 @@ namespace MoSeqAcquire
 
         public App()
         {
-            Settings.Default.MediaSourcePluginPaths.Cast<string>().ForEach((p) => RegisterProbePath(p));
-            Settings.Default.RecorderPluginPaths.Cast<string>().ForEach((p) => RegisterProbePath(p));
+            Settings.Default.PluginPaths.Cast<string>().ForEach((p) => RegisterProbePath(p));
 
             AppDomain.CurrentDomain.AssemblyResolve += LoadResolveEventHandler;
         }

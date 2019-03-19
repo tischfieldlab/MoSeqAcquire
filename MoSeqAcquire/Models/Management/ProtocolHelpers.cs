@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Triggers;
 
@@ -15,49 +16,53 @@ namespace MoSeqAcquire.Models.Management
 {
     public static class ProtocolHelpers
     {
-        #region MediaSourceProviders
-        public static IEnumerable<Type> FindProviderTypes()
+        public static IEnumerable<ComponentSpecification> FindComponents()
         {
-            return ExtractPluginsImplementing<MediaSource>(Properties.Settings.Default.MediaSourcePluginPaths);
+            return ExtractPluginsImplementing<Component>(Properties.Settings.Default.PluginPaths).Select(c => GetSpecification(c));
         }
-        public static IEnumerable<Type> GetKnownTypesForProviders()
+        private static ComponentSpecification GetSpecification(Type ComponentType)
         {
-            return FindProviderTypes()
-                .Select(t=> new MediaSourceSpecification(t))
-                .SelectMany(mss => mss.KnownTypes);
+            if (typeof(MediaSource).IsAssignableFrom(ComponentType))
+            {
+                return new MediaSourceSpecification(ComponentType);
+            }
+            else if (typeof(IMediaWriter).IsAssignableFrom(ComponentType))
+            {
+                return new RecorderSpecification(ComponentType);
+            }
+            else
+            {
+                return new ComponentSpecification(ComponentType);
+            }
+        }
+        #region MediaSourceProviders
+        public static IEnumerable<ComponentSpecification> FindProviderTypes()
+        {
+            return FindComponents().Where(cs => cs is MediaSourceSpecification);
         }
         #endregion
 
         #region RecorderProviders
-        public static IEnumerable<Type> FindRecorderTypes()
+        public static IEnumerable<ComponentSpecification> FindRecorderTypes()
         {
-            return ExtractPluginsImplementing<IMediaWriter>(Properties.Settings.Default.RecorderPluginPaths);
-        }
-        public static IEnumerable<Type> GetKnownTypesForRecorders()
-        {
-            return FindRecorderTypes()
-                .Select(t => new RecorderSpecification(t))
-                .SelectMany((rs) => rs.KnownTypes);
+            return FindComponents().Where(cs => cs is RecorderSpecification);
         }
         #endregion
 
         #region TriggerProviders
         public static IEnumerable<Type> FindTriggerTypes()
         {
-            return ExtractPluginsImplementing<Trigger>(Properties.Settings.Default.RecorderPluginPaths);
+            return ExtractPluginsImplementing<Trigger>(Properties.Settings.Default.PluginPaths);
         }
-        public static IEnumerable<Type> FindTriggerActions()
+        public static IEnumerable<ComponentSpecification> FindTriggerActions()
         {
-            return ExtractPluginsImplementing<TriggerAction>(Properties.Settings.Default.RecorderPluginPaths);
+            return FindComponents().Where(cs => typeof(TriggerAction).IsAssignableFrom(cs.ComponentType));
         }
         #endregion
 
         public static IEnumerable<Type> GetKnownTypes()
         {
-            var allTypes = new List<Type>();
-            allTypes.AddRange(GetKnownTypesForProviders());
-            allTypes.AddRange(GetKnownTypesForRecorders());
-            return allTypes;
+            return FindComponents().SelectMany(cs => cs.KnownTypes);
         }
 
         private static Dictionary<Type, List<Type>> __pluginTypeCache = new Dictionary<Type, List<Type>>();
