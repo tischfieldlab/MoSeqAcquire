@@ -33,7 +33,7 @@ namespace MoSeqAcquire.ViewModels
                             frame.FrameData,
                             meta.Stride,
                             0);
-                        
+
                         this.FrameRate.Increment();
                     }));
                 })
