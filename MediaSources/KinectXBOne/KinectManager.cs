@@ -69,7 +69,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
 
             this.Config.ReadState();
             this.RegisterChannel(new KinectDepthChannel(this));
-            //this.RegisterChannel(new KinectColorChannel(this));
+            this.RegisterChannel(new KinectColorChannel(this));
             //this.RegisterChannel(new KinectSoundChannel(this));
             return true;
         }
@@ -89,6 +89,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
             // methods are called.
             this.Sensor.Open();
             this.FindChannel<KinectDepthChannel>().Enabled = true;
+            this.FindChannel<KinectColorChannel>().Enabled = true;
             this.IsInitialized = true;
 
             base.Start();
@@ -101,6 +102,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
         {
             if (!this.IsInitialized) return;
 
+            this.FindChannel<KinectColorChannel>().Dispose();
             this.FindChannel<KinectDepthChannel>().Dispose();
             this.Sensor.Close();
 

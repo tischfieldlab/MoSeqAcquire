@@ -84,7 +84,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
 
         public override void Dispose()
         {
-            throw new NotImplementedException();
+            this.colorFrameReader.Dispose();
         }
     }
 }
