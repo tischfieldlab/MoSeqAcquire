@@ -42,7 +42,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
                     Width = colorFrameReader.ColorFrameSource.FrameDescription.Width,
                     Height = colorFrameReader.ColorFrameSource.FrameDescription.Height,
                     FramesPerSecond = 30,
-                    BytesPerPixel = (int)colorFrameReader.ColorFrameSource.FrameDescription.BytesPerPixel,
+                    BytesPerPixel = 4,
                     PixelFormat = PixelFormats.Bgra32
                 };
             }
@@ -63,8 +63,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
                         Height = colorFrame.FrameDescription.Height,
                         BytesPerPixel = 4,
                         PixelFormat = PixelFormats.Bgra32,
-                        TotalBytes = (int)(colorFrame.FrameDescription.BytesPerPixel * 
-                                           colorFrame.FrameDescription.LengthInPixels)
+                        TotalBytes = (int)(4 *  colorFrame.FrameDescription.LengthInPixels)
                     };
 
                     if (this._pixelData == null || this._pixelData.Length != colorFrame.FrameDescription.LengthInPixels)

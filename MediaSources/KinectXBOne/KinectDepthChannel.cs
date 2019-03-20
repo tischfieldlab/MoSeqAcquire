@@ -2,6 +2,7 @@
 using MoSeqAcquire.Models.Utility;
 using System.Windows.Media;
 using System.Threading.Tasks.Dataflow;
+using System;
 
 namespace MoSeqAcquire.Models.Acquisition.KinectXBone
 {
@@ -71,7 +72,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXBone
                        TotalBytes = (int)(depthFrame.FrameDescription.BytesPerPixel * 
                                           depthFrame.FrameDescription.LengthInPixels)
                     };
-                    
+
                     if (this._pixelData == null || this._pixelData.Length != depthFrame.FrameDescription.LengthInPixels)
                     {
                         this._pixelData = new ushort[depthFrame.FrameDescription.LengthInPixels];
