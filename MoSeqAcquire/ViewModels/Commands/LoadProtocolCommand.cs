@@ -57,10 +57,12 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         protected string RequestPath()
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Multiselect = false;
-            dlg.DefaultExt = Protocol.Extension;
-            dlg.Filter = this.GetFilterString(Protocol.TypeDesc, Protocol.Extension);
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Multiselect = false,
+                DefaultExt = Protocol.Extension,
+                Filter = this.GetFilterString(Protocol.TypeDesc, Protocol.Extension)
+            };
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {

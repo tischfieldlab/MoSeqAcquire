@@ -11,9 +11,8 @@ namespace MoSeqAcquire.Views.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             String result = String.Empty;
-            if (value is TimeSpan)
+            if (value is TimeSpan timeSpan)
             {
-                TimeSpan timeSpan = (TimeSpan)value;
                 if (timeSpan.Equals(TimeSpan.MaxValue))
                 {
                     result = "calculating.....";

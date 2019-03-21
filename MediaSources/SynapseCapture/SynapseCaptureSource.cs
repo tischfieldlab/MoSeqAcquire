@@ -34,6 +34,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Device = new TdtUdp("localhost");
 
             this.RegisterChannel(new SynapseCaptureChannel(this));
+            this.Device.Listen<float>();
 
             this.IsInitialized = true;
 

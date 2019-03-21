@@ -30,10 +30,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="200" />
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="1" Grid.Row="0" Grid.Column="0">
@@ -95,7 +92,7 @@
             <GroupBox >
                 <GroupBox.Header>
                     <DockPanel>
-                        <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                        <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
                                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                                     Command="{Binding Path=Root.Commands.AddRecorder}"
                                     ToolTip="Add New Recorder">

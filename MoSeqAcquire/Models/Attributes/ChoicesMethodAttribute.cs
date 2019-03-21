@@ -10,7 +10,7 @@ namespace MoSeqAcquire.Models.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class ChoicesMethodAttribute : Attribute
     {
-        string methodName;
+        readonly string methodName;
         
         public ChoicesMethodAttribute(string methodName)
         {

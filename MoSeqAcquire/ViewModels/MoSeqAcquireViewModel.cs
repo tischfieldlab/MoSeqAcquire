@@ -47,7 +47,7 @@ namespace MoSeqAcquire.ViewModels
             }
             foreach(var tvm in this.Triggers.Triggers)
             {
-                pcol.Triggers.Add(tvm.TriggerType, tvm.ActionType, tvm.Settings.GetSnapshot());
+                pcol.Triggers.Add(tvm.Name, tvm.TriggerType, tvm.ActionType, tvm.Settings.GetSnapshot());
             }
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
             return pcol;
@@ -86,7 +86,7 @@ namespace MoSeqAcquire.ViewModels
                     {
                         foreach(var trigger in protocol.Triggers)
                         {
-                            this.Triggers.AddTrigger(trigger.GetEventType(), trigger.GetActionType(), trigger.Config);
+                            this.Triggers.AddTrigger(trigger.Name, trigger.GetEventType(), trigger.GetActionType(), trigger.Config);
                         }
                     }
                 });

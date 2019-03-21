@@ -13,10 +13,16 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <conv:GenericConverter x:Key="GenericConverter" />
+        <DataTemplate x:Key="NameEditor">
+            <TextBox Width="100"  
+                     materialDesign:HintAssist.Hint="Trigger Name" materialDesign:HintAssist.IsFloating="True"
+                     Text="{Binding Path=Name}" 
+                     />
+        </DataTemplate>
         <DataTemplate x:Key="TriggerTypeComboBoxEditor">
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
                       ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                      SelectedValue="{Binding Path=TriggerType}" 
+                      SelectedValue="{Binding Path=TriggerType}"
                       SelectedValuePath="TriggerType"
                       DisplayMemberPath="TriggerType.Name" 
                       Background="{DynamicResource MaterialDesignPaper}"
@@ -34,14 +40,14 @@
         <DataTemplate x:Key="TriggerManipulations">
             <StackPanel Orientation="Horizontal">
                 <Button Width="24" Height="24" Margin="8,0,8,0"
-                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                         Command="{Binding Path=Root.Commands.EditTriggerConfig}"
                         CommandParameter="{Binding}"
                         ToolTip="Edit Trigger Configuration">
                     <materialDesign:PackIcon Kind="Settings"  />
                 </Button>
                 <Button Width="24" Height="24" Margin="8,0,8,0"
-                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                         Command="{Binding Path=Root.Commands.RemoveTrigger}"
                         CommandParameter="{Binding}"
                         ToolTip="Remove Trigger">
@@ -74,7 +80,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" />
+                        <GridViewColumn Header="Name" CellTemplate="{StaticResource NameEditor}" />
                         <GridViewColumn Header="Trigger" CellTemplate="{StaticResource TriggerTypeComboBoxEditor}" />
                         <GridViewColumn Header="Action" CellTemplate="{StaticResource ActionTypeComboBoxEditor}" />
                         <GridViewColumn CellTemplate="{StaticResource TriggerManipulations}" />

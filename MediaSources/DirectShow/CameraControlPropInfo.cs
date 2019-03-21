@@ -66,9 +66,12 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         protected override PropertyCapability ReadCapability()
         {
-            int min, max, step, dflt;
-            CameraControlFlags flgs;
-            this.source.Device.GetCameraPropertyRange(property, out min, out max, out step, out dflt, out flgs);
+            this.source.Device.GetCameraPropertyRange(property, 
+                                                      out int min, 
+                                                      out int max, 
+                                                      out int step, 
+                                                      out int dflt, 
+                                                      out CameraControlFlags flgs);
             return new RangedPropertyCapability()
             {
                 Min = min,

@@ -11,7 +11,7 @@ namespace MoSeqAcquire.Models.Recording
     public class TotalFrameCounter : ObservableObject, IFrameRateProvider, ITotalFrameCountProvider
     {
         private DateTime __lastTime;
-        private Timer __timer;
+        private readonly Timer __timer;
         private long __totalCount;
         private long __countSinceLast;
         private static readonly object lockobject = new object();
@@ -23,7 +23,7 @@ namespace MoSeqAcquire.Models.Recording
                 Interval = Interval,
                 AutoReset = true
             };
-            this.__timer.Elapsed += this.compute_framerate;
+            this.__timer.Elapsed += this.Compute_framerate;
         }
         public void Start()
         {
@@ -34,7 +34,7 @@ namespace MoSeqAcquire.Models.Recording
             this.__timer.Enabled = false;
         }
 
-        private void compute_framerate(object sender, ElapsedEventArgs e)
+        private void Compute_framerate(object sender, ElapsedEventArgs e)
         {
             lock (lockobject)
             {

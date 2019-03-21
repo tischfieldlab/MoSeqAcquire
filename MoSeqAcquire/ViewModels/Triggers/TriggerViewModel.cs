@@ -10,6 +10,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
     public class TriggerViewModel : BaseViewModel
     {
         protected MoSeqAcquireViewModel rootViewModel;
+        protected string name;
         protected Type triggerType;
         protected Type actionType;
         protected TriggerAction trigger;
@@ -32,7 +33,11 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
 
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public string DisplayName { get; }
+        public string Name
+        {
+            get => this.name;
+            set => this.SetField(ref this.name, value);
+        }
         public Type TriggerType
         {
             get => this.triggerType;

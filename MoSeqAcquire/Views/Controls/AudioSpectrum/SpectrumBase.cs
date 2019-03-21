@@ -67,11 +67,9 @@ namespace WinformsVisualization.Visualization
             get { return _spectrumProvider; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                if(_spectrumProvider != null)
+                if (_spectrumProvider != null)
                     _spectrumProvider.SpectrumUpdated -= _onSpectrumUpdated;
-                _spectrumProvider = value;
+                _spectrumProvider = value ?? throw new ArgumentNullException("value");
                 _spectrumProvider.SpectrumUpdated += _onSpectrumUpdated;
                 RaisePropertyChanged("SpectrumProvider");
             }

@@ -12,8 +12,7 @@ namespace MoSeqAcquire.Views.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string parameterString = parameter as string;
-            if (parameterString == null)
+            if (!(parameter is string parameterString))
                 return DependencyProperty.UnsetValue;
 
             if (Enum.IsDefined(value.GetType(), value) == false)
@@ -26,8 +25,7 @@ namespace MoSeqAcquire.Views.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string parameterString = parameter as string;
-            if (parameterString == null)
+            if (!(parameter is string parameterString))
                 return DependencyProperty.UnsetValue;
 
             return Enum.Parse(targetType, parameterString);

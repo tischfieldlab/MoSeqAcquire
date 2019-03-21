@@ -32,7 +32,7 @@ namespace MoSeqAcquire.Views
         {
             return this.__dialogResult;
         }
-        private void onOkButtonClick(object sender, RoutedEventArgs e)
+        private void OnOkButtonClick(object sender, RoutedEventArgs e)
         {
             this.__dialogResult = new AddMediaSourceDialogResult()
             {
@@ -43,12 +43,12 @@ namespace MoSeqAcquire.Views
             this.Close();
         }
 
-        private void onCancelButtonClick(object sender, RoutedEventArgs e)
+        private void OnCancelButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void onRefreshButtonClick(object sender, RoutedEventArgs e)
+        private void OnRefreshButtonClick(object sender, RoutedEventArgs e)
         {
             (this.DataContext as NewMediaSourceDialogViewModel).RequeryDevices();
         }

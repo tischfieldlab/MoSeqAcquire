@@ -41,22 +41,15 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         protected string GetPath()
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.AddExtension = true;
-            dlg.OverwritePrompt = true;
-            dlg.Title = "Save Protocol As....";
-            dlg.ValidateNames = true;
-            /*if (editor.CurrentFilePath == null || editor.CurrentFilePath.Equals(""))
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
             {
-                dlg.FileName = IWFFile.NewWorkflowDefaultName;
-            }
-            else
-            {
-                dlg.InitialDirectory = Path.GetDirectoryName(editor.CurrentFilePath);
-                dlg.FileName = editor.CurrentFilePath;
-            }*/
-            dlg.DefaultExt = Protocol.Extension;
-            dlg.Filter = this.GetFilterString(Protocol.TypeDesc, Protocol.Extension);
+                AddExtension = true,
+                OverwritePrompt = true,
+                Title = "Save Protocol As....",
+                ValidateNames = true,
+                DefaultExt = Protocol.Extension,
+                Filter = this.GetFilterString(Protocol.TypeDesc, Protocol.Extension)
+            };
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {

@@ -17,12 +17,13 @@ namespace MoSeqAcquire.Views.Converters
                 return null;
             }
             // For a more sophisticated converter, check also the targetType and react accordingly..
-            if (value is Color)
+            if (value is Color color)
             {
-                Color color = (Color)value;
                 color.A = 255;
-                var brush = new SolidColorBrush(color);
-                brush.Opacity = 255;
+                var brush = new SolidColorBrush(color)
+                {
+                    Opacity = 255
+                };
                 return brush;
             }
             // You can support here more source types if you wish

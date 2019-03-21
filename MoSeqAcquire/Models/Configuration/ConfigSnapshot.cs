@@ -141,7 +141,7 @@ namespace MoSeqAcquire.Models.Configuration
 
             if(this.ValueType == null)
             {
-                throw new ArgumentException("valuetype is null!");
+                throw new ArgumentException("Unable to find Type for "+valueTypeString);
             }
 
             //Read setting automatic-ness
@@ -175,10 +175,6 @@ namespace MoSeqAcquire.Models.Configuration
                         this.Value = valueString;
                     }
                 }
-            }
-            else
-            {
-                var x = 1;
             }
         }
 

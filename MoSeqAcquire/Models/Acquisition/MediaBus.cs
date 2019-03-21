@@ -18,8 +18,8 @@ namespace MoSeqAcquire.Models.Acquisition
 
     public class MediaBus
     {
-        private List<BusChannel> __channels;
-        private List<MediaSource> __sources;
+        private readonly List<BusChannel> __channels;
+        private readonly List<MediaSource> __sources;
 
         public event EventHandler<SourceAvailabilityEventArgs> SourcePublished;
         public event EventHandler<SourceAvailabilityEventArgs> SourceUnPublished;

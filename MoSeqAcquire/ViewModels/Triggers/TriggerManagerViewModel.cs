@@ -37,13 +37,16 @@ namespace MoSeqAcquire.ViewModels.Triggers
             //vm.PropertyChanged += trigger_PropertyChanged;
             this.triggers.Add(new TriggerViewModel(this.Root));
         }
-        public void AddTrigger(Type TriggerType, Type TriggerAction, ConfigSnapshot config)
+        public void AddTrigger(string Name, Type TriggerType, Type TriggerAction, ConfigSnapshot config)
         {
-            var vm = new TriggerViewModel(this.Root);
-            vm.ActionType = TriggerAction;
-            vm.TriggerType = TriggerType;
+            var vm = new TriggerViewModel(this.Root)
+            {
+                Name = Name,
+                ActionType = TriggerAction,
+                TriggerType = TriggerType
+            };
             vm.Settings.ApplySnapshot(config);
-            this.triggers.Add(new TriggerViewModel(this.Root));
+            this.triggers.Add(vm);
         }
 
         public void RemoveTrigger(TriggerViewModel Trigger)

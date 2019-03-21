@@ -14,7 +14,7 @@ namespace MoSeqAcquire.Models.Recording
         protected bool isInitialized;
         protected bool isRecording;
         protected IRecordingLengthStrategy terminator;
-        private TriggerBus triggerBus;
+        private readonly TriggerBus triggerBus;
         protected List<MediaWriter> _writers;
 
         public event EventHandler RecordingStarted;
@@ -63,7 +63,7 @@ namespace MoSeqAcquire.Models.Recording
             {
                 Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);
             }
-            return this.GeneralSettings.ComputedBasePath == null ? string.Empty : this.GeneralSettings.ComputedBasePath;
+            return this.GeneralSettings.ComputedBasePath ?? string.Empty;
         }
         public bool IsInitialized { get => this.isInitialized; }
         public bool IsRecording
@@ -93,8 +93,6 @@ namespace MoSeqAcquire.Models.Recording
                     terminator = new IndeterminantRecordingLength();
                     break;
             }
-            terminator.TriggerStop += this.Terminator_TriggerStop;
-            terminator.PropertyChanged += this.Terminator_PropertyChanged;
             return terminator;
         }
 
@@ -114,8 +112,8 @@ namespace MoSeqAcquire.Models.Recording
             this.WriteRecordingInfo();
 
             this.terminator = this.TerminatorFactory();
-            this.terminator.TriggerStop += this.Terminator_TriggerStop;
-            this.terminator.PropertyChanged += this.Terminator_PropertyChanged;
+            terminator.TriggerStop += this.Terminator_TriggerStop;
+            terminator.PropertyChanged += this.Terminator_PropertyChanged;
             this.terminator.Start();
 
             foreach (var r in this._writers)

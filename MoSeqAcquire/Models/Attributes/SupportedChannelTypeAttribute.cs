@@ -14,8 +14,8 @@ namespace MoSeqAcquire.Models.Attributes
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class SupportedChannelTypeAttribute : Attribute
     {
-        MediaType mediaType;
-        ChannelCapacity capacity;
+        readonly MediaType mediaType;
+        readonly ChannelCapacity capacity;
 
         public SupportedChannelTypeAttribute(MediaType mediaType) : this(mediaType, ChannelCapacity.Single) { }
         public SupportedChannelTypeAttribute(MediaType mediaType, ChannelCapacity Capacity)

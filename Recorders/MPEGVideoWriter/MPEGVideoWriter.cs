@@ -15,7 +15,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
     [SupportedChannelType(MediaType.Audio, ChannelCapacity.Single)]
     public class MPEGVideoWriter : MediaWriter
     {
-        private object lockobject = new object();
+        private readonly object lockobject = new object();
         protected VideoFileWriter writer;
 
         protected MediaWriterPin videoPin;

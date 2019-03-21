@@ -105,11 +105,13 @@ namespace MoSeqAcquireTests2
         public void Test_Rec_GenConfig()
         {
             var protocol = new Protocol("test");
-            var gs = new GeneralRecordingSettings();
-            gs.Basename = "test";
-            gs.Directory = "C:\temp";
-            gs.RecordingMode = RecordingMode.TimeCount;
-            gs.RecordingSeconds = 30;
+            var gs = new GeneralRecordingSettings
+            {
+                Basename = "test",
+                Directory = "C:\temp",
+                RecordingMode = RecordingMode.TimeCount,
+                RecordingSeconds = 30
+            };
             protocol.Recordings.GeneralSettings = gs.GetSnapshot();
            
 
@@ -124,11 +126,13 @@ namespace MoSeqAcquireTests2
         public void Test_Rec_GenConfig_rec()
         {
             var protocol = new Protocol("test");
-            var gs = new GeneralRecordingSettings();
-            gs.Basename = "test";
-            gs.Directory = "C:\temp";
-            gs.RecordingMode = RecordingMode.TimeCount;
-            gs.RecordingSeconds = 30;
+            var gs = new GeneralRecordingSettings
+            {
+                Basename = "test",
+                Directory = "C:\temp",
+                RecordingMode = RecordingMode.TimeCount,
+                RecordingSeconds = 30
+            };
             protocol.Recordings.GeneralSettings = gs.GetSnapshot();
 
 
@@ -163,11 +167,13 @@ namespace MoSeqAcquireTests2
             var protocol = new Protocol("test");
             protocol.Sources.Add(typeof(DirectShowSource), "test-device-id", new ConfigSnapshot());
 
-            var gs = new GeneralRecordingSettings();
-            gs.Basename = "test";
-            gs.Directory = "C:\temp";
-            gs.RecordingMode = RecordingMode.TimeCount;
-            gs.RecordingSeconds = 30;
+            var gs = new GeneralRecordingSettings
+            {
+                Basename = "test",
+                Directory = "C:\temp",
+                RecordingMode = RecordingMode.TimeCount,
+                RecordingSeconds = 30
+            };
             protocol.Recordings.GeneralSettings = gs.GetSnapshot();
 
             var rec = new ProtocolRecorder()

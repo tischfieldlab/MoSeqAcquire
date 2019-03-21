@@ -21,8 +21,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            var dialog = new ThemeSettingsDialog();
-            dialog.DataContext = this.ViewModel.Theme;
+            var dialog = new ThemeSettingsDialog
+            {
+                DataContext = this.ViewModel.Theme
+            };
             var result = dialog.ShowDialog();
         }
     }

@@ -30,8 +30,10 @@ namespace MoSeqAcquire.Views.Controls
 
         public PromptDialog(string Question, string Title, string DefaultValue = "", InputType InputType = InputType.Text)
         {
-            this.viewModel = new PromptDialogViewModel(Question, InputType, DefaultValue);
-            this.viewModel.ButtonType = MessageBoxButton.OKCancel;
+            this.viewModel = new PromptDialogViewModel(Question, InputType, DefaultValue)
+            {
+                ButtonType = MessageBoxButton.OKCancel
+            };
             this.DataContext = this.viewModel;
             InitializeComponent();
             this.Title = Title;
@@ -59,13 +61,13 @@ namespace MoSeqAcquire.Views.Controls
             get { return this.viewModel.Response; }
         }
 
-        private void btnOk_Click(object sender, RoutedEventArgs e)
+        private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
             Close();
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
@@ -109,10 +111,7 @@ namespace MoSeqAcquire.Views.Controls
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string prop)
         {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(prop));
-            }
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

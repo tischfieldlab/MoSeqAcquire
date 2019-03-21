@@ -47,25 +47,25 @@ namespace MoSeqAcquire.Models.Management
         public static Protocol ProtocolFromStream(TextReader textReader)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Protocol), GetSerializedTypes());
-            serializer.UnknownNode += new XmlNodeEventHandler(serializer_UnknownNode);
-            serializer.UnknownAttribute += new XmlAttributeEventHandler(serializer_UnknownAttribute);
-            serializer.UnknownElement += new XmlElementEventHandler(serializer_UnknownElement);
+            serializer.UnknownNode += new XmlNodeEventHandler(Serializer_UnknownNode);
+            serializer.UnknownAttribute += new XmlAttributeEventHandler(Serializer_UnknownAttribute);
+            serializer.UnknownElement += new XmlElementEventHandler(Serializer_UnknownElement);
             return (Protocol)serializer.Deserialize(textReader);
         }
 
-        private static void serializer_UnknownElement(object sender, XmlElementEventArgs e)
+        private static void Serializer_UnknownElement(object sender, XmlElementEventArgs e)
         {
-            var x = 1;
+            //var x = 1;
         }
 
-        private static void serializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
+        private static void Serializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
         {
-            var x = 1;
+            //var x = 1;
         }
 
-        private static void serializer_UnknownNode(object sender, XmlNodeEventArgs e)
+        private static void Serializer_UnknownNode(object sender, XmlNodeEventArgs e)
         {
-            var x = 1;
+            //var x = 1;
         }
 
         protected static Type[] GetSerializedTypes()

@@ -13,7 +13,7 @@ namespace WinformsVisualization.Visualization
         private double _barSpacing;
         private double _barWidth;
         private Size _currentSize;
-        private DrawingVisual visual;
+        private readonly DrawingVisual visual;
 
         public LineSpectrum(FftSize fftSize)
         {

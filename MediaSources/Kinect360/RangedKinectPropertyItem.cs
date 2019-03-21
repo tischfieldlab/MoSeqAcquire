@@ -9,10 +9,9 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     class RangedKinectPropertyItem : KinectPropertyItem
     {
-        
-        string minProperty;
-        string maxProperty;
-        string autoProperty;
+        readonly string minProperty;
+        readonly string maxProperty;
+        readonly string autoProperty;
 
         public RangedKinectPropertyItem(object Source, string valueProperty, string minProperty, string maxProperty, string autoProperty)
         {

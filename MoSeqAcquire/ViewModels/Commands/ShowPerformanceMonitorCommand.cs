@@ -22,8 +22,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            var dialog = new PerformanceMonitor();
-            dialog.DataContext = new PerformanceMonitorViewModel(this.ViewModel);
+            var dialog = new PerformanceMonitor
+            {
+                DataContext = new PerformanceMonitorViewModel(this.ViewModel)
+            };
             dialog.Show();
         }
     }

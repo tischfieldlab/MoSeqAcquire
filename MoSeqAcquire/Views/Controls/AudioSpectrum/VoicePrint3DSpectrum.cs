@@ -11,7 +11,7 @@ namespace WinformsVisualization.Visualization
         private readonly GradientCalculator _colorCalculator;
         private bool _isInitialized;
 
-        private DrawingVisual visual;
+        private readonly DrawingVisual visual;
 
         public VoicePrint3DSpectrum(FftSize fftSize)
         {

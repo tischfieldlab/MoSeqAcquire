@@ -10,10 +10,11 @@ namespace MoSeqAcquire.Models.Management
     [XmlRoot("Sources")]
     public class ProtocolTriggerCollection : Collection<ProtocolTrigger>
     {
-        public void Add(Type EventType, Type ActionType, ConfigSnapshot Settings)
+        public void Add(string Name, Type EventType, Type ActionType, ConfigSnapshot Settings)
         {
             base.Add(new ProtocolTrigger()
             {
+                Name = Name,
                 Event = EventType.AssemblyQualifiedName,
                 Action = ActionType.AssemblyQualifiedName,
                 Config = Settings
@@ -25,6 +26,8 @@ namespace MoSeqAcquire.Models.Management
     public class ProtocolTrigger
     {
         [XmlAttribute]
+        public string Name { get; set; }
+        [XmlElement]
         public string Event { get; set; }
         [XmlElement]
         public string Action { get; set; }
@@ -44,6 +47,8 @@ namespace MoSeqAcquire.Models.Management
         {
             var source = obj as ProtocolTrigger;
 
+            if (!this.Name.Equals(source.Name))
+                return false;
             if (!this.Event.Equals(source.Event))
                 return false;
             if (!this.Action.Equals(source.Action))

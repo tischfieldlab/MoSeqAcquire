@@ -66,8 +66,10 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     {
                         this.InnerStream = this.Kinect.Sensor.AudioSource.Start(TimeSpan.MaxValue);
                         this.__isEnabled = true;
-                        this.readingThread = new Thread(this.AudioReadingThread);
-                        this.readingThread.Name = "Kinect Audio Reading Thread";
+                        this.readingThread = new Thread(this.AudioReadingThread)
+                        {
+                            Name = "Kinect Audio Reading Thread"
+                        };
                         this.readingThread.Start();
                     }
                 }
@@ -76,7 +78,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
         }
         
 
-        private byte[] __data;
+        private readonly byte[] __data;
         private Thread readingThread;
         private void AudioReadingThread()
         {

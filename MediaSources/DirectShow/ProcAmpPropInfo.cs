@@ -70,9 +70,12 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         protected override PropertyCapability ReadCapability()
         {
-            int min, max, step, dflt;
-            VideoProcAmpFlags flgs;
-            this.source.Device.GetVideoProcAmpRange(property, out min, out max, out step, out dflt, out flgs);
+            this.source.Device.GetVideoProcAmpRange(property, 
+                                                    out int min, 
+                                                    out int max, 
+                                                    out int step, 
+                                                    out int dflt, 
+                                                    out VideoProcAmpFlags flgs);
             return new RangedPropertyCapability()
             {
                 Min = min,

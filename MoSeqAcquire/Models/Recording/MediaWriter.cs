@@ -13,7 +13,7 @@ namespace MoSeqAcquire.Models.Recording
 
     public abstract class MediaWriter : Component, IMediaWriter
     {
-        private Dictionary<string, MediaWriterPin> _pins;
+        private readonly Dictionary<string, MediaWriterPin> _pins;
         private DateTime _epoch;
 
         public MediaWriter()
@@ -47,7 +47,7 @@ namespace MoSeqAcquire.Models.Recording
             get
             {
                 var basepath = this.RequestBaseDestination();
-                return Path.Combine(basepath == null ? "" : basepath, this.Name + "." + this.Ext);
+                return Path.Combine(basepath ?? "", this.Name + "." + this.Ext);
             }
         }
         protected abstract string Ext { get; }
@@ -84,7 +84,13 @@ namespace MoSeqAcquire.Models.Recording
                 Name = this.Name,
                 Provider = this.Specification.TypeName,
                 Config = this.Settings.GetSnapshot(),
-                Pins = this.Pins.Values.Select(mwp => new ProtocolRecorderPin() { Name = mwp.Name, Channel = mwp.Channel != null ? mwp.Channel.FullName : null }).ToList()
+                Pins = this.Pins
+                           .Values
+                           .Select(mwp => new ProtocolRecorderPin()
+                           {
+                               Name = mwp.Name,
+                               Channel = mwp.Channel?.FullName
+                           }).ToList()
             };
         }
         public RecordingDevice GetDeviceInfo()
@@ -106,7 +112,10 @@ namespace MoSeqAcquire.Models.Recording
             {
                 if (writer.Pins.ContainsKey(rp.Name))
                 {
-                    writer.Pins[rp.Name].Channel = MediaBus.Instance.Channels.Select(bc => bc.Channel).FirstOrDefault(c => c.FullName == rp.Channel);
+                    writer.Pins[rp.Name].Channel = MediaBus.Instance
+                                                           .Channels
+                                                           .Select(bc => bc.Channel)
+                                                           .FirstOrDefault(c => c.FullName == rp.Channel);
                 }
             }
             return writer;
