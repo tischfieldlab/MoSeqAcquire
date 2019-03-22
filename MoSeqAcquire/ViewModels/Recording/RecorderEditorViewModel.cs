@@ -90,7 +90,11 @@ namespace MoSeqAcquire.ViewModels.Recording
                 }
                 else if (this.CurrentStep == 1)
                 {
-                    this.rootViewModel.Recorder.AddRecorder(this.RecorderViewModel);
+                    if (!this.rootViewModel.Recorder.Recorders.Contains(this.RecorderViewModel))
+                    {
+                        //only add if was not in the collection already
+                        this.rootViewModel.Recorder.AddRecorder(this.RecorderViewModel);
+                    }
                     this.Completed?.Invoke(this, new EventArgs());
                 }
             },

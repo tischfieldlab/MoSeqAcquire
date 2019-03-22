@@ -35,8 +35,10 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" >
             <MenuItem Header="File">
-                <MenuItem Header="Add..."  >
+                <MenuItem Header="Add New">
                     <MenuItem Header="Media Source" Command="{Binding Path=Commands.AddMediaSource}" />
+                    <MenuItem Header="Recorder" Command="{Binding Path=Commands.AddRecorder}" />
+                    <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" />
                 </MenuItem>
                 <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
                 <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />

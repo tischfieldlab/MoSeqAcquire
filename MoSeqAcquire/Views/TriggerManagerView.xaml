@@ -8,6 +8,7 @@
              xmlns:mac="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
+             xmlns:bhv="clr-namespace:MoSeqAcquire.Views.Behaviors"
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -26,6 +27,7 @@
                       SelectedValuePath="TriggerType"
                       DisplayMemberPath="TriggerType.Name" 
                       Background="{DynamicResource MaterialDesignPaper}"
+                      Width="Auto"
                       />
         </DataTemplate>
         <DataTemplate x:Key="ActionTypeComboBoxEditor">
@@ -35,6 +37,7 @@
                       SelectedValuePath="ActionType"
                       DisplayMemberPath="ActionType.Name" 
                       Background="{DynamicResource MaterialDesignPaper}"
+                      Width="Auto"
                       />
         </DataTemplate>
         <DataTemplate x:Key="TriggerManipulations">
@@ -70,7 +73,7 @@
                 </DockPanel>
             </GroupBox.Header>
 
-            <ListView Name="ItemsGrid" ItemsSource="{Binding Path=Triggers}" SelectedItem="{Binding Path=SelectedTrigger}">
+            <ListView Name="ItemsGrid" ItemsSource="{Binding Path=Triggers}" SelectedItem="{Binding Path=SelectedTrigger}" bhv:GridViewColumnResize.Enabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

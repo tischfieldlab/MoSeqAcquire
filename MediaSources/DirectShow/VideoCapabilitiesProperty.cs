@@ -20,9 +20,12 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             get => this.source.Device.VideoResolution.ToString();
             set
             {
+                this.source.Device.SignalToStop();
+                this.source.Device.WaitForStop();
                 this.source.Device.VideoResolution = this.source.Device.VideoCapabilities
                                                                        .Where(vc => vc.ToString().Equals(value))
                                                                        .First();
+                this.source.Device.Start();
             }
         }
         public override bool IsAutomatic

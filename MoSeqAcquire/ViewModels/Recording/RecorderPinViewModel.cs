@@ -65,7 +65,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             get => this.selectedChannel;
             set
             {
-                this.SetField(ref this.selectedChannel, value, () => { this.pin.Channel = value.Channel; });
+                this.SetField(ref this.selectedChannel, value, () => { this.pin.Channel = value?.Channel; });
                 this.NotifyPropertyChanged("SelectedChannels");
             }
         }

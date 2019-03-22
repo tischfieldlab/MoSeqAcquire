@@ -128,7 +128,7 @@
                                                 </Button>
                                                 <materialDesign:PackIcon Kind="RecordRec" Width="24" Height="24"  Margin="0,0,8,0" />
                                                 <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" />
-                                                <TextBlock Text="{Binding Path=SelectedChannels.Count, StringFormat={} ({0} Channels)}" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}" />
+                                                <TextBlock Text="{Binding Path=SelectedChannels.Count, Mode=OneWay, StringFormat={} ({0} Channels)}" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}" />
                                             </DockPanel>
                                         </Expander.Header>
                                         <ItemsControl ItemsSource="{Binding Products}">

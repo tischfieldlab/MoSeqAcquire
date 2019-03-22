@@ -92,7 +92,7 @@ namespace MoSeqAcquire.ViewModels.Recording
                 .SelectMany(rp => rp.SelectedChannels)
                 .Where((cvm) => { return cvm != null; })
                 .ForEach(cvm => this.SelectedChannels.Add(cvm));
-            this.NotifyPropertyChanged(nameof(this.SelectedChannels));
+            this.NotifyPropertyChanged();
         }
 
         public IEnumerable<RecorderProduct> Products
