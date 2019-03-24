@@ -16,10 +16,11 @@ namespace MoSeqAcquire.Models.Recording
         TimeCount,
 
 
+        /*
         [Description("Recordes a specified number of frames")]
         [EnumDisplayName("A specific number of frames")]
         FrameCount,
-
+        */
     }
     public abstract class RecorderSettings : BaseConfiguration
     {
@@ -74,7 +75,7 @@ namespace MoSeqAcquire.Models.Recording
                     && !string.IsNullOrWhiteSpace(this.basename)
                     && (this.recordingMode.Equals(RecordingMode.Indeterminate)
                         || (this.recordingMode.Equals(RecordingMode.TimeCount) && this.recordingSeconds > 0)
-                        || (this.recordingMode.Equals(RecordingMode.FrameCount) && this.recordingFrameCount > 0)
+                        //|| (this.recordingMode.Equals(RecordingMode.FrameCount) && this.recordingFrameCount > 0)
                        );
             }
         }

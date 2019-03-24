@@ -79,7 +79,7 @@ namespace MoSeqAcquire.ViewModels
                         this.Recorder.GeneralSettings.ApplySnapshot(protocol.Recordings.GeneralSettings);
                         foreach (var r in protocol.Recordings.Recorders)
                         {
-                            this.Recorder.Recorders.Add(new RecorderViewModel(this, r));
+                            this.Recorder.AddRecorder(new RecorderViewModel(this, r));
                         }
                     }
                     if(protocol.Triggers != null)

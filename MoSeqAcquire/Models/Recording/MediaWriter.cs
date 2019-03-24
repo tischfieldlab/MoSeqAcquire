@@ -46,13 +46,21 @@ namespace MoSeqAcquire.Models.Recording
         {
             get
             {
-                var basepath = this.RequestBaseDestination();
-                return Path.Combine(basepath ?? "", this.Name + "." + this.Ext);
+                return this.FormatFilePath("{0}.{1}");
             }
         }
         protected abstract string Ext { get; }
 
-
+        public string FormatFilePath(string template)
+        {
+            var basepath = this.RequestBaseDestination();
+            var args = new string[]
+            {
+                this.Name,
+                this.Ext
+            };
+            return Path.Combine(basepath ?? "", string.Format(template, args));
+        }
         
         public virtual void Start()
         {

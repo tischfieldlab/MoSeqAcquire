@@ -8,6 +8,9 @@ namespace MoSeqAcquire.Models.Acquisition
 {
     public class ChannelFrameMetadata
     {
-        public int TotalBytes { get; set; }
+        public int FrameId { get; set; }
+        public long Timestamp { get; set; }
+        public DateTime AbsoluteTime { get; set; }
+        public virtual int TotalBytes { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Utility;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -40,6 +41,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
         public override bool Enabled { get; set; }
         private byte[] _copyBuffer;
+        private int currentFrameId;
         private void Device_NewFrame(object sender, Accord.Video.NewFrameEventArgs e)
         {
             if (!this.Enabled)
@@ -50,12 +52,13 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 var frame = e.Frame;
                 var meta = new VideoChannelFrameMetadata()
                 {
-                    //FrameId = imageFrame.FrameNumber,
+                    FrameId = this.currentFrameId++,
                     //Timestamp = imageFrame.Timestamp,
                     Width = e.Frame.Width,
                     Height = e.Frame.Height,
                     BytesPerPixel = Image.GetPixelFormatSize(e.Frame.PixelFormat) / 8,
                     PixelFormat = e.Frame.PixelFormat.ToMediaPixelFormat(),
+                    AbsoluteTime = PreciseDatetime.Now
                 };
                 meta.TotalBytes = meta.Width * meta.Height * meta.BytesPerPixel;
 

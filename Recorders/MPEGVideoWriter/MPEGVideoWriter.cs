@@ -85,11 +85,25 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
                                                     (IntPtr)first);
                             lock (this.lockobject)
                             {
-                                this.writer.WriteVideoFrame(bmp, (meta.AbsoluteTime - this.Epoch));
+                                try
+                                {
+                                    if (this.Performance.TotalFrames > 0)
+                                    {
+                                        this.writer.WriteVideoFrame(bmp, TimeSpan.FromMilliseconds(meta.AbsoluteTime.Subtract(this.Epoch).TotalMilliseconds));
+                                    }
+                                    else
+                                    {
+                                        this.writer.WriteVideoFrame(bmp);
+                                    }
+                                }catch
+                                {
+                                    Console.WriteLine("missed frame");
+                                }
+                                this.Performance.Increment();
                             }
                         }
                     }
-                    this.Performance.Increment();
+                    
                 }
             });
         }
