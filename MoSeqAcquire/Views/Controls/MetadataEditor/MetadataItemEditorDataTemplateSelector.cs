@@ -33,7 +33,6 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                     }
                     return elemnt.FindResource("NumericEditor") as DataTemplate;
                 }
-
                 else
                 {
                     return elemnt.FindResource("TextBoxEditor") as DataTemplate;

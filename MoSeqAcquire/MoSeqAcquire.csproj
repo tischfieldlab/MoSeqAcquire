@@ -288,7 +288,7 @@
     <Compile Include="Models\Recording\MediaWriter.cs" />
     <Compile Include="Models\Management\Protocol.cs" />
     <Compile Include="Models\Performance\FrameRateCounter.cs" />
-    <Compile Include="Models\ObservableObject.cs" />
+    <Compile Include="Models\Core\ObservableObject.cs" />
     <Compile Include="ViewModels\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\Commands\BaseCommandLibrary.cs" />
     <Compile Include="ViewModels\Commands\StartRecordingCommand.cs" />
@@ -457,9 +457,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Transforms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />

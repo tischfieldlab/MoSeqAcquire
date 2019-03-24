@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Core;
 
 namespace MoSeqAcquire.Models.Configuration
 {

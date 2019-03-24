@@ -17,7 +17,7 @@ namespace SynapseTriggers
         {
             this.Config = new SetSynapseModeConfig();
         }
-        public override Action<Trigger> Action
+        protected override Action<Trigger> Action
         {
             get
             {

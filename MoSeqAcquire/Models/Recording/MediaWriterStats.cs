@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Performance;
 
 namespace MoSeqAcquire.Models.Recording

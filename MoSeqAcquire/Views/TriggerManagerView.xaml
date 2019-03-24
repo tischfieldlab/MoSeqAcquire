@@ -9,6 +9,7 @@
              xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              xmlns:bhv="clr-namespace:MoSeqAcquire.Views.Behaviors"
+             xmlns:tvm="clr-namespace:MoSeqAcquire.ViewModels.Triggers"
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -58,6 +59,25 @@
                 </Button>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="TriggerState">
+            <materialDesign:PackIcon>
+                <materialDesign:PackIcon.Style>
+                    <Style TargetType="materialDesign:PackIcon">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
+                                <Setter Property="Kind" Value="Queue" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
+                                <Setter Property="Kind" Value="RunFast" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
+                                <Setter Property="Kind" Value="Done" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </materialDesign:PackIcon.Style>
+            </materialDesign:PackIcon>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <GroupBox >
@@ -83,6 +103,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
+                        <GridViewColumn CellTemplate="{StaticResource TriggerState}" />
                         <GridViewColumn Header="Name" CellTemplate="{StaticResource NameEditor}" />
                         <GridViewColumn Header="Trigger" CellTemplate="{StaticResource TriggerTypeComboBoxEditor}" />
                         <GridViewColumn Header="Action" CellTemplate="{StaticResource ActionTypeComboBoxEditor}" />

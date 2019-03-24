@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 

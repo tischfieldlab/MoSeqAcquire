@@ -21,7 +21,8 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Recorder.RemoveSelectedRecorder();
+            var rvm = this.GetRecorderViewModel(parameter);
+            this.ViewModel.Recorder.RemoveRecorder(rvm);
         }
         protected RecorderViewModel GetRecorderViewModel(object parameter)
         {

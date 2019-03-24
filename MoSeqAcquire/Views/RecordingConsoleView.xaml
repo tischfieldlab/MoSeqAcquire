@@ -60,10 +60,12 @@
                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="16">
                     <DockPanel Margin="16">
                         <Label Width="140" DockPanel.Dock="Left">Recording Length</Label>
+                        <!--
                         <TextBox Width="100" DockPanel.Dock="Right" 
                                  materialDesign:HintAssist.Hint="# Frames"  materialDesign:HintAssist.IsFloating="True"
                                  Text="{Binding Path=GeneralSettings.RecordingFrameCount}" 
                                  Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.FrameCount}}" />
+                        -->
                         <TextBox Width="100" DockPanel.Dock="Right" 
                                  materialDesign:HintAssist.Hint="# Seconds" materialDesign:HintAssist.IsFloating="True"
                                  Text="{Binding Path=GeneralSettings.RecordingSeconds}" 

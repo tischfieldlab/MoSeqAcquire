@@ -16,9 +16,36 @@ namespace MoSeqAcquire.Models.Triggers
         }
     }
 
+    public class TriggerLifetimeEventArgs : EventArgs
+    {
+        public Trigger Trigger;
+    }
+    public class TriggerFaultedEventArgs : TriggerLifetimeEventArgs
+    {
+        public Exception Exception;
+    }
+
     public abstract class TriggerAction : Component
     {
+        public event EventHandler<TriggerLifetimeEventArgs> TriggerExecutionStarted;
+        public event EventHandler<TriggerLifetimeEventArgs> TriggerExecutionFinished;
+        public event EventHandler<TriggerFaultedEventArgs> TriggerFaulted;
+
         public TriggerConfig Config { get; protected set; }
-        public abstract Action<Trigger> Action { get; }
+        protected abstract Action<Trigger> Action { get; }
+
+        public void Execute(Trigger Trigger)
+        {
+            this.TriggerExecutionStarted?.Invoke(this, new TriggerLifetimeEventArgs() { Trigger = Trigger });
+            try
+            {
+                this.Action.Invoke(Trigger);
+                this.TriggerExecutionFinished?.Invoke(this, new TriggerLifetimeEventArgs() { Trigger = Trigger });
+            }
+            catch(Exception e)
+            {
+                this.TriggerFaulted?.Invoke(this, new TriggerFaultedEventArgs() { Trigger = Trigger, Exception = e });
+            }
+        }
     }
 }

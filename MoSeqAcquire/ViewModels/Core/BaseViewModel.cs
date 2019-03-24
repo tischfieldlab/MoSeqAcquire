@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models;
+using MoSeqAcquire.Models.Core;
 using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels
