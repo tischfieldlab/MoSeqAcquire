@@ -3,34 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Core;
 
 namespace MoSeqAcquire.Models.Triggers
 {
-    public abstract class TriggerConfig : BaseConfiguration
-    {
-        public TriggerConfig() : base()
-        {
-            this.ApplyDefaults();
-        }
-    }
-
-    public class TriggerLifetimeEventArgs : EventArgs
-    {
-        public Trigger Trigger;
-    }
-    public class TriggerFaultedEventArgs : TriggerLifetimeEventArgs
-    {
-        public Exception Exception;
-    }
-
     public abstract class TriggerAction : Component
     {
         public event EventHandler<TriggerLifetimeEventArgs> TriggerExecutionStarted;
         public event EventHandler<TriggerLifetimeEventArgs> TriggerExecutionFinished;
         public event EventHandler<TriggerFaultedEventArgs> TriggerFaulted;
 
+        public bool IsCritical { get; set; }
         public TriggerConfig Config { get; protected set; }
         protected abstract Action<Trigger> Action { get; }
 

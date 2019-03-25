@@ -41,6 +41,9 @@
                       Width="Auto"
                       />
         </DataTemplate>
+        <DataTemplate x:Key="ActionCriticalEditor">
+            <CheckBox IsChecked="{Binding Path=IsCritical}" />
+        </DataTemplate>
         <DataTemplate x:Key="TriggerManipulations">
             <StackPanel Orientation="Horizontal">
                 <Button Width="24" Height="24" Margin="8,0,8,0"
@@ -65,13 +68,20 @@
                     <Style TargetType="materialDesign:PackIcon">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
-                                <Setter Property="Kind" Value="Queue" />
+                                <Setter Property="Kind" Value="Timer" />
+                                <Setter Property="ToolTip" Value="Trigger is queued" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
                                 <Setter Property="Kind" Value="RunFast" />
+                                <Setter Property="ToolTip" Value="Trigger is currently running" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
-                                <Setter Property="Kind" Value="Done" />
+                                <Setter Property="Kind" Value="Check" />
+                                <Setter Property="ToolTip" Value="Trigger has completed successfuly" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
+                                <Setter Property="Kind" Value="Close" />
+                                <Setter Property="ToolTip" Value="{Binding Path=TriggerStateMessage}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -107,6 +117,7 @@
                         <GridViewColumn Header="Name" CellTemplate="{StaticResource NameEditor}" />
                         <GridViewColumn Header="Trigger" CellTemplate="{StaticResource TriggerTypeComboBoxEditor}" />
                         <GridViewColumn Header="Action" CellTemplate="{StaticResource ActionTypeComboBoxEditor}" />
+                        <GridViewColumn Header="Critical" CellTemplate="{StaticResource ActionCriticalEditor}" />
                         <GridViewColumn CellTemplate="{StaticResource TriggerManipulations}" />
                     </GridView>
                 </ListView.View>

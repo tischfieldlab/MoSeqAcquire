@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using MoSeqAcquire.Models.Triggers;
+using MoSeqAcquire.Models.Utility;
+using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
@@ -25,6 +28,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected TriggerAction trigger;
         protected bool isRegistered;
         protected TriggerState triggerState;
+        protected string triggerStateMessage;
 
 
         public TriggerViewModel(MoSeqAcquireViewModel RootViewModel)
@@ -59,11 +63,25 @@ namespace MoSeqAcquire.ViewModels.Triggers
             get => this.actionType;
             set => this.SetField(ref this.actionType, value);
         }
+        public bool IsCritical
+        {
+            get => this.trigger.IsCritical;
+            set
+            {
+                this.trigger.IsCritical = value;
+                this.NotifyPropertyChanged();
+            }
+        }
         public TriggerConfig Settings { get => this.trigger.Config; }
         public TriggerState TriggerState
         {
             get => this.triggerState;
             set => this.SetField(ref this.triggerState, value);
+        }
+        public string TriggerStateMessage
+        {
+            get => this.triggerStateMessage;
+            set => this.SetField(ref this.triggerStateMessage, value);
         }
         protected void DeregisterTrigger()
         {
@@ -107,7 +125,16 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
         {
+            this.TriggerStateMessage = e.Exception.GetAllMessages();
             this.TriggerState = TriggerState.Faulted;
+            if((sender as TriggerAction).IsCritical)
+            {
+                this.Root.Recorder.AbortRecording();
+                MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.TriggerStateMessage,
+                                "Recording Aborted!",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation);
+            }
         }
     }
 }
