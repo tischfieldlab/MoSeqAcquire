@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Models.Utility;
 using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
@@ -135,6 +136,18 @@ namespace MoSeqAcquire.ViewModels.Triggers
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Exclamation);
             }
+        }
+
+        public ProtocolTrigger GetTriggerDefinition()
+        {
+            return new ProtocolTrigger()
+            {
+                Name = this.Name,
+                Critical = this.IsCritical,
+                Event = this.TriggerType.AssemblyQualifiedName,
+                Action = this.ActionType.AssemblyQualifiedName,
+                Config = this.Settings.GetSnapshot()
+            };
         }
     }
 }

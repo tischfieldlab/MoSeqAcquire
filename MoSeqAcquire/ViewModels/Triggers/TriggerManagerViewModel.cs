@@ -37,15 +37,16 @@ namespace MoSeqAcquire.ViewModels.Triggers
             //vm.PropertyChanged += trigger_PropertyChanged;
             this.triggers.Add(new TriggerViewModel(this.Root));
         }
-        public void AddTrigger(string Name, Type TriggerType, Type TriggerAction, ConfigSnapshot config)
+        public void AddTrigger(ProtocolTrigger ProtocolTrigger)
         {
             var vm = new TriggerViewModel(this.Root)
             {
-                Name = Name,
-                ActionType = TriggerAction,
-                TriggerType = TriggerType
+                Name = ProtocolTrigger.Name,
+                IsCritical = ProtocolTrigger.Critical,
+                ActionType = ProtocolTrigger.GetActionType(),
+                TriggerType = ProtocolTrigger.GetEventType(),
             };
-            vm.Settings.ApplySnapshot(config);
+            vm.Settings.ApplySnapshot(ProtocolTrigger.Config);
             this.triggers.Add(vm);
         }
 

@@ -27,6 +27,8 @@ namespace MoSeqAcquire.Models.Management
     {
         [XmlAttribute]
         public string Name { get; set; }
+        [XmlAttribute]
+        public bool Critical { get; set; }
         [XmlElement]
         public string Event { get; set; }
         [XmlElement]
@@ -48,6 +50,8 @@ namespace MoSeqAcquire.Models.Management
             var source = obj as ProtocolTrigger;
 
             if (!this.Name.Equals(source.Name))
+                return false;
+            if (!this.Critical.Equals(source.Critical))
                 return false;
             if (!this.Event.Equals(source.Event))
                 return false;
