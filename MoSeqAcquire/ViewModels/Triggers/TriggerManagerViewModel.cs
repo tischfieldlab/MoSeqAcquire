@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.ViewModels.Triggers
@@ -36,6 +37,18 @@ namespace MoSeqAcquire.ViewModels.Triggers
             //vm.PropertyChanged += trigger_PropertyChanged;
             this.triggers.Add(new TriggerViewModel(this.Root));
         }
+        public void AddTrigger(ProtocolTrigger ProtocolTrigger)
+        {
+            var vm = new TriggerViewModel(this.Root)
+            {
+                Name = ProtocolTrigger.Name,
+                IsCritical = ProtocolTrigger.Critical,
+                ActionType = ProtocolTrigger.GetActionType(),
+                TriggerType = ProtocolTrigger.GetEventType(),
+            };
+            vm.Settings.ApplySnapshot(ProtocolTrigger.Config);
+            this.triggers.Add(vm);
+        }
 
         public void RemoveTrigger(TriggerViewModel Trigger)
         {
@@ -52,7 +65,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             var oc1 = new ObservableCollection<AvailableTriggerTypeViewModel>(ProtocolHelpers.FindTriggerTypes().Select(t => new AvailableTriggerTypeViewModel(t)));
             this.AvailableTriggerTypes = new ReadOnlyObservableCollection<AvailableTriggerTypeViewModel>(oc1);
 
-            var oc2 = new ObservableCollection<AvailableActionTypeViewModel>(ProtocolHelpers.FindTriggerActions().Select(t => new AvailableActionTypeViewModel(t)));
+            var oc2 = new ObservableCollection<AvailableActionTypeViewModel>(ProtocolHelpers.FindTriggerActions().Select(t => new AvailableActionTypeViewModel(t.ComponentType)));
             this.AvailableActionTypes = new ReadOnlyObservableCollection<AvailableActionTypeViewModel>(oc2);
         }
 

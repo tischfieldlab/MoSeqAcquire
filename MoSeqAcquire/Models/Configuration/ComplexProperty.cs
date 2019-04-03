@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Configuration
 {
-    public abstract class ComplexProperty : IRangeInfo, IDefaultInfo, IAutomaticInfo, ISupportInfo, IChoicesProvider
+    public abstract class ComplexProperty 
+        : IRangeInfo, IDefaultInfo, IAutomaticInfo, ISupportInfo, IChoicesProvider
     {
         private PropertyCapability capability;
         public Type ValueType
@@ -38,6 +39,20 @@ namespace MoSeqAcquire.Models.Configuration
             get => (int)this.Capability.Default;
         }
 
+        public bool Validate(object Value)
+        {
+            if (this.HasRange)
+            {
+                if ((Value as IComparable).CompareTo(this.Min as IComparable) < 0
+                 && (Value as IComparable).CompareTo(this.Max as IComparable) > 0)
+                    return false;
+            }
+            else if (this.HasChoices)
+            {
+                if (!this.Choices.Contains(Value)) return false;
+            }
+            return true;
+        }
         
 
         public bool IsSupported
@@ -68,7 +83,6 @@ namespace MoSeqAcquire.Models.Configuration
         }
         #endregion
 
-
         #region IChoicesProvider Implementation
         public bool HasChoices
         {
@@ -87,8 +101,6 @@ namespace MoSeqAcquire.Models.Configuration
             get => (this.Capability as IChoicesProvider).ValuePath;
         }
         #endregion
-
-
 
     }
 }

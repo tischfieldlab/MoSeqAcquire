@@ -1,78 +1,27 @@
-﻿using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Management;
-using MoSeqAcquire.Models.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
+using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Core;
+using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Recording
 {
-    public enum ChannelCapacity
-    {
-        Multiple = -1,
-        None = 0,
-        Single = 1,
-    }
-    public class MediaWriterPin
-    {
-        protected string name;
-        protected Channel channel;
-        protected BufferBlock<ChannelFrame> backBuffer;
-        protected Func<ActionBlock<ChannelFrame>> sinkFactory;
-        protected ActionBlock<ChannelFrame> sink;
-
-        public MediaWriterPin(MediaType mediaType, ChannelCapacity Capacity, Func<ActionBlock<ChannelFrame>> WorkerFactory)
-        {
-            this.MediaType = mediaType;
-            this.Capacity = Capacity;
-            this.sinkFactory = WorkerFactory;
-            this.name = this.MediaType.ToString() + " Pin";
-        }
-        public MediaWriterPin(string name, MediaType mediaType, ChannelCapacity Capacity, Func<ActionBlock<ChannelFrame>> WorkerFactory) : this(mediaType, Capacity, WorkerFactory)
-        {
-            this.name = name;
-        }
-        public string Name
-        {
-            get => this.name;
-        }
-        public MediaType MediaType { get; protected set; }
-        public ChannelCapacity Capacity { get; protected set; }
-        public Channel Channel
-        {
-            get => this.channel;
-            set => this.channel = value;
-        }
-        public void Connect()
-        {
-            this.backBuffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true, });
-            this.sink = this.sinkFactory.Invoke();
-            MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.backBuffer);
-            this.backBuffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
-        }
-        public Task Disconnect()
-        {
-            this.backBuffer.Complete();
-            return this.sink.Completion;
-        }
-    }
 
 
-    public abstract class MediaWriter : IMediaWriter
+    public abstract class MediaWriter : Component, IMediaWriter
     {
-        private Dictionary<string, MediaWriterPin> _pins;
+        private readonly Dictionary<string, MediaWriterPin> _pins;
         private DateTime _epoch;
 
         public MediaWriter()
         {
             this._pins = new Dictionary<string, MediaWriterPin>();
             this.Specification = new RecorderSpecification(this.GetType());
-            this.Settings = this.Specification.SettingsFactory();
-            this.Stats = new MediaWriterStats();
+            this.Settings = (RecorderSettings)this.Specification.SettingsFactory();
+            this.Performance = new MediaWriterStats(this.Name);
         }
         public event DestinationBaseResponse RequestDestinationBase;
         protected string RequestBaseDestination()
@@ -80,7 +29,7 @@ namespace MoSeqAcquire.Models.Recording
             return this.RequestDestinationBase?.Invoke();
         }
         public string Name { get; set; }
-        public RecorderSettings Settings { get; }
+        //public RecorderSettings Settings { get; }
         public IReadOnlyDictionary<string, MediaWriterPin> Pins
         {
             get => this._pins;
@@ -91,33 +40,40 @@ namespace MoSeqAcquire.Models.Recording
         }
         public DateTime Epoch { get => this._epoch; }
         public bool IsRecording { get; protected set; }
-        public MediaWriterStats Stats { get; protected set; }
-        public RecorderSpecification Specification { get; protected set; }
+        public MediaWriterStats Performance { get; protected set; }
 
         public virtual string FilePath
         {
             get
             {
-                var basepath = this.RequestBaseDestination();
-                return Path.Combine(basepath == null ? "" : basepath, this.Name + "." + this.Ext);
+                return this.FormatFilePath("{0}.{1}");
             }
         }
         protected abstract string Ext { get; }
 
-
+        public string FormatFilePath(string template)
+        {
+            var basepath = this.RequestBaseDestination();
+            var args = new string[]
+            {
+                this.Name,
+                this.Ext
+            };
+            return Path.Combine(basepath ?? "", string.Format(template, args));
+        }
         
         public virtual void Start()
         {
             this._epoch = PreciseDatetime.Now;
             this._pins.Values.ForEach(mwp => mwp.Connect());
             this.IsRecording = true;
-            this.Stats.Start();
+            this.Performance.Start();
         }
 
         public virtual void Stop()
         {
             this._pins.Values.ForEach(mwp => mwp.Disconnect().Wait());
-            this.Stats.Stop();
+            this.Performance.Stop();
             this.IsRecording = false;
         }
 
@@ -136,7 +92,13 @@ namespace MoSeqAcquire.Models.Recording
                 Name = this.Name,
                 Provider = this.Specification.TypeName,
                 Config = this.Settings.GetSnapshot(),
-                Pins = this.Pins.Values.Select(mwp => new ProtocolRecorderPin() { Name = mwp.Name, Channel = mwp.Channel != null ? mwp.Channel.FullName : null }).ToList()
+                Pins = this.Pins
+                           .Values
+                           .Select(mwp => new ProtocolRecorderPin()
+                           {
+                               Name = mwp.Name,
+                               Channel = mwp.Channel?.FullName
+                           }).ToList()
             };
         }
         public RecordingDevice GetDeviceInfo()
@@ -158,7 +120,10 @@ namespace MoSeqAcquire.Models.Recording
             {
                 if (writer.Pins.ContainsKey(rp.Name))
                 {
-                    writer.Pins[rp.Name].Channel = MediaBus.Instance.Channels.Select(bc => bc.Channel).FirstOrDefault(c => c.FullName == rp.Channel);
+                    writer.Pins[rp.Name].Channel = MediaBus.Instance
+                                                           .Channels
+                                                           .Select(bc => bc.Channel)
+                                                           .FirstOrDefault(c => c.FullName == rp.Channel);
                 }
             }
             return writer;

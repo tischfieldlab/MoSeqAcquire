@@ -45,6 +45,10 @@ namespace MoSeqAcquire.ViewModels
             {
                 pcol.Recordings.Recorders.Add(mw.GetRecorderDefinition());
             }
+            foreach(var tvm in this.Triggers.Triggers)
+            {
+                pcol.Triggers.Add(tvm.GetTriggerDefinition());
+            }
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
             return pcol;
         }
@@ -75,11 +79,18 @@ namespace MoSeqAcquire.ViewModels
                         this.Recorder.GeneralSettings.ApplySnapshot(protocol.Recordings.GeneralSettings);
                         foreach (var r in protocol.Recordings.Recorders)
                         {
-                            this.Recorder.Recorders.Add(new RecorderViewModel(this, r));
+                            this.Recorder.AddRecorder(new RecorderViewModel(this, r));
+                        }
+                    }
+                    if(protocol.Triggers != null)
+                    {
+                        foreach(var trigger in protocol.Triggers)
+                        {
+                            this.Triggers.AddTrigger(trigger);
                         }
                     }
                 });
-            });
+            }, TaskScheduler.Default);
         }
     }
 

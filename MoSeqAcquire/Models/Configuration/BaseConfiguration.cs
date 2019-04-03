@@ -1,18 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Core;
 
 namespace MoSeqAcquire.Models.Configuration
 {
     public abstract class BaseConfiguration : ObservableObject, IConfigSnapshotProvider
     {
+        protected IEnumerable<PropertyInfo> GetConfigurationProperties()
+        {
+            return this.GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType));
+        }
+        public List<Type> GetKnownTypes()
+        {
+            return this.GetConfigurationProperties()
+                .Select((pi) =>
+                {
+                    if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                    {
+                        ComplexProperty prop = (ComplexProperty)pi.GetValue(this);
+                        return prop.ValueType;
+                    }
+                    else
+                    {
+                        return pi.PropertyType;
+                    }
+                }).Distinct().ToList();
+        }
         public void ApplyDefaults()
         {
-            this.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+            this.GetConfigurationProperties()
                 .ForEach((pi) =>
                 {
                     if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
@@ -45,9 +67,7 @@ namespace MoSeqAcquire.Models.Configuration
         public ConfigSnapshot GetSnapshot()
         {
             var state = new ConfigSnapshot();
-            this.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+            this.GetConfigurationProperties()
                 .ForEach((pi) => {
                     ConfigSnapshotSetting setting;
                     if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
@@ -57,6 +77,7 @@ namespace MoSeqAcquire.Models.Configuration
                         {
                             Name = pi.Name,
                             Value = prop.Value,
+                            ValueType = prop.ValueType,
                             Automatic = prop.AllowsAuto ? (bool?)prop.IsAutomatic : null
                         };
                     }
@@ -66,6 +87,7 @@ namespace MoSeqAcquire.Models.Configuration
                         {
                             Name = pi.Name,
                             Value = pi.GetValue(this),
+                            ValueType = pi.PropertyType,
                             Automatic = null
                         };
                     }
@@ -95,6 +117,10 @@ namespace MoSeqAcquire.Models.Configuration
                     {
                         prop.SetValue(this, snapshot[key].Value);
                     }
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Configuration has no property " + key);
                 }
             }
             this.NotifyPropertyChanged(null);

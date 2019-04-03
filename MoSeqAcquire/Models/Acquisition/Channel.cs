@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Media;
+using MoSeqAcquire.Models.Recording;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
@@ -20,10 +21,13 @@ namespace MoSeqAcquire.Models.Acquisition
     public abstract class Channel
     {
         public Channel() {
-            var blockoptions = new DataflowBlockOptions() {
+            var blockoptions = new DataflowBlockOptions()
+            {
                 EnsureOrdered = true
             };
             this.Buffer = new BufferBlock<ChannelFrame>(blockoptions);
+            this.Performance = new TotalFrameCounter();
+            this.Performance.Start();
         }
         public MediaType MediaType { get; protected set; }
         public string Name { get; set; }
@@ -32,9 +36,14 @@ namespace MoSeqAcquire.Models.Acquisition
         public virtual bool Enabled { get; set; }
         public BufferBlock<ChannelFrame> Buffer { get; protected set; }
         public Type DataType { get; protected set; }
+        public TotalFrameCounter Performance { get; protected set; }
         public abstract ChannelMetadata Metadata { get; }
 
-        //protected abstract T PrepareFrame();
+        protected void PostFrame(ChannelFrame Frame)
+        {
+            this.Buffer.Post(Frame);
+            this.Performance.Increment();
+        }
     }
 
     public class ChannelMetadata
@@ -44,7 +53,7 @@ namespace MoSeqAcquire.Models.Acquisition
 
     public class VideoChannelMetadata : ChannelMetadata
     {
-        public double FramesPerSecond { get; set; }
+        public double TargetFramesPerSecond { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int BytesPerPixel { get; set; }

@@ -29,15 +29,15 @@
             <WrapPanel Margin="10">
                 <Label Width="140">Select Device</Label>
                 <ComboBox Width="200" ItemsSource="{Binding Path=AvailableDevices}" SelectedItem="{Binding Path=SelectedDevice}" DisplayMemberPath="Name" />
-                <Button Click="onRefreshButtonClick" Width="24" Height="24" Margin="20,0,0,0" Style="{DynamicResource MaterialDesignFloatingActionButton}" materialDesign:ButtonProgressAssist.IsIndeterminate="True" materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding Path=IsBusy}">
+                <Button Click="OnRefreshButtonClick" Width="24" Height="24" Margin="20,0,0,0" Style="{DynamicResource MaterialDesignFloatingActionButton}" materialDesign:ButtonProgressAssist.IsIndeterminate="True" materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding Path=IsBusy}">
                     <materialDesign:PackIcon Kind="Reload" />
                 </Button>
             </WrapPanel>
             
         </StackPanel>
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-            <Button Content="Add" Click="onOkButtonClick" Margin="10" IsEnabled="{Binding Path=IsComplete}" />
-            <Button Content="Cancel" Click="onCancelButtonClick" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" />
+            <Button Content="Add" Click="OnOkButtonClick" Margin="10" IsEnabled="{Binding Path=IsComplete}" />
+            <Button Content="Cancel" Click="OnCancelButtonClick" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" />
         </WrapPanel>
     </DockPanel>
 </Window>

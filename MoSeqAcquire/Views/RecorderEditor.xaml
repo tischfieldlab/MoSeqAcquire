@@ -76,9 +76,12 @@
                         <ItemsControl ItemsSource="{Binding Path=RecorderPins}">
                             <ItemsControl.Resources>
                                 <DataTemplate DataType="{x:Type mvmr:SingleCapacityRecorderPin}">
-                                    <ComboBox Margin="16" materialDesign:ComboBoxAssist.ClassicMode="True"  materialDesign:HintAssist.Hint="{Binding Path=PinName}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                      SelectedValue="{Binding Path=SelectedChannel}" SelectedValuePath="Channel"
-                                      DisplayMemberPath="Channel.FullName">
+                                    <ComboBox Margin="16" 
+                                              materialDesign:ComboBoxAssist.ClassicMode="True"  
+                                              materialDesign:HintAssist.Hint="{Binding Path=PinName}" 
+                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                              SelectedValue="{Binding Path=SelectedChannel}" SelectedValuePath="Channel"
+                                              DisplayMemberPath="Channel.FullName">
                                         <ComboBox.Resources>
                                             <ext:BindingProxy x:Key="proxy" Data="{Binding}" />
                                         </ComboBox.Resources>

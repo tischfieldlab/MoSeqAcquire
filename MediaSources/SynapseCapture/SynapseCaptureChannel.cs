@@ -8,6 +8,10 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     public class SynapseCaptureChannel : Channel
     {
+        protected Task listenTask;
+        //protected bool closeRequested;
+        protected CancellationTokenSource tokenSource;
+
         public SynapseCaptureChannel(SynapseCaptureSource Source) : base()
         {
             this.Device = Source;
@@ -16,27 +20,17 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.MediaType = MediaType.Data;
             this.DataType = typeof(float);
 
-            int delay = 100;
-            var cancellationTokenSource = new CancellationTokenSource();
-            var token = cancellationTokenSource.Token;
-            var listener = Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    // poll hardware
-                    if (this.Enabled)
-                    {
-                        this.Buffer.Post(new ChannelFrame(this.Device.Device.Receive<float>()));
-                    }
-
-                    Thread.Sleep(delay);
-                    if (token.IsCancellationRequested)
-                        break;
-                }
-
-                // cleanup, e.g. close connection
-            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            this.Device.Device.DataRecieved += Device_DataRecieved;
         }
+
+        private void Device_DataRecieved(object sender, SynapseTools.DataReceivedEventArgs e)
+        {
+            if (this.Enabled)
+            {
+                this.PostFrame(new ChannelFrame(e.Data));
+            }
+        }
+
         public SynapseCaptureSource Device { get; protected set; }
         public override ChannelMetadata Metadata
         {
@@ -49,5 +43,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
 
         public override bool Enabled { get; set; }
+
     }
 }

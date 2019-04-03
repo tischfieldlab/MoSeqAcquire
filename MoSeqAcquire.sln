@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynapseTriggers", "Triggers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptingTriggers", "Triggers\ScriptingTriggers\ScriptingTriggers.csproj", "{F695B199-3061-4C08-80E2-535C0BE78F23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoSeqAcquireTests", "MoSeqAcquireTests\MoSeqAcquireTests.csproj", "{D58A584B-6185-4AFC-BD43-047F1CA427F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,14 @@ Global
 		{F695B199-3061-4C08-80E2-535C0BE78F23}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F695B199-3061-4C08-80E2-535C0BE78F23}.Release|x64.ActiveCfg = Release|Any CPU
 		{F695B199-3061-4C08-80E2-535C0BE78F23}.Release|x64.Build.0 = Release|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Debug|x64.Build.0 = Debug|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Release|x64.ActiveCfg = Release|Any CPU
+		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

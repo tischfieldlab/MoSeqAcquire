@@ -14,7 +14,7 @@ namespace MoSeqAcquire.Views.Extensions
     public class EnumerationExtension : MarkupExtension
     {
         private Type _enumType;
-        private BindingBase _binding;
+        private readonly BindingBase _binding;
 
         private static readonly DependencyProperty ValueProperty =
             DependencyProperty.RegisterAttached("Value", typeof(Type), typeof(EnumerationExtension));
@@ -22,10 +22,7 @@ namespace MoSeqAcquire.Views.Extensions
 
         public EnumerationExtension(Type enumType)
         {
-            if (enumType == null)
-                throw new ArgumentNullException("enumType");
-
-            EnumType = enumType;
+            EnumType = enumType ?? throw new ArgumentNullException("enumType");
         }
         public EnumerationExtension(BindingBase binding)
         {
@@ -55,10 +52,9 @@ namespace MoSeqAcquire.Views.Extensions
             if (_binding != null)
             {
                 var pvt = (IProvideValueTarget)serviceProvider.GetService(typeof(IProvideValueTarget));
-                var target = pvt.TargetObject as DependencyObject;
 
                 // if we are inside a template, WPF will call us again when it is applied
-                if (target == null)
+                if (!(pvt.TargetObject is DependencyObject target))
                     return this;
 
                 BindingOperations.SetBinding(target, ValueProperty, _binding);

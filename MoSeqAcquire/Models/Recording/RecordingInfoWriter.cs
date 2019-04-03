@@ -33,11 +33,7 @@ namespace MoSeqAcquire.Models.Recording
 
         protected static Type[] GetSerializedTypes()
         {
-            var types = new List<Type>();
-            types.Add(typeof(RecorderSettings));
-            types.AddRange(ProtocolHelpers.GetKnownTypesForRecorders());
-            types.AddRange(ProtocolHelpers.GetKnownTypesForProviders());
-            return types.ToArray();
+            return ProtocolHelpers.GetKnownTypes().ToArray();
         }
 
     }

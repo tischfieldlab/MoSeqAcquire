@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Utility;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -22,6 +23,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Device.Device.NewFrame += this.Device_NewFrame;
             this.MediaType = MediaType.Video;
             this.DataType = typeof(byte);
+            this.Enabled = true;
         }
         public override ChannelMetadata Metadata
         {
@@ -31,7 +33,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 {
                     Width = this.Device.Device.VideoResolution.FrameSize.Width,
                     Height = this.Device.Device.VideoResolution.FrameSize.Height,
-                    FramesPerSecond = this.Device.Device.VideoResolution.MaximumFrameRate,
+                    TargetFramesPerSecond = this.Device.Device.VideoResolution.MaximumFrameRate,
                     BytesPerPixel = this.Device.Device.VideoResolution.BitCount / 8,
                 };
             }
@@ -39,23 +41,28 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
         public override bool Enabled { get; set; }
         private byte[] _copyBuffer;
+        private int currentFrameId;
         private void Device_NewFrame(object sender, Accord.Video.NewFrameEventArgs e)
         {
+            if (!this.Enabled)
+                return;
+
             if (e.Frame != null)
             {
                 var frame = e.Frame;
                 var meta = new VideoChannelFrameMetadata()
                 {
-                    //FrameId = imageFrame.FrameNumber,
+                    FrameId = this.currentFrameId++,
                     //Timestamp = imageFrame.Timestamp,
                     Width = e.Frame.Width,
                     Height = e.Frame.Height,
                     BytesPerPixel = Image.GetPixelFormatSize(e.Frame.PixelFormat) / 8,
                     PixelFormat = e.Frame.PixelFormat.ToMediaPixelFormat(),
-                    //TotalBytes = imageFrame.PixelDataLength * imageFrame.BytesPerPixel
+                    AbsoluteTime = PreciseDatetime.Now
                 };
                 meta.TotalBytes = meta.Width * meta.Height * meta.BytesPerPixel;
-                //e.Frame.RotateFlip(RotateFlipType.RotateNoneFlipX)
+
+
                 Rectangle rect = new Rectangle(0, 0, e.Frame.Width, e.Frame.Height);
                 BitmapData bmpData = e.Frame.LockBits(rect, ImageLockMode.ReadOnly, e.Frame.PixelFormat);
 
@@ -67,7 +74,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                 }
                 Marshal.Copy(bmpData.Scan0, this._copyBuffer, 0, bytes);
                 
-                this.Buffer.Post(new ChannelFrame(this._copyBuffer, meta));
+                this.PostFrame(new ChannelFrame(this._copyBuffer, meta));
             }
         }
     }

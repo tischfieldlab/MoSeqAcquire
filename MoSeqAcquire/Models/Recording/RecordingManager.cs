@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 
@@ -13,8 +14,9 @@ namespace MoSeqAcquire.Models.Recording
     {
         protected bool isInitialized;
         protected bool isRecording;
+        protected bool abortRequested;
         protected IRecordingLengthStrategy terminator;
-        private TriggerBus triggerBus;
+        private readonly TriggerBus triggerBus;
         protected List<MediaWriter> _writers;
 
         public event EventHandler RecordingStarted;
@@ -63,7 +65,7 @@ namespace MoSeqAcquire.Models.Recording
             {
                 Directory.CreateDirectory(this.GeneralSettings.ComputedBasePath);
             }
-            return this.GeneralSettings.ComputedBasePath == null ? string.Empty : this.GeneralSettings.ComputedBasePath;
+            return this.GeneralSettings.ComputedBasePath ?? string.Empty;
         }
         public bool IsInitialized { get => this.isInitialized; }
         public bool IsRecording
@@ -78,6 +80,7 @@ namespace MoSeqAcquire.Models.Recording
 
         public void Initialize(GeneralRecordingSettings GeneralSettings)
         {
+            this.abortRequested = false;
             this.isInitialized = true;            
         }
         protected IRecordingLengthStrategy TerminatorFactory()
@@ -93,8 +96,6 @@ namespace MoSeqAcquire.Models.Recording
                     terminator = new IndeterminantRecordingLength();
                     break;
             }
-            terminator.TriggerStop += this.Terminator_TriggerStop;
-            terminator.PropertyChanged += this.Terminator_PropertyChanged;
             return terminator;
         }
 
@@ -109,13 +110,16 @@ namespace MoSeqAcquire.Models.Recording
             {
                 throw new InvalidOperationException("Recording Manager must be initialized before starting!");
             }
+
             this.triggerBus.Trigger(new BeforeRecordingStartedTrigger());
+
+            if (this.abortRequested) return;
 
             this.WriteRecordingInfo();
 
             this.terminator = this.TerminatorFactory();
-            this.terminator.TriggerStop += this.Terminator_TriggerStop;
-            this.terminator.PropertyChanged += this.Terminator_PropertyChanged;
+            terminator.TriggerStop += this.Terminator_TriggerStop;
+            terminator.PropertyChanged += this.Terminator_PropertyChanged;
             this.terminator.Start();
 
             foreach (var r in this._writers)
@@ -143,8 +147,30 @@ namespace MoSeqAcquire.Models.Recording
             this.terminator = null;
 
             this.IsRecording = false;
+            this.Reset();
             this.RecordingFinished?.Invoke(this, new EventArgs());
             this.triggerBus.Trigger(new AfterRecordingFinishedTrigger());
+        }
+        public void Abort()
+        {
+            this.abortRequested = true;
+
+            foreach (var r in this._writers)
+            {
+                if (r.IsRecording)
+                {
+                    r.Stop();
+                }
+            }
+            if (this.terminator != null)
+            {
+                this.terminator.Stop();
+                this.terminator.TriggerStop -= this.Terminator_TriggerStop;
+                this.terminator.PropertyChanged -= this.Terminator_PropertyChanged;
+                this.terminator = null;
+            }
+            this.IsRecording = false;
+            this.Reset();
         }
 
         protected void WriteRecordingInfo()
@@ -158,9 +184,6 @@ namespace MoSeqAcquire.Models.Recording
             RecordingInfoWriter.Write(dest, summary);
         }
 
-
-
-
         private void Terminator_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             this.NotifyPropertyChanged(null);
@@ -171,36 +194,4 @@ namespace MoSeqAcquire.Models.Recording
             this.Stop();
         }
     }
-
-    public class BeforeRecordingStartedTrigger : Trigger { }
-    public class AfterRecordingStartedTrigger : Trigger { }
-    public class BeforeRecordingFinishedTrigger : Trigger { }
-    public class AfterRecordingFinishedTrigger : Trigger { }
-
-
-    public class RecordingSummary
-    {
-        public RecordingSummary()
-        {
-            this.Recorders = new List<RecordingDevice>();
-        }
-        public List<RecordingDevice> Recorders { get; set; }
-    }
-    public class RecordingDevice : RecorderInfo
-    {
-        public RecordingDevice()
-        {
-            this.Records = new List<RecordingRecord>();
-        }
-        public List<RecordingRecord> Records { get; set; }
-
-    }
-
-    public class RecordingRecord
-    {
-        public string Filename { get; set; }
-        public List<string> Channels { get; set; }
-    }
-
-    
 }

@@ -1,23 +1,63 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Configuration;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using MoSeqAcquire.Models.Attributes;
-using MoSeqAcquire.Models.Configuration;
+using System.Windows.Annotations;
+using System.Linq;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    public abstract class MediaSourceConfig : BaseConfiguration
+    public abstract class MediaSourceConfig : BaseConfiguration, IPropertyCapabilityProvider
     {
-        public abstract void ReadState();
-    }
+        protected Dictionary<string, ComplexProperty> backingProperties;
 
-    
+        public MediaSourceConfig()
+        {
+            this.backingProperties = new Dictionary<string, ComplexProperty>();
+        }
+        public ComplexProperty GetComplexProperty(string PropertyName)
+        {
+            if (this.IsPropertyComplex(PropertyName))
+            {
+                return this.backingProperties[PropertyName];
+            }
+            return null;
+        }
+        public bool IsPropertyComplex(string PropertyName)
+        {
+            return this.backingProperties.ContainsKey(PropertyName)
+                && this.backingProperties[PropertyName] != null;
+        }
+        public void RegisterComplexProperty(string PropertyName, ComplexProperty BackingProperty)
+        {
+            this.backingProperties[PropertyName] = BackingProperty;
+        }
+        protected bool SetField<T>(T value, [CallerMemberName] string propertyName = null)
+        {
+            if (!this.IsPropertyComplex(propertyName))
+            {
+                throw new ArgumentException(propertyName + " is not backed by a complex property!");
+            }
+            var bp = this.GetComplexProperty(propertyName);
+
+            if (EqualityComparer<T>.Default.Equals((T)bp.Value, value))
+                return false;
+
+            if (!bp.Validate(value))
+                return false;
+
+            bp.Value = value;
+            NotifyPropertyChanged(propertyName);
+            return true;
+        }
+        protected T GetField<T>([CallerMemberName] string propertyName = null)
+        {
+            if (!this.IsPropertyComplex(propertyName))
+            {
+                throw new ArgumentException(propertyName + " is not backed by a complex property!");
+            }
+            var bp = this.GetComplexProperty(propertyName);
+            return (T)bp.Value;
+        }
+    }
 }

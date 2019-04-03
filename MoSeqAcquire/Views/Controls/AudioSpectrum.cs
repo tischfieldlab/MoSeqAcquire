@@ -18,7 +18,7 @@ namespace MoSeqAcquire.Views.Controls
         protected Timer _timer; 
 
         public static readonly DependencyProperty SpectrumProviderProperty = DependencyProperty.Register("SpectrumProvider", typeof(BasicSpectrumProvider), typeof(AudioSpectrumVis), new PropertyMetadata(null));
-        public static readonly DependencyProperty ShowLineSpectrumProperty = DependencyProperty.Register("ShowLineSpectrum", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(false, showLineSpectrumChanged));
+        public static readonly DependencyProperty ShowLineSpectrumProperty = DependencyProperty.Register("ShowLineSpectrum", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(false, ShowLineSpectrumChanged));
         public static readonly DependencyProperty Show3DSpectrumProperty = DependencyProperty.Register("Show3DSpectrum", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(false));
 
         public static readonly DependencyProperty UseAverageProperty = DependencyProperty.Register("UseAverage", typeof(Boolean), typeof(AudioSpectrumVis), new PropertyMetadata(true));
@@ -35,11 +35,11 @@ namespace MoSeqAcquire.Views.Controls
 
         private void AudioSpectrum_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var x = 1;
+            //var x = 1;
             //throw new NotImplementedException();
         }
 
-        private static void showLineSpectrumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ShowLineSpectrumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var self = d as AudioSpectrumVis;
             if ((bool)e.NewValue)

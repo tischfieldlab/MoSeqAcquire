@@ -31,7 +31,14 @@ namespace MoSeqAcquire.Models.Triggers
 
         public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : Trigger
         {
-            this.subscribers[typeof(TTrigger)].ForEach(t => t.Action.Invoke(trigger));
+            if (this.subscribers.ContainsKey(typeof(TTrigger)))
+            {
+                var tasks = this.subscribers[typeof(TTrigger)]
+                                .Select(t => Task.Run(() => {
+                                    t.Execute(trigger);
+                                })).ToArray();
+                Task.WaitAll(tasks); // wait for all triggers to complete
+            }
         }
     }
 }

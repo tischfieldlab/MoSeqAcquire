@@ -15,16 +15,27 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override bool CanExecute(object parameter)
         {
-            if(this.ViewModel.Recorder.SelectedRecorder == null)
-            {
-                return false;
-            }
-            return true;
+            var rvm = this.GetRecorderViewModel(parameter);
+            return !(rvm == null);
         }
 
         public override void Execute(object parameter)
-        {            
-            this.ViewModel.Recorder.RemoveSelectedRecorder();
+        {
+            var rvm = this.GetRecorderViewModel(parameter);
+            this.ViewModel.Recorder.RemoveRecorder(rvm);
+        }
+        protected RecorderViewModel GetRecorderViewModel(object parameter)
+        {
+            RecorderViewModel recorderViewModel = null;
+            if (parameter != null && parameter is RecorderViewModel)
+            {
+                recorderViewModel = parameter as RecorderViewModel;
+            }
+            else if (this.ViewModel.Recorder.SelectedRecorder != null)
+            {
+                recorderViewModel = this.ViewModel.Recorder.SelectedRecorder;
+            }
+            return recorderViewModel;
         }
     }
 }

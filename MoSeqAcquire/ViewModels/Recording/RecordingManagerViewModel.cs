@@ -11,15 +11,23 @@ using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    
+    //TODO: need to complete finer-grained tracking of Recording Manager state (i.e. show indeterminate progress bar as it initializes + runs triggers; 
+    //      then show determinate progressbar (assuming timed recording); then transition to indeterminate progress bar as recording stops and triggers are run). 
+    public enum RecordingManagerState
+    {
+        None,
+        Initializing,
+        Recording,
+        Completed
+    }
     public class RecordingManagerViewModel : ValidatingBaseViewModel
     {
         protected MoSeqAcquireViewModel rootViewModel;
         protected ObservableCollection<RecorderViewModel> recorders;
         protected RecorderViewModel selectedRecorder;
         protected RecordingManager _recordingManager;
-        //protected GeneralRecordingSettings settings;
         protected bool isRecording;
+        protected RecordingManagerState recordingManagerState;
 
 
         public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel)
@@ -51,14 +59,18 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.SelectedRecorder = Recorder;
             this._recordingManager.AddRecorder(Recorder.Writer);
         }
+        public void RemoveRecorder(RecorderViewModel Recorder)
+        {
+            this._recordingManager.RemoveRecorder(Recorder.Writer);
+            if(this.SelectedRecorder == Recorder)
+            {
+                this.SelectedRecorder = null;
+            }
+            this.Recorders.Remove(Recorder);
+        }
         public void RemoveSelectedRecorder()
         {
-            if(this.SelectedRecorder != null)
-            {
-                var currIdx = this.Recorders.IndexOf(this.SelectedRecorder);
-                this.Recorders.Remove(this.SelectedRecorder);
-                this.SelectedRecorder = this.Recorders.ElementAtOrDefault(currIdx - 1);
-            }
+            this.RemoveRecorder(this.SelectedRecorder);
         }
         public string GetNextDefaultRecorderName()
         {
@@ -93,11 +105,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public bool IsRecording
         {
-            get
-            {
-                if (this._recordingManager == null) { return false; }
-                return this._recordingManager.IsRecording;
-            }
+            get => this._recordingManager.IsRecording;
         }
         public TimeSpan? Duration { get => this._recordingManager?.Duration; }
         public double? Progress { get => this._recordingManager?.Progress; }
@@ -106,21 +114,25 @@ namespace MoSeqAcquire.ViewModels.Recording
         
         public void StartRecording()
         {
-            //this._recordingManager = new RecordingManager();
-            //this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
-            //this._recordingManager.RecordingFinished += (s, e) => { this._recordingManager = null; };
-            //this._recordingManager.ClearRecorders();
-            //foreach (var r in this.Recorders)
-            //{
-                //this._recordingManager.AddRecorder(r.MakeMediaWriter());
-            //}
-            this._recordingManager.Initialize(this.GeneralSettings);
-            this._recordingManager.Start();
+            Task.Run(() =>
+            {
+                this._recordingManager.Initialize(this.GeneralSettings);
+                this._recordingManager.Start();
+            });
         }
         public void StopRecording()
         {
-            this._recordingManager.Stop();
-            //this._recordingManager = null;
+            Task.Run(() =>
+            {
+                this._recordingManager.Stop();
+            });
+        }
+        public void AbortRecording()
+        {
+            Task.Run(() =>
+            {
+                this._recordingManager.Abort();
+            });
         }
     }
 }

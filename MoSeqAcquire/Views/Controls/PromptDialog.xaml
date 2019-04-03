@@ -34,26 +34,26 @@
 
             <DataTemplate x:Key="OKButton">
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
-                    <Button Content="_Ok" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="btnOk_Click" />
+                    <Button Content="_Ok" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="BtnOk_Click" />
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="OKCancelButton">
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
-                    <Button Content="_Ok" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="btnOk_Click" />
-                    <Button Content="_Cancel" IsCancel="True"  Width="50" Name="btnCancel" Click="btnCancel_Click" />
+                    <Button Content="_Ok" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="BtnOk_Click" />
+                    <Button Content="_Cancel" IsCancel="True"  Width="50" Name="btnCancel" Click="BtnCancel_Click" />
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="YesNoButton">
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
-                    <Button Content="_Yes" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="btnOk_Click" />
-                    <Button Content="_No" IsCancel="True"  Width="50" Name="btnCancel" Click="btnCancel_Click" />
+                    <Button Content="_Yes" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnOk" Click="BtnOk_Click" />
+                    <Button Content="_No" IsCancel="True"  Width="50" Name="btnCancel" Click="BtnCancel_Click" />
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="YesNoCancelButton">
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Right">
-                    <Button Content="_Yes" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnYes" Click="btnOk_Click" />
-                    <Button Content="_No" IsCancel="True"  Width="50" Name="btnNo" Click="btnCancel_Click" />
-                    <Button Content="_Cancel" IsCancel="True"  Width="50" Name="btnCancel" Click="btnCancel_Click" />
+                    <Button Content="_Yes" IsDefault="True" Margin="0,0,10,0" Width="50" Name="btnYes" Click="BtnOk_Click" />
+                    <Button Content="_No" IsCancel="True"  Width="50" Name="btnNo" Click="BtnCancel_Click" />
+                    <Button Content="_Cancel" IsCancel="True"  Width="50" Name="btnCancel" Click="BtnCancel_Click" />
                 </StackPanel>
             </DataTemplate>
             <Style x:Key="ButtonStyle" TargetType="{x:Type ContentPresenter}">

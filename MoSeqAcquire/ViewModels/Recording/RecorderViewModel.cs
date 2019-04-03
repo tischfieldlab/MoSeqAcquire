@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
-using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Recording;
 
@@ -18,12 +18,12 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         protected ObservableCollection<SelectableChannelViewModel> availableChannels;
         protected ObservableCollection<ChannelViewModel> selectedChannels;
-        
+
         public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
         {
             this.rootViewModel = RootViewModel;
             var spec = new RecorderSpecification(RecorderType);
-            this.writer = spec.Factory();
+            this.writer = spec.Factory() as MediaWriter;
             this.Initialize();
         }
         public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolRecorder Recorder)
@@ -32,47 +32,6 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.writer = MediaWriter.FromProtocolRecorder(Recorder);
             this.Initialize();
         }
-        protected void Initialize()
-        {
-            this.Name = this.rootViewModel.Recorder.GetNextDefaultRecorderName();
-            this.loadChannels();
-            var pins = new List<RecorderPinViewModel>();
-            foreach (var wp in this.writer.Pins.Values)
-            {
-                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp, AvailableChannels);
-                if (pin != null)
-                {
-                    pin.PropertyChanged += this.UpdateSelectedChannels;
-                    pins.Add(pin);
-                }
-            }
-            this.RecorderPins = pins;
-        }
-        
-        protected void loadChannels()
-        {
-            var channels = this.rootViewModel.MediaSources.SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)));
-            this.availableChannels = new ObservableCollection<SelectableChannelViewModel>(channels);
-            this.selectedChannels = new ObservableCollection<ChannelViewModel>();
-
-            this.SelectedChannels.CollectionChanged += (s, e) => {
-                this.NotifyPropertyChanged("Products");
-            };
-        }
-
-
-        private void UpdateSelectedChannels(object sender, PropertyChangedEventArgs e)
-        {
-            this.SelectedChannels.Clear();
-            this.RecorderPins
-                .SelectMany(rp => rp.SelectedChannels)
-                .Where((cvm) => { return cvm != null; })
-                .ForEach(cvm => this.SelectedChannels.Add(cvm));
-        }
-
-        
-        
-        
         public string Name
         {
             get => this.writer.Name;
@@ -84,12 +43,56 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public MediaWriter Writer { get => this.writer; }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
-        public RecorderSpecification Specification { get => this.writer.Specification; }
+        public RecorderSpecification Specification { get => this.writer.Specification as RecorderSpecification; }
         public IEnumerable<RecorderPinViewModel> RecorderPins { get; protected set; }
-        public RecorderSettings Settings { get => this.writer.Settings; }
+        public BaseConfiguration Settings { get => this.writer.Settings; }
         public ObservableCollection<SelectableChannelViewModel> AvailableChannels { get => this.availableChannels; }
         public ObservableCollection<ChannelViewModel> SelectedChannels { get => this.selectedChannels; }
-        public MediaWriterStats Stats { get; protected set; }
+        public MediaWriterStats Performance { get => this.writer.Performance; }
+
+
+        protected void Initialize()
+        {
+            if (this.Name == null)
+            {
+                this.Name = this.rootViewModel.Recorder.GetNextDefaultRecorderName();
+            }
+            this.LoadChannels();
+            var pins = new List<RecorderPinViewModel>();
+            foreach (var wp in this.writer.Pins.Values)
+            {
+                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp, AvailableChannels);
+                if (pin != null)
+                {
+                    pin.PropertyChanged += this.UpdateSelectedChannels;
+                    pins.Add(pin);
+                }
+            }
+            this.RecorderPins = pins;
+            this.NotifyPropertyChanged();
+        }
+
+        protected void LoadChannels()
+        {
+            var channels = this.rootViewModel.MediaSources.SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)));
+            this.availableChannels = new ObservableCollection<SelectableChannelViewModel>(channels);
+            this.selectedChannels = new ObservableCollection<ChannelViewModel>();
+
+            this.SelectedChannels.CollectionChanged += (s, e) => {
+                this.NotifyPropertyChanged(nameof(this.Products));
+            };
+        }
+
+
+        private void UpdateSelectedChannels(object sender, PropertyChangedEventArgs e)
+        {
+            this.SelectedChannels.Clear();
+            this.RecorderPins
+                .SelectMany(rp => rp.SelectedChannels)
+                .Where((cvm) => { return cvm != null; })
+                .ForEach(cvm => this.SelectedChannels.Add(cvm));
+            this.NotifyPropertyChanged();
+        }
 
         public IEnumerable<RecorderProduct> Products
         {

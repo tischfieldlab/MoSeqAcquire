@@ -8,7 +8,7 @@ using System.Windows.Media;
 using Microsoft.Kinect;
 using MoSeqAcquire.Models.Utility;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     public class KinectDepthChannel : KinectChannel
     {
@@ -24,7 +24,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             get
             {
-                var conf = this.Kinect.Config as KinectConfig;
+                var conf = this.Kinect.Settings as KinectConfig;
                 switch (conf.DepthImageFormat)
                 {
                     case DepthImageFormat.Resolution80x60Fps30:
@@ -32,7 +32,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 80,
                             Height = 60,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -41,7 +41,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 320,
                             Height = 240,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -51,7 +51,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -73,7 +73,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                 {
                     this.InnerStream.Enable();
                 }
-                this.Kinect.Config.ReadState();
             }
         }
 
@@ -102,9 +101,18 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                     }
 
                     imageFrame.CopyPixelDataTo(this._pixelData);
-                    this.Buffer.Post(new ChannelFrame(this._pixelData, meta));
+                    this.PostFrame(new ChannelFrame(this._pixelData, meta));
                 }
             }
+        }
+
+        internal override void BindConfig()
+        {
+            KinectConfig cfg = this.Kinect.Settings as KinectConfig;
+            DepthImageStream dis = this.InnerStream;
+
+            cfg.RegisterComplexProperty(nameof(cfg.DepthImageFormat), new EnumKinectPropertyItem(dis, nameof(dis.Format)));
+            cfg.RegisterComplexProperty(nameof(cfg.DepthRange), new EnumKinectPropertyItem(dis, nameof(dis.Range)));
         }
     }
 }

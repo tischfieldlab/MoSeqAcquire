@@ -26,7 +26,7 @@ namespace MoSeqAcquire.Views.Controls
         }
 
 
-        public static readonly DependencyProperty PickerTypeProperty = DependencyProperty.Register("PickerType", typeof(PickerTypes), typeof(FileChooser), new PropertyMetadata(PickerTypes.Load, new PropertyChangedCallback(typeChangedCallBack)));
+        public static readonly DependencyProperty PickerTypeProperty = DependencyProperty.Register("PickerType", typeof(PickerTypes), typeof(FileChooser), new PropertyMetadata(PickerTypes.Load, new PropertyChangedCallback(TypeChangedCallBack)));
         public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register("SelectedPath", typeof(String), typeof(FileChooser), new FrameworkPropertyMetadata(String.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
         public static readonly DependencyProperty MultiselectProperty = DependencyProperty.Register("Multiselect", typeof(Boolean), typeof(FileChooser), new PropertyMetadata(false));
         public static readonly DependencyProperty FileExtensionProperty = DependencyProperty.Register("FileExtension", typeof(String), typeof(FileChooser), new PropertyMetadata("*"));
@@ -38,7 +38,7 @@ namespace MoSeqAcquire.Views.Controls
         public FileChooser()
         {
             InitializeComponent();
-            this.updateButtonIcon();
+            this.UpdateButtonIcon();
         }
         public PickerTypes PickerType
         {
@@ -75,7 +75,7 @@ namespace MoSeqAcquire.Views.Controls
             get { return (string)GetValue(FileFilterProperty); }
             set { SetValue(FileFilterProperty, value); }
         }
-        protected void updateButtonIcon()
+        protected void UpdateButtonIcon()
         {
             this.ButtonImage.Kind = this.ButtonIcon; //.Source = new BitmapImage(this.ButtonIcon);
         }
@@ -94,14 +94,14 @@ namespace MoSeqAcquire.Views.Controls
                 }
             }
         }
-        static void typeChangedCallBack(DependencyObject property, DependencyPropertyChangedEventArgs args)
+        static void TypeChangedCallBack(DependencyObject property, DependencyPropertyChangedEventArgs args)
         {
             FileChooser TextBox = (FileChooser)property;
-            TextBox.updateButtonIcon();
+            TextBox.UpdateButtonIcon();
         }
 
 
-        private void buttonClicked(object sender, RoutedEventArgs e)
+        private void ButtonClicked(object sender, RoutedEventArgs e)
         {
             switch (this.PickerType)
             {
@@ -119,9 +119,11 @@ namespace MoSeqAcquire.Views.Controls
 
         protected void ShowSaveDialog()
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.AddExtension = true;
-            dlg.DefaultExt = this.FileExtension;
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                AddExtension = true,
+                DefaultExt = this.FileExtension
+            };
             if (this.FileFilter == null)
             {
                 dlg.Filter = this.FileDescription + " (." + this.FileExtension + ")|*." + this.FileExtension;
@@ -169,10 +171,12 @@ namespace MoSeqAcquire.Views.Controls
         }
         protected void ShowDirectoryDialog()
         {
-            var dlg = new System.Windows.Forms.FolderBrowserDialog();
-            dlg.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            dlg.SelectedPath = this.SelectedPath;
-            dlg.ShowNewFolderButton = true;
+            var dlg = new System.Windows.Forms.FolderBrowserDialog
+            {
+                RootFolder = System.Environment.SpecialFolder.MyComputer,
+                SelectedPath = this.SelectedPath,
+                ShowNewFolderButton = true
+            };
             System.Windows.Forms.DialogResult result = dlg.ShowDialog();
             if (result.Equals(System.Windows.Forms.DialogResult.OK))
             {

@@ -10,7 +10,7 @@ namespace MoSeqAcquire.Models.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class AutomaticPropertyAttribute : Attribute
     {
-        string propertyName;
+        readonly string propertyName;
         
         public AutomaticPropertyAttribute(string propertyName)
         {

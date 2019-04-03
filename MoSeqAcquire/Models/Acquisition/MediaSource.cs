@@ -4,23 +4,26 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Core;
+using MoSeqAcquire.Models.Performance;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    public abstract class MediaSource
+    public abstract class MediaSource : Component, IAggregatePerformanceProvider
     {
         public List<Channel> Channels;
 
 
         public MediaSource()
         {
+            this.Specification = new MediaSourceSpecification(this.GetType());
             this.Channels = new List<Channel>();
+            this.Settings = (MediaSourceConfig)this.Specification.SettingsFactory();
         }
         public string Name { get; set; }
         public string DeviceId { get; set; }
         public string Status { get; protected set; }
-        public MediaSourceConfig Config { get; protected set; }
-        
+
         public bool IsInitialized { get; protected set; }
         public abstract List<Tuple<string, string>> ListAvailableDevices();
         public abstract bool Initalize(string DeviceId);
@@ -50,6 +53,11 @@ namespace MoSeqAcquire.Models.Acquisition
                 }
             }
             return default(T);
+        }
+
+        public List<IPerformanceProvider> GetPerformances()
+        {
+            return this.Channels.Select(c => c.Performance).ToList<IPerformanceProvider>();
         }
     }
 }

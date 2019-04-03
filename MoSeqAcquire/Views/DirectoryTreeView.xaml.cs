@@ -34,16 +34,18 @@ namespace MoSeqAcquire.Views
         {
             foreach (string s in Directory.GetLogicalDrives())
             {
-                TreeViewItem item = new TreeViewItem();
-                item.Header = s;
-                item.Tag = s;
-                item.FontWeight = FontWeights.Normal;
+                TreeViewItem item = new TreeViewItem
+                {
+                    Header = s,
+                    Tag = s,
+                    FontWeight = FontWeights.Normal
+                };
                 item.Items.Add(dummyNode);
-                item.Expanded += new RoutedEventHandler(folder_Expanded);
+                item.Expanded += new RoutedEventHandler(Folder_Expanded);
                 foldersItem.Items.Add(item);
             }
         }
-        void folder_Expanded(object sender, RoutedEventArgs e)
+        void Folder_Expanded(object sender, RoutedEventArgs e)
         {
             TreeViewItem item = (TreeViewItem)sender;
             if (item.Items.Count == 1 && item.Items[0] == dummyNode)
@@ -53,12 +55,14 @@ namespace MoSeqAcquire.Views
                 {
                     foreach (string s in Directory.GetDirectories(item.Tag.ToString()))
                     {
-                        TreeViewItem subitem = new TreeViewItem();
-                        subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
-                        subitem.Tag = s;
-                        subitem.FontWeight = FontWeights.Normal;
+                        TreeViewItem subitem = new TreeViewItem
+                        {
+                            Header = s.Substring(s.LastIndexOf("\\") + 1),
+                            Tag = s,
+                            FontWeight = FontWeights.Normal
+                        };
                         subitem.Items.Add(dummyNode);
-                        subitem.Expanded += new RoutedEventHandler(folder_Expanded);
+                        subitem.Expanded += new RoutedEventHandler(Folder_Expanded);
                         item.Items.Add(subitem);
                     }
                 }
@@ -66,7 +70,7 @@ namespace MoSeqAcquire.Views
             }
         }
 
-        private void foldersItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void FoldersItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeView tree = (TreeView)sender;
             TreeViewItem temp = ((TreeViewItem)tree.SelectedItem);

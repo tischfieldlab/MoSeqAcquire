@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Performance;
 
 namespace MoSeqAcquire.Models.Recording
@@ -12,20 +13,22 @@ namespace MoSeqAcquire.Models.Recording
     {
         private DateTime __started;
         private DateTime __lastTime;
-        private Timer __timer;
+        private readonly Timer __timer;
         private long __totalCount;
         private long __countSinceLast;
         private static readonly object lockobject = new object();
 
-        public MediaWriterStats(double Interval=1000)
-        {            
+        public MediaWriterStats(string Name, double Interval=1000)
+        {
+            this.Name = Name;
             this.__timer = new Timer()
             {
                 Interval = Interval,
                 AutoReset = true
             };
-            this.__timer.Elapsed += this.compute_framerate;
+            this.__timer.Elapsed += this.Compute_framerate;
         }
+        public string Name { get; set; }
         public void Start()
         {
             this.__started = this.__lastTime = DateTime.Now;
@@ -36,7 +39,7 @@ namespace MoSeqAcquire.Models.Recording
             this.__timer.Enabled = false;
         }
 
-        private void compute_framerate(object sender, ElapsedEventArgs e)
+        private void Compute_framerate(object sender, ElapsedEventArgs e)
         {
             lock (lockobject)
             {

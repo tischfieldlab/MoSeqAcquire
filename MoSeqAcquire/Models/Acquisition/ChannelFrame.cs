@@ -20,27 +20,5 @@ namespace MoSeqAcquire.Models.Acquisition
         public Array FrameData { get; protected set; }
         public Type DataType { get => this.FrameData.GetType().GetElementType(); }
         public ChannelFrameMetadata Metadata { get; protected set; } 
-
-    }
-    public class ChannelFrameMetadata
-    {
-        public int TotalBytes { get; set; }
-    }
-
-    public class VideoChannelFrameMetadata : ChannelFrameMetadata
-    {
-        public int FrameId { get; set; }
-        public long Timestamp { get; set; }
-        public DateTime AbsoluteTime { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int BytesPerPixel { get; set; }
-        public PixelFormat PixelFormat { get; set; }
-        public int Stride { get => this.Width * this.BytesPerPixel; }
-    }
-
-    public class AudioChannelFrameMetadata : ChannelFrameMetadata
-    {
-
     }
 }

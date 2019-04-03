@@ -4,18 +4,20 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Triggers;
 using SynapseTools;
 
 namespace SynapseTriggers
 {
+    [SettingsImplementation(typeof(SetSynapseModeConfig))]
     public class SetSynapseMode : BaseSynapseTrigger
     {
         public SetSynapseMode()
         {
             this.Config = new SetSynapseModeConfig();
         }
-        public override Action<Trigger> Action
+        protected override Action<Trigger> Action
         {
             get
             {
@@ -28,6 +30,7 @@ namespace SynapseTriggers
             }
         }
     }
+
     public class SetSynapseModeConfig : BaseSynapseTriggerConfig
     {
         protected SynapseMode mode;

@@ -9,7 +9,7 @@ using System.Windows.Media;
 using Microsoft.Kinect;
 using MoSeqAcquire.Models.Utility;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     public class KinectColorChannel : KinectChannel
     {
@@ -26,7 +26,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         {
             get
             {
-                var conf = this.Kinect.Config as KinectConfig;
+                var conf = this.Kinect.Settings as KinectConfig;
                 switch (conf.ColorImageFormat)
                 {
                     case ColorImageFormat.RawBayerResolution1280x960Fps12:
@@ -40,7 +40,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Bgr32
                         };
@@ -49,7 +49,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 16,
                             PixelFormat = PixelFormats.Gray16
                         };
@@ -58,7 +58,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 1280,
                             Height = 960,
-                            FramesPerSecond = 12,
+                            TargetFramesPerSecond = 12,
                             BytesPerPixel = 32,
                             PixelFormat = PixelFormats.Bgr32
                         };
@@ -68,7 +68,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         {
                             Width = 640,
                             Height = 480,
-                            FramesPerSecond = 30,
+                            TargetFramesPerSecond = 30,
                             BytesPerPixel = 32,
                             PixelFormat = PixelFormats.Bgr32
                         };
@@ -91,7 +91,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                 {
                     this.InnerStream.Enable();
                 }
-                this.Kinect.Config.ReadState();
             }
         }
 
@@ -116,9 +115,30 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                     {
                         meta.PixelFormat = PixelFormats.Gray16;
                     }
-                    this.Buffer.Post(new ChannelFrame(imageFrame.GetRawPixelData(), meta));
+                    this.PostFrame(new ChannelFrame(imageFrame.GetRawPixelData(), meta));
                 }
             }
+        }
+
+        internal override void BindConfig()
+        {
+            KinectConfig cfg = this.Kinect.Settings as KinectConfig;
+            ColorImageStream cis = this.InnerStream;
+            ColorCameraSettings ccs = cis.CameraSettings;
+
+            cfg.RegisterComplexProperty(nameof(cfg.Brightness), new RangedKinectPropertyItem(ccs, nameof(ccs.Brightness)));
+            cfg.RegisterComplexProperty(nameof(cfg.Contrast), new RangedKinectPropertyItem(ccs, nameof(ccs.Contrast)));
+            cfg.RegisterComplexProperty(nameof(cfg.Saturation), new RangedKinectPropertyItem(ccs, nameof(ccs.Saturation)));
+            cfg.RegisterComplexProperty(nameof(cfg.Sharpness), new RangedKinectPropertyItem(ccs, nameof(ccs.Sharpness)));
+            cfg.RegisterComplexProperty(nameof(cfg.WhiteBalance), new RangedKinectPropertyItem(ccs, nameof(ccs.WhiteBalance), nameof(ccs.AutoWhiteBalance)));
+            cfg.RegisterComplexProperty(nameof(cfg.ExposureTime), new RangedKinectPropertyItem(ccs, nameof(ccs.ExposureTime), nameof(ccs.AutoExposure)));
+            cfg.RegisterComplexProperty(nameof(cfg.FrameInterval), new RangedKinectPropertyItem(ccs, nameof(ccs.FrameInterval)));
+            cfg.RegisterComplexProperty(nameof(cfg.Gain), new RangedKinectPropertyItem(ccs, nameof(ccs.Gain)));
+            cfg.RegisterComplexProperty(nameof(cfg.Gamma), new RangedKinectPropertyItem(ccs, nameof(ccs.Gamma)));
+            cfg.RegisterComplexProperty(nameof(cfg.Hue), new RangedKinectPropertyItem(ccs, nameof(ccs.Hue)));
+            cfg.RegisterComplexProperty(nameof(cfg.ColorImageFormat), new EnumKinectPropertyItem(cis, nameof(cis.Format)));
+            cfg.RegisterComplexProperty(nameof(cfg.PowerLineFrequency), new EnumKinectPropertyItem(ccs, nameof(ccs.PowerLineFrequency)));
+            cfg.RegisterComplexProperty(nameof(cfg.BacklightCompensationMode), new EnumKinectPropertyItem(ccs, nameof(ccs.BacklightCompensationMode)));
         }
     }
 }

@@ -2,19 +2,20 @@
 using SynapseTools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
-    //[KnownType(typeof(DirectShowConfigSnapshot))]
+    [DisplayName("Synapse Capture Source")]
+    [SettingsImplementation(typeof(SynapseCaptureConfig))]
     public class SynapseCaptureSource : MediaSource
     {
-        public SynapseCaptureSource()
+        public SynapseCaptureSource() : base()
         {
             this.Name = "Direct Show Device";
-            this.Config = new SynapseCaptureConfig(this);
         }
         public TdtUdp Device { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()
@@ -31,9 +32,9 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Name = "SynapseUDP";
             this.Status = "Initializing";
             this.Device = new TdtUdp("localhost");
-            this.Config.ReadState();
 
             this.RegisterChannel(new SynapseCaptureChannel(this));
+            this.Device.Listen<float>();
 
             this.IsInitialized = true;
 
@@ -41,17 +42,15 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         public override void Start()
         {
-            //this.Device.Start();
             this.FindChannel<SynapseCaptureChannel>().Enabled = true;
             base.Start();
         }
         public override void Stop()
         {
             if (!this.IsInitialized) { return; }
-            this.FindChannel<SynapseCaptureChannel>().Enabled = false;
-            //this.Device.SignalToStop();
-            //this.Device.WaitForStop();
             base.Stop();
+            this.FindChannel<SynapseCaptureChannel>().Enabled = false;
+            this.Device.Close();
         }
     }
 }

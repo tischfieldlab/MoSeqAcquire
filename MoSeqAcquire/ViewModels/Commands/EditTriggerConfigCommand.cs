@@ -41,9 +41,11 @@ namespace MoSeqAcquire.ViewModels.Commands
             {
                 viewModel = this.ViewModel.Triggers.SelectedTrigger;
             }
-            
-            var dialog = new TriggerConfigView();
-            dialog.DataContext = viewModel;
+
+            var dialog = new TriggerConfigView
+            {
+                DataContext = viewModel
+            };
             dialog.ShowDialog();
         }
     }

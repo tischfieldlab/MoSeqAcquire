@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +18,13 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
         protected AudioCodec audioCodec;
         protected int audioBitrate;
 
+        [DefaultValue(VideoCodec.MPEG4)]
         public VideoCodec VideoCodec
         {
             get => this.videoCodec;
             set => this.SetField(ref this.videoCodec, value);
         }
+        [DefaultValue(4e6)]
         public int VideoBitrate
         {
             get => this.videoBitrate;
@@ -33,6 +36,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             get => this.audioCodec;
             set => this.SetField(ref this.audioCodec, value);
         }
+
         public int AudioBitrate
         {
             get => this.audioBitrate;

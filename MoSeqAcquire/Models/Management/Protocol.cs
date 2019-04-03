@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 
 namespace MoSeqAcquire.Models.Management
 {
+    [XmlRoot("Protocol")]
     public class Protocol
     {
         public static readonly string Extension = "xml";
@@ -21,31 +22,34 @@ namespace MoSeqAcquire.Models.Management
             this.Name = Name;
             this.Sources = new ProtocolSourceCollection();
             this.Recordings = new ProtocolRecordingsSetup();
+            this.Triggers = new ProtocolTriggerCollection();
         }
         public string Name { get; set; }
         public bool Locked { get; set; }
 
         public ProtocolSourceCollection Sources { get; set; }
         public ProtocolRecordingsSetup Recordings { get; set; }
+        public ProtocolTriggerCollection Triggers { get; set; }
 
-
-
-        /*public void RegisterProvider(Type Provider, ConfigSnapshot Config)
+        public override bool Equals(object obj)
         {
-            List<ProtocolItem> items = this.GetCollectionForType(Provider);
+            var pcol = obj as Protocol;
 
-            var position = items.FindIndex(s => s.GetProviderType() == Provider);
-            if(position == -1)
-            {
-                items.Add(new ProtocolItem(){
-                    Provider = Provider.AssemblyQualifiedName,
-                    Config = Config
-                });
-            }
-            else
-            {
-                items.ElementAt(position).Config = Config;
-            }
-        }   */
+            if (!this.Name.Equals(pcol.Name))
+                return false;
+            if (!this.Locked.Equals(pcol.Locked))
+                return false;
+            if (!this.Sources.SequenceEqual(pcol.Sources))
+                return false;
+            if (!this.Recordings.Equals(pcol.Recordings))
+                return false;
+            if (!this.Triggers.SequenceEqual(pcol.Triggers))
+                return false;
+            return true;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

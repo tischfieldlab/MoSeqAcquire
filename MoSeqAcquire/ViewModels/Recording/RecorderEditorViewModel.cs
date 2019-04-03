@@ -72,7 +72,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         public ReadOnlyObservableCollection<AvailableRecorderTypeViewModel> AvailableRecorderTypes { get; protected set; }
         protected void PopulateAvailableRecorderTypes()
         {
-            this.AvailableRecorderTypes = new ReadOnlyObservableCollection<AvailableRecorderTypeViewModel>(new ObservableCollection<AvailableRecorderTypeViewModel>(ProtocolHelpers.FindRecorderTypes().Select(t => new AvailableRecorderTypeViewModel(t))));
+            this.AvailableRecorderTypes = new ReadOnlyObservableCollection<AvailableRecorderTypeViewModel>(new ObservableCollection<AvailableRecorderTypeViewModel>(ProtocolHelpers.FindRecorderTypes().Select(t => new AvailableRecorderTypeViewModel(t.ComponentType))));
         }
 
         public ICommand CancelCommand => new ActionCommand((param) => { this.CancelRequested?.Invoke(this, new EventArgs()); });
@@ -90,7 +90,11 @@ namespace MoSeqAcquire.ViewModels.Recording
                 }
                 else if (this.CurrentStep == 1)
                 {
-                    this.rootViewModel.Recorder.AddRecorder(this.RecorderViewModel);
+                    if (!this.rootViewModel.Recorder.Recorders.Contains(this.RecorderViewModel))
+                    {
+                        //only add if was not in the collection already
+                        this.rootViewModel.Recorder.AddRecorder(this.RecorderViewModel);
+                    }
                     this.Completed?.Invoke(this, new EventArgs());
                 }
             },

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,19 +14,22 @@ namespace MoSeqAcquire.Models.Recording
         protected TimeSpan targetLength;
         protected DateTime startTime;
         protected DateTime endTime;
+        protected bool hasFired;
 
         public event EventHandler TriggerStop;
 
         public TimeBasedRecordingLength(TimeSpan recordingLength)
         {
+            this.hasFired = false;
             this.targetLength = recordingLength;
             this.timer = new Timer()
             {
                 Interval = 100, //100 milliseconds
                 AutoReset = true
             };
-            this.timer.Elapsed += this.check_condition;
+            this.timer.Elapsed += this.Check_condition;
         }
+        public string Name { get => "Time-based Recording Length"; }
         public void Start()
         {
             this.startTime = DateTime.UtcNow;
@@ -37,11 +41,12 @@ namespace MoSeqAcquire.Models.Recording
             this.timer.Enabled = false;
         }
 
-        private void check_condition(object sender, ElapsedEventArgs e)
+        private void Check_condition(object sender, ElapsedEventArgs e)
         {
-            if (this.endTime <= DateTime.UtcNow)
+            if (this.endTime <= DateTime.UtcNow && !this.hasFired)
             {
                 this.TriggerStop?.Invoke(this, e);
+                this.hasFired = true; //prevent multiple firings!
             }
             this.NotifyPropertyChanged(null);
         }

@@ -79,7 +79,7 @@ namespace MoSeqAcquire.ViewModels
                         //this.NotifyPropertyChanged("LineSpectrum");
                         //this.NotifyPropertyChanged("VoicePrintSpectrum");
                         this.framecount++;
-                        this.FrameRate.Increment();
+                        this.Performance.Increment();
                     }));
                 }));
         }

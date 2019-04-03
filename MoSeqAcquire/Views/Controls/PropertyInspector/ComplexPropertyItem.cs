@@ -8,9 +8,9 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
     {
         protected ComplexProperty complexProperty;
 
-        public ComplexPropertyItem(object SourceObject, string PropertyName) : base(SourceObject, PropertyName)
+        public ComplexPropertyItem(object SourceObject, string PropertyName, ComplexProperty BackingProperty) : base(SourceObject, PropertyName)
         {
-            this.complexProperty = (ComplexProperty)this.propertyInfo.GetValue(this.sourceObject);
+            this.complexProperty = BackingProperty;
         }
 
         public override Type ValueType

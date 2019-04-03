@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Triggers;
 
@@ -15,83 +16,105 @@ namespace MoSeqAcquire.Models.Management
 {
     public static class ProtocolHelpers
     {
-        #region MediaSourceProviders
-        public static IEnumerable<Type> FindProviderTypes()
+        public static IEnumerable<ComponentSpecification> FindComponents()
         {
-            return ExtractPluginsImplementing<MediaSource>(Properties.Settings.Default.MediaSourcePluginPaths);
-            /*return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(MediaSource).IsAssignableFrom(t));*/
+            return ExtractPluginsImplementing<Component>(Properties.Settings.Default.PluginPaths).Select(c => GetSpecification(c));
         }
-        public static IEnumerable<Type> GetKnownTypesForProviders()
+        private static ComponentSpecification GetSpecification(Type ComponentType)
         {
-            return FindProviderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
+            if (typeof(MediaSource).IsAssignableFrom(ComponentType))
+            {
+                return new MediaSourceSpecification(ComponentType);
+            }
+            else if (typeof(IMediaWriter).IsAssignableFrom(ComponentType))
+            {
+                return new RecorderSpecification(ComponentType);
+            }
+            else
+            {
+                return new ComponentSpecification(ComponentType);
+            }
+        }
+        #region MediaSourceProviders
+        public static IEnumerable<ComponentSpecification> FindProviderTypes()
+        {
+            return FindComponents().Where(cs => cs is MediaSourceSpecification);
         }
         #endregion
 
         #region RecorderProviders
-        public static IEnumerable<Type> FindRecorderTypes()
+        public static IEnumerable<ComponentSpecification> FindRecorderTypes()
         {
-            return ExtractPluginsImplementing<IMediaWriter>(Properties.Settings.Default.RecorderPluginPaths);
-            /*return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => !t.IsAbstract && typeof(IMediaWriter).IsAssignableFrom(t));
-                */
+            return FindComponents().Where(cs => cs is RecorderSpecification);
         }
-        public static IEnumerable<Type> GetKnownTypesForRecorders()
+        #endregion
+
+        #region TriggerProviders
+        public static IEnumerable<Type> FindTriggerTypes()
         {
-            return FindRecorderTypes().SelectMany(r => Attribute.GetCustomAttributes(r, typeof(KnownTypeAttribute)).Select(kt => (kt as KnownTypeAttribute).KnownType));
+            return ExtractPluginsImplementing<Trigger>(Properties.Settings.Default.PluginPaths);
+        }
+        public static IEnumerable<ComponentSpecification> FindTriggerActions()
+        {
+            return FindComponents().Where(cs => typeof(TriggerAction).IsAssignableFrom(cs.ComponentType));
         }
         #endregion
 
         public static IEnumerable<Type> GetKnownTypes()
         {
-            return GetKnownTypesForProviders().Concat(GetKnownTypesForRecorders());
+            return FindComponents().SelectMany(cs => cs.KnownTypes);
         }
 
-
-        #region TriggerProviders
-        public static IEnumerable<Type> FindTriggerTypes()
+        private static Dictionary<Type, List<Type>> __pluginTypeCache = new Dictionary<Type, List<Type>>();
+        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool IncludeSelf=true, bool UseCache=true)
         {
-            return ExtractPluginsImplementing<Trigger>(Properties.Settings.Default.RecorderPluginPaths);
-        }
-        public static IEnumerable<Type> FindTriggerActions()
-        {
-            return ExtractPluginsImplementing<TriggerAction>(Properties.Settings.Default.RecorderPluginPaths);
-        }
-        #endregion
-
-
-
-        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool IncludeSelf=true)
-        {
-            List<Type> availableTypes = new List<Type>();
-            if (IncludeSelf)
+            if (UseCache && __pluginTypeCache.ContainsKey(typeof(T)))
             {
-                availableTypes.AddRange(Assembly.GetExecutingAssembly().GetTypes());
-            }
-            foreach (Assembly currentAssembly in FindAssemblies(SearchPaths))
-            {
-                availableTypes.AddRange(currentAssembly.GetTypes());
-            }
-            List<Type> filteredList = availableTypes.FindAll(delegate (Type t)
-            {
-                return !t.IsAbstract && typeof(T).IsAssignableFrom(t); // t.IsSubclassOf(typeof(T));
-            });
-            Console.WriteLine("Found the following plugins implementing \"" + typeof(T).AssemblyQualifiedName + "\":");
-            if(filteredList.Count > 0)
-            {
-                Console.WriteLine(string.Join("\n", filteredList));
+                return __pluginTypeCache[typeof(T)];
             }
             else
             {
-                Console.WriteLine("None found!");
+                List<Type> availableTypes = new List<Type>();
+                if (IncludeSelf)
+                {
+                    availableTypes.AddRange(Assembly.GetExecutingAssembly().GetTypes());
+                }
+                foreach (Assembly currentAssembly in FindAssemblies(SearchPaths))
+                {
+                    availableTypes.AddRange(currentAssembly.GetTypes());
+                }
+                List<Type> filteredList = availableTypes.FindAll(delegate (Type t)
+                {
+                    return !t.IsAbstract && typeof(T).IsAssignableFrom(t); // t.IsSubclassOf(typeof(T));
+                });
+                Console.WriteLine("Found the following plugins implementing \"" + typeof(T).AssemblyQualifiedName + "\":");
+                if (filteredList.Count > 0)
+                {
+                    Console.WriteLine(string.Join("\n", filteredList));
+                }
+                else
+                {
+                    Console.WriteLine("None found!");
+                }
+                __pluginTypeCache[typeof(T)] = filteredList;
+                return filteredList;
             }
-            return filteredList;
         }
-        public static List<Assembly> FindAssemblies(StringCollection SearchPaths)
+        public static List<Assembly> FindAssemblies(StringCollection SearchPaths, bool InlcudeCwd = true)
         {
             Dictionary<String, Assembly> plugInAssemblyList = new Dictionary<String, Assembly>();
+            if (InlcudeCwd)
+            {
+                var cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var assemblies = FindAssembliesForPath(cwd);
+                foreach (var a in assemblies)
+                {
+                    if (!plugInAssemblyList.ContainsKey(a.FullName))
+                    {
+                        plugInAssemblyList.Add(a.FullName, a);
+                    }
+                }
+            }
             foreach (var path in SearchPaths)
             {
                 var assemblies = FindAssembliesForPath(path);
@@ -107,7 +130,7 @@ namespace MoSeqAcquire.Models.Management
         }
         public static List<Assembly> FindAssembliesForPath(String Path)
         {
-            Console.WriteLine("Searching path \"" + Path + "\" for plugins");
+            //Console.WriteLine("Searching path \"" + Path + "\" for plugins");
             List<Assembly> assemblyList = new List<Assembly>();
             DirectoryInfo dInfo = new DirectoryInfo(Path);
             if (dInfo.Exists)
@@ -117,7 +140,7 @@ namespace MoSeqAcquire.Models.Management
                 {
                     foreach (FileInfo file in files)
                     {
-                        Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
+                        //Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
                         try
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));

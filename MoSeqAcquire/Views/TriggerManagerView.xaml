@@ -8,18 +8,27 @@
              xmlns:mac="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
+             xmlns:bhv="clr-namespace:MoSeqAcquire.Views.Behaviors"
+             xmlns:tvm="clr-namespace:MoSeqAcquire.ViewModels.Triggers"
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <conv:GenericConverter x:Key="GenericConverter" />
+        <DataTemplate x:Key="NameEditor">
+            <TextBox Width="100"  
+                     materialDesign:HintAssist.Hint="Trigger Name" materialDesign:HintAssist.IsFloating="True"
+                     Text="{Binding Path=Name}" 
+                     />
+        </DataTemplate>
         <DataTemplate x:Key="TriggerTypeComboBoxEditor">
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
                       ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                      SelectedValue="{Binding Path=TriggerType}" 
+                      SelectedValue="{Binding Path=TriggerType}"
                       SelectedValuePath="TriggerType"
                       DisplayMemberPath="TriggerType.Name" 
                       Background="{DynamicResource MaterialDesignPaper}"
+                      Width="Auto"
                       />
         </DataTemplate>
         <DataTemplate x:Key="ActionTypeComboBoxEditor">
@@ -29,25 +38,55 @@
                       SelectedValuePath="ActionType"
                       DisplayMemberPath="ActionType.Name" 
                       Background="{DynamicResource MaterialDesignPaper}"
+                      Width="Auto"
                       />
+        </DataTemplate>
+        <DataTemplate x:Key="ActionCriticalEditor">
+            <CheckBox IsChecked="{Binding Path=IsCritical}" />
         </DataTemplate>
         <DataTemplate x:Key="TriggerManipulations">
             <StackPanel Orientation="Horizontal">
                 <Button Width="24" Height="24" Margin="8,0,8,0"
-                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                         Command="{Binding Path=Root.Commands.EditTriggerConfig}"
                         CommandParameter="{Binding}"
                         ToolTip="Edit Trigger Configuration">
                     <materialDesign:PackIcon Kind="Settings"  />
                 </Button>
                 <Button Width="24" Height="24" Margin="8,0,8,0"
-                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                         Command="{Binding Path=Root.Commands.RemoveTrigger}"
                         CommandParameter="{Binding}"
                         ToolTip="Remove Trigger">
                     <materialDesign:PackIcon Kind="Close"  />
                 </Button>
             </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TriggerState">
+            <materialDesign:PackIcon>
+                <materialDesign:PackIcon.Style>
+                    <Style TargetType="materialDesign:PackIcon">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
+                                <Setter Property="Kind" Value="Timer" />
+                                <Setter Property="ToolTip" Value="Trigger is queued" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
+                                <Setter Property="Kind" Value="RunFast" />
+                                <Setter Property="ToolTip" Value="Trigger is currently running" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
+                                <Setter Property="Kind" Value="Check" />
+                                <Setter Property="ToolTip" Value="Trigger has completed successfuly" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
+                                <Setter Property="Kind" Value="Close" />
+                                <Setter Property="ToolTip" Value="{Binding Path=TriggerStateMessage}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </materialDesign:PackIcon.Style>
+            </materialDesign:PackIcon>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
@@ -64,7 +103,7 @@
                 </DockPanel>
             </GroupBox.Header>
 
-            <ListView Name="ItemsGrid" ItemsSource="{Binding Path=Triggers}" SelectedItem="{Binding Path=SelectedTrigger}">
+            <ListView Name="ItemsGrid" ItemsSource="{Binding Path=Triggers}" SelectedItem="{Binding Path=SelectedTrigger}" bhv:GridViewColumnResize.Enabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -74,9 +113,11 @@
                 </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" />
+                        <GridViewColumn CellTemplate="{StaticResource TriggerState}" />
+                        <GridViewColumn Header="Name" CellTemplate="{StaticResource NameEditor}" />
                         <GridViewColumn Header="Trigger" CellTemplate="{StaticResource TriggerTypeComboBoxEditor}" />
                         <GridViewColumn Header="Action" CellTemplate="{StaticResource ActionTypeComboBoxEditor}" />
+                        <GridViewColumn Header="Critical" CellTemplate="{StaticResource ActionCriticalEditor}" />
                         <GridViewColumn CellTemplate="{StaticResource TriggerManipulations}" />
                     </GridView>
                 </ListView.View>

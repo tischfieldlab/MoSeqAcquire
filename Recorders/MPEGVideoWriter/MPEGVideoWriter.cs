@@ -15,7 +15,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
     [SupportedChannelType(MediaType.Audio, ChannelCapacity.Single)]
     public class MPEGVideoWriter : MediaWriter
     {
-        private object lockobject = new object();
+        private readonly object lockobject = new object();
         protected VideoFileWriter writer;
 
         protected MediaWriterPin videoPin;
@@ -85,11 +85,25 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
                                                     (IntPtr)first);
                             lock (this.lockobject)
                             {
-                                this.writer.WriteVideoFrame(bmp, (meta.AbsoluteTime - this.Epoch));
+                                try
+                                {
+                                    if (this.Performance.TotalFrames > 0)
+                                    {
+                                        this.writer.WriteVideoFrame(bmp, TimeSpan.FromMilliseconds(meta.AbsoluteTime.Subtract(this.Epoch).TotalMilliseconds));
+                                    }
+                                    else
+                                    {
+                                        this.writer.WriteVideoFrame(bmp);
+                                    }
+                                }catch
+                                {
+                                    Console.WriteLine("missed frame");
+                                }
+                                this.Performance.Increment();
                             }
                         }
                     }
-                    this.Stats.Increment();
+                    
                 }
             });
         }

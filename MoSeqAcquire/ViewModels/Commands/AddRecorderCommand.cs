@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.ViewModels.Recording;
+using MoSeqAcquire.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,9 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Commands.EditRecorder.Execute(null);
+            var dialog = new RecorderEditor();
+            dialog.DataContext = new RecorderEditorViewModel(this.ViewModel, null);
+            dialog.ShowDialog();
         }
     }
 }

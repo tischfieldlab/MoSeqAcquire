@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,8 +29,9 @@ namespace MoSeqAcquire.Models.Recording
                 Interval = 100, //100 milliseconds
                 AutoReset = true
             };
-            this.timer.Elapsed += this.check_condition;
+            this.timer.Elapsed += this.Check_condition;
         }
+        public string Name { get => "Indeterminate Recording Length"; }
         public void Start()
         {
             this.startTime = DateTime.UtcNow;
@@ -40,7 +42,7 @@ namespace MoSeqAcquire.Models.Recording
             this.timer.Enabled = false;
         }
 
-        private void check_condition(object sender, ElapsedEventArgs e)
+        private void Check_condition(object sender, ElapsedEventArgs e)
         {
             this.NotifyPropertyChanged(null);
         }

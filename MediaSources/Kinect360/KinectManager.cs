@@ -6,22 +6,26 @@ using System.Threading.Tasks;
 using Microsoft.Kinect;
 using System.Configuration;
 using MoSeqAcquire.Models.Attributes;
+using System.ComponentModel;
 
-namespace MoSeqAcquire.Models.Acquisition.Kinect
+namespace MoSeqAcquire.Models.Acquisition.Kinect360
 {
     //[KnownType(typeof(KinectConfigSnapshot))]
-    [KnownType(typeof(ColorImageFormat))]
+    /*[KnownType(typeof(ColorImageFormat))]
     [KnownType(typeof(DepthImageFormat))]
     [KnownType(typeof(PowerLineFrequency))]
     [KnownType(typeof(BacklightCompensationMode))]
-    [KnownType(typeof(DepthRange))]
+    [KnownType(typeof(DepthRange))]*/
+    [DisplayName("Kinect 360")]
+    [SettingsImplementation(typeof(KinectConfig))]
     public class KinectManager : MediaSource
     {
         public KinectManager() : base()
         {
-            this.Name = "Kinect";
-            this.Config = new KinectConfig(this);
+            this.Name = "Kinect360";
         }
+        public KinectSensor Sensor { get; set; }
+
         public override List<Tuple<string, string>> ListAvailableDevices()
         {
             var items = new List<Tuple<string, string>>();
@@ -31,6 +35,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
             }
             return items;
         }
+
         public override bool Initalize(string DeviceId)
         {
             this.DeviceId = DeviceId;
@@ -45,7 +50,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                         this.Status = potentialSensor.Status.ToString();
                         if (potentialSensor.Status == KinectStatus.Connected)
                         {
-                            
                             this.Sensor = potentialSensor;
                             break;
                         }
@@ -57,11 +61,12 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
                 this.Status = KinectStatus.Disconnected.ToString();
             }
             if (this.Sensor == null) { return false; }
-
-            this.Config.ReadState();
+            
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
             this.RegisterChannel(new KinectSoundChannel(this));
+            this.BindConfig();
+
             this.IsInitialized = true;
             return true;
         }
@@ -78,14 +83,24 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect
         public override void Stop()
         {
             if(!this.IsInitialized) { return; }
+            base.Stop();
             this.Sensor.ColorStream.Disable();
             this.Sensor.DepthStream.Disable();
-            this.FindChannel<KinectSoundChannel>().Enabled = false;
-            base.Stop();
+            this.FindChannel<KinectSoundChannel>().Enabled = false;   
         }
 
-        
 
-        public KinectSensor Sensor { get; set; }
+
+        protected void BindConfig()
+        {
+            KinectConfig cfg = this.Settings as KinectConfig;
+
+            //sensor level config
+            cfg.RegisterComplexProperty(nameof(cfg.ForceInfraredEmitterOff), new SimpleKinectPropertyItem(this.Sensor, nameof(this.Sensor.ForceInfraredEmitterOff)));
+            cfg.RegisterComplexProperty(nameof(cfg.ElevationAngle), new RangedKinectPropertyItem(this.Sensor, nameof(this.Sensor.ElevationAngle)));
+
+            //let each channel bind config
+            this.Channels.ForEach((c) => (c as KinectChannel).BindConfig());
+        }
     }
 }
