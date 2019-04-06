@@ -23,6 +23,9 @@ namespace MoSeqAcquire
             Settings.Default.PluginPaths.Cast<string>().ForEach((p) => RegisterProbePath(p));
 
             AppDomain.CurrentDomain.AssemblyResolve += LoadResolveEventHandler;
+
+            //Prevent the computer from entering sleep
+            Models.Utility.PowerManagement.StartPreventSleep();
         }
 
         private static List<String> __privateProbPaths = new List<String>();

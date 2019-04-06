@@ -146,6 +146,7 @@
     <Compile Include="Models\Triggers\TriggerConfig.cs" />
     <Compile Include="Models\Triggers\TriggerLifetimeEventArgs.cs" />
     <Compile Include="Models\Utility\ExceptionExtensions.cs" />
+    <Compile Include="Models\Utility\PowerManagement.cs" />
     <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />

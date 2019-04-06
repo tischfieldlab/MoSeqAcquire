@@ -52,12 +52,17 @@ namespace MoSeqAcquire.ViewModels
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
             return pcol;
         }
-        public void ApplyProtocol(Protocol protocol)
+        public void UnloadProtocol()
         {
             //prepare
             this.MediaSources.ForEach(s => s.MediaSource.Stop());
             this.MediaSources.Clear();
             this.Recorder.Recorders.Clear();
+        }
+        public void ApplyProtocol(Protocol protocol)
+        {
+            //prepare
+            this.UnloadProtocol();
 
             //add media sources
             var tasks = new List<Task>();
