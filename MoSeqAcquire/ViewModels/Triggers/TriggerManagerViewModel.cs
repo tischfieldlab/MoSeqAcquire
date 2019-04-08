@@ -42,9 +42,9 @@ namespace MoSeqAcquire.ViewModels.Triggers
             var vm = new TriggerViewModel(this.Root)
             {
                 Name = ProtocolTrigger.Name,
-                IsCritical = ProtocolTrigger.Critical,
                 ActionType = ProtocolTrigger.GetActionType(),
                 TriggerType = ProtocolTrigger.GetEventType(),
+                IsCritical = ProtocolTrigger.Critical,
             };
             vm.Settings.ApplySnapshot(ProtocolTrigger.Config);
             this.triggers.Add(vm);

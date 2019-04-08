@@ -78,10 +78,10 @@
                         <ctrl:FileChooser PickerType="Folder" SelectedPath="{Binding Path=GeneralSettings.Directory}" materialDesign:HintAssist.Hint="Destination Directory" materialDesign:HintAssist.IsFloating="True" />
                     </DockPanel>
 
-                    <DockPanel  Margin="16">
+                    <!--<DockPanel  Margin="16">
                         <Label Width="140">Output Basename</Label>
                         <TextBox Text="{Binding Path=GeneralSettings.Basename}" />
-                    </DockPanel>
+                    </DockPanel>-->
                 </StackPanel>
 
                 <GroupBox Grid.Row="1" Grid.ColumnSpan="2">

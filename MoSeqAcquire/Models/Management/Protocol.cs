@@ -16,17 +16,21 @@ namespace MoSeqAcquire.Models.Management
         public static readonly string Extension = "xml";
         public static readonly string TypeDesc = "Protocol";
 
-        protected Protocol() { }
-        public Protocol(String Name)
+        protected Protocol()
         {
-            this.Name = Name;
             this.Sources = new ProtocolSourceCollection();
             this.Recordings = new ProtocolRecordingsSetup();
             this.Triggers = new ProtocolTriggerCollection();
         }
+        public Protocol(String Name) : this()
+        {
+            this.Name = Name;
+        }
+        [XmlIgnore]
         public string Name { get; set; }
-        public bool Locked { get; set; }
 
+
+        public bool Locked { get; set; }
         public ProtocolSourceCollection Sources { get; set; }
         public ProtocolRecordingsSetup Recordings { get; set; }
         public ProtocolTriggerCollection Triggers { get; set; }
@@ -35,8 +39,8 @@ namespace MoSeqAcquire.Models.Management
         {
             var pcol = obj as Protocol;
 
-            if (!this.Name.Equals(pcol.Name))
-                return false;
+            //if (!this.Name.Equals(pcol.Name))
+            //    return false;
             if (!this.Locked.Equals(pcol.Locked))
                 return false;
             if (!this.Sources.SequenceEqual(pcol.Sources))

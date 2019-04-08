@@ -33,6 +33,16 @@ namespace MoSeqAcquire.ViewModels
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
 
+        public string MainWindowTitle
+        {
+            get
+            {
+                return "MoSeq Acquire - " + this.CurrentProtocol.Name;
+            }
+        }
+
+        public Protocol CurrentProtocol { get; protected set; }
+
 
         public Protocol GenerateProtocol()
         {
@@ -50,6 +60,7 @@ namespace MoSeqAcquire.ViewModels
                 pcol.Triggers.Add(tvm.GetTriggerDefinition());
             }
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
+            this.CurrentProtocol = pcol;
             return pcol;
         }
         public void UnloadProtocol()
@@ -61,8 +72,11 @@ namespace MoSeqAcquire.ViewModels
         }
         public void ApplyProtocol(Protocol protocol)
         {
+            
             //prepare
             this.UnloadProtocol();
+
+            this.CurrentProtocol = protocol;
 
             //add media sources
             var tasks = new List<Task>();
@@ -94,6 +108,7 @@ namespace MoSeqAcquire.ViewModels
                             this.Triggers.AddTrigger(trigger);
                         }
                     }
+                    this.NotifyPropertyChanged();
                 });
             }, TaskScheduler.Default);
         }
@@ -107,12 +122,7 @@ namespace MoSeqAcquire.ViewModels
     {
         public static Protocol GetDefaultProtocol()
         {
-            var pcol = new Protocol("Default");
-            //default protocol contains the Kinect sensor
-            //pcol.Sources.Add(typeof(KinectManager), "", KinectConfigSnapshot.GetDefault());
-            //pcol.Sources.Add(typeof(DirectShowSource), "", new DirectShowConfigSnapshot());
-            pcol.Recordings.GeneralSettings = new GeneralRecordingSettings().GetSnapshot();
-            return pcol;
+            return new Protocol("Default");
         }
     }
 }

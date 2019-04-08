@@ -310,7 +310,10 @@
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SystemInfoView.xaml.cs">
+    <Compile Include="Views\SystemInfo\CpuUsageMonitor.cs" />
+    <Compile Include="Views\SystemInfo\DiskUsageMonitor.cs" />
+    <Compile Include="Views\SystemInfo\RamUsageMonitor.cs" />
+    <Compile Include="Views\SystemInfo\SystemInfoView.xaml.cs">
       <DependentUpon>SystemInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DirectoryTreeView.xaml.cs">
@@ -327,6 +330,8 @@
     <Compile Include="Views\PerformanceMonitor.xaml.cs">
       <DependentUpon>PerformanceMonitor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SystemInfo\SystemMonitorItemViewModel.cs" />
+    <Compile Include="Views\SystemInfo\SystemMonitorViewModel.cs" />
     <Compile Include="Views\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
     </Compile>
@@ -393,7 +398,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SystemInfoView.xaml">
+    <Page Include="Views\SystemInfo\SystemInfoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
