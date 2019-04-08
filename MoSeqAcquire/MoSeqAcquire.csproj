@@ -310,6 +310,9 @@
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SystemInfoView.xaml.cs">
+      <DependentUpon>SystemInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DirectoryTreeView.xaml.cs">
       <DependentUpon>DirectoryTreeView.xaml</DependentUpon>
     </Compile>
@@ -389,6 +392,10 @@
     <Page Include="Views\ChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SystemInfoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\DirectoryTreeView.xaml">
       <SubType>Designer</SubType>
