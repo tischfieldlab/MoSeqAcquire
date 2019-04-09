@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MaterialDesignThemes.Wpf;
 using MoSeqAcquire.ViewModels;
 
 namespace MoSeqAcquire.Views.SystemInfo
@@ -12,6 +13,7 @@ namespace MoSeqAcquire.Views.SystemInfo
         private double percentUsage;
         private string statusText;
         private string title;
+        private PackIconKind icon;
         private bool isAlert;
 
         public string Title
@@ -23,7 +25,11 @@ namespace MoSeqAcquire.Views.SystemInfo
         public double Usage;
         public string Units;
 
-
+        public PackIconKind Icon
+        {
+            get => this.icon;
+            set => this.SetField(ref this.icon, value);
+        }
         public double PercentUsage
         {
             get => this.percentUsage;

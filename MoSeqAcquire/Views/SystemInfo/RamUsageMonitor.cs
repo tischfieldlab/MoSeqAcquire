@@ -13,6 +13,8 @@ namespace MoSeqAcquire.Views.SystemInfo
         public RamUsageMonitor()
         {
             this.Title = "Free RAM";
+            this.Icon = MaterialDesignThemes.Wpf.PackIconKind.Memory;
+
             this.counter = new PerformanceCounter();
             this.counter.CategoryName = "Memory";
             this.counter.CounterName = "Available MBytes";

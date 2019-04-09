@@ -13,6 +13,7 @@ namespace MoSeqAcquire.Views.SystemInfo
         public DiskUsageMonitor()
         {
             this.Title = "Free Disk";
+            this.Icon = MaterialDesignThemes.Wpf.PackIconKind.Harddisk;
         }
         public override void Update()
         {

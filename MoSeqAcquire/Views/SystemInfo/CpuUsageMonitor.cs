@@ -13,6 +13,8 @@ namespace MoSeqAcquire.Views.SystemInfo
         public CpuUsageMonitor()
         {
             this.Title = "Free CPU";
+            this.Icon = MaterialDesignThemes.Wpf.PackIconKind.Chip;
+
             this.counter = new PerformanceCounter();
             this.counter.CategoryName = "Processor";
             this.counter.CounterName = "% Processor Time";

@@ -47,7 +47,10 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="20" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"  Grid.Column="1"/>
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center"  Grid.Column="1">
+                            <materialDesign:PackIcon Kind="{Binding Path=Icon}" />
+                            <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" FontWeight="Bold" />
+                            </StackPanel>
                             <TextBlock Text="{Binding Path=StatusText}" TextAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" />
                         </Grid>
                         <Separator Style="{StaticResource {x:Static StatusBar.SeparatorStyleKey}}" />

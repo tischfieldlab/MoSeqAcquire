@@ -33,6 +33,8 @@ namespace MoSeqAcquire.ViewModels
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
 
+        public bool IsProtocolLocked { get => true; }
+
         public string MainWindowTitle
         {
             get
