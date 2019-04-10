@@ -27,27 +27,32 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" >
-            <MenuItem Header="File">
-                <MenuItem Header="Add New">
-                    <MenuItem Header="Media Source" Command="{Binding Path=Commands.AddMediaSource}" />
-                    <MenuItem Header="Recorder" Command="{Binding Path=Commands.AddRecorder}" />
-                    <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" />
+        
+        <DockPanel Grid.Row="0">
+            <v:SystemInfoView DockPanel.Dock="Right" />
+
+            <Menu DockPanel.Dock="Left" >
+                <MenuItem Header="File">
+                    <MenuItem Header="Add New">
+                        <MenuItem Header="Media Source" Command="{Binding Path=Commands.AddMediaSource}" />
+                        <MenuItem Header="Recorder" Command="{Binding Path=Commands.AddRecorder}" />
+                        <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" />
+                    </MenuItem>
+                    <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
+                    <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
                 </MenuItem>
-                <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
-                <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
-            </MenuItem>
-            <MenuItem Header="View">
-                <MenuItem Header="Theme" Command="{Binding Path=Commands.OpenThemeDialog}" />
-                <MenuItem Header="Performance" Command="{Binding Path=Commands.ShowPerformanceMonitor}" />
-            </MenuItem>
-        </Menu>
+                <MenuItem Header="View">
+                    <MenuItem Header="Theme" Command="{Binding Path=Commands.OpenThemeDialog}" />
+                    <MenuItem Header="Performance" Command="{Binding Path=Commands.ShowPerformanceMonitor}" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        
 
         <dockablz:Layout Grid.Row="1">
             <dragablz:TabablzControl BorderThickness="0" Margin="0,-1,0,1">
@@ -60,33 +65,18 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="42" />
-                        </Grid.RowDefinitions>
-
 
                         <v:MediaSourceView HorizontalAlignment="Stretch" Grid.Column="0" Margin="8" />
-                        <v:SystemInfoView Grid.ColumnSpan="2" Grid.Row="1" />
 
-
-                        <GroupBox Header="Recording Console" Grid.Column="1" Margin="8">
-                            <StackPanel>
-                                <v:RecordingConsoleView DataContext="{Binding Path=Recorder}" />
-                                <v:TriggerManagerView DataContext="{Binding Path=Triggers}" />
-                            </StackPanel>
-                        </GroupBox>
+                        <StackPanel Grid.Column="1" Margin="8">
+                            <v:RecordingConsoleView DataContext="{Binding Path=Recorder}" />
+                            <v:TriggerManagerView DataContext="{Binding Path=Triggers}" />
+                        </StackPanel>
+                        <!--<GroupBox Header="Recording Console" Grid.Column="1" Margin="8">
+                            
+                        </GroupBox>-->
                     </Grid>
                 </TabItem>
-                <!--<TabItem Header="REVIEW">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <v:DirectoryTreeView />
-                    </Grid>
-                </TabItem>-->
             </dragablz:TabablzControl>
         </dockablz:Layout>
     </Grid>
