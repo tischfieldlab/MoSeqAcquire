@@ -20,14 +20,14 @@
                         </WrapPanel>
                     </Border>
                     <Grid Background="DarkGray">
-                        <Grid MaxWidth="200" MaxHeight="150" Margin="10" >
+                        <Grid MaxWidth="200" MaxHeight="150" >
                             <Image Source="{Binding Path=Stream}"  />
                             <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.5" X2="0.5" Y1="0.0" Y2="1.0" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.0" X2="1.0" Y1="0.5" Y2="0.5" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </Grid>
                     </Grid>
                     <DockPanel Margin="5">
-                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Path=ShowCrosshairs}">Show Crosshairs</CheckBox>
+                        <!--<CheckBox DockPanel.Dock="Left" IsChecked="{Binding Path=ShowCrosshairs}">Show Crosshairs</CheckBox>-->
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </DockPanel>
                 </StackPanel>
@@ -43,14 +43,14 @@
                         </WrapPanel>
                     </Border>
                     <Grid Background="DarkGray">
-                        <Grid MaxWidth="200" MaxHeight="150" Margin="10" >
+                        <Grid MaxWidth="200" MaxHeight="150">
                             <Image Source="{Binding Path=Stream}"  />
                             <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.5" X2="0.5" Y1="0.0" Y2="1.0" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.0" X2="1.0" Y1="0.5" Y2="0.5" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </Grid>
                     </Grid>
                     <DockPanel Margin="5">
-                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Path=ShowCrosshairs}">Show Crosshairs</CheckBox>
+                        <!--<CheckBox DockPanel.Dock="Left" IsChecked="{Binding Path=ShowCrosshairs}">Show Crosshairs</CheckBox>-->
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </DockPanel>
                 </StackPanel>
@@ -76,6 +76,12 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <ContentPresenter Content="{Binding}" />
+        <ContentPresenter Content="{Binding}">
+            <ContentPresenter.ContextMenu>
+                <ContextMenu DataContext="{Binding Path=PlacementTarget.Content, RelativeSource={RelativeSource Self}}" >
+                    <MenuItem Header="Show Crosshairs" IsCheckable="True" IsChecked="{Binding Path=ShowCrosshairs}" />
+                </ContextMenu>
+            </ContentPresenter.ContextMenu>
+        </ContentPresenter>
     </Grid>
 </UserControl>

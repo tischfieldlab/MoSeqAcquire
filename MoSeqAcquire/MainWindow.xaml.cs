@@ -34,7 +34,7 @@ namespace MoSeqAcquire
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-
+            (this.DataContext as MoSeqAcquireViewModel).UnloadProtocol();
             Application.Current.Shutdown();
         }
     }

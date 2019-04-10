@@ -146,6 +146,7 @@
     <Compile Include="Models\Triggers\TriggerConfig.cs" />
     <Compile Include="Models\Triggers\TriggerLifetimeEventArgs.cs" />
     <Compile Include="Models\Utility\ExceptionExtensions.cs" />
+    <Compile Include="Models\Utility\PowerManagement.cs" />
     <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
     <Compile Include="Models\Attributes\SettingsImplementationAttribute.cs" />
@@ -309,6 +310,12 @@
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SystemInfo\CpuUsageMonitor.cs" />
+    <Compile Include="Views\SystemInfo\DiskUsageMonitor.cs" />
+    <Compile Include="Views\SystemInfo\RamUsageMonitor.cs" />
+    <Compile Include="Views\SystemInfo\SystemInfoView.xaml.cs">
+      <DependentUpon>SystemInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DirectoryTreeView.xaml.cs">
       <DependentUpon>DirectoryTreeView.xaml</DependentUpon>
     </Compile>
@@ -323,6 +330,8 @@
     <Compile Include="Views\PerformanceMonitor.xaml.cs">
       <DependentUpon>PerformanceMonitor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SystemInfo\SystemMonitorItemViewModel.cs" />
+    <Compile Include="Views\SystemInfo\SystemMonitorViewModel.cs" />
     <Compile Include="Views\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
     </Compile>
@@ -388,6 +397,10 @@
     <Page Include="Views\ChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SystemInfo\SystemInfoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\DirectoryTreeView.xaml">
       <SubType>Designer</SubType>

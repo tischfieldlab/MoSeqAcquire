@@ -32,17 +32,23 @@ namespace MoSeqAcquire.Models.Management
         }
         public static Protocol ReadProtocol(string filename)
         {
+            Protocol pcol;
             using (var stream = new StreamReader(filename))
             {
-                return ProtocolFromStream(stream);
+                pcol = ProtocolFromStream(stream);
             }
+            pcol.Name = filename;
+            return pcol;
         }
         public static Protocol ProtocolFromString(string contents)
         {
+            Protocol pcol;
             using (var stream = new StringReader(contents))
             {
-                return ProtocolFromStream(stream);
+                pcol = ProtocolFromStream(stream);
             }
+            pcol.Name = "String Content";
+            return pcol;
         }
         public static Protocol ProtocolFromStream(TextReader textReader)
         {

@@ -72,5 +72,32 @@ namespace MoSeqAcquire.Properties {
                 return ((global::System.Collections.Specialized.StringCollection)(this["PluginPaths"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double DiskUsageWarningThreshold {
+            get {
+                return ((double)(this["DiskUsageWarningThreshold"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
+        public double CPUUsageWarningThreshold {
+            get {
+                return ((double)(this["CPUUsageWarningThreshold"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
+        public double RamUsageWarningThreshold {
+            get {
+                return ((double)(this["RamUsageWarningThreshold"]));
+            }
+        }
     }
 }
