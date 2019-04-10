@@ -42,7 +42,7 @@
                       />
         </DataTemplate>
         <DataTemplate x:Key="ActionCriticalEditor">
-            <CheckBox IsChecked="{Binding Path=IsCritical}" />
+            <CheckBox IsChecked="{Binding Path=IsCritical}" HorizontalAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="TriggerManipulations">
             <StackPanel Orientation="Horizontal">
@@ -114,9 +114,9 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn CellTemplate="{StaticResource TriggerState}" />
-                        <GridViewColumn Header="Name" CellTemplate="{StaticResource NameEditor}" />
-                        <GridViewColumn Header="Trigger" CellTemplate="{StaticResource TriggerTypeComboBoxEditor}" />
-                        <GridViewColumn Header="Action" CellTemplate="{StaticResource ActionTypeComboBoxEditor}" />
+                        <GridViewColumn Header="Name" Width="200" CellTemplate="{StaticResource NameEditor}" />
+                        <GridViewColumn Header="Trigger" Width="250" CellTemplate="{StaticResource TriggerTypeComboBoxEditor}" />
+                        <GridViewColumn Header="Action" Width="200" CellTemplate="{StaticResource ActionTypeComboBoxEditor}" />
                         <GridViewColumn Header="Critical" CellTemplate="{StaticResource ActionCriticalEditor}" />
                         <GridViewColumn CellTemplate="{StaticResource TriggerManipulations}" />
                     </GridView>
