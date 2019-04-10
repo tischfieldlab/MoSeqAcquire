@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptingTriggers", "Trigge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoSeqAcquireTests", "MoSeqAcquireTests\MoSeqAcquireTests.csproj", "{D58A584B-6185-4AFC-BD43-047F1CA427F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectXboxOne", "KinectXboxOne\KinectXboxOne.csproj", "{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,14 @@ Global
 		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Release|x64.ActiveCfg = Release|Any CPU
 		{D58A584B-6185-4AFC-BD43-047F1CA427F2}.Release|x64.Build.0 = Release|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +150,7 @@ Global
 		{0E4E7506-DC73-4788-A944-A68F73DF6F5B} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
 		{36213CF0-706B-48A8-ABDC-A88965101E5B} = {E15FF6A4-1E79-42F2-A66D-C965854C4FE5}
 		{F695B199-3061-4C08-80E2-535C0BE78F23} = {E15FF6A4-1E79-42F2-A66D-C965854C4FE5}
+		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6786BB0-2164-48DF-9EDB-D0D34E984B4E}
