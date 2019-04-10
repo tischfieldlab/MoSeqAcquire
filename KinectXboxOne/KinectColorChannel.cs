@@ -1,8 +1,6 @@
 ﻿using Microsoft.Kinect;
 using MoSeqAcquire.Models.Utility;
-using System.Threading.Tasks.Dataflow;
 using System.Windows.Media;
-using MoSeqAcquire.ViewModels;
 
 namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
 {
@@ -16,7 +14,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
             set
             {
                 this.colorFrameReader.IsPaused = !value;
-                this.Kinect.Config.ReadState();
+                //this.Kinect.Settings.ReadState();
             }
         }
 
@@ -35,7 +33,6 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
         {
             get
             {
-                var conf = this.Kinect.Config as KinectConfig;
 
                 return new VideoChannelMetadata()
                 {
@@ -74,7 +71,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
                     colorFrame.CopyConvertedFrameDataToArray(_pixelData, ColorImageFormat.Bgra);
                     //colorFrame.CopyRawFrameDataToArray(_pixelData);
 
-                    this.Buffer.Post(new ChannelFrame(_pixelData, meta));
+                    this.PostFrame(new ChannelFrame(_pixelData, meta));
                 }
             }
         }
@@ -82,6 +79,11 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
         public override void Dispose()
         {
             this.colorFrameReader.Dispose();
+        }
+
+        internal override void BindConfig()
+        {
+            KinectConfig cfg = this.Kinect.Settings as KinectConfig;
         }
     }
 }

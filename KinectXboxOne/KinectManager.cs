@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using Microsoft.Kinect;
-using MoSeqAcquire.Models.Acquisition.KinectXboxOne;
 using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
 {
+
+    [DisplayName("Kinect Xbox One")]
+    [SettingsImplementation(typeof(KinectConfig))]
     public class KinectManager : MediaSource
     {
         public KinectSensor Sensor { get; set; }
@@ -16,7 +16,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
         public KinectManager()
         {
             this.Name = "Kinect XBOX One";
-            this.Config = new KinectConfig(this);
+            //this.Settings = new KinectConfig();
             this.IsInitialized = false;
         }
 
@@ -67,10 +67,11 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
 
             if (this.Sensor == null) { return false; }
 
-            this.Config.ReadState();
+            //this.Settings.ReadState();
             this.RegisterChannel(new KinectDepthChannel(this));
             this.RegisterChannel(new KinectColorChannel(this));
             //this.RegisterChannel(new KinectSoundChannel(this));
+            this.BindConfig();
             return true;
         }
 
@@ -81,12 +82,6 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
         {
             if (this.IsInitialized) return;
 
-            // Opening the sensor and all other sources for reading
-            // TODO(jared): Maybe make this toggleable depending on what the user wants, to 
-            // save some computations?
-
-            // TODO(jared): Check on the values of IsActive and IsPaused once these OpenReader()
-            // methods are called.
             this.Sensor.Open();
             this.FindChannel<KinectDepthChannel>().Enabled = true;
             this.FindChannel<KinectColorChannel>().Enabled = true;
@@ -107,6 +102,13 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
             this.Sensor.Close();
 
             base.Stop();
+        }
+
+        public void BindConfig()
+        {
+            KinectConfig cfg = this.Settings as KinectConfig;
+
+            this.Channels.ForEach((c) => (c as KinectChannel).BindConfig());
         }
     }
 }

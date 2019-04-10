@@ -16,7 +16,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
             set
             {
                 this.depthFrameReader.IsPaused = !value;
-                this.Kinect.Config.ReadState();
+               // this.Kinect.Config.ReadState();
             }
         }
 
@@ -35,14 +35,12 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
         {
             get
             {
-                var conf = this.Kinect.Config as KinectConfig;
-
                 return new VideoChannelMetadata()
-                {
-                    Width = conf.DepthFrameSource.FrameDescription.Width,
-                    Height = conf.DepthFrameSource.FrameDescription.Height,
+                { 
+                    Width = depthFrameReader.DepthFrameSource.FrameDescription.Width,
+                    Height = depthFrameReader.DepthFrameSource.FrameDescription.Height,
                     FramesPerSecond = 30,
-                    BytesPerPixel = (int)conf.DepthFrameSource.FrameDescription.BytesPerPixel,
+                    BytesPerPixel = (int)depthFrameReader.DepthFrameSource.FrameDescription.BytesPerPixel,
                     PixelFormat = PixelFormats.Gray16
                 };
             }
@@ -79,9 +77,18 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
                     }
 
                     depthFrame.CopyFrameDataToArray(this._pixelData);
-                    this.Buffer.Post(new ChannelFrame(this._pixelData, meta));
+
+                    ColorSpacePoint[] colorSpacePoints = new ColorSpacePoint[_pixelData.Length];
+                    this.Kinect.Sensor.CoordinateMapper.MapDepthFrameToColorSpace(this._pixelData, colorSpacePoints);
+
+                    this.PostFrame(new ChannelFrame(this._pixelData, meta));
                 }
             }
+        }
+
+        internal override void BindConfig()
+        {
+            KinectConfig cfg = this.Kinect.Settings as KinectConfig;
         }
     }
 }
