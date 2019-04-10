@@ -13,7 +13,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
     {
         public KinectSensor Sensor { get; set; }
 
-        public KinectManager()
+        public KinectManager() : base()
         {
             this.Name = "Kinect XBOX One";
             //this.Settings = new KinectConfig();

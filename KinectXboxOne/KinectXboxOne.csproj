@@ -47,16 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumKinectPropertyItem.cs" />
     <Compile Include="KinectChannel.cs" />
     <Compile Include="KinectColorChannel.cs" />
     <Compile Include="KinectConfig.cs" />
     <Compile Include="KinectManager.cs" />
-    <Compile Include="KinectPropertyItem.cs" />
     <Compile Include="KinnectDepthChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RangedKinectPropertyItem.cs" />
-    <Compile Include="SimpleKinectPropertyItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoSeqAcquire\MoSeqAcquire.csproj">
