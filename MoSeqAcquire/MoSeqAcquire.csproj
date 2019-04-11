@@ -177,6 +177,7 @@
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\Commands\ToggleProtocolLockCommand.cs" />
     <Compile Include="ViewModels\Commands\ShowPerformanceMonitorCommand.cs" />
     <Compile Include="ViewModels\Core\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />

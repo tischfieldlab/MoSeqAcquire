@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:v="clr-namespace:MoSeqAcquire.Views"
         xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
         mc:Ignorable="d"
@@ -43,8 +44,15 @@
                         <MenuItem Header="Recorder" Command="{Binding Path=Commands.AddRecorder}" />
                         <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" />
                     </MenuItem>
+                    <Separator />
                     <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
                     <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
+                    <Separator />
+                    <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLocked}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked}" >
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="SecurityLock" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="View">
                     <MenuItem Header="Theme" Command="{Binding Path=Commands.OpenThemeDialog}" />

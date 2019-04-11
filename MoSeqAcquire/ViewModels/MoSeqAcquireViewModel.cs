@@ -14,6 +14,7 @@ namespace MoSeqAcquire.ViewModels
 {
     public class MoSeqAcquireViewModel : BaseViewModel
     {
+        protected bool isProtocolLocked;
 
         public MoSeqAcquireViewModel()
         {
@@ -33,7 +34,11 @@ namespace MoSeqAcquire.ViewModels
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
 
-        public bool IsProtocolLocked { get => true; }
+        public bool IsProtocolLocked
+        {
+            get => this.isProtocolLocked;
+            set => this.SetField(ref this.isProtocolLocked, value);
+        }
 
         public string MainWindowTitle
         {
