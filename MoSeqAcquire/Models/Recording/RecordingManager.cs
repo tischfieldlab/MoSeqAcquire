@@ -81,7 +81,8 @@ namespace MoSeqAcquire.Models.Recording
         public void Initialize(GeneralRecordingSettings GeneralSettings)
         {
             this.abortRequested = false;
-            this.isInitialized = true;            
+            this.isInitialized = true;
+            this.GeneralSettings.Basename = "session_" + DateTime.UtcNow.ToString("yyyyMMddHHmmss");
         }
         protected IRecordingLengthStrategy TerminatorFactory()
         {
