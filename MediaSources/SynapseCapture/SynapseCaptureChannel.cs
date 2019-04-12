@@ -15,7 +15,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         public SynapseCaptureChannel(SynapseCaptureSource Source) : base()
         {
             this.Device = Source;
-            this.Name = "Video Channel";
+            this.Name = "Synapse UDP Channel";
             this.DeviceName = Source.Name;
             this.MediaType = MediaType.Data;
             this.DataType = typeof(float);

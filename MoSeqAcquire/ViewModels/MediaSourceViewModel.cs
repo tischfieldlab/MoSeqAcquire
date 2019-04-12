@@ -15,6 +15,7 @@ namespace MoSeqAcquire.ViewModels
 {
     public class MediaSourceViewModel : BaseViewModel
     {
+        protected bool isConfigOpen;
         protected ObservableCollection<ChannelViewModel> _channels;
         protected ReadOnlyObservableCollection<ChannelViewModel> _ro_Channels;
 
@@ -64,6 +65,11 @@ namespace MoSeqAcquire.ViewModels
         {
             get => this.isReady;
             set => this.SetField(ref this.isReady, value);
+        }
+        public bool IsConfigOpen
+        {
+            get => this.isConfigOpen;
+            set => this.SetField(ref this.isConfigOpen, value);
         }
         public string CurrentStatus
         {

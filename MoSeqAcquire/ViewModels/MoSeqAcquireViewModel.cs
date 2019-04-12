@@ -67,6 +67,7 @@ namespace MoSeqAcquire.ViewModels
                 pcol.Triggers.Add(tvm.GetTriggerDefinition());
             }
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
+            pcol.Locked = this.IsProtocolLocked;
             this.CurrentProtocol = pcol;
             return pcol;
         }
@@ -76,6 +77,8 @@ namespace MoSeqAcquire.ViewModels
             this.MediaSources.ForEach(s => s.MediaSource.Stop());
             this.MediaSources.Clear();
             this.Recorder.Recorders.Clear();
+            this.Triggers.RemoveTriggers();
+            this.IsProtocolLocked = false;
         }
         public void ApplyProtocol(Protocol protocol)
         {
@@ -115,6 +118,7 @@ namespace MoSeqAcquire.ViewModels
                             this.Triggers.AddTrigger(trigger);
                         }
                     }
+                    this.IsProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
                 });
             }, TaskScheduler.Default);

@@ -54,6 +54,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             this.triggers.Remove(Trigger);
         }
+        public void RemoveTriggers()
+        {
+            this.triggers.Clear();
+        }
 
 
         

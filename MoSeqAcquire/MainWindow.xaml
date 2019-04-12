@@ -48,7 +48,7 @@
                     <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
                     <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
                     <Separator />
-                    <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLocked}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked}" >
+                    <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLock}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked, Mode=OneWay}" >
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="SecurityLock" />
                         </MenuItem.Icon>

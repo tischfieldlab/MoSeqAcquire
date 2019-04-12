@@ -19,6 +19,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
 
     public class MetadataViewModel : BaseViewModel
     {
+        protected bool isTemplateEditable;
         protected MetadataViewState currentState;
         protected MetadataItem currentItem;
 
@@ -31,7 +32,11 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             this.Items = new MetadataCollection(null);
             this.CurrentState = MetadataViewState.Grid;
         }
-
+        public bool IsTemplateEditable
+        {
+            get => this.isTemplateEditable;
+            set => this.SetField(ref this.isTemplateEditable, value);
+        }
         public MetadataViewState CurrentState
         {
             get => this.currentState;
@@ -55,18 +60,18 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             set => this.SetField(ref this.currentItem, value);
         }
 
-        public ICommand NewItemCommand => new ActionCommand((p) =>
-        {
-            this.Items.Add(new MetadataItem("New Item", typeof(string)) { Value = "Some Value" });
-        });
-        public ICommand EditItemDefinition => new ActionCommand((o) =>
-        {
-            this.CurrentState = MetadataViewState.Property;
-        });
-        public ICommand RemoveItem => new ActionCommand((o) =>
-        {
-            this.Items.Remove(o as MetadataItem);
-        });
+        public ICommand NewItemCommand => new ActionCommand(
+            (p) => this.Items.Add(new MetadataItem("New Item", typeof(string)) { Value = "Some Value" }),
+            (p) => this.IsTemplateEditable
+        );
+        public ICommand EditItemDefinition => new ActionCommand(
+            (p) => this.CurrentState = MetadataViewState.Property,
+            (p) => this.IsTemplateEditable
+        );
+        public ICommand RemoveItem => new ActionCommand(
+            (p) => this.Items.Remove(p as MetadataItem),
+            (p) => this.IsTemplateEditable
+        );
         public ICommand HomeViewCommand => new ActionCommand((o) =>
         {
             this.CurrentState = MetadataViewState.Grid;

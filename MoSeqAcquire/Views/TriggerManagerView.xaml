@@ -91,18 +91,20 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <GroupBox >
-            <GroupBox.Header>
-                <DockPanel>
-                    <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
-                                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                    Command="{Binding Path=Root.Commands.AddTrigger}"
-                                    ToolTip="Add New Trigger">
-                        <materialDesign:PackIcon Kind="Plus"  />
-                    </Button>
-                    <TextBlock Text="Triggers" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
-                </DockPanel>
-            </GroupBox.Header>
+        <GroupBox Header="{Binding}">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                        Command="{Binding Path=Root.Commands.AddTrigger}"
+                                        ToolTip="Add New Trigger">
+                            <materialDesign:PackIcon Kind="Plus"  />
+                        </Button>
+                        <TextBlock Text="Triggers" VerticalAlignment="Center"  />
+                    </DockPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
 
             <ListView Name="ItemsGrid" 
                       IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}"
