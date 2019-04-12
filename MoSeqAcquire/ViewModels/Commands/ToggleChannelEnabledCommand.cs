@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class AddTriggerCommand : BaseCommand
+    public class ToggleChannelEnabledCommand : BaseCommand
     {
-        public AddTriggerCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        public ToggleChannelEnabledCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
         }
 
@@ -23,7 +23,11 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Triggers.AddTrigger();
+            if (parameter != null && parameter is ChannelViewModel)
+            {
+                var msvm = parameter as ChannelViewModel;
+                msvm.Enabled = !msvm.Enabled;
+            }
         }
     }
 }

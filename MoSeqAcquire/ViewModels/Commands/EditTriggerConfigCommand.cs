@@ -18,7 +18,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override bool CanExecute(object parameter)
         {
-            if(parameter != null && parameter is TriggerViewModel)
+            if (this.ViewModel.IsProtocolLocked)
+                return false;
+
+            if (parameter != null && parameter is TriggerViewModel)
             {
                 return true;
             }

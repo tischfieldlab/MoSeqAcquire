@@ -1,16 +1,18 @@
-﻿using MoSeqAcquire.ViewModels.Recording;
+﻿using MaterialDesignThemes.Wpf;
+using MoSeqAcquire.ViewModels.Recording;
 using MoSeqAcquire.ViewModels.Triggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class AddTriggerCommand : BaseCommand
+    public class ToggleOpenMediaSourceConfigCommand : BaseCommand
     {
-        public AddTriggerCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        public ToggleOpenMediaSourceConfigCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
         }
 
@@ -18,12 +20,17 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             if (this.ViewModel.IsProtocolLocked)
                 return false;
+
             return true;
         }
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Triggers.AddTrigger();
+            if (parameter != null && parameter is MediaSourceViewModel)
+            {
+                var msvm = parameter as MediaSourceViewModel;
+                msvm.IsConfigOpen = !msvm.IsConfigOpen;
+            }
         }
     }
 }

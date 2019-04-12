@@ -20,6 +20,7 @@
         <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
         <conv:ObjectEqualityConverter x:Key="ObjectEqualityConverter" />
         <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
+        <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     </UserControl.Resources>
     <Grid>
         <StackPanel >
@@ -35,8 +36,8 @@
 
                     <StackPanel Grid.Column="0">
                         <WrapPanel>
-                            <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" Margin="8" />
-                            <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" Margin="8" />
+                            <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}"  Margin="8" />
+                            <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="8" />
                         </WrapPanel>
                         <Grid Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
@@ -57,7 +58,7 @@
                         </Grid>
                     </StackPanel>
 
-                    <DockPanel Grid.Column="1" Margin="16" >
+                    <DockPanel Grid.Column="1" Margin="16" IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}" >
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" >
                             <ComboBox Width="200" 
                                   materialDesign:HintAssist.Hint="Recording Length Strategy" 
@@ -85,18 +86,20 @@
             </GroupBox>
             
             
-            <GroupBox >
-                <GroupBox.Header>
-                    <DockPanel>
-                        <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
-                                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                    Command="{Binding Path=Root.Commands.AddRecorder}"
-                                    ToolTip="Add New Recorder">
-                            <materialDesign:PackIcon Kind="Plus"  />
-                        </Button>
-                        <TextBlock Text="Recorders" VerticalAlignment="Center" />
-                    </DockPanel>
-                </GroupBox.Header>
+            <GroupBox Header="{Binding}" >
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                        Command="{Binding Path=Root.Commands.AddRecorder}"
+                                        ToolTip="Add New Recorder">
+                                <materialDesign:PackIcon Kind="Plus"  />
+                            </Button>
+                            <TextBlock Text="Recorders" VerticalAlignment="Center" />
+                        </DockPanel>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
                 <StackPanel>
                     <ItemsControl ItemsSource="{Binding Path=Recorders}" >
                         <ItemsControl.ItemTemplate>
@@ -160,7 +163,7 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Recording Metadata" Grid.Row="1" Grid.ColumnSpan="2">
-                <ctrl:MetadataView />
+                <ctrl:MetadataView IsTemplateEditable="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}" />
             </GroupBox>
         </StackPanel>
     </Grid>

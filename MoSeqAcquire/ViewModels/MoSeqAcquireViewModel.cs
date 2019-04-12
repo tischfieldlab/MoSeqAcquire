@@ -14,6 +14,7 @@ namespace MoSeqAcquire.ViewModels
 {
     public class MoSeqAcquireViewModel : BaseViewModel
     {
+        protected bool isProtocolLocked;
 
         public MoSeqAcquireViewModel()
         {
@@ -33,7 +34,11 @@ namespace MoSeqAcquire.ViewModels
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
 
-        public bool IsProtocolLocked { get => true; }
+        public bool IsProtocolLocked
+        {
+            get => this.isProtocolLocked;
+            set => this.SetField(ref this.isProtocolLocked, value);
+        }
 
         public string MainWindowTitle
         {
@@ -62,6 +67,7 @@ namespace MoSeqAcquire.ViewModels
                 pcol.Triggers.Add(tvm.GetTriggerDefinition());
             }
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
+            pcol.Locked = this.IsProtocolLocked;
             this.CurrentProtocol = pcol;
             return pcol;
         }
@@ -71,6 +77,8 @@ namespace MoSeqAcquire.ViewModels
             this.MediaSources.ForEach(s => s.MediaSource.Stop());
             this.MediaSources.Clear();
             this.Recorder.Recorders.Clear();
+            this.Triggers.RemoveTriggers();
+            this.IsProtocolLocked = false;
         }
         public void ApplyProtocol(Protocol protocol)
         {
@@ -110,6 +118,7 @@ namespace MoSeqAcquire.ViewModels
                             this.Triggers.AddTrigger(trigger);
                         }
                     }
+                    this.IsProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
                 });
             }, TaskScheduler.Default);

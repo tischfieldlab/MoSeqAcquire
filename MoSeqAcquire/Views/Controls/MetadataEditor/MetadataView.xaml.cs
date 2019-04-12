@@ -1,5 +1,6 @@
 ﻿using MoSeqAcquire.Views.Controls.MetadataEditor;
 using MoSeqAcquire.Views.Controls.PropertyInspector;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -29,7 +30,13 @@ namespace MoSeqAcquire.Views.Controls
             (d as PropertyView).ItemsGrid.ItemsSource = new PropertyCollection(e.NewValue);
         }
 
-        public static readonly DependencyProperty IsTemplateEditableProperty = DependencyProperty.Register("IsTemplateEditable", typeof(bool), typeof(MetadataView), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsTemplateEditableProperty = DependencyProperty.Register("IsTemplateEditable", typeof(bool), typeof(MetadataView), new PropertyMetadata(true, new PropertyChangedCallback(isTemplateEditableChangedCallback)));
+
+        private static void isTemplateEditableChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as MetadataView).InnerViewModel.IsTemplateEditable = (bool)e.NewValue;
+        }
+
         public bool IsTemplateEditable
         {
             get { return (bool)GetValue(IsTemplateEditableProperty); }

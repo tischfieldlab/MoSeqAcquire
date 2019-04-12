@@ -37,21 +37,19 @@
                 <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="Performance Monitor" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
             </DockPanel>
         </materialDesign:ColorZone>
-        <ListView Name="ItemsGrid" Grid.Row="1" ItemsSource="{Binding Path=Performances}">
-            <ListView.ItemContainerStyle>
+        <DataGrid Name="ItemsGrid" Grid.Row="1" ItemsSource="{Binding Path=Performances}" IsReadOnly="True" AutoGenerateColumns="False">
+            <!--<DataGrid.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Path=Category}" />
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}" />
-                    <GridViewColumn Header="Frame Rate" DisplayMemberBinding="{Binding Path=Performance.FrameRate, StringFormat=\{0:F3\}}" />
-                    <GridViewColumn Header="Total Frames" DisplayMemberBinding="{Binding Path=Performance.TotalFrames}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+            </DataGrid.ItemContainerStyle>-->
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Category" Binding="{Binding Path=Category}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Header="Frame Rate" Binding="{Binding Path=Performance.FrameRate, StringFormat=\{0:F3\}}" />
+                <DataGridTextColumn Header="Total Frames" Binding="{Binding Path=Performance.TotalFrames}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

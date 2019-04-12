@@ -45,13 +45,19 @@
                 <TextBox materialDesign:HintAssist.Hint="Units" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=Units}" />
                 <TextBox materialDesign:HintAssist.Hint="Default Value" materialDesign:HintAssist.IsFloating="True"  />
             </StackPanel>
-            <GroupBox Grid.Column="0" Grid.Row="1" Margin="16">
-                <GroupBox.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Constraints" />
-                        <ComboBox materialDesign:HintAssist.Hint="Constraint Type" ItemsSource="{mve:Enumeration {x:Type local:ConstraintMode}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Constraint}"  />
-                    </StackPanel>
-                </GroupBox.Header>
+            <GroupBox Grid.Column="0" Grid.Row="1" Margin="16" Header="{Binding}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Constraints:" VerticalAlignment="Center" Margin="0,0,20,0" />
+                            <ComboBox materialDesign:HintAssist.Hint="Constraint Type" 
+                                      ItemsSource="{mve:Enumeration {x:Type local:ConstraintMode}}" 
+                                      DisplayMemberPath="Description" 
+                                      SelectedValuePath="Value" 
+                                      SelectedValue="{Binding Path=Constraint}"  />
+                        </StackPanel>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
                 <GroupBox.Resources>
                     <DataTemplate x:Key="choicesTemplate">
                         <DockPanel>

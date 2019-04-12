@@ -15,6 +15,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <conv:GenericConverter x:Key="GenericConverter" />
+        <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
         <DataTemplate x:Key="NameEditor">
             <TextBox Width="100"  
                      materialDesign:HintAssist.Hint="Trigger Name" materialDesign:HintAssist.IsFloating="True"
@@ -90,20 +91,26 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <GroupBox >
-            <GroupBox.Header>
-                <DockPanel>
-                    <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
-                                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                    Command="{Binding Path=Root.Commands.AddTrigger}"
-                                    ToolTip="Add New Trigger">
-                        <materialDesign:PackIcon Kind="Plus"  />
-                    </Button>
-                    <TextBlock Text="Triggers" VerticalAlignment="Center" />
-                </DockPanel>
-            </GroupBox.Header>
+        <GroupBox Header="{Binding}">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                        Command="{Binding Path=Root.Commands.AddTrigger}"
+                                        ToolTip="Add New Trigger">
+                            <materialDesign:PackIcon Kind="Plus"  />
+                        </Button>
+                        <TextBlock Text="Triggers" VerticalAlignment="Center"  />
+                    </DockPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
 
-            <ListView Name="ItemsGrid" ItemsSource="{Binding Path=Triggers}" SelectedItem="{Binding Path=SelectedTrigger}" bhv:GridViewColumnResize.Enabled="True">
+            <ListView Name="ItemsGrid" 
+                      IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}"
+                      ItemsSource="{Binding Path=Triggers}" 
+                      SelectedItem="{Binding Path=SelectedTrigger}" 
+                      bhv:GridViewColumnResize.Enabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

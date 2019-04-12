@@ -34,6 +34,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
             this.RegisterCommand<AddMediaSourceCommand>();
             this.RegisterCommand<RemoveMediaSourceCommand>();
+
+            this.RegisterCommand<ToggleProtocolLockCommand>();
+            this.RegisterCommand<ToggleOpenMediaSourceConfigCommand>();
+            this.RegisterCommand<ToggleChannelEnabledCommand>();
         }
 
         public OpenThemeDialogCommand OpenThemeDialog { get => this.GetCommand<OpenThemeDialogCommand>(); }
@@ -55,7 +59,9 @@ namespace MoSeqAcquire.ViewModels.Commands
         public AddMediaSourceCommand AddMediaSource { get => this.GetCommand<AddMediaSourceCommand>(); }
         public RemoveMediaSourceCommand RemoveMediaSource { get => this.GetCommand<RemoveMediaSourceCommand>(); }
 
-
+        public ToggleProtocolLockCommand ToggleProtocolLock { get => this.GetCommand<ToggleProtocolLockCommand>(); }
+        public ToggleOpenMediaSourceConfigCommand ToggleOpenMediaSourceConfig { get => this.GetCommand<ToggleOpenMediaSourceConfigCommand>(); }
+        public ToggleChannelEnabledCommand ToggleChannelEnabled { get => this.GetCommand<ToggleChannelEnabledCommand>(); }
 
     }
 }
