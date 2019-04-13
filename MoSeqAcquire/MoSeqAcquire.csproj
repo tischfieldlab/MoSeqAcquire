@@ -61,8 +61,8 @@
     <Reference Include="MaterialDesignThemes.MahApps, Version=0.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.MahApps.0.0.12\lib\net45\MaterialDesignThemes.MahApps.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.1.1345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.5.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="ModernUI.Xceed.Toolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
@@ -208,6 +208,7 @@
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
+    <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
     <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>

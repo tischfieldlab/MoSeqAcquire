@@ -25,7 +25,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         /*protected void RegisterInputGesture(KeyGesture Gesture)
         {
-            //this.viewModel.InputBindings.Add(new KeyBinding(this, Gesture));
+           this.viewModel.InputBindings.Add(new KeyBinding(this, Gesture));
         }
         protected void RegisterRoutedCommand(ICommand Command)
         {
@@ -37,19 +37,6 @@ namespace MoSeqAcquire.ViewModels.Commands
                     e.CanExecute = this.CanExecute(e.Parameter);
                 }
             ));
-        }
-        protected WorkflowEditor GetEditorParameterOrCurrentEditor(object parameter)
-        {
-            WorkflowEditor editor;
-            if (parameter is WorkflowEditor)
-            {
-                editor = parameter as WorkflowEditor;
-            }
-            else
-            {
-                editor = this.WorkflowDesigner.ActiveEditor;
-            }
-            return editor;
         }*/
 
 
@@ -58,6 +45,10 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
+        }
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
         }
 
         public abstract void Execute(object parameter);

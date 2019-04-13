@@ -11,6 +11,8 @@
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
              xmlns:mvmr="clr-namespace:MoSeqAcquire.ViewModels.Recording"
              xmlns:mvm="clr-namespace:MoSeqAcquire.ViewModels"
+             xmlns:mmr="clr-namespace:MoSeqAcquire.Models.Recording"
+             xmlns:mvb="clr-namespace:MoSeqAcquire.Views.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -18,6 +20,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
         <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+        
         <conv:ObjectEqualityConverter x:Key="ObjectEqualityConverter" />
         <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
         <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
@@ -39,7 +42,26 @@
                             <Button Content="Start" Command="{Binding Path=Root.Commands.StartRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}"  Margin="8" />
                             <Button Content="Stop"  Command="{Binding Path=Root.Commands.StopRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="8" />
                         </WrapPanel>
-                        <Grid Visibility="{Binding Path=IsRecording, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=State}" Value="{x:Static mmr:RecordingManagerState.Idle}">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=State}" Value="{x:Static mmr:RecordingManagerState.Starting}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        
+                                        <DataTrigger Binding="{Binding Path=State}" Value="{x:Static mmr:RecordingManagerState.Recording}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=State}" Value="{x:Static mmr:RecordingManagerState.Completing}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -48,13 +70,30 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
 
                             <ProgressBar Grid.Row="0" Grid.ColumnSpan="3" Width="150" Minimum="0" Maximum="1" 
-                                         Value="{Binding Path=Progress, Mode=OneWay}" 
-                                         IsIndeterminate="{Binding Path=Progress, Mode=OneWay, Converter={StaticResource IsNullToBoolInvertConverter}}" />
+                                         Value="{Binding Path=Progress, Mode=OneWay}"  >
+                                <ProgressBar.Style>
+                                    <Style TargetType="ProgressBar">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=State}" Value="{x:Static mmr:RecordingManagerState.Starting}">
+                                                <Setter Property="IsIndeterminate" Value="True" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=State}" Value="{x:Static mmr:RecordingManagerState.Completing}">
+                                                <Setter Property="IsIndeterminate" Value="True" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=State}" Value="{x:Static mmr:RecordingManagerState.Recording}">
+                                                <Setter Property="IsIndeterminate" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ProgressBar.Style>
+                            </ProgressBar>
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Path=Duration, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}" />
-                            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Path=TimeRemaining, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}" />
+                            <TextBlock Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="{Binding Path=CurrentTask, Mode=OneWay}" />
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=TimeRemaining, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}" />
                         </Grid>
                     </StackPanel>
 
@@ -68,10 +107,11 @@
                                   SelectedValuePath="Value" 
                                   SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
 
+                            
                             <TextBox Width="100" Margin="20,0,0,0"
-                                 materialDesign:HintAssist.Hint="# Seconds" 
+                                 materialDesign:HintAssist.Hint="Amount of Time" 
                                  materialDesign:HintAssist.IsFloating="True"
-                                 Text="{Binding Path=GeneralSettings.RecordingSeconds}" 
+                                 Text="{Binding Path=GeneralSettings.RecordingTime}"
                                  Visibility="{Binding Path=GeneralSettings.RecordingMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
                         </StackPanel>
 

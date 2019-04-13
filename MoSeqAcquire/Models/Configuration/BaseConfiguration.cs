@@ -115,7 +115,15 @@ namespace MoSeqAcquire.Models.Configuration
                     }
                     else
                     {
-                        prop.SetValue(this, snapshot[key].Value);
+                        if (prop.PropertyType.Equals(typeof(TimeSpan)))
+                        {
+                            prop.SetValue(this, TimeSpan.Parse((string)snapshot[key].Value));
+                        }
+                        else
+                        {
+                            prop.SetValue(this, snapshot[key].Value);
+                        }
+                        
                     }
                 }
                 else

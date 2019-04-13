@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Views.Extensions;
@@ -11,16 +12,9 @@ namespace MoSeqAcquire.Models.Recording
         [EnumDisplayName("Until stopped")]
         Indeterminate,
 
-        [Description("Recordes a specified number of seconds")]
-        [EnumDisplayName("A specific number of seconds")]
-        TimeCount,
-
-
-        /*
-        [Description("Recordes a specified number of frames")]
-        [EnumDisplayName("A specific number of frames")]
-        FrameCount,
-        */
+        [Description("Recordes the specified amount of time")]
+        [EnumDisplayName("A specific amount of time")]
+        TimeCount
     }
     public abstract class RecorderSettings : BaseConfiguration
     {
@@ -35,8 +29,7 @@ namespace MoSeqAcquire.Models.Recording
         protected string directory = "";
         protected string basename = "";
         protected RecordingMode recordingMode;
-        protected int recordingFrameCount;
-        protected int recordingSeconds;
+        protected TimeSpan recordingTime;
 
         public string Directory
         {
@@ -57,15 +50,11 @@ namespace MoSeqAcquire.Models.Recording
             get => this.recordingMode;
             set => this.SetField(ref this.recordingMode, value);
         }
-        public int RecordingFrameCount
+
+        public TimeSpan RecordingTime
         {
-            get => this.recordingFrameCount;
-            set => this.SetField(ref this.recordingFrameCount, value);
-        }
-        public int RecordingSeconds
-        {
-            get => this.recordingSeconds;
-            set => this.SetField(ref this.recordingSeconds, value);
+            get => this.recordingTime;
+            set => this.SetField(ref this.recordingTime, value);
         }
         public bool IsValid
         {
@@ -74,8 +63,7 @@ namespace MoSeqAcquire.Models.Recording
                 return !string.IsNullOrWhiteSpace(this.directory)
                     && !string.IsNullOrWhiteSpace(this.basename)
                     && (this.recordingMode.Equals(RecordingMode.Indeterminate)
-                        || (this.recordingMode.Equals(RecordingMode.TimeCount) && this.recordingSeconds > 0)
-                        //|| (this.recordingMode.Equals(RecordingMode.FrameCount) && this.recordingFrameCount > 0)
+                        || (this.recordingMode.Equals(RecordingMode.TimeCount) && this.recordingTime.TotalSeconds > 0)
                        );
             }
         }
