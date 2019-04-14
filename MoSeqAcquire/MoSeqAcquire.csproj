@@ -129,6 +129,7 @@
     <Compile Include="Models\Acquisition\ChannelFrameMetadata.cs" />
     <Compile Include="Models\Acquisition\MediaSourceSpecification.cs" />
     <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
+    <Compile Include="Models\Attributes\HiddenAttribute.cs" />
     <Compile Include="Models\Configuration\IPropertyCapabilityProvider.cs" />
     <Compile Include="Models\Core\Component.cs" />
     <Compile Include="Models\Core\ComponentSpecification.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="Views\Controls\UnitTextBox.xaml.cs">
       <DependentUpon>UnitTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\WaitingWindowManager.cs" />
     <Compile Include="Views\Converters\GenericConverter.cs" />
     <Compile Include="Views\Converters\TimeSpanFormatConverter.cs" />
     <Compile Include="Views\Converters\AdditionConverter.cs" />
@@ -314,6 +316,16 @@
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RecorderViews\RecorderGeneralSettings.xaml.cs">
+      <DependentUpon>RecorderGeneralSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecorderViews\RecorderItemsView.xaml.cs">
+      <DependentUpon>RecorderItemsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecorderViews\RecorderProgress.xaml.cs">
+      <DependentUpon>RecorderProgress.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Splash.xaml.cs" />
     <Compile Include="Views\SystemInfo\CpuUsageMonitor.cs" />
     <Compile Include="Views\SystemInfo\DiskUsageMonitor.cs" />
     <Compile Include="Views\SystemInfo\RamUsageMonitor.cs" />
@@ -401,6 +413,22 @@
     <Page Include="Views\ChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecorderViews\RecorderGeneralSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecorderViews\RecorderItemsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecorderViews\RecorderProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Splash.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SystemInfo\SystemInfoView.xaml">
       <Generator>MSBuild:Compile</Generator>

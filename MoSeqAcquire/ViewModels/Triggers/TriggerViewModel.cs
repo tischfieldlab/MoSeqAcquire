@@ -66,7 +66,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         public bool IsCritical
         {
-            get => this.trigger.IsCritical;
+            get => this.trigger != null ? this.trigger.IsCritical : false;
             set
             {
                 this.trigger.IsCritical = value;

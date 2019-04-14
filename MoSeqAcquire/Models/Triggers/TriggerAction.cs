@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Core;
 
 namespace MoSeqAcquire.Models.Triggers
@@ -30,5 +31,12 @@ namespace MoSeqAcquire.Models.Triggers
                 this.TriggerFaulted?.Invoke(this, new TriggerFaultedEventArgs() { Trigger = Trigger, Exception = e });
             }
         }
+    }
+
+    [SettingsImplementation(typeof(TriggerConfig))]
+    public class ActionTriggerAction : TriggerAction
+    {
+        public Action<Trigger> Delegate { get; set; }
+        protected override Action<Trigger> Action => this.Delegate;
     }
 }

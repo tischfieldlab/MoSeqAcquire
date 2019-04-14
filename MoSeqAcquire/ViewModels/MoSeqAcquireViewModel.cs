@@ -15,9 +15,11 @@ namespace MoSeqAcquire.ViewModels
     public class MoSeqAcquireViewModel : BaseViewModel
     {
         protected bool isProtocolLocked;
+        protected int forceProtocolLock;
 
         public MoSeqAcquireViewModel()
         {
+            App.SetCurrentStatus("Initializing....");
             this.Theme = new ThemeViewModel();
             this.TriggerBus = new TriggerBus();
             this.MediaSources = new ObservableCollection<MediaSourceViewModel>();
@@ -25,6 +27,7 @@ namespace MoSeqAcquire.ViewModels
             this.Triggers = new TriggerManagerViewModel(this);
             
             this.Commands = new CommandLibrary(this);
+            App.SetCurrentStatus("Loading default protocol....");
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
         public CommandLibrary Commands { get; protected set; }
@@ -34,9 +37,24 @@ namespace MoSeqAcquire.ViewModels
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
 
+        public void ForceProtocolLocked()
+        {
+            this.forceProtocolLock++;
+            this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+        }
+        public void UndoForceProtoclLocked()
+        {
+            this.forceProtocolLock--;
+            if(this.forceProtocolLock < 0)
+            {
+                this.forceProtocolLock = 0;
+            }
+            this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+        }
+
         public bool IsProtocolLocked
         {
-            get => this.isProtocolLocked;
+            get => this.isProtocolLocked || this.forceProtocolLock > 0;
             set => this.SetField(ref this.isProtocolLocked, value);
         }
 

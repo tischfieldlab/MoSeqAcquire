@@ -105,27 +105,14 @@ namespace MoSeqAcquire.Models.Management
             Dictionary<String, Assembly> plugInAssemblyList = new Dictionary<String, Assembly>();
             if (InlcudeCwd)
             {
-                var cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var assemblies = FindAssembliesForPath(cwd);
-                foreach (var a in assemblies)
-                {
-                    if (!plugInAssemblyList.ContainsKey(a.FullName))
-                    {
-                        plugInAssemblyList.Add(a.FullName, a);
-                    }
-                }
+                SearchPaths.Add(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             }
-            foreach (var path in SearchPaths)
-            {
-                var assemblies = FindAssembliesForPath(path);
-                foreach (var a in assemblies)
-                {
-                    if (!plugInAssemblyList.ContainsKey(a.FullName))
-                    {
-                        plugInAssemblyList.Add(a.FullName, a);
-                    }
-                }
-            }
+
+            SearchPaths.Cast<string>()
+                       .SelectMany(p => FindAssembliesForPath(p))
+                       .Distinct(a => a.FullName)
+                       .ForEach(a => plugInAssemblyList.Add(a.FullName, a));
+            
             return plugInAssemblyList.Values.ToList();
         }
         public static List<Assembly> FindAssembliesForPath(String Path)

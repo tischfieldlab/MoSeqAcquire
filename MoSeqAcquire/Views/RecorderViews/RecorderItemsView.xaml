@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.RecorderViews.RecorderItemsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MoSeqAcquire.Views.RecorderViews"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mvmr="clr-namespace:MoSeqAcquire.ViewModels.Recording"
+             xmlns:mvm="clr-namespace:MoSeqAcquire.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <GroupBox Header="{Binding}" >
+        <GroupBox.HeaderTemplate>
+            <DataTemplate>
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                        Command="{Binding Path=Root.Commands.AddRecorder}"
+                                        ToolTip="Add New Recorder">
+                        <materialDesign:PackIcon Kind="Plus"  />
+                    </Button>
+                    <TextBlock Text="Recorders" VerticalAlignment="Center" />
+                </DockPanel>
+            </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <ItemsControl ItemsSource="{Binding Path=Recorders}" >
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Expander>
+                            <Expander.InputBindings>
+                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
+                            </Expander.InputBindings>
+                            <Expander.Header>
+                                <DockPanel HorizontalAlignment="Stretch">
+                                    <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="0,0,8,0"
+                                                            Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                                            CommandParameter="{Binding}"
+                                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                            ToolTip="Remove Recorder">
+                                        <materialDesign:PackIcon Kind="Close"  />
+                                    </Button>
+                                    <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
+                                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" 
+                                                            Command="{Binding Path=DataContext.Commands.EditRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                                            CommandParameter="{Binding}"
+                                                            ToolTip="Edit Recorder">
+                                        <materialDesign:PackIcon Kind="Pencil"  />
+                                    </Button>
+                                    <materialDesign:PackIcon Kind="RecordRec" Width="24" Height="24"  Margin="0,0,8,0" />
+                                    <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Path=SelectedChannels.Count, Mode=OneWay, StringFormat={} ({0} Channels)}" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}" />
+                                </DockPanel>
+                            </Expander.Header>
+                            <ItemsControl ItemsSource="{Binding Products}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type mvmr:RecorderProduct}">
+                                        <StackPanel Margin="56,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="SubdirectoryArrowRight" />
+                                                <materialDesign:PackIcon Kind="FileVideo" Width="24" Height="24" Margin="0,0,8,0" />
+                                                <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <ItemsControl ItemsSource="{Binding Channels}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="{x:Type mvm:ChannelViewModel}">
+                                                        <StackPanel Orientation="Horizontal" Margin="48,0,0,0">
+                                                            <materialDesign:PackIcon Kind="SubdirectoryArrowRight" />
+                                                            <TextBlock Text="{Binding Path=FullName}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Expander>
+                        <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" SnapsToDevicePixels="True" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </GroupBox>
+</UserControl>

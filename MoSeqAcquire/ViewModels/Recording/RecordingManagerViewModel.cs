@@ -8,11 +8,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmValidation;
+using System.Windows.Input;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    //TODO: need to complete finer-grained tracking of Recording Manager state (i.e. show indeterminate progress bar as it initializes + runs triggers; 
-    //      then show determinate progressbar (assuming timed recording); then transition to indeterminate progress bar as recording stops and triggers are run). 
 
     public class RecordingManagerViewModel : ValidatingBaseViewModel
     {
@@ -28,8 +28,21 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.recorders = new ObservableCollection<RecorderViewModel>();
 
             this.recordingManager = new RecordingManager(this.rootViewModel.TriggerBus);
-            this.recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
+            this.recordingManager.PropertyChanged += (s, e) =>
+            {
+                this.NotifyPropertyChanged(null);
+            };
             this.RegisterRules();
+
+            this.rootViewModel.TriggerBus.Subscribe(typeof(BeforeRecordingStartedTrigger),
+                                                    new ActionTriggerAction() {
+                                                        Delegate = (t) => this.Root.ForceProtocolLocked()
+                                                    });
+            this.rootViewModel.TriggerBus.Subscribe(typeof(AfterRecordingFinishedTrigger),
+                                                    new ActionTriggerAction()
+                                                    {
+                                                        Delegate = (t) => this.Root.UndoForceProtoclLocked()
+                                                    });
         }
         protected void RegisterRules()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MoSeqAcquire.ViewModels.Commands
@@ -48,7 +49,10 @@ namespace MoSeqAcquire.ViewModels.Commands
         }
         public void RaiseCanExecuteChanged()
         {
-            CommandManager.InvalidateRequerySuggested();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CommandManager.InvalidateRequerySuggested();
+            });
         }
 
         public abstract void Execute(object parameter);
