@@ -19,13 +19,18 @@ namespace MoSeqAcquire.ViewModels
 
         public MoSeqAcquireViewModel()
         {
-            App.SetCurrentStatus("Initializing....");
+            App.SetCurrentStatus("Loading Theme....");
             this.Theme = new ThemeViewModel();
+            App.SetCurrentStatus("Initializing Trigger Bus....");
             this.TriggerBus = new TriggerBus();
+            App.SetCurrentStatus("Loading Media Sources....");
             this.MediaSources = new ObservableCollection<MediaSourceViewModel>();
+            App.SetCurrentStatus("Loading Recording Console....");
             this.Recorder = new RecordingManagerViewModel(this);
+            App.SetCurrentStatus("Loading Triggers....");
             this.Triggers = new TriggerManagerViewModel(this);
-            
+
+            App.SetCurrentStatus("Initializing Commands....");
             this.Commands = new CommandLibrary(this);
             App.SetCurrentStatus("Loading default protocol....");
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
@@ -39,17 +44,23 @@ namespace MoSeqAcquire.ViewModels
 
         public void ForceProtocolLocked()
         {
-            this.forceProtocolLock++;
-            this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.forceProtocolLock++;
+                this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+            });
         }
         public void UndoForceProtoclLocked()
         {
-            this.forceProtocolLock--;
-            if(this.forceProtocolLock < 0)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                this.forceProtocolLock = 0;
-            }
-            this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+                this.forceProtocolLock--;
+                if (this.forceProtocolLock < 0)
+                {
+                    this.forceProtocolLock = 0;
+                }
+                this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+            });
         }
 
         public bool IsProtocolLocked

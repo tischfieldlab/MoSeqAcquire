@@ -84,7 +84,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             int count = 1;
             while (count < int.MaxValue)
             {
-                realname = namebase + " " + count.ToString();
+                realname = namebase + "_" + count.ToString();
                 if (this.recorders.Count(rvm => rvm.Name.Equals(realname)) == 0)
                 {
                     break;

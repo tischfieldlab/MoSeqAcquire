@@ -21,7 +21,7 @@ namespace MoSeqAcquire.Models.Recording
         }
         public void Write(DateTime time)
         {
-            this.writer.WriteLine(time);
+            this.writer.WriteLine(time.ToString("o"));
         }
         public void Close()
         {

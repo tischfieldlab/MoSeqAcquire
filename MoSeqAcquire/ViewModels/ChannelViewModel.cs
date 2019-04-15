@@ -30,5 +30,22 @@ namespace MoSeqAcquire.ViewModels
         public string FullName { get => this.channel.FullName; }
         public bool Enabled { get => this.channel.Enabled; set => this.channel.Enabled = value; }
         public TotalFrameCounter Performance { get; protected set; }
+
+
+        public static ChannelViewModel FromChannel(Channel channel)
+        {
+            switch (channel.MediaType)
+            {
+                case MediaType.Video:
+                    return new VideoChannelViewModel(channel);
+
+                case MediaType.Audio:
+                    return new AudioChannelViewModel(channel);
+
+                case MediaType.Data:
+                    return new DataChannelViewModel(channel);
+            }
+            throw new InvalidOperationException("Unable to determine correct implementation for channel!");
+        }
     }
 }

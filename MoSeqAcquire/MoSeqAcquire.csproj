@@ -128,6 +128,7 @@
     <Compile Include="Models\Acquisition\AudioChannelFrameMetadata.cs" />
     <Compile Include="Models\Acquisition\ChannelFrameMetadata.cs" />
     <Compile Include="Models\Acquisition\MediaSourceSpecification.cs" />
+    <Compile Include="Models\Acquisition\DataChannelFrameMetadata.cs" />
     <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
     <Compile Include="Models\Attributes\HiddenAttribute.cs" />
     <Compile Include="Models\Configuration\IPropertyCapabilityProvider.cs" />

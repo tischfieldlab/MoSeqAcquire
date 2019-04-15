@@ -10,5 +10,8 @@ namespace MoSeqAcquire.Models.Recording
     public class BeforeRecordingStartedTrigger : Trigger { }
     public class AfterRecordingStartedTrigger : Trigger { }
     public class BeforeRecordingFinishedTrigger : Trigger { }
-    public class AfterRecordingFinishedTrigger : Trigger { }
+    public class AfterRecordingFinishedTrigger : Trigger
+    {
+        public bool Aborted { get; set; }
+    }
 }

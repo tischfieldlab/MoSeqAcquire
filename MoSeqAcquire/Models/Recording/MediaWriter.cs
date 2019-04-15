@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Management;
@@ -72,7 +73,7 @@ namespace MoSeqAcquire.Models.Recording
 
         public virtual void Stop()
         {
-            this._pins.Values.ForEach(mwp => mwp.Disconnect().Wait());
+            Task.WaitAll(this._pins.Values.Select(mwp => mwp.Disconnect()).ToArray());
             this.Performance.Stop();
             this.IsRecording = false;
         }

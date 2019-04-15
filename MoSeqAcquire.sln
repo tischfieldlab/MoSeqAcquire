@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Recorders", "Recorders", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPEGVideoWriter", "Recorders\MPEGVideoWriter\MPEGVideoWriter.csproj", "{0ED7502F-663F-456C-B6FE-F336C393689B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawDataWriter", "Recorders\RawDataWriter\RawDataWriter.csproj", "{26E1D815-420A-432E-A06C-73FED15AAF20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryDataWriter", "Recorders\BinaryDataWriter\BinaryDataWriter.csproj", "{26E1D815-420A-432E-A06C-73FED15AAF20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDF5Writer", "Recorders\HDF5Writer\HDF5Writer.csproj", "{49DB32D2-448B-4371-8172-739F1BB5D8A1}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoSeqAcquireTests", "MoSeqAcquireTests\MoSeqAcquireTests.csproj", "{D58A584B-6185-4AFC-BD43-047F1CA427F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectXboxOne", "KinectXboxOne\KinectXboxOne.csproj", "{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextDataWriter", "Recorders\TextDataWriter\TextDataWriter.csproj", "{6916E216-A0FB-454F-851A-55223C87B081}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +138,14 @@ Global
 		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Release|x64.ActiveCfg = Release|Any CPU
 		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}.Release|x64.Build.0 = Release|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Debug|x64.Build.0 = Debug|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Release|x64.ActiveCfg = Release|Any CPU
+		{6916E216-A0FB-454F-851A-55223C87B081}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +160,7 @@ Global
 		{36213CF0-706B-48A8-ABDC-A88965101E5B} = {E15FF6A4-1E79-42F2-A66D-C965854C4FE5}
 		{F695B199-3061-4C08-80E2-535C0BE78F23} = {E15FF6A4-1E79-42F2-A66D-C965854C4FE5}
 		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
+		{6916E216-A0FB-454F-851A-55223C87B081} = {E262988C-6FB7-41C9-BE90-46AF7748EF3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6786BB0-2164-48DF-9EDB-D0D34E984B4E}

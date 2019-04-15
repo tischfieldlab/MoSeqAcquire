@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Views.Extensions;
 
@@ -36,6 +37,7 @@ namespace MoSeqAcquire.Models.Recording
             get => this.directory;
             set => this.SetField(ref this.directory, value);
         }
+        [Hidden(true)]
         public string Basename
         {
             get => this.basename;
@@ -61,7 +63,7 @@ namespace MoSeqAcquire.Models.Recording
             get
             {
                 return !string.IsNullOrWhiteSpace(this.directory)
-                    && !string.IsNullOrWhiteSpace(this.basename)
+                    //&& !string.IsNullOrWhiteSpace(this.basename)
                     && (this.recordingMode.Equals(RecordingMode.Indeterminate)
                         || (this.recordingMode.Equals(RecordingMode.TimeCount) && this.recordingTime.TotalSeconds > 0)
                        );

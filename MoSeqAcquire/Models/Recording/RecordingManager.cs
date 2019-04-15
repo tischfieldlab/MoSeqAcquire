@@ -43,6 +43,7 @@ namespace MoSeqAcquire.Models.Recording
 
         public event EventHandler RecordingStarted;
         public event EventHandler RecordingFinished;
+        public event EventHandler RecordingAborted;
 
         public RecordingManager(TriggerBus triggerBus)
         {
@@ -163,23 +164,30 @@ namespace MoSeqAcquire.Models.Recording
         }
         public void Stop()
         {
+            //ensure state is correct
             this.EnsureState(RecordingManagerState.Recording, "Recording Manager must be started before stopping!");
 
+            // run before complete triggers
             this.CurrentTask = RecordingManagerTasks.RunningBeforeCompleteTriggers;
             this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
 
+            //Stop the individual recorders
             this.State = RecordingManagerState.Completing;
             this.CurrentTask = RecordingManagerTasks.StoppingRecorders;
             foreach (var r in this.writers)
             {
                 r.Stop();
             }
+            //and dispose of the terminator
             this.terminator.Stop();
             this.DisposeTerminator();
 
+            // run after complete triggers
             this.CurrentTask = RecordingManagerTasks.RunningAfterCompleteTriggers;
             this.RecordingFinished?.Invoke(this, new EventArgs());
             this.triggerBus.Trigger(new AfterRecordingFinishedTrigger());
+
+            //set state to idle
             this.State = RecordingManagerState.Idle;
             this.CurrentTask = RecordingManagerTasks.None;
         }
@@ -201,6 +209,11 @@ namespace MoSeqAcquire.Models.Recording
                 this.terminator.Stop();
                 this.DisposeTerminator();
             }
+
+            this.CurrentTask = RecordingManagerTasks.RunningAfterCompleteTriggers;
+            this.RecordingAborted?.Invoke(this, new EventArgs());
+            this.triggerBus.Trigger(new AfterRecordingFinishedTrigger() { Aborted = true });
+
             this.State = RecordingManagerState.Idle;
             this.CurrentTask = RecordingManagerTasks.None;
         }
