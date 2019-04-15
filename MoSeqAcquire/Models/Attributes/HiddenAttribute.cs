@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class|AttributeTargets.Property, AllowMultiple = true)]
     public class HiddenAttribute : Attribute
     {
         /// <summary>
@@ -17,7 +17,7 @@ namespace MoSeqAcquire.Models.Attributes
         /// <summary>
         /// Attribute constructor.
         /// </summary>
-        public HiddenAttribute(bool IsHidden)
+        public HiddenAttribute(bool IsHidden=true)
         {
             this.isHidden = IsHidden;
         }

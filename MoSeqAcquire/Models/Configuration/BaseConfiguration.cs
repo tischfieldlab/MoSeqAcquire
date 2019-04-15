@@ -14,7 +14,11 @@ namespace MoSeqAcquire.Models.Configuration
         {
             return this.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType));
+                .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                .Where(pi => {
+                    var ha = pi.GetCustomAttribute<HiddenAttribute>();
+                    return (ha == null) || (ha != null && ha.IsHidden == false);
+                });
         }
         public List<Type> GetKnownTypes()
         {

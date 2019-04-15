@@ -34,6 +34,7 @@ namespace MoSeqAcquire.Models.Triggers
     }
 
     [SettingsImplementation(typeof(TriggerConfig))]
+    [Hidden]
     public class ActionTriggerAction : TriggerAction
     {
         public Action<Trigger> Delegate { get; set; }
