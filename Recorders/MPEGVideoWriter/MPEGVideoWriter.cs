@@ -17,6 +17,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
     {
         private readonly object lockobject = new object();
         protected VideoFileWriter writer;
+        protected TimestampCoWriter tsWriter;
 
         protected MediaWriterPin videoPin;
         protected MediaWriterPin audioPin;
@@ -33,11 +34,18 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 
         public override void Start()
         {
-            this.writer = new VideoFileWriter();
             var vChanMeta = this.videoPin.Channel.Metadata as VideoChannelMetadata;
             var conf = this.Settings as MPEGVideoWriterSettings;
+
+            this.writer = new VideoFileWriter();
             this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height, new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate);
             //conf.AudioCodec, conf.AudioBitrate, 16000, 1);
+
+            if (conf.WriteTimestamps)
+            {
+                this.tsWriter = new TimestampCoWriter(this.FormatFilePath("{0}_ts.txt"));
+                this.tsWriter.Open();
+            }
 
             base.Start();
         }
@@ -47,6 +55,12 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             base.Stop();
             this.writer.Flush();
             this.writer.Close();
+
+            if (this.tsWriter != null)
+            {
+                this.tsWriter.Close();
+                this.tsWriter = null;
+            }
         }
         
 
@@ -95,7 +109,13 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
                                     {
                                         this.writer.WriteVideoFrame(bmp);
                                     }
-                                }catch
+
+                                    if (this.tsWriter != null)
+                                    {
+                                        this.tsWriter.Write(frame.Metadata.AbsoluteTime);
+                                    }
+                                }
+                                catch
                                 {
                                     Console.WriteLine("missed frame");
                                 }

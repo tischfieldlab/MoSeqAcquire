@@ -13,10 +13,19 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
     {
         public MPEGVideoWriterSettings() : base() { }
 
+
+        protected bool writeTimestamps;
         protected VideoCodec videoCodec;
         protected int videoBitrate;
         protected AudioCodec audioCodec;
         protected int audioBitrate;
+
+        [DefaultValue(true)]
+        public bool WriteTimestamps
+        {
+            get => this.writeTimestamps;
+            set => this.SetField(ref this.writeTimestamps, value);
+        }
 
         [DefaultValue(VideoCodec.MPEG4)]
         public VideoCodec VideoCodec

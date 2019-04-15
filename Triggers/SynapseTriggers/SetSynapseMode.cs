@@ -26,6 +26,7 @@ namespace SynapseTriggers
                     var settings = this.Config as SetSynapseModeConfig;
                     var client = SynapseClient.GetClient();
                     client.Mode = settings.Mode;
+                    System.Threading.Thread.Sleep(1000);
                 };
             }
         }

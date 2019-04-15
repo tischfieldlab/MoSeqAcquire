@@ -72,6 +72,7 @@ namespace MoSeqAcquire.Models.Recording.TextDataWriter
             if (this.tsWriter != null)
             {
                 this.tsWriter.Close();
+                this.tsWriter = null;
             }
         }
 
@@ -85,8 +86,6 @@ namespace MoSeqAcquire.Models.Recording.TextDataWriter
             return items;
         }
 
-
-        protected byte[] stupidByteBuffer;
         protected ActionBlock<ChannelFrame> GetActionBlock()
         {
             return new ActionBlock<ChannelFrame>(frame =>

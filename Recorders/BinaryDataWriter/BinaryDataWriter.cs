@@ -89,6 +89,7 @@ namespace MoSeqAcquire.Models.Recording.BinaryDataWriter
             if (this.tsWriter != null)
             {
                 this.tsWriter.Close();
+                this.tsWriter = null;
             }
         }
 
@@ -112,9 +113,19 @@ namespace MoSeqAcquire.Models.Recording.BinaryDataWriter
 
                 if (frame.DataType != typeof(byte))
                 {
-                    if (this.stupidByteBuffer == null) { this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes]; }
-                    Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
-                    this.writer.Write(this.stupidByteBuffer);
+                    try
+                    {
+                        if (this.stupidByteBuffer == null || this.stupidByteBuffer.Length != frame.Metadata.TotalBytes)
+                        {
+                            this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes];
+                        }
+                        Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
+                        this.writer.Write(this.stupidByteBuffer);
+                    }
+                    catch
+                    {
+                        var x = 1;
+                    }
                 }
                 else
                 {
