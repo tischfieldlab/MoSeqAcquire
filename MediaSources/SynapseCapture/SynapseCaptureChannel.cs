@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
@@ -27,7 +28,13 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         {
             if (this.Enabled)
             {
-                this.PostFrame(new ChannelFrame(e.Data));
+                var metadata = new DataChannelFrameMetadata()
+                {
+                    AbsoluteTime = PreciseDatetime.Now,
+                    TotalBytes = System.Buffer.ByteLength(e.Data),
+                    DataType = e.Data.GetType().GetElementType()
+                };
+                this.PostFrame(new ChannelFrame(e.Data, metadata));
             }
         }
 

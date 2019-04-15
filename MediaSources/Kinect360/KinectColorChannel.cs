@@ -103,7 +103,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     var meta = new VideoChannelFrameMetadata()
                     {
                         FrameId = imageFrame.FrameNumber,
-                        Timestamp = imageFrame.Timestamp,
+                        //Timestamp = imageFrame.Timestamp,
                         AbsoluteTime = PreciseDatetime.Now,
                         Width = imageFrame.Width,
                         Height = imageFrame.Height,

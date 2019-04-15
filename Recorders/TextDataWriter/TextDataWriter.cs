@@ -8,24 +8,23 @@ using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 
-namespace MoSeqAcquire.Models.Recording.RawDataWriter
+namespace MoSeqAcquire.Models.Recording.TextDataWriter
 {
-    [KnownType(typeof(RawDataWriterSettings))]
-    [DisplayName("Raw Data Writer")]
-    [SettingsImplementation(typeof(RawDataWriterSettings))]
-    [SupportedChannelType(MediaType.Any, ChannelCapacity.Multiple)]
-    public class RawDataWriter : MediaWriter
+    [DisplayName("Plain Text Data Writer")]
+    [SettingsImplementation(typeof(TextDataWriterSettings))]
+    [SupportedChannelType(MediaType.Any, ChannelCapacity.Single)]
+    public class TextDataWriter : MediaWriter
     {
         protected MediaWriterPin dataPin;
 
         protected FileStream file;
         protected GZipStream compressor;
-        protected BinaryWriter writer;
+        protected StreamWriter writer;
         protected TimestampCoWriter tsWriter;
 
-        public RawDataWriter() : base()
+        public TextDataWriter() : base()
         {
-            this.dataPin = new MediaWriterPin(MediaType.Any, ChannelCapacity.Multiple, this.GetActionBlock);
+            this.dataPin = new MediaWriterPin(MediaType.Any, ChannelCapacity.Single, this.GetActionBlock);
             this.RegisterPin(this.dataPin);
         }
         
@@ -33,24 +32,8 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
         {
             get
             {
-                string ext = "";
-                if(this.dataPin.Channel == null)
-                {
-                    return "###";
-                }
-                if (this.dataPin.Channel.DataType == typeof(short))
-                {
-                    ext = "short";
-                }
-                else if (this.dataPin.Channel.DataType == typeof(byte))
-                {
-                    ext = "byte";
-                }
-                else
-                {
-                    ext = "unknown";
-                }
-                if ((this.Settings as RawDataWriterSettings).EnableGZipCompression)
+                string ext = "txt";
+                if ((this.Settings as TextDataWriterSettings).EnableGZipCompression)
                 {
                     ext += ".gz";
                 }
@@ -60,17 +43,17 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
 
         public override void Start()
         {
-            var cfg = this.Settings as RawDataWriterSettings;
+            var cfg = this.Settings as TextDataWriterSettings;
 
             this.file = File.Open(this.FilePath, FileMode.Create);
             if (cfg.EnableGZipCompression)
             {
                 this.compressor = new GZipStream(this.file, CompressionMode.Compress);
-                this.writer = new BinaryWriter(this.compressor);
+                this.writer = new StreamWriter(this.compressor);
             }
             else
             {
-                this.writer = new BinaryWriter(this.file);
+                this.writer = new StreamWriter(this.file);
             }
 
             if (cfg.WriteTimestamps)
@@ -95,7 +78,7 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
         public override IDictionary<string, IEnumerable<Channel>> GetChannelFileMap()
         {
             var items = base.GetChannelFileMap();
-            if ((this.Settings as RawDataWriterSettings).WriteTimestamps)
+            if ((this.Settings as TextDataWriterSettings).WriteTimestamps)
             {
                 items.Add(this.FormatFilePath("{0}_ts.txt"), this.Pins.Values.Where(mwp => mwp.Channel != null).Select(mwp => mwp.Channel));
             }
@@ -110,16 +93,7 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
             {
                 if (!this.IsRecording) { return; }
 
-                if (frame.DataType == typeof(short))
-                {
-                    if (this.stupidByteBuffer == null) { this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes]; }
-                    Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
-                    this.writer.Write(this.stupidByteBuffer);
-                }
-                else
-                {
-                    this.writer.Write(frame.FrameData as byte[]);
-                }
+                this.writer.WriteLine(string.Join("\t", frame.FrameData.OfType<object>().Select(i => string.Format("{0}", i))));
                 if(this.tsWriter != null)
                 {
                     this.tsWriter.Write(frame.Metadata.AbsoluteTime);
