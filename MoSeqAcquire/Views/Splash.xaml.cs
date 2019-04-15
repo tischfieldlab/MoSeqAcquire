@@ -7,14 +7,11 @@ namespace MoSeqAcquire.Views
     /// </summary>
     public partial class Splash : WaitingWindow
     {
-
-
         public Splash() : base()
         {
             this.DataContext = this;
             InitializeComponent();
             this.CurrentStatus = "Initializing.....";
         }
-        
     }
 }

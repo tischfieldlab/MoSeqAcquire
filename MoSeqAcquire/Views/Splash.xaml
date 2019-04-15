@@ -1,12 +1,24 @@
 ﻿<cont:WaitingWindow x:Class="MoSeqAcquire.Views.Splash"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
-                 xmlns:cont="clr-namespace:MoSeqAcquire.Views.Controls"
-        Title="MoSeq Acquire - Loading" Height="120" Width="300" WindowStyle="None" AllowsTransparency="True" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True">
-    <Window.Background>
-        <SolidColorBrush />
-    </Window.Background>
+        xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
+        xmlns:cont="clr-namespace:MoSeqAcquire.Views.Controls"         
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Height="120" Width="300"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        ShowInTaskbar="False" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        Topmost="True"
+        Title="MoSeq Acquire - Loading"  >
     <Window.Resources>
         <Style x:Key="AnimationImage" TargetType="{x:Type Image}">
             <Setter Property="RenderTransform">
@@ -28,13 +40,19 @@
         </Style>
     </Window.Resources>
     <Grid >
-        <Border BorderBrush="#293955" Background="#FFADB9CD" Opacity="0.9" BorderThickness="3" CornerRadius="5"></Border>
-        <StackPanel VerticalAlignment="Center">
-            <ProgressBar Width="220" Height="30" IsIndeterminate="True"></ProgressBar>
-            <WrapPanel HorizontalAlignment="Center" Margin="0,5,0,5">
-                <!--<Image Source="/Common;component/Images/appIcon.ico" Width="16" Height="16" VerticalAlignment="Center" Style="{StaticResource AnimationImage}" />-->
-                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" FontSize="12" Foreground="DarkSlateGray" Text="{Binding Path=CurrentStatus}" />
+        <!--BorderBrush="#293955" Background="#FFADB9CD"-->
+        <Border Opacity="0.9" BorderThickness="3" CornerRadius="5">
+        
+        <StackPanel VerticalAlignment="Center" Margin="20,0">
+            <TextBlock Text="MoSeq Acquire" Style="{DynamicResource MaterialDesignHeadlineTextBlock}" />
+           
+            <WrapPanel HorizontalAlignment="Left" Margin="0,5,0,5">
+                <ProgressBar Width="30" Height="30" IsIndeterminate="True" Style="{DynamicResource MaterialDesignCircularProgressBar}" />
+                <!--<Image Source="/Common;component/Images/appIcon.ico" Width="16" Height="16" VerticalAlignment="Center" Style="{StaticResource AnimationImage}" />
+                FontSize="12" Foreground="DarkSlateGray"-->
+                <TextBlock VerticalAlignment="Center" Margin="20,0,0,0" Text="{Binding Path=CurrentStatus}" />
             </WrapPanel>
         </StackPanel>
+        </Border>
     </Grid>
 </cont:WaitingWindow>
