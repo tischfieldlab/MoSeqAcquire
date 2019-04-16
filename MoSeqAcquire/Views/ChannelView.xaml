@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
-             xmlns:MoSeqAcquire="clr-namespace:MoSeqAcquire"
+             xmlns:views="clr-namespace:MoSeqAcquire.Views"
              xmlns:vm="clr-namespace:MoSeqAcquire.ViewModels"
              xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -19,7 +19,7 @@
                     <DockPanel Margin="8">
                         <ToggleButton DockPanel.Dock="Right"
                                       IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
-                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MainWindow}}}" 
                                       CommandParameter="{Binding}" />
                         <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
                     </DockPanel>
@@ -43,7 +43,7 @@
                     <DockPanel Margin="8">
                         <ToggleButton DockPanel.Dock="Right"
                                       IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
-                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MainWindow}}}" 
                                       CommandParameter="{Binding}" />
                         <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
                     </DockPanel>
@@ -67,7 +67,7 @@
                     <DockPanel Margin="5">
                         <ToggleButton DockPanel.Dock="Right" 
                                       IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
-                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MainWindow}}}" 
                                       CommandParameter="{Binding}" />
                         <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
                     </DockPanel>

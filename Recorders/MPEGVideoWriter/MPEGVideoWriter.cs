@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Threading.Tasks.Dataflow;
 using Accord.Video.FFMPEG;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
@@ -67,65 +66,58 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 
 
 
-        protected ActionBlock<ChannelFrame> GetAudioActionBlock()
+        protected void GetAudioActionBlock(ChannelFrame frame)
         {
-            return new ActionBlock<ChannelFrame>(frame =>
+            if (this.IsRecording)
             {
-                if (this.IsRecording)
+                lock (this.lockobject)
                 {
-                    lock (this.lockobject)
-                    {
-                        //this.writer.WriteAudioFrame((byte[])frame.FrameData);
-                    }
+                    //this.writer.WriteAudioFrame((byte[])frame.FrameData);
                 }
-            });
+            }
         }
-        protected ActionBlock<ChannelFrame> GetVideoActionBlock()
+        protected void GetVideoActionBlock(ChannelFrame frame)
         {
-            return new ActionBlock<ChannelFrame>(frame =>
+            if (this.IsRecording)
             {
-                if (this.IsRecording)
+                unsafe
                 {
-                    unsafe
+                    byte[] data = (byte[])frame.FrameData;
+                    var meta = frame.Metadata as VideoChannelFrameMetadata;
+                    fixed (byte* first = &data[0])
                     {
-                        byte[] data = (byte[])frame.FrameData;
-                        var meta = frame.Metadata as VideoChannelFrameMetadata;
-                        fixed (byte* first = &data[0])
+                        Bitmap bmp = new Bitmap(meta.Width,
+                                                meta.Height,
+                                                meta.BytesPerPixel * meta.Width,
+                                                meta.PixelFormat.ToDrawingPixelFormat(),
+                                                (IntPtr)first);
+                        lock (this.lockobject)
                         {
-                            Bitmap bmp = new Bitmap(meta.Width,
-                                                    meta.Height,
-                                                    meta.BytesPerPixel * meta.Width,
-                                                    meta.PixelFormat.ToDrawingPixelFormat(),
-                                                    (IntPtr)first);
-                            lock (this.lockobject)
+                            try
                             {
-                                try
+                                if (this.Performance.TotalFrames > 0)
                                 {
-                                    if (this.Performance.TotalFrames > 0)
-                                    {
-                                        this.writer.WriteVideoFrame(bmp, TimeSpan.FromMilliseconds(meta.AbsoluteTime.Subtract(this.Epoch).TotalMilliseconds));
-                                    }
-                                    else
-                                    {
-                                        this.writer.WriteVideoFrame(bmp);
-                                    }
+                                    this.writer.WriteVideoFrame(bmp, TimeSpan.FromMilliseconds(meta.AbsoluteTime.Subtract(this.Epoch).TotalMilliseconds));
+                                }
+                                else
+                                {
+                                    this.writer.WriteVideoFrame(bmp);
+                                }
 
-                                    if (this.tsWriter != null)
-                                    {
-                                        this.tsWriter.Write(frame.Metadata.AbsoluteTime);
-                                    }
-                                }
-                                catch
+                                if (this.tsWriter != null)
                                 {
-                                    Console.WriteLine("missed frame");
+                                    this.tsWriter.Write(frame.Metadata.AbsoluteTime);
                                 }
-                                this.Performance.Increment();
                             }
+                            catch
+                            {
+                                Console.WriteLine("missed frame");
+                            }
+                            this.Performance.Increment();
                         }
                     }
-                    
                 }
-            });
+            }
         }
     }
 }

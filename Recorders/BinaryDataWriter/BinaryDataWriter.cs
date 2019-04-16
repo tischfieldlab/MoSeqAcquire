@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 
@@ -105,38 +104,36 @@ namespace MoSeqAcquire.Models.Recording.BinaryDataWriter
 
 
         protected byte[] stupidByteBuffer;
-        protected ActionBlock<ChannelFrame> GetActionBlock()
+        protected void GetActionBlock(ChannelFrame frame)
         {
-            return new ActionBlock<ChannelFrame>(frame =>
-            {
-                if (!this.IsRecording) { return; }
+            
+            if (!this.IsRecording) { return; }
 
-                if (frame.DataType != typeof(byte))
+            if (frame.DataType != typeof(byte))
+            {
+                try
                 {
-                    try
+                    if (this.stupidByteBuffer == null || this.stupidByteBuffer.Length != frame.Metadata.TotalBytes)
                     {
-                        if (this.stupidByteBuffer == null || this.stupidByteBuffer.Length != frame.Metadata.TotalBytes)
-                        {
-                            this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes];
-                        }
-                        Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
-                        this.writer.Write(this.stupidByteBuffer);
+                        this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes];
                     }
-                    catch
-                    {
-                        var x = 1;
-                    }
+                    Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
+                    this.writer.Write(this.stupidByteBuffer);
                 }
-                else
+                catch
                 {
-                    this.writer.Write(frame.FrameData as byte[]);
+                    var x = 1;
                 }
-                if(this.tsWriter != null)
-                {
-                    this.tsWriter.Write(frame.Metadata.AbsoluteTime);
-                }
-                this.Performance.Increment();
-            });
+            }
+            else
+            {
+                this.writer.Write(frame.FrameData as byte[]);
+            }
+            if(this.tsWriter != null)
+            {
+                this.tsWriter.Write(frame.Metadata.AbsoluteTime);
+            }
+            this.Performance.Increment();
         }
     }
 }

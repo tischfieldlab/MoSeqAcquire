@@ -1,4 +1,4 @@
-﻿<Window x:Class="MoSeqAcquire.MainWindow"
+﻿<Window x:Class="MoSeqAcquire.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,13 +9,13 @@
         xmlns:v="clr-namespace:MoSeqAcquire.Views"
         xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
         mc:Ignorable="d"
-     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-     TextElement.FontWeight="Regular"
-     TextElement.FontSize="13"
-     TextOptions.TextFormattingMode="Ideal"
-     TextOptions.TextRenderingMode="Auto"
-     Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="{Binding Path=MainWindowTitle}" Height="400" Width="1000">
     <Window.Resources>
         <ResourceDictionary>

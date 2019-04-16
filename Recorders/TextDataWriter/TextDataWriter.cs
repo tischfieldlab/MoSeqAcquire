@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 
@@ -86,19 +85,16 @@ namespace MoSeqAcquire.Models.Recording.TextDataWriter
             return items;
         }
 
-        protected ActionBlock<ChannelFrame> GetActionBlock()
+        protected void GetActionBlock(ChannelFrame frame)
         {
-            return new ActionBlock<ChannelFrame>(frame =>
-            {
-                if (!this.IsRecording) { return; }
+            if (!this.IsRecording) { return; }
 
-                this.writer.WriteLine(string.Join("\t", frame.FrameData.OfType<object>().Select(i => string.Format("{0}", i))));
-                if(this.tsWriter != null)
-                {
-                    this.tsWriter.Write(frame.Metadata.AbsoluteTime);
-                }
-                this.Performance.Increment();
-            });
+            this.writer.WriteLine(string.Join("\t", frame.FrameData.OfType<object>().Select(i => string.Format("{0}", i))));
+            if(this.tsWriter != null)
+            {
+                this.tsWriter.Write(frame.Metadata.AbsoluteTime);
+            }
+            this.Performance.Increment();
         }
     }
 }

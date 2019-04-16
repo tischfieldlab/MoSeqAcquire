@@ -1,14 +1,8 @@
-﻿using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Recording;
-using MoSeqAcquire.ViewModels;
-using MoSeqAcquire.Views;
+﻿using MoSeqAcquire.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MoSeqAcquire
+namespace MoSeqAcquire.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptingTriggers", "Trigge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoSeqAcquireTests", "MoSeqAcquireTests\MoSeqAcquireTests.csproj", "{D58A584B-6185-4AFC-BD43-047F1CA427F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectXboxOne", "KinectXboxOne\KinectXboxOne.csproj", "{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectXboxOne", "MediaSources\KinectXboxOne\KinectXboxOne.csproj", "{BC9D6E89-50B2-4690-8B6A-28A73415F9A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextDataWriter", "Recorders\TextDataWriter\TextDataWriter.csproj", "{6916E216-A0FB-454F-851A-55223C87B081}"
 EndProject

@@ -7,7 +7,6 @@
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
              xmlns:cont="clr-namespace:MoSeqAcquire.Views.Controls"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
-             xmlns:MoSeqAcquire="clr-namespace:MoSeqAcquire" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -36,14 +35,14 @@
                                               Style="{StaticResource MaterialDesignSubheadingTextBlock}"
                                               Text="{Binding MediaSource.Name}" />
                                         <Button DockPanel.Dock="Right"  Width="24" Height="24"
-                                                Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                                                Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" 
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                                                 ToolTip="Remove Source">
                                             <materialDesign:PackIcon Kind="Close"  />
                                         </Button>
                                         <Button DockPanel.Dock="Right" Width="24" Height="24"
-                                                Command="{Binding Path=DataContext.Commands.ToggleOpenMediaSourceConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}"
+                                                Command="{Binding Path=DataContext.Commands.ToggleOpenMediaSourceConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                                                 ToolTip="Open Config"
