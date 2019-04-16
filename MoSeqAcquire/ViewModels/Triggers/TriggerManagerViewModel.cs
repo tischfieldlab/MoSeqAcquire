@@ -58,6 +58,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             this.triggers.Clear();
         }
+        public void ResetStatuses()
+        {
+            this.triggers.ForEach(tvm => tvm.TriggerState = TriggerState.Queued);
+        }
 
 
         

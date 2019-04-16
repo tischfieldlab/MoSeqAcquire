@@ -123,6 +123,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         
         public void StartRecording()
         {
+            this.Root.Triggers.ResetStatuses();
             Task.Run(() =>
             {
                 this.recordingManager.Start();

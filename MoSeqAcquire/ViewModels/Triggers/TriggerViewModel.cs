@@ -96,9 +96,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 this.TriggerState = TriggerState.None;
             }
         }
-
-        
-
         protected void RegisterTrigger()
         {
             if (!this.isRegistered)
