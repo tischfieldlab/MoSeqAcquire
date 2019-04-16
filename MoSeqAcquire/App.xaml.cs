@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,7 +26,10 @@ namespace MoSeqAcquire
             this.loading.BeginWaiting();
 
 
-            Settings.Default.PluginPaths.Cast<string>().ForEach((p) => RegisterProbePath(p));
+            foreach (var p in Settings.Default.PluginPaths)
+            {
+                RegisterProbePath(p);
+            }
 
             AppDomain.CurrentDomain.AssemblyResolve += LoadResolveEventHandler;
 

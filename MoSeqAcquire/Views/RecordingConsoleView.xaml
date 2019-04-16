@@ -27,33 +27,41 @@
         <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     </UserControl.Resources>
     <Grid>
-        <StackPanel >
-            <GroupBox Header="Recording Console" Grid.Column="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Column="0">
-                        <WrapPanel>
-                            <Button Content="Start" Width="100" Command="{Binding Path=Root.Commands.StartRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}"  Margin="8" />
-                            <Button Content="Stop" Width="100" Command="{Binding Path=Root.Commands.StopRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="8" />
-                        </WrapPanel>
-                        <mvrv:RecorderProgress Margin="0,16,0,0" />
-                    </StackPanel>
-                    <mvrv:RecorderGeneralSettings Grid.Column="1" />
-                </Grid>
-            </GroupBox>
-            
-            <mvrv:RecorderItemsView />
-            
-            <GroupBox Header="Recording Metadata" Grid.Row="1" Grid.ColumnSpan="2">
-                <ctrl:MetadataView IsTemplateEditable="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}" />
-            </GroupBox>
-        </StackPanel>
+        <materialDesign:Card Margin="8,8,8,0" materialDesign:ShadowAssist.ShadowDepth="Depth5">
+            <Grid Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <WrapPanel>
+                        <Button Content="Start" Width="100" Command="{Binding Path=Root.Commands.StartRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}"  Margin="8" />
+                        <Button Content="Stop" Width="100" Command="{Binding Path=Root.Commands.StopRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="8" />
+                    </WrapPanel>
+                    <mvrv:RecorderProgress Margin="0,16,0,0" />
+                </StackPanel>
+                <mvrv:RecorderGeneralSettings Grid.Column="1" />
+            </Grid>
+        </materialDesign:Card>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="8">
+                <mvrv:RecorderItemsView />
+                <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
+                <GroupBox Header="Recording Metadata" Style="{DynamicResource MaterialDesignCardGroupBox}"
+                          Margin="16,8">
+                    <ctrl:MetadataView IsTemplateEditable="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}" />
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

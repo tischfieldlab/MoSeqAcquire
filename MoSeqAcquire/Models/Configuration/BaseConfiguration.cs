@@ -38,65 +38,65 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public void ApplyDefaults()
         {
-            this.GetConfigurationProperties()
-                .ForEach((pi) =>
+            foreach (var pi in this.GetConfigurationProperties())
+            {
+                if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
                 {
-                    if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                    ComplexProperty prop = (ComplexProperty)pi.GetValue(this);
+                    prop.Value = prop.Default;
+                }
+                else
+                {
+                    DefaultValueAttribute attr = pi.GetCustomAttribute<DefaultValueAttribute>();
+                    if (attr != null)
                     {
-                        ComplexProperty prop = (ComplexProperty)pi.GetValue(this);
-                        prop.Value = prop.Default;
+                        pi.SetValue(this, attr.Value);
+                        return;
                     }
-                    else
+                    RangeMethodAttribute rma = pi.GetCustomAttribute<RangeMethodAttribute>();
+                    if (rma != null)
                     {
-                        DefaultValueAttribute attr = pi.GetCustomAttribute<DefaultValueAttribute>();
-                        if (attr != null)
-                        {
-                            pi.SetValue(this, attr.Value);
-                            return;
-                        }
-                        RangeMethodAttribute rma = pi.GetCustomAttribute<RangeMethodAttribute>();
-                        if (rma != null)
-                        {
-                            pi.SetValue(this, (this.GetType().GetMethod(rma.MethodName).Invoke(this, null) as IDefaultInfo).Default);
-                            return;
-                        }
-                        if (pi.PropertyType.IsValueType)
-                        {
-                            pi.SetValue(this, Activator.CreateInstance(pi.PropertyType));
-                            return;
-                        }
+                        pi.SetValue(this, (this.GetType().GetMethod(rma.MethodName).Invoke(this, null) as IDefaultInfo).Default);
+                        return;
                     }
-                });
+                    if (pi.PropertyType.IsValueType)
+                    {
+                        pi.SetValue(this, Activator.CreateInstance(pi.PropertyType));
+                        return;
+                    }
+                }
+            }
         }
         public ConfigSnapshot GetSnapshot()
         {
             var state = new ConfigSnapshot();
-            this.GetConfigurationProperties()
-                .ForEach((pi) => {
-                    ConfigSnapshotSetting setting;
-                    if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+            foreach (var pi in this.GetConfigurationProperties())
+            {
+                ConfigSnapshotSetting setting;
+                if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
+                {
+                    ComplexProperty prop = (ComplexProperty) pi.GetValue(this);
+                    setting = new ConfigSnapshotSetting()
                     {
-                        ComplexProperty prop = (ComplexProperty)pi.GetValue(this);
-                        setting = new ConfigSnapshotSetting()
-                        {
-                            Name = pi.Name,
-                            Value = prop.Value,
-                            ValueType = prop.ValueType,
-                            Automatic = prop.AllowsAuto ? (bool?)prop.IsAutomatic : null
-                        };
-                    }
-                    else
+                        Name = pi.Name,
+                        Value = prop.Value,
+                        ValueType = prop.ValueType,
+                        Automatic = prop.AllowsAuto ? (bool?) prop.IsAutomatic : null
+                    };
+                }
+                else
+                {
+                    setting = new ConfigSnapshotSetting()
                     {
-                        setting = new ConfigSnapshotSetting()
-                        {
-                            Name = pi.Name,
-                            Value = pi.GetValue(this),
-                            ValueType = pi.PropertyType,
-                            Automatic = null
-                        };
-                    }
-                    state.Add(setting.Name, setting);
-                });
+                        Name = pi.Name,
+                        Value = pi.GetValue(this),
+                        ValueType = pi.PropertyType,
+                        Automatic = null
+                    };
+                }
+
+                state.Add(setting.Name, setting);
+            }
             return state;
         }
         public void ApplySnapshot(ConfigSnapshot snapshot)

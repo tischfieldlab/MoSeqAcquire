@@ -56,12 +56,9 @@ namespace MoSeqAcquire.Models.Core
         {
             get
             {
-                var types = new List<Type>();
-
-                this.GetAttributes<KnownTypeAttribute>()
-                    .Where(a => a is KnownTypeAttribute && !a.IsDefaultAttribute())
-                    .Select(a => a.KnownType)
-                    .ForEach(t => types.Add(t));
+                var types = new List<Type>(this.GetAttributes<KnownTypeAttribute>()
+                                                         .Where(a => a is KnownTypeAttribute && !a.IsDefaultAttribute())
+                                                         .Select(a => a.KnownType));
                 
                 types.AddRange(this.SettingsFactory().GetKnownTypes());
                 return types;

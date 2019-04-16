@@ -36,11 +36,13 @@ namespace MoSeqAcquire.ViewModels.Recording
 
             this.rootViewModel.TriggerBus.Subscribe(typeof(BeforeRecordingStartedTrigger),
                                                     new ActionTriggerAction() {
+                                                        Priority = int.MinValue,
                                                         Delegate = (t) => this.Root.ForceProtocolLocked()
                                                     });
             this.rootViewModel.TriggerBus.Subscribe(typeof(AfterRecordingFinishedTrigger),
                                                     new ActionTriggerAction()
                                                     {
+                                                        Priority = int.MaxValue,
                                                         Delegate = (t) => this.Root.UndoForceProtoclLocked()
                                                     });
         }
@@ -102,6 +104,11 @@ namespace MoSeqAcquire.ViewModels.Recording
             set => this.SetField(ref this.selectedRecorder, value);
         }
 
+        public void ClearRecorders()
+        {
+            this.recordingManager.ClearRecorders();
+            this.recorders.Clear();
+        }
 
 
         public GeneralRecordingSettings GeneralSettings

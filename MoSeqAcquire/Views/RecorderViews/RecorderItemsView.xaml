@@ -9,7 +9,7 @@
              xmlns:mvm="clr-namespace:MoSeqAcquire.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <GroupBox Header="{Binding}" >
+    <GroupBox Header="{Binding}" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16,8" >
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <DockPanel>
@@ -23,7 +23,29 @@
                 </DockPanel>
             </DataTemplate>
         </GroupBox.HeaderTemplate>
-        <ItemsControl ItemsSource="{Binding Path=Recorders}" >
+        <ItemsControl ItemsSource="{Binding Path=Recorders}"  >
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
+                                                No recorders have been added yet. Would you like to 
+                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                                                    add one
+                                                </Hyperlink>?
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Style>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

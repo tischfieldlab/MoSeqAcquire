@@ -15,6 +15,7 @@ namespace MoSeqAcquire.Models.Triggers
         public event EventHandler<TriggerFaultedEventArgs> TriggerFaulted;
 
         public bool IsCritical { get; set; }
+        public int Priority { get; set; }
         public TriggerConfig Config { get; protected set; }
         protected abstract Action<Trigger> Action { get; }
 

@@ -37,6 +37,7 @@ namespace MoSeqAcquire.Models.Recording
         public void Stop()
         {
             this.__timer.Enabled = false;
+            this.FrameRate = 0;
         }
 
         private void Compute_framerate(object sender, ElapsedEventArgs e)

@@ -193,6 +193,10 @@ namespace MoSeqAcquire.Models.Recording
         }
         public void Abort()
         {
+            if (this.abortRequested)
+            {
+                return; //abort was already requested!
+            }
             this.abortRequested = true;
             this.State = RecordingManagerState.Completing;
             this.CurrentTask = RecordingManagerTasks.AbortingRecording;

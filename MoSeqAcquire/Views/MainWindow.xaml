@@ -47,6 +47,7 @@
                     <Separator />
                     <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
                     <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
+                    <MenuItem Header="Unload Protocol" Command="{Binding Path=Commands.UnloadProtocol}" />
                     <Separator />
                     <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLock}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked, Mode=OneWay}" >
                         <MenuItem.Icon>
@@ -75,14 +76,7 @@
                         </Grid.ColumnDefinitions>
 
                         <v:MediaSourceView HorizontalAlignment="Stretch" Grid.Column="0" Margin="8" />
-
-                        <StackPanel Grid.Column="1" Margin="8">
-                            <v:RecordingConsoleView DataContext="{Binding Path=Recorder}" />
-                            <v:TriggerManagerView DataContext="{Binding Path=Triggers}" />
-                        </StackPanel>
-                        <!--<GroupBox Header="Recording Console" Grid.Column="1" Margin="8">
-                            
-                        </GroupBox>-->
+                        <v:RecordingConsoleView Grid.Column="1" DataContext="{Binding Path=Recorder}" />
                     </Grid>
                 </TabItem>
             </dragablz:TabablzControl>
