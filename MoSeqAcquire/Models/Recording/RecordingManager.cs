@@ -6,6 +6,7 @@ using System.Text;
 using System.Timers;
 using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Recording
@@ -50,6 +51,7 @@ namespace MoSeqAcquire.Models.Recording
             this.triggerBus = triggerBus;
             this.writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
+            this.RecordingMetadata = new RecordingMetadata();
         }
 
         public void AddRecorder(MediaWriter Writer)
@@ -96,8 +98,8 @@ namespace MoSeqAcquire.Models.Recording
         public double? Progress { get => this.terminator?.Progress; }
         public TimeSpan? TimeRemaining { get => this.terminator?.TimeRemaining; }
         public GeneralRecordingSettings GeneralSettings { get; protected set; }
+        public RecordingMetadata RecordingMetadata { get; protected set; }
 
-        
         protected IRecordingLengthStrategy TerminatorFactory()
         {
             switch (this.GeneralSettings.RecordingMode)

@@ -61,7 +61,7 @@
                 <GroupBox.Resources>
                     <DataTemplate x:Key="choicesTemplate">
                         <DockPanel>
-                            <ListBox ItemsSource="{Binding Path=Choices}">
+                            <ListBox ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -87,8 +87,8 @@
                     </DataTemplate>
                     <DataTemplate x:Key="rangeTemplate">
                         <StackPanel>
-                            <TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=MinValue}" />
-                            <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=MaxValue}" />
+                            <TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MinValue}" />
+                            <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MaxValue}" />
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="noConstraintTemplate">

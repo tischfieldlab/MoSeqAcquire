@@ -59,7 +59,7 @@
                 <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
                 <GroupBox Header="Recording Metadata" Style="{DynamicResource MaterialDesignCardGroupBox}"
                           Margin="16,8">
-                    <ctrl:MetadataView IsTemplateEditable="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}" />
+                    <ctrl:MetadataView ItemsSource="{Binding Path=RecordingMetadata}" IsTemplateEditable="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}" />
                 </GroupBox>
             </StackPanel>
         </ScrollViewer>

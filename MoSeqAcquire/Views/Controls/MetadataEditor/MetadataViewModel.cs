@@ -21,6 +21,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
     {
         protected bool isTemplateEditable;
         protected MetadataViewState currentState;
+        protected MetadataCollection currentCollection;
         protected MetadataItem currentItem;
 
         public MetadataViewModel()
@@ -29,7 +30,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             {
                 typeof(bool), typeof(int), typeof(double), typeof(string)
             };
-            this.Items = new MetadataCollection(null);
+            this.currentCollection = new MetadataCollection(null);
             this.CurrentState = MetadataViewState.Grid;
         }
         public bool IsTemplateEditable
@@ -43,7 +44,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             set
             {
                 this.SetField(ref this.currentState, value);
-                this.NotifyPropertyChanged("CurrentIndex");
+                this.NotifyPropertyChanged(nameof(this.CurrentIndex));
             }
         }
         public int CurrentIndex
@@ -53,7 +54,11 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
 
         public ObservableCollection<Type> AvailableTypes { get; protected set; }
 
-        public MetadataCollection Items { get; protected set; }
+        public MetadataCollection Items
+        {
+            get => this.currentCollection;
+            set => this.SetField(ref this.currentCollection, value);
+        }
         public MetadataItem CurrentItem
         {
             get => this.currentItem;
