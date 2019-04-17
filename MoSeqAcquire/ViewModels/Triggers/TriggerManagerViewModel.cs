@@ -56,7 +56,12 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         public void RemoveTriggers()
         {
+            this.triggers.ForEach(tvm => tvm.DeregisterTrigger());
             this.triggers.Clear();
+        }
+        public void ResetStatuses()
+        {
+            this.triggers.ForEach(tvm => tvm.TriggerState = TriggerState.Queued);
         }
 
 

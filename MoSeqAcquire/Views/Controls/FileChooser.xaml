@@ -10,8 +10,8 @@
     </UserControl.Resources>
     <Grid>
         <TextBox Name="PathText" Text="{Binding Path=SelectedPath, ElementName=RootFC, Mode=TwoWay}" IsReadOnly="{Binding Path=ForcePickerUse, ElementName=RootFC, Mode=OneWay}" AllowDrop="True" Drop="PathText_Drop" MouseDoubleClick="ButtonClicked" HorizontalAlignment="Stretch" />
-        <Button Name="SelectButton"  Click="ButtonClicked" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignToolForegroundButton}">
-            <materialDesign:PackIcon Name="ButtonImage" Width="24" Height="24" />
+        <Button Name="SelectButton" Padding="0" Width="24" Height="24" Click="ButtonClicked" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{DynamicResource MaterialDesignToolForegroundButton}">
+            <materialDesign:PackIcon Name="ButtonImage" Width="24" Height="24"  />
         </Button>
     </Grid>
 </UserControl>

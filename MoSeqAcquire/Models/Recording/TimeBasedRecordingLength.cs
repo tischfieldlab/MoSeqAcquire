@@ -24,7 +24,7 @@ namespace MoSeqAcquire.Models.Recording
             this.targetLength = recordingLength;
             this.timer = new Timer()
             {
-                Interval = 100, //100 milliseconds
+                Interval = 10, //10 milliseconds
                 AutoReset = true
             };
             this.timer.Elapsed += this.Check_condition;
@@ -45,8 +45,8 @@ namespace MoSeqAcquire.Models.Recording
         {
             if (this.endTime <= DateTime.UtcNow && !this.hasFired)
             {
-                this.TriggerStop?.Invoke(this, e);
                 this.hasFired = true; //prevent multiple firings!
+                this.TriggerStop?.Invoke(this, e);
             }
             this.NotifyPropertyChanged(null);
         }

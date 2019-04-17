@@ -20,17 +20,17 @@ namespace MoSeqAcquire.Models.Recording
         protected string name;
         protected Channel channel;
         protected BufferBlock<ChannelFrame> backBuffer;
-        protected Func<ActionBlock<ChannelFrame>> sinkFactory;
+        protected Action<ChannelFrame> sinkFactory;
         protected ActionBlock<ChannelFrame> sink;
 
-        public MediaWriterPin(MediaType mediaType, ChannelCapacity Capacity, Func<ActionBlock<ChannelFrame>> WorkerFactory)
+        public MediaWriterPin(MediaType mediaType, ChannelCapacity Capacity, Action<ChannelFrame> Worker)
         {
             this.MediaType = mediaType;
             this.Capacity = Capacity;
-            this.sinkFactory = WorkerFactory;
+            this.sinkFactory = Worker;
             this.name = this.MediaType.ToString() + " Pin";
         }
-        public MediaWriterPin(string name, MediaType mediaType, ChannelCapacity Capacity, Func<ActionBlock<ChannelFrame>> WorkerFactory) : this(mediaType, Capacity, WorkerFactory)
+        public MediaWriterPin(string name, MediaType mediaType, ChannelCapacity Capacity, Action<ChannelFrame> Worker) : this(mediaType, Capacity, Worker)
         {
             this.name = name;
         }
@@ -48,7 +48,7 @@ namespace MoSeqAcquire.Models.Recording
         public void Connect()
         {
             this.backBuffer = new BufferBlock<ChannelFrame>(new DataflowBlockOptions() { EnsureOrdered = true, });
-            this.sink = this.sinkFactory.Invoke();
+            this.sink = new ActionBlock<ChannelFrame>(this.sinkFactory);
             MediaBus.Instance.Subscribe(bc => bc.Channel == Channel, this.backBuffer);
             this.backBuffer.LinkTo(this.sink, new DataflowLinkOptions() { PropagateCompletion = true });
         }

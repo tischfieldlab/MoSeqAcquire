@@ -8,26 +8,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmValidation;
+using System.Windows.Input;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    //TODO: need to complete finer-grained tracking of Recording Manager state (i.e. show indeterminate progress bar as it initializes + runs triggers; 
-    //      then show determinate progressbar (assuming timed recording); then transition to indeterminate progress bar as recording stops and triggers are run). 
-    public enum RecordingManagerState
-    {
-        None,
-        Initializing,
-        Recording,
-        Completed
-    }
+
     public class RecordingManagerViewModel : ValidatingBaseViewModel
     {
         protected MoSeqAcquireViewModel rootViewModel;
         protected ObservableCollection<RecorderViewModel> recorders;
         protected RecorderViewModel selectedRecorder;
-        protected RecordingManager _recordingManager;
-        protected bool isRecording;
-        protected RecordingManagerState recordingManagerState;
+        protected RecordingManager recordingManager;
 
 
         public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel)
@@ -35,9 +27,24 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
 
-            this._recordingManager = new RecordingManager(this.rootViewModel.TriggerBus);
-            this._recordingManager.PropertyChanged += (s, e) => this.NotifyPropertyChanged(null);
+            this.recordingManager = new RecordingManager(this.rootViewModel.TriggerBus);
+            this.recordingManager.PropertyChanged += (s, e) =>
+            {
+                this.NotifyPropertyChanged(null);
+            };
             this.RegisterRules();
+
+            this.rootViewModel.TriggerBus.Subscribe(typeof(BeforeRecordingStartedTrigger),
+                                                    new ActionTriggerAction() {
+                                                        Priority = int.MinValue,
+                                                        Delegate = (t) => this.Root.ForceProtocolLocked()
+                                                    });
+            this.rootViewModel.TriggerBus.Subscribe(typeof(AfterRecordingFinishedTrigger),
+                                                    new ActionTriggerAction()
+                                                    {
+                                                        Priority = int.MaxValue,
+                                                        Delegate = (t) => this.Root.UndoForceProtoclLocked()
+                                                    });
         }
         protected void RegisterRules()
         {
@@ -57,11 +64,11 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             this.Recorders.Add(Recorder);
             this.SelectedRecorder = Recorder;
-            this._recordingManager.AddRecorder(Recorder.Writer);
+            this.recordingManager.AddRecorder(Recorder.Writer);
         }
         public void RemoveRecorder(RecorderViewModel Recorder)
         {
-            this._recordingManager.RemoveRecorder(Recorder.Writer);
+            this.recordingManager.RemoveRecorder(Recorder.Writer);
             if(this.SelectedRecorder == Recorder)
             {
                 this.SelectedRecorder = null;
@@ -79,7 +86,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             int count = 1;
             while (count < int.MaxValue)
             {
-                realname = namebase + " " + count.ToString();
+                realname = namebase + "_" + count.ToString();
                 if (this.recorders.Count(rvm => rvm.Name.Equals(realname)) == 0)
                 {
                     break;
@@ -97,41 +104,50 @@ namespace MoSeqAcquire.ViewModels.Recording
             set => this.SetField(ref this.selectedRecorder, value);
         }
 
+        public void ClearRecorders()
+        {
+            this.recordingManager.ClearRecorders();
+            this.recorders.Clear();
+        }
 
 
         public GeneralRecordingSettings GeneralSettings
         {
-            get => this._recordingManager.GeneralSettings;
+            get => this.recordingManager.GeneralSettings;
         }
-        public bool IsRecording
+        public RecordingManagerState State
         {
-            get => this._recordingManager.IsRecording;
+            get => this.recordingManager.State;
         }
-        public TimeSpan? Duration { get => this._recordingManager?.Duration; }
-        public double? Progress { get => this._recordingManager?.Progress; }
-        public TimeSpan? TimeRemaining { get => this._recordingManager?.TimeRemaining; }
+        public string CurrentTask
+        {
+            get => this.recordingManager.CurrentTask;
+        }
+        public TimeSpan? Duration { get => this.recordingManager?.Duration; }
+        public double? Progress { get => this.recordingManager?.Progress; }
+        public TimeSpan? TimeRemaining { get => this.recordingManager?.TimeRemaining; }
 
         
         public void StartRecording()
         {
+            this.Root.Triggers.ResetStatuses();
             Task.Run(() =>
             {
-                this._recordingManager.Initialize(this.GeneralSettings);
-                this._recordingManager.Start();
+                this.recordingManager.Start();
             });
         }
         public void StopRecording()
         {
             Task.Run(() =>
             {
-                this._recordingManager.Stop();
+                this.recordingManager.Stop();
             });
         }
         public void AbortRecording()
         {
             Task.Run(() =>
             {
-                this._recordingManager.Abort();
+                this.recordingManager.Abort();
             });
         }
     }

@@ -16,6 +16,18 @@ namespace MoSeqAcquire.Models.Core
         }
         public Type ComponentType { get; protected set; }
         public string TypeName { get => this.ComponentType.AssemblyQualifiedName; }
+        public bool IsHidden
+        {
+            get
+            {
+                var a = (HiddenAttribute)Attribute.GetCustomAttribute(this.ComponentType, typeof(HiddenAttribute));
+                if (a != null)
+                {
+                    return a.IsHidden;
+                }
+                return false;
+            }
+        }
         public string DisplayName
         {
             get
@@ -44,12 +56,9 @@ namespace MoSeqAcquire.Models.Core
         {
             get
             {
-                var types = new List<Type>();
-
-                this.GetAttributes<KnownTypeAttribute>()
-                    .Where(a => a is KnownTypeAttribute && !a.IsDefaultAttribute())
-                    .Select(a => a.KnownType)
-                    .ForEach(t => types.Add(t));
+                var types = new List<Type>(this.GetAttributes<KnownTypeAttribute>()
+                                                         .Where(a => a is KnownTypeAttribute && !a.IsDefaultAttribute())
+                                                         .Select(a => a.KnownType));
                 
                 types.AddRange(this.SettingsFactory().GetKnownTypes());
                 return types;

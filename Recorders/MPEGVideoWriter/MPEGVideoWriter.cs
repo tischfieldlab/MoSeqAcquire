@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Threading.Tasks.Dataflow;
 using Accord.Video.FFMPEG;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
@@ -17,6 +16,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
     {
         private readonly object lockobject = new object();
         protected VideoFileWriter writer;
+        protected TimestampCoWriter tsWriter;
 
         protected MediaWriterPin videoPin;
         protected MediaWriterPin audioPin;
@@ -33,11 +33,18 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 
         public override void Start()
         {
-            this.writer = new VideoFileWriter();
             var vChanMeta = this.videoPin.Channel.Metadata as VideoChannelMetadata;
             var conf = this.Settings as MPEGVideoWriterSettings;
+
+            this.writer = new VideoFileWriter();
             this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height, new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate);
             //conf.AudioCodec, conf.AudioBitrate, 16000, 1);
+
+            if (conf.WriteTimestamps)
+            {
+                this.tsWriter = new TimestampCoWriter(this.FormatFilePath("{0}_ts.txt"));
+                this.tsWriter.Open();
+            }
 
             base.Start();
         }
@@ -47,65 +54,70 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             base.Stop();
             this.writer.Flush();
             this.writer.Close();
+
+            if (this.tsWriter != null)
+            {
+                this.tsWriter.Close();
+                this.tsWriter = null;
+            }
         }
         
 
 
 
 
-        protected ActionBlock<ChannelFrame> GetAudioActionBlock()
+        protected void GetAudioActionBlock(ChannelFrame frame)
         {
-            return new ActionBlock<ChannelFrame>(frame =>
+            if (this.IsRecording)
             {
-                if (this.IsRecording)
+                lock (this.lockobject)
                 {
-                    lock (this.lockobject)
-                    {
-                        //this.writer.WriteAudioFrame((byte[])frame.FrameData);
-                    }
+                    //this.writer.WriteAudioFrame((byte[])frame.FrameData);
                 }
-            });
+            }
         }
-        protected ActionBlock<ChannelFrame> GetVideoActionBlock()
+        protected void GetVideoActionBlock(ChannelFrame frame)
         {
-            return new ActionBlock<ChannelFrame>(frame =>
+            if (this.IsRecording)
             {
-                if (this.IsRecording)
+                unsafe
                 {
-                    unsafe
+                    byte[] data = (byte[])frame.FrameData;
+                    var meta = frame.Metadata as VideoChannelFrameMetadata;
+                    fixed (byte* first = &data[0])
                     {
-                        byte[] data = (byte[])frame.FrameData;
-                        var meta = frame.Metadata as VideoChannelFrameMetadata;
-                        fixed (byte* first = &data[0])
+                        Bitmap bmp = new Bitmap(meta.Width,
+                                                meta.Height,
+                                                meta.BytesPerPixel * meta.Width,
+                                                meta.PixelFormat.ToDrawingPixelFormat(),
+                                                (IntPtr)first);
+                        lock (this.lockobject)
                         {
-                            Bitmap bmp = new Bitmap(meta.Width,
-                                                    meta.Height,
-                                                    meta.BytesPerPixel * meta.Width,
-                                                    meta.PixelFormat.ToDrawingPixelFormat(),
-                                                    (IntPtr)first);
-                            lock (this.lockobject)
+                            try
                             {
-                                try
+                                if (this.Performance.TotalFrames > 0)
                                 {
-                                    if (this.Performance.TotalFrames > 0)
-                                    {
-                                        this.writer.WriteVideoFrame(bmp, TimeSpan.FromMilliseconds(meta.AbsoluteTime.Subtract(this.Epoch).TotalMilliseconds));
-                                    }
-                                    else
-                                    {
-                                        this.writer.WriteVideoFrame(bmp);
-                                    }
-                                }catch
-                                {
-                                    Console.WriteLine("missed frame");
+                                    this.writer.WriteVideoFrame(bmp, TimeSpan.FromMilliseconds(meta.AbsoluteTime.Subtract(this.Epoch).TotalMilliseconds));
                                 }
-                                this.Performance.Increment();
+                                else
+                                {
+                                    this.writer.WriteVideoFrame(bmp);
+                                }
+
+                                if (this.tsWriter != null)
+                                {
+                                    this.tsWriter.Write(frame.Metadata.AbsoluteTime);
+                                }
                             }
+                            catch
+                            {
+                                Console.WriteLine("missed frame");
+                            }
+                            this.Performance.Increment();
                         }
                     }
-                    
                 }
-            });
+            }
         }
     }
 }

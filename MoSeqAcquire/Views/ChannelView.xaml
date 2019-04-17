@@ -4,24 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
-             xmlns:MoSeqAcquire="clr-namespace:MoSeqAcquire"
+             xmlns:views="clr-namespace:MoSeqAcquire.Views"
              xmlns:vm="clr-namespace:MoSeqAcquire.ViewModels"
              xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate DataType="{x:Type vm:VideoChannelViewModel}">
-            <Border CornerRadius="5" Background="DarkSlateGray" Margin="5">
+            <md:Card Margin="5">
                 <StackPanel >
-                    <Border CornerRadius="5,5,0,0" >
-                        <WrapPanel Margin="5">
-                            <CheckBox IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
-                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                    <DockPanel Margin="8">
+                        <ToggleButton DockPanel.Dock="Right"
+                                      IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
+                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MainWindow}}}" 
                                       CommandParameter="{Binding}" />
-                            <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
-                        </WrapPanel>
-                    </Border>
+                        <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                    </DockPanel>
                     <Grid Background="DarkGray">
                         <Grid MaxHeight="200"  >
                             <Image Source="{Binding Path=Stream}"  />
@@ -34,19 +35,18 @@
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </DockPanel>
                 </StackPanel>
-            </Border>
+            </md:Card>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:DataChannelViewModel}">
-            <Border CornerRadius="5" Background="DarkSlateGray" Margin="5">
+            <md:Card Margin="5">
                 <StackPanel >
-                    <Border CornerRadius="5,5,0,0" >
-                        <WrapPanel Margin="5">
-                            <CheckBox IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
-                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                    <DockPanel Margin="8">
+                        <ToggleButton DockPanel.Dock="Right"
+                                      IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
+                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MainWindow}}}" 
                                       CommandParameter="{Binding}" />
-                            <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
-                        </WrapPanel>
-                    </Border>
+                        <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                    </DockPanel>
                     <Grid Background="DarkGray">
                         <Grid MaxWidth="200" >
                             <Image Source="{Binding Path=Stream}"  />
@@ -59,19 +59,18 @@
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </DockPanel>
                 </StackPanel>
-            </Border>
+            </md:Card>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:AudioChannelViewModel}">
-            <Border CornerRadius="5" Background="DarkGray" Margin="5">
+            <md:Card Margin="5">
                 <StackPanel >
-                    <Border Background="DarkSlateGray" CornerRadius="5,5,0,0" >
-                        <WrapPanel Margin="5">
-                            <CheckBox IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
-                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MoSeqAcquire:MainWindow}}}" 
+                    <DockPanel Margin="5">
+                        <ToggleButton DockPanel.Dock="Right" 
+                                      IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
+                                      Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MainWindow}}}" 
                                       CommandParameter="{Binding}" />
-                            <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
-                        </WrapPanel>
-                    </Border>
+                        <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+                    </DockPanel>
                     <controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" Margin="10" />
                     <!--<Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" MaxWidth="400" MaxHeight="100" Margin="10"  />
                     <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="400" MaxHeight="100" Margin="10"  />-->
@@ -79,7 +78,7 @@
                         <TextBlock Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
                     </WrapPanel>
                 </StackPanel>
-            </Border>
+            </md:Card>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>

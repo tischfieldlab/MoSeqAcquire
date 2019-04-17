@@ -66,7 +66,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         public bool IsCritical
         {
-            get => this.trigger.IsCritical;
+            get => this.trigger != null ? this.trigger.IsCritical : false;
             set
             {
                 this.trigger.IsCritical = value;
@@ -84,21 +84,19 @@ namespace MoSeqAcquire.ViewModels.Triggers
             get => this.triggerStateMessage;
             set => this.SetField(ref this.triggerStateMessage, value);
         }
-        protected void DeregisterTrigger()
+
+        public void DeregisterTrigger()
         {
             if (this.isRegistered)
             {
                 this.trigger.TriggerExecutionStarted -= Trigger_TriggerExecutionStarted;
                 this.trigger.TriggerExecutionFinished -= Trigger_TriggerExecutionFinished;
                 this.trigger.TriggerFaulted -= Trigger_TriggerFaulted;
+                this.TriggerState = TriggerState.None;
                 this.Root.TriggerBus.Unsubscribe(this.triggerType, this.trigger);
                 this.isRegistered = false;
-                this.TriggerState = TriggerState.None;
             }
         }
-
-        
-
         protected void RegisterTrigger()
         {
             if (!this.isRegistered)

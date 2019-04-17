@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using System.Windows.Media;
 using Microsoft.Kinect;
 using MoSeqAcquire.Models.Utility;
@@ -86,7 +85,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     var meta = new VideoChannelFrameMetadata()
                     {
                         FrameId = imageFrame.FrameNumber,
-                        Timestamp = imageFrame.Timestamp,
+                        //Timestamp = imageFrame.Timestamp,
                         AbsoluteTime = PreciseDatetime.Now,
                         Width = imageFrame.Width,
                         Height = imageFrame.Height,

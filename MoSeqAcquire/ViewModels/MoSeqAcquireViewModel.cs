@@ -15,16 +15,24 @@ namespace MoSeqAcquire.ViewModels
     public class MoSeqAcquireViewModel : BaseViewModel
     {
         protected bool isProtocolLocked;
+        protected int forceProtocolLock;
 
         public MoSeqAcquireViewModel()
         {
+            App.SetCurrentStatus("Loading Theme....");
             this.Theme = new ThemeViewModel();
+            App.SetCurrentStatus("Initializing Trigger Bus....");
             this.TriggerBus = new TriggerBus();
+            App.SetCurrentStatus("Loading Media Sources....");
             this.MediaSources = new ObservableCollection<MediaSourceViewModel>();
+            App.SetCurrentStatus("Loading Recording Console....");
             this.Recorder = new RecordingManagerViewModel(this);
+            App.SetCurrentStatus("Loading Triggers....");
             this.Triggers = new TriggerManagerViewModel(this);
-            
+
+            App.SetCurrentStatus("Initializing Commands....");
             this.Commands = new CommandLibrary(this);
+            App.SetCurrentStatus("Loading default protocol....");
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
         public CommandLibrary Commands { get; protected set; }
@@ -34,9 +42,30 @@ namespace MoSeqAcquire.ViewModels
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
 
+        public void ForceProtocolLocked()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.forceProtocolLock++;
+                this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+            });
+        }
+        public void UndoForceProtoclLocked()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.forceProtocolLock--;
+                if (this.forceProtocolLock < 0)
+                {
+                    this.forceProtocolLock = 0;
+                }
+                this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+            });
+        }
+
         public bool IsProtocolLocked
         {
-            get => this.isProtocolLocked;
+            get => this.isProtocolLocked || this.forceProtocolLock > 0;
             set => this.SetField(ref this.isProtocolLocked, value);
         }
 
@@ -53,6 +82,7 @@ namespace MoSeqAcquire.ViewModels
 
         public Protocol GenerateProtocol()
         {
+            this.ForceProtocolLocked();
             var pcol = new Protocol("basic");
             foreach (var ms in this.MediaSources)
             {
@@ -67,22 +97,25 @@ namespace MoSeqAcquire.ViewModels
                 pcol.Triggers.Add(tvm.GetTriggerDefinition());
             }
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
-            pcol.Locked = this.IsProtocolLocked;
+            pcol.Locked = this.isProtocolLocked;
             this.CurrentProtocol = pcol;
+            this.UndoForceProtoclLocked();
             return pcol;
         }
         public void UnloadProtocol()
         {
+            this.ForceProtocolLocked();
             //prepare
             this.MediaSources.ForEach(s => s.MediaSource.Stop());
             this.MediaSources.Clear();
-            this.Recorder.Recorders.Clear();
+            this.Recorder.ClearRecorders();
             this.Triggers.RemoveTriggers();
-            this.IsProtocolLocked = false;
+            this.isProtocolLocked = false;
+            this.UndoForceProtoclLocked();
         }
         public void ApplyProtocol(Protocol protocol)
         {
-            
+            this.ForceProtocolLocked();   
             //prepare
             this.UnloadProtocol();
 
@@ -118,8 +151,9 @@ namespace MoSeqAcquire.ViewModels
                             this.Triggers.AddTrigger(trigger);
                         }
                     }
-                    this.IsProtocolLocked = protocol.Locked;
+                    this.isProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
+                    this.UndoForceProtoclLocked();
                 });
             }, TaskScheduler.Default);
         }

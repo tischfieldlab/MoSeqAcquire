@@ -18,10 +18,11 @@ namespace MoSeqAcquire.Models.Management
     {
         public static IEnumerable<ComponentSpecification> FindComponents()
         {
-            return ExtractPluginsImplementing<Component>(Properties.Settings.Default.PluginPaths).Select(c => GetSpecification(c));
+            return ExtractPluginsImplementing<Component>(Properties.Settings.Default.PluginPaths).Select(c => GetSpecification(c)).Where(s => !s.IsHidden);
         }
         private static ComponentSpecification GetSpecification(Type ComponentType)
         {
+            App.SetCurrentStatus($"Loading Component {ComponentType.FullName}....");
             if (typeof(MediaSource).IsAssignableFrom(ComponentType))
             {
                 return new MediaSourceSpecification(ComponentType);
@@ -66,7 +67,7 @@ namespace MoSeqAcquire.Models.Management
         }
 
         private static Dictionary<Type, List<Type>> __pluginTypeCache = new Dictionary<Type, List<Type>>();
-        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool IncludeSelf=true, bool UseCache=true)
+        public static List<Type> ExtractPluginsImplementing<T>(StringCollection SearchPaths, bool UseCache=true)
         {
             if (UseCache && __pluginTypeCache.ContainsKey(typeof(T)))
             {
@@ -74,19 +75,11 @@ namespace MoSeqAcquire.Models.Management
             }
             else
             {
-                List<Type> availableTypes = new List<Type>();
-                if (IncludeSelf)
-                {
-                    availableTypes.AddRange(Assembly.GetExecutingAssembly().GetTypes());
-                }
-                foreach (Assembly currentAssembly in FindAssemblies(SearchPaths))
-                {
-                    availableTypes.AddRange(currentAssembly.GetTypes());
-                }
-                List<Type> filteredList = availableTypes.FindAll(delegate (Type t)
-                {
-                    return !t.IsAbstract && typeof(T).IsAssignableFrom(t); // t.IsSubclassOf(typeof(T));
-                });
+                var filteredList = FindAssemblies(SearchPaths)
+                                    .SelectMany(a => a.GetTypes())
+                                    .Where(t => !t.IsAbstract && typeof(T).IsAssignableFrom(t))
+                                    .ToList();
+
                 Console.WriteLine("Found the following plugins implementing \"" + typeof(T).AssemblyQualifiedName + "\":");
                 if (filteredList.Count > 0)
                 {
@@ -100,32 +93,26 @@ namespace MoSeqAcquire.Models.Management
                 return filteredList;
             }
         }
-        public static List<Assembly> FindAssemblies(StringCollection SearchPaths, bool InlcudeCwd = true)
+        public static List<Assembly> FindAssemblies(StringCollection SearchPaths, bool InlcudeCwd = true, bool IncludeCurrentAssembly = true)
         {
             Dictionary<String, Assembly> plugInAssemblyList = new Dictionary<String, Assembly>();
+            var currentAssembly = Assembly.GetExecutingAssembly();
+
             if (InlcudeCwd)
             {
-                var cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var assemblies = FindAssembliesForPath(cwd);
-                foreach (var a in assemblies)
-                {
-                    if (!plugInAssemblyList.ContainsKey(a.FullName))
-                    {
-                        plugInAssemblyList.Add(a.FullName, a);
-                    }
-                }
+                SearchPaths.Add(Path.GetDirectoryName(currentAssembly.Location));
             }
-            foreach (var path in SearchPaths)
+
+            SearchPaths.Cast<string>()
+                       .SelectMany(p => FindAssembliesForPath(p))
+                       .Distinct(a => a.FullName)
+                       .ForEach(a => plugInAssemblyList.Add(a.FullName, a));
+
+            if (IncludeCurrentAssembly)
             {
-                var assemblies = FindAssembliesForPath(path);
-                foreach (var a in assemblies)
-                {
-                    if (!plugInAssemblyList.ContainsKey(a.FullName))
-                    {
-                        plugInAssemblyList.Add(a.FullName, a);
-                    }
-                }
+                plugInAssemblyList.Add(currentAssembly.FullName, currentAssembly);
             }
+            
             return plugInAssemblyList.Values.ToList();
         }
         public static List<Assembly> FindAssembliesForPath(String Path)

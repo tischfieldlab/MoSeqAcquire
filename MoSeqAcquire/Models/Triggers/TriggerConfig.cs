@@ -7,7 +7,7 @@ using MoSeqAcquire.Models.Configuration;
 
 namespace MoSeqAcquire.Models.Triggers
 {
-    public abstract class TriggerConfig : BaseConfiguration
+    public class TriggerConfig : BaseConfiguration
     {
         public TriggerConfig() : base()
         {

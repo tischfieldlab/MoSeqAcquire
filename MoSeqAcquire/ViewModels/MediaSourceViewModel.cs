@@ -80,18 +80,7 @@ namespace MoSeqAcquire.ViewModels
         {
             foreach (var c in this.MediaSource.Channels)
             {
-                switch (c.MediaType)
-                {
-                    case MediaType.Video:
-                        this._channels.Add(new VideoChannelViewModel(c));
-                        break;
-                    case MediaType.Audio:
-                        this._channels.Add(new AudioChannelViewModel(c));
-                        break;
-                    case MediaType.Data:
-                        this._channels.Add(new DataChannelViewModel(c));
-                        break;
-                }
+                this._channels.Add(ChannelViewModel.FromChannel(c));
             }
         }
 

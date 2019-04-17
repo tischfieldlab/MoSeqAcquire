@@ -13,11 +13,20 @@ namespace MoSeqAcquire.ViewModels.Commands
     {
         public StartRecordingCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
+            this.ViewModel.Recorder.PropertyChanged += Recorder_PropertyChanged;
+        }
+
+        private void Recorder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == null || e.PropertyName.Equals(nameof(this.ViewModel.Recorder.State)))
+            {
+                this.RaiseCanExecuteChanged();
+            }
         }
 
         public override bool CanExecute(object parameter)
         {
-            return this.ViewModel.Recorder.IsRecording == false
+            return this.ViewModel.Recorder.State == RecordingManagerState.Idle
                 && this.ViewModel.Recorder.GeneralSettings.IsValid;
         }
 

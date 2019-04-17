@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 
-namespace MoSeqAcquire.Models.Recording.RawDataWriter
+namespace MoSeqAcquire.Models.Recording.BinaryDataWriter
 {
-    public class RawDataWriterSettings : RecorderSettings
+    public class BinaryDataWriterSettings : RecorderSettings
     {
-        public RawDataWriterSettings() : base() { }
+        public BinaryDataWriterSettings() : base() { }
 
         protected bool enableGzip;
         protected bool writeTimestamps;

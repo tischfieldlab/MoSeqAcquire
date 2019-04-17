@@ -110,7 +110,7 @@ namespace MoSeqAcquireTests2
                 Basename = "test",
                 Directory = "C:\temp",
                 RecordingMode = RecordingMode.TimeCount,
-                RecordingSeconds = 30
+                RecordingTime = TimeSpan.FromSeconds(30)
             };
             protocol.Recordings.GeneralSettings = gs.GetSnapshot();
            
@@ -131,7 +131,7 @@ namespace MoSeqAcquireTests2
                 Basename = "test",
                 Directory = "C:\temp",
                 RecordingMode = RecordingMode.TimeCount,
-                RecordingSeconds = 30
+                RecordingTime = TimeSpan.FromSeconds(30)
             };
             protocol.Recordings.GeneralSettings = gs.GetSnapshot();
 
@@ -172,7 +172,7 @@ namespace MoSeqAcquireTests2
                 Basename = "test",
                 Directory = "C:\temp",
                 RecordingMode = RecordingMode.TimeCount,
-                RecordingSeconds = 30
+                RecordingTime = TimeSpan.FromSeconds(30)
             };
             protocol.Recordings.GeneralSettings = gs.GetSnapshot();
 

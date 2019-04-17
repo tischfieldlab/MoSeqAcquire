@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Core;
 
 namespace MoSeqAcquire.Models.Triggers
@@ -14,6 +15,7 @@ namespace MoSeqAcquire.Models.Triggers
         public event EventHandler<TriggerFaultedEventArgs> TriggerFaulted;
 
         public bool IsCritical { get; set; }
+        public int Priority { get; set; }
         public TriggerConfig Config { get; protected set; }
         protected abstract Action<Trigger> Action { get; }
 
@@ -30,5 +32,13 @@ namespace MoSeqAcquire.Models.Triggers
                 this.TriggerFaulted?.Invoke(this, new TriggerFaultedEventArgs() { Trigger = Trigger, Exception = e });
             }
         }
+    }
+
+    [SettingsImplementation(typeof(TriggerConfig))]
+    [Hidden]
+    public class ActionTriggerAction : TriggerAction
+    {
+        public Action<Trigger> Delegate { get; set; }
+        protected override Action<Trigger> Action => this.Delegate;
     }
 }

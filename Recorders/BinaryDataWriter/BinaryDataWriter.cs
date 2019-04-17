@@ -4,17 +4,16 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
 
-namespace MoSeqAcquire.Models.Recording.RawDataWriter
+namespace MoSeqAcquire.Models.Recording.BinaryDataWriter
 {
-    [KnownType(typeof(RawDataWriterSettings))]
-    [DisplayName("Raw Data Writer")]
-    [SettingsImplementation(typeof(RawDataWriterSettings))]
-    [SupportedChannelType(MediaType.Any, ChannelCapacity.Multiple)]
-    public class RawDataWriter : MediaWriter
+    [KnownType(typeof(BinaryDataWriterSettings))]
+    [DisplayName("Binary Data Writer")]
+    [SettingsImplementation(typeof(BinaryDataWriterSettings))]
+    [SupportedChannelType(MediaType.Any, ChannelCapacity.Single)]
+    public class BinaryDataWriter : MediaWriter
     {
         protected MediaWriterPin dataPin;
 
@@ -23,9 +22,9 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
         protected BinaryWriter writer;
         protected TimestampCoWriter tsWriter;
 
-        public RawDataWriter() : base()
+        public BinaryDataWriter() : base()
         {
-            this.dataPin = new MediaWriterPin(MediaType.Any, ChannelCapacity.Multiple, this.GetActionBlock);
+            this.dataPin = new MediaWriterPin(MediaType.Any, ChannelCapacity.Single, this.GetActionBlock);
             this.RegisterPin(this.dataPin);
         }
         
@@ -33,8 +32,8 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
         {
             get
             {
-                string ext = "";
-                if(this.dataPin.Channel == null)
+                string ext = "dat";
+                /*if(this.dataPin.Channel == null)
                 {
                     return "###";
                 }
@@ -49,8 +48,8 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
                 else
                 {
                     ext = "unknown";
-                }
-                if ((this.Settings as RawDataWriterSettings).EnableGZipCompression)
+                }*/
+                if ((this.Settings as BinaryDataWriterSettings).EnableGZipCompression)
                 {
                     ext += ".gz";
                 }
@@ -60,7 +59,7 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
 
         public override void Start()
         {
-            var cfg = this.Settings as RawDataWriterSettings;
+            var cfg = this.Settings as BinaryDataWriterSettings;
 
             this.file = File.Open(this.FilePath, FileMode.Create);
             if (cfg.EnableGZipCompression)
@@ -89,13 +88,14 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
             if (this.tsWriter != null)
             {
                 this.tsWriter.Close();
+                this.tsWriter = null;
             }
         }
 
         public override IDictionary<string, IEnumerable<Channel>> GetChannelFileMap()
         {
             var items = base.GetChannelFileMap();
-            if ((this.Settings as RawDataWriterSettings).WriteTimestamps)
+            if ((this.Settings as BinaryDataWriterSettings).WriteTimestamps)
             {
                 items.Add(this.FormatFilePath("{0}_ts.txt"), this.Pins.Values.Where(mwp => mwp.Channel != null).Select(mwp => mwp.Channel));
             }
@@ -104,28 +104,36 @@ namespace MoSeqAcquire.Models.Recording.RawDataWriter
 
 
         protected byte[] stupidByteBuffer;
-        protected ActionBlock<ChannelFrame> GetActionBlock()
+        protected void GetActionBlock(ChannelFrame frame)
         {
-            return new ActionBlock<ChannelFrame>(frame =>
-            {
-                if (!this.IsRecording) { return; }
+            
+            if (!this.IsRecording) { return; }
 
-                if (frame.DataType == typeof(short))
+            if (frame.DataType != typeof(byte))
+            {
+                try
                 {
-                    if (this.stupidByteBuffer == null) { this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes]; }
+                    if (this.stupidByteBuffer == null || this.stupidByteBuffer.Length != frame.Metadata.TotalBytes)
+                    {
+                        this.stupidByteBuffer = new byte[frame.Metadata.TotalBytes];
+                    }
                     Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
                     this.writer.Write(this.stupidByteBuffer);
                 }
-                else
+                catch
                 {
-                    this.writer.Write(frame.FrameData as byte[]);
+                    var x = 1;
                 }
-                if(this.tsWriter != null)
-                {
-                    this.tsWriter.Write(frame.Metadata.AbsoluteTime);
-                }
-                this.Performance.Increment();
-            });
+            }
+            else
+            {
+                this.writer.Write(frame.FrameData as byte[]);
+            }
+            if(this.tsWriter != null)
+            {
+                this.tsWriter.Write(frame.Metadata.AbsoluteTime);
+            }
+            this.Performance.Increment();
         }
     }
 }

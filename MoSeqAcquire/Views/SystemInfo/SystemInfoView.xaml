@@ -44,19 +44,20 @@
                                 </Style>
                             </Grid.Style>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="20" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition  />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="20" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center"  Grid.Column="1">
-                                <materialDesign:PackIcon Kind="{Binding Path=Icon}" Margin="0,0,10,0" />
-                                <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" FontWeight="Bold" />
+                            <StackPanel VerticalAlignment="Center" Grid.Column="1">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Kind="{Binding Path=Icon}" Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" FontWeight="Bold" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding Path=StatusText}" TextAlignment="Center" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Text="{Binding Path=StatusText}" TextAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" />
                         </Grid>
                         <Separator Margin="0" Style="{StaticResource {x:Static StatusBar.SeparatorStyleKey}}" />
                     </StackPanel>
