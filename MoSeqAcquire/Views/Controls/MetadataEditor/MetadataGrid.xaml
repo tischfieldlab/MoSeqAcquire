@@ -5,55 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MoSeqAcquire.Views.Controls.MetadataEditor"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:mac="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
-             xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
-             Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <conv:GenericConverter x:Key="GenericConverter" />
-        <DataTemplate x:Key="CheckboxEditor">
-            <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
-        </DataTemplate>
-        <DataTemplate x:Key="TextBoxEditor">
-            <TextBox Text="{Binding Path=Value}" HorizontalAlignment="Stretch" />
-        </DataTemplate>
-        <DataTemplate x:Key="EnumComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" />
-        </DataTemplate>
-        <DataTemplate x:Key="CollectionComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=ConstraintImplementation.Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="Value" SelectedValuePath="Value" />
-        </DataTemplate>
-        <DataTemplate x:Key="RangeEditor">
-            <DockPanel>
-                <TextBox DockPanel.Dock="Right"
-                         Text="{Binding Path=Value, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                         IsReadOnly="True" />
-                <Slider Orientation="Horizontal" TickPlacement="BottomRight"
-                        Style="{StaticResource MaterialDesignDiscreteSlider}"
-                        TickFrequency="{Binding Path=StepValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Maximum="{Binding Path=MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Minimum="{Binding Path=MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="NumericEditor">
-            <mac:NumericUpDown Value="{Binding Path=Value, Converter={StaticResource GenericConverter}}" />
-        </DataTemplate>
-        <DataTemplate x:Key="AutoCheckboxTemplate">
-            <CheckBox IsChecked="{Binding Path=IsAutomatic}" IsEnabled="{Binding Path=SupportsAutomatic}" />
-        </DataTemplate>
-        <DataTemplate x:Key="ResetButtonTemplate">
-            <Button Width="24" Height="24"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="Reset to Default Value"
-                    Margin="4">
-                <materialDesign:PackIcon Kind="BackupRestore" />
-            </Button>
-        </DataTemplate>
-        <local:MetadataItemDataTemplateSelector x:Key="MetadataItemDataTemplateSelector" />
-        <local:MetadataItemEditorDataTemplateSelector x:Key="MetadataItemEditorDataTemplateSelector" />
+        <ResourceDictionary Source="ControlTemplates.xaml" />
     </UserControl.Resources>
     <Grid>
         <Button Panel.ZIndex="99" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="16" Command="{Binding Path=NewItemCommand}" >

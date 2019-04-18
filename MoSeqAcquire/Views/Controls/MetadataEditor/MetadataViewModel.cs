@@ -30,7 +30,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             {
                 typeof(bool), typeof(int), typeof(double), typeof(string)
             };
-            this.currentCollection = new MetadataCollection(null);
+            this.currentCollection = new MetadataCollection();
             this.CurrentState = MetadataViewState.Grid;
         }
         public bool IsTemplateEditable

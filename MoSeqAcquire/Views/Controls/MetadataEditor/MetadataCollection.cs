@@ -7,17 +7,12 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
 {
     public class MetadataCollection : ObservableCollection<MetadataItem>
     {
-        protected object sourceObject;
 
-        public MetadataCollection(object data) : base()
+        public MetadataCollection() : base()
         {
-            this.sourceObject = data;
             this.Initialize();  
         }
-        public object SourceObject
-        {
-            get => this.sourceObject;
-        }
+
         public new void Add(MetadataItem Item)
         {
             base.Add(Item);
@@ -29,6 +24,11 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
 
         protected void Initialize()
         {
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.SequenceEqual(obj as MetadataCollection);
         }
     }
 }

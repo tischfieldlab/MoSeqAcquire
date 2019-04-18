@@ -5,8 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace MoSeqAcquire.Views.Controls.MetadataEditor
@@ -17,21 +21,28 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
         Choices,
         Range
     }
-    public class MetadataItem : ValidatingBaseViewModel
+    public class MetadataItem : ValidatingBaseViewModel, IXmlSerializable
     {
         protected string name;
         protected Type valueType;
         protected object value;
+        protected object defaultValue;
         protected string units;
         protected ConstraintMode constraint;
         protected BaseConstraint constraintImplementation;
 
-        public MetadataItem(string Name, Type ValueType)
+        public MetadataItem(string Name, Type ValueType) : this()
         {
             this.name = Name;
             this.valueType = ValueType;
-            this.Validator.AddRule(nameof(this.Name), () => RuleResult.Assert(!string.IsNullOrEmpty(this.Name), "Name is required"));
-            this.Validator.AddRule(nameof(this.Value), () => RuleResult.Assert(this.ValueType.IsAssignableFrom(this.Value.GetType()), "Value is not a valid " + this.ValueType.Name));
+        }
+
+        protected MetadataItem()
+        {
+            this.Validator.AddRule(nameof(this.Name), 
+                                () => RuleResult.Assert(!string.IsNullOrEmpty(this.Name), "Name is required"));
+            this.Validator.AddRule(nameof(this.Value), 
+                () => RuleResult.Assert(this.ValueType.IsAssignableFrom(this.Value.GetType()), "Value is not a valid " + this.ValueType.Name));
         }
 
         public virtual TypeConverter Converter
@@ -55,21 +66,30 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                 this.CoerceAllValues();
             }
         }
+        [XmlAttribute]
         public object Value
         {
             get => this.value;
             set => this.SetField(ref this.value, value);
         }
-        public object DefaultValue { get; }
+        [XmlElement]
+        public object DefaultValue
+        {
+            get => this.defaultValue;
+            set => this.SetField(ref this.defaultValue, value);
+        }
+        [XmlAttribute]
         public string Units
         {
             get => this.units;
             set => this.SetField(ref this.units, value);
         }
+        [XmlIgnore]
         public bool ConstraintsAllowed
         {
             get => true;
         }
+        [XmlElement]
         public ConstraintMode Constraint
         {
             get => this.constraint;
@@ -78,11 +98,11 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                 this.SetField(ref this.constraint, value);
                 if (this.constraint == ConstraintMode.Choices)
                 {
-                    this.ConstraintImplementation = new ChoicesConstraint();
+                    this.ConstraintImplementation = new ChoicesConstraint(this);
                 }
                 else if (this.constraint == ConstraintMode.Range)
                 {
-                    this.ConstraintImplementation = new RangeConstraint();
+                    this.ConstraintImplementation = new RangeConstraint(this);
                 }
                 else
                 {
@@ -111,6 +131,12 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                     c.Value = this.CoerceValue(c.Value, this.ValueType);
                 }
             }
+            else if (this.ConstraintImplementation is RangeConstraint)
+            {
+                var rc = this.constraintImplementation as RangeConstraint;
+                rc.MinValue = this.CoerceValue(rc.MinValue, this.ValueType);
+                rc.MaxValue = this.CoerceValue(rc.MaxValue, this.ValueType);
+            }
             
         }
         protected object CoerceValue(object value, Type type)
@@ -130,10 +156,109 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                 }
             }
         }
-        
 
-       
-        
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            this.Name = reader.GetAttribute("Name");
+
+            
+
+            reader.ReadToDescendant("DataType");
+            var typeStr = reader.ReadElementContentAsString();
+            this.ValueType = System.Type.GetType(typeStr);
+            if (this.ValueType == null)
+            {
+                throw new ArgumentException("Unable to find Type for " + typeStr);
+            }
+
+            //reader.ReadToFollowing("DefaultValue");
+            if (reader.IsEmptyElement)
+            {
+                reader.ReadStartElement();
+            }
+            else
+            {
+                this.DefaultValue = reader.ReadElementContentAs(this.ValueType, null);
+            }
+
+            //reader.ReadToFollowing("CurrentValue");
+            if (reader.IsEmptyElement)
+            {
+                reader.ReadStartElement();
+            }
+            else
+            {
+                this.Value = reader.ReadElementContentAs(this.ValueType, null);
+            }
+
+            //reader.ReadToFollowing("Units");
+            if (reader.IsEmptyElement)
+            {
+                reader.ReadStartElement();
+            }
+            else
+            {
+                this.Units = reader.ReadElementContentAsString();
+            }
+
+            //reader.ReadToFollowing("Constraint");
+            this.Constraint = (ConstraintMode)Enum.Parse(typeof(ConstraintMode), reader.GetAttribute("Type"));
+            if (this.constraint != ConstraintMode.None)
+            {
+                this.constraintImplementation.ReadXml(reader);
+            }
+            this.CoerceAllValues();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Name", this.Name);
+
+            writer.WriteElementString("DataType", this.ValueType.FullName);
+            writer.WriteElementString("DefaultValue", this.DefaultValue != null ? this.defaultValue.ToString() : string.Empty);
+            writer.WriteElementString("CurrentValue", this.Value != null ? this.value.ToString() : string.Empty);
+            writer.WriteElementString("Units", this.units);
+
+            writer.WriteStartElement("Constraint");
+            writer.WriteAttributeString("Type", this.constraint.ToString());
+            if (this.constraint != ConstraintMode.None)
+            {
+                this.constraintImplementation.WriteXml(writer);
+            }
+            writer.WriteEndElement();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var mdi = obj as MetadataItem;
+
+            if (mdi == null)
+                return false;
+
+            if (!this.Name.Equals(mdi.Name))
+                return false;
+            if (!this.ValueType.Equals(mdi.ValueType))
+                return false;
+            if ((this.DefaultValue == null && mdi.DefaultValue != null) 
+                || (this.DefaultValue != null && !this.DefaultValue.Equals(mdi.DefaultValue)))
+                return false;
+            if ((this.Value == null && mdi.Value != null)
+                || (this.DefaultValue != null && !this.Value.Equals(mdi.Value)))
+                return false;
+            if ((this.Units == null && mdi.Units != null)
+                || (this.Units != null && !this.Units.Equals(mdi.Units)))
+                return false;
+            if ((this.ConstraintImplementation == null && mdi.ConstraintImplementation != null)
+                || (this.ConstraintImplementation != null && !this.ConstraintImplementation.Equals(mdi.ConstraintImplementation)))
+                return false;
+
+            return true;
+        }
 
         public ICommand AddChoice => new ActionCommand((p) =>
         {
@@ -148,7 +273,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             }
 
             var constraint = (this.constraintImplementation as ChoicesConstraint);
-            constraint.Choices.Add(new ChoicesConstraintChoice() { Value = val });
+            constraint.Choices.Add(new ChoicesConstraintChoice(this) { Value = val });
         });
         public ICommand RemoveChoice => new ActionCommand((p) =>
         {
@@ -156,41 +281,22 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
         });
     }
 
-    public abstract class BaseConstraint : BaseViewModel { }
-
-    public class ChoicesConstraint : BaseConstraint
+    public abstract class BaseConstraint : BaseViewModel, IXmlSerializable
     {
-        public ChoicesConstraint()
+        public BaseConstraint(MetadataItem Owner)
         {
-            this.Choices = new ObservableCollection<ChoicesConstraintChoice>();
+            this.Owner = Owner;
         }
-        public ObservableCollection<ChoicesConstraintChoice> Choices { get; protected set; }
+        public MetadataItem Owner { get; protected set; }
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+        public abstract void ReadXml(XmlReader reader);
+        public abstract void WriteXml(XmlWriter writer);
     }
 
-    public class ChoicesConstraintChoice : BaseViewModel
-    {
-        protected object value;
-        public object Value
-        {
-            get => this.value;
-            set => this.SetField(ref this.value, value);
-        }
-    }
+    
 
-    public class RangeConstraint : BaseConstraint
-    {
-        protected object minValue;
-        protected object maxValue;
-
-        public object MinValue
-        {
-            get => this.minValue;
-            set => this.SetField(ref this.minValue, value);
-        }
-        public object MaxValue
-        {
-            get => this.maxValue;
-            set => this.SetField(ref this.maxValue, value);
-        }
-    }
+    
 }

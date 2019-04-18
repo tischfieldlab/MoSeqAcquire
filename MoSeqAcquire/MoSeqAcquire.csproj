@@ -189,11 +189,13 @@
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\ChoicesConstraint.cs" />
     <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\MetadataEditor\MetadataCollection.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItem.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\ChoicesConstraintEditorDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemEditorDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataGrid.xaml.cs">
@@ -203,6 +205,7 @@
       <DependentUpon>MetadataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\MetadataEditor\MetadataViewModel.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\RangeConstraint.cs" />
     <Compile Include="Views\Controls\MetadataEditor\Rules\BaseRule.cs" />
     <Compile Include="Views\Controls\MetadataEditor\Rules\RangeRule.cs" />
     <Compile Include="Views\Controls\MetadataEditor\Rules\RequiredRule.cs" />
@@ -356,6 +359,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\FileChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\MetadataEditor\ControlTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

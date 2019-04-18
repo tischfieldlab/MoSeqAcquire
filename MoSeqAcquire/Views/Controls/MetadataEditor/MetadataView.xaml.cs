@@ -27,7 +27,7 @@ namespace MoSeqAcquire.Views.Controls
         }
         private static void ItemsSourceChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as MetadataView).InnerViewModel.Items = new MetadataCollection(e.NewValue);
+            (d as MetadataView).InnerViewModel.Items = new MetadataCollection();
         }
 
 

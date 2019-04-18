@@ -23,7 +23,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected RecordingManager recordingManager;
 
 
-        public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel)
+        public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel) : base()
         {
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();

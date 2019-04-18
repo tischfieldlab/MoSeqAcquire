@@ -7,26 +7,27 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
         
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        
+        <ResourceDictionary Source="ControlTemplates.xaml" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="16">
-            <StackPanel Orientation="Horizontal">
-                <Button Width="72" Height="48" Margin="0,0,16,0"
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="8">
+            <DockPanel >
+                <Button DockPanel.Dock="Right" 
                                         Command="{Binding Path=HomeViewCommand}"
                                         ToolTip="Back">
-                    <materialDesign:PackIcon Kind="ArrowLeftBold" Width="36" Height="36" />
+                    <materialDesign:PackIcon Kind="Close" />
                 </Button>
                 <TextBlock Text="Property Details" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"  />
-            </StackPanel>
+            </DockPanel>
         </materialDesign:ColorZone>
         <Grid Grid.Row="1" DataContext="{Binding Path=CurrentItem}">
             <Grid.ColumnDefinitions>
@@ -34,18 +35,34 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <StackPanel Margin="16" Grid.Column="0" Grid.Row="0">
-                <TextBox materialDesign:HintAssist.Hint="Property Name" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=Name}" />
-                <ComboBox Name="propertyTypeCombobox" materialDesign:HintAssist.Hint="Property Type" materialDesign:HintAssist.IsFloating="True" SelectedItem="{Binding Path=ValueType}" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.AvailableTypes, Mode=OneWay}" />
-            </StackPanel>
-            <StackPanel Margin="16" Grid.Column="1" Grid.Row="0">
-                <TextBox materialDesign:HintAssist.Hint="Units" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=Units}" />
-                <TextBox materialDesign:HintAssist.Hint="Default Value" materialDesign:HintAssist.IsFloating="True"  />
-            </StackPanel>
-            <GroupBox Grid.Column="0" Grid.Row="1" Margin="16" Header="{Binding}">
+
+            <TextBox Grid.Column="0" Grid.Row="0" Margin="16,8"
+                     materialDesign:HintAssist.Hint="Property Name" 
+                     materialDesign:HintAssist.IsFloating="True" 
+                     Text="{Binding Path=Name}" />
+
+            <ComboBox Grid.Column="0" Grid.Row="1" Margin="16,8"
+                      Name="propertyTypeCombobox" 
+                      materialDesign:HintAssist.Hint="Property Type" 
+                      materialDesign:HintAssist.IsFloating="True" 
+                      SelectedItem="{Binding Path=ValueType}" 
+                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.AvailableTypes, Mode=OneWay}" />
+
+            <TextBox Grid.Column="1" Grid.Row="0" Margin="16,8"
+                     materialDesign:HintAssist.Hint="Units" 
+                     materialDesign:HintAssist.IsFloating="True" 
+                     Text="{Binding Path=Units}" />
+
+            <ContentPresenter Grid.Column="1" Grid.Row="1"  Margin="16,8" 
+                              Name="DefaultValue" 
+                              Content="{Binding}" 
+                              ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}" />
+
+            <GroupBox Grid.Column="0" Grid.Row="2" Margin="16" Header="{Binding}">
                 <GroupBox.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -72,7 +89,7 @@
                                                     ToolTip="Edit Item Details">
                                                 <materialDesign:PackIcon Kind="Close"  />
                                             </Button>
-                                            <TextBox Text="{Binding Path=Value}" />
+                                            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ChoicesConstraintEditorDataTemplateSelector}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -87,8 +104,10 @@
                     </DataTemplate>
                     <DataTemplate x:Key="rangeTemplate">
                         <StackPanel>
-                            <TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MinValue}" />
-                            <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MaxValue}" />
+                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"  Value="{Binding Path=ConstraintImplementation.MinValue}" />
+                            <mah:NumericUpDown Value="{Binding Path=ConstraintImplementation.MaxValue}" />
+                            <!--<TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MinValue}" />
+                            <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MaxValue}" />-->
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="noConstraintTemplate">
@@ -111,7 +130,7 @@
                     </ContentControl.Style>
                 </ContentControl>
             </GroupBox>
-            <GroupBox Header="Validation" Grid.Column="1" Grid.Row="1" Margin="16">
+            <GroupBox Header="Validation" Grid.Column="1" Grid.Row="2" Margin="16">
 
             </GroupBox>
         </Grid>
