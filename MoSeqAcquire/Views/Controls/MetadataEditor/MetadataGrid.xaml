@@ -41,43 +41,21 @@
                             </Button>
                         </StackPanel>
 
-                        <StackPanel >
-                            <StackPanel.Style>
-                                <Style>
-                                    <Setter Property="Validation.ErrorTemplate">
-                                        <Setter.Value>
-                                            <ControlTemplate>
-                                                <DockPanel HorizontalAlignment="Stretch">
-                                                    
-                                                    <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Validation.Errors}">
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock Text="{Binding Path=ErrorContent}" />
-                                                            </DataTemplate>
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
-                                                    <AdornedElementPlaceholder/>
-                                                </DockPanel>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </StackPanel.Style>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Name}" />
-                                <TextBlock VerticalAlignment="Center" 
-                                           Margin="16,0"
-                                           Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                           Text="{Binding Path=ValueType.Name, StringFormat={}({0})}" />
-                                <TextBlock VerticalAlignment="Center" 
-                                           Margin="16,0"
-                                           DockPanel.Dock="Right"
-                                           Visibility="{Binding Path=Units, Converter={StaticResource StringEmptyVisibilityConverter}}"
-                                           Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                           Text="{Binding Path=Units, StringFormat={}({0})}" />
-                                <ContentPresenter VerticalAlignment="Center" ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}" />
-                            </StackPanel>
-                        </StackPanel>
+
+                        
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Path=Name}" />
+                        <TextBlock VerticalAlignment="Center" 
+                                   Margin="16,0"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                   Text="{Binding Path=ValueType.Name, StringFormat={}({0})}" />
+                        <TextBlock VerticalAlignment="Center" 
+                                   Margin="16,0"
+                                   DockPanel.Dock="Right"
+                                   Visibility="{Binding Path=Units, Converter={StaticResource StringEmptyVisibilityConverter}}"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                   Text="{Binding Path=Units, StringFormat={}({0})}" />
+                        <ContentPresenter VerticalAlignment="Center" ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}" />
+                        
                     </DockPanel>
                 </DataTemplate>
 

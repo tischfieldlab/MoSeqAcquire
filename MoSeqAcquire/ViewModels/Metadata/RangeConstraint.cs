@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.ViewModels.Metadata
 {
     public class RangeConstraint : BaseConstraint
     {

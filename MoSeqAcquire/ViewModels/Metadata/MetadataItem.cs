@@ -13,7 +13,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.ViewModels.Metadata
 {
     public enum ConstraintMode
     {

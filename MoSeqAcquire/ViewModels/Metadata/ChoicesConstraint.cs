@@ -9,7 +9,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using MoSeqAcquire.ViewModels;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.ViewModels.Metadata
 {
     public class ChoicesConstraint : BaseConstraint
     {

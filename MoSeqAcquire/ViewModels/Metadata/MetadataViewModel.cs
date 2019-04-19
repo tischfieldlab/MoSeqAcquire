@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.ViewModels.Metadata
 {
     public enum MetadataViewState
     {

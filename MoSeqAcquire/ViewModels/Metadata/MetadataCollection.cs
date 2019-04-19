@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.ViewModels.Metadata
 {
     public class MetadataCollection : ObservableCollection<MetadataItem>
     {

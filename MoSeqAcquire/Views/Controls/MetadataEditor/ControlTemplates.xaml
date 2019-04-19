@@ -14,7 +14,7 @@
         <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
     </DataTemplate>
     <DataTemplate x:Key="TextBoxEditor">
-        <TextBox Text="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+        <TextBox Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
     </DataTemplate>
     <DataTemplate x:Key="NumericEditor">
         <mah:NumericUpDown Value="{Binding Path=Value, Converter={StaticResource GenericConverter}}" />

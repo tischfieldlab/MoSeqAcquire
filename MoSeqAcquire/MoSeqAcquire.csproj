@@ -189,12 +189,12 @@
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\ChoicesConstraint.cs" />
+    <Compile Include="ViewModels\Metadata\ChoicesConstraint.cs" />
     <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataCollection.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataItem.cs" />
+    <Compile Include="ViewModels\Metadata\MetadataCollection.cs" />
+    <Compile Include="ViewModels\Metadata\MetadataItem.cs" />
     <Compile Include="Views\Controls\MetadataEditor\ChoicesConstraintEditorDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemEditorDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemDataTemplateSelector.cs" />
@@ -204,8 +204,8 @@
     <Compile Include="Views\Controls\MetadataEditor\MetadataView.xaml.cs">
       <DependentUpon>MetadataView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataViewModel.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\RangeConstraint.cs" />
+    <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
+    <Compile Include="ViewModels\Metadata\RangeConstraint.cs" />
     <Compile Include="Views\Controls\MetadataEditor\Rules\BaseRule.cs" />
     <Compile Include="Views\Controls\MetadataEditor\Rules\RangeRule.cs" />
     <Compile Include="Views\Controls\MetadataEditor\Rules\RequiredRule.cs" />

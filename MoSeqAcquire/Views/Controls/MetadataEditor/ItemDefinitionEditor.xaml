@@ -8,6 +8,7 @@
              xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:metadata="clr-namespace:MoSeqAcquire.ViewModels.Metadata"
              mc:Ignorable="d" 
         
              d:DesignHeight="450" d:DesignWidth="800">
@@ -71,7 +72,7 @@
                             <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="16,0,8,0"
                                     Command="{Binding Path=AddChoice}"
                                     Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                    Visibility="{Binding Path=Constraint, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ConstraintMode.Choices}}"
+                                    Visibility="{Binding Path=Constraint, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static metadata:ConstraintMode.Choices}}"
                                     ToolTip="Add Choice">
                                 
                                 <materialDesign:PackIcon Kind="Plus"  />
@@ -86,8 +87,7 @@
                 <GroupBox.Resources>
                     <DataTemplate x:Key="choicesTemplate">
                         <DockPanel>
-                            
-                            <ListView HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
+                            <ListView HorizontalContentAlignment="Stretch" Margin="-8" BorderThickness="0" ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
                                 <ListView.Style>
                                     <Style TargetType="ListView">
                                         <Style.Triggers>
@@ -163,7 +163,12 @@
                 </ContentControl>
             </GroupBox>
             <GroupBox Header="Validation" Grid.Column="1" Grid.Row="2" Margin="16">
-
+                <StackPanel>
+                    <WrapPanel>
+                        <CheckBox />
+                        <TextBlock>Required</TextBlock>
+                    </WrapPanel>
+                </StackPanel>
             </GroupBox>
         </Grid>
     </Grid>

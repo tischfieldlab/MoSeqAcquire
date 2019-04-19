@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using MoSeqAcquire.ViewModels.Metadata;
 
 namespace MoSeqAcquire.Views.Controls.MetadataEditor
 {
