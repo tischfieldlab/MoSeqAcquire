@@ -7,6 +7,7 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <converters:GenericConverter x:Key="GenericConverter" />
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+    <converters:StringEmptyVisibilityConverter x:Key="StringEmptyVisibilityConverter" />
 
     <!-- Begin Value Editors -->
     <DataTemplate x:Key="CheckboxEditor">
@@ -34,10 +35,12 @@
     </DataTemplate>
     <DataTemplate x:Key="RangeEditor">
         <DockPanel>
-            <TextBox DockPanel.Dock="Right"
+            <TextBox DockPanel.Dock="Right" materialDesign:ValidationAssist.Suppress="True"
                          Text="{Binding Path=Value, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                          IsReadOnly="True" />
             <Slider Orientation="Horizontal" TickPlacement="BottomRight"
+                    materialDesign:ValidationAssist.UsePopup="True"
+                    materialDesign:ValidationAssist.PopupPlacement="Top"
                         Style="{StaticResource MaterialDesignDiscreteSlider}"
                         Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                         Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 

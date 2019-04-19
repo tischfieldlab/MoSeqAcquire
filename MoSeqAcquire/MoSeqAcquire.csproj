@@ -235,6 +235,7 @@
     </Compile>
     <Compile Include="Views\Controls\WaitingWindowManager.cs" />
     <Compile Include="Views\Converters\GenericConverter.cs" />
+    <Compile Include="Views\Converters\StringEmptyVisibilityConverter.cs" />
     <Compile Include="Views\Converters\TimeSpanFormatConverter.cs" />
     <Compile Include="Views\Converters\AdditionConverter.cs" />
     <Compile Include="Views\Converters\BooleanInvertConverter.cs" />

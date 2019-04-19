@@ -69,11 +69,18 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
         }
 
         public ICommand NewItemCommand => new ActionCommand(
-            (p) => this.Items.Add(new MetadataItem("New Item", typeof(string)) { Value = "Some Value" }),
+            (p) => {
+                var itm = new MetadataItem("New Item", typeof(string)) { Value = "Some Value" };
+                this.Items.Add(itm);
+                this.EditItemDefinition.Execute(itm);
+            },
             (p) => this.IsTemplateEditable
         );
         public ICommand EditItemDefinition => new ActionCommand(
-            (p) => this.CurrentState = MetadataViewState.Property,
+            (p) => {
+                this.CurrentItem = p as MetadataItem;
+                this.CurrentState = MetadataViewState.Property;
+            },
             (p) => this.IsTemplateEditable
         );
         public ICommand RemoveItem => new ActionCommand(
