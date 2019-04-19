@@ -6,6 +6,7 @@
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <converters:GenericConverter x:Key="GenericConverter" />
+    <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
 
     <!-- Begin Value Editors -->
     <DataTemplate x:Key="CheckboxEditor">
@@ -38,9 +39,8 @@
                          IsReadOnly="True" />
             <Slider Orientation="Horizontal" TickPlacement="BottomRight"
                         Style="{StaticResource MaterialDesignDiscreteSlider}"
-                        TickFrequency="{Binding Path=StepValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Maximum="{Binding Path=MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Minimum="{Binding Path=MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                        Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                        Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                         Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
         </DockPanel>
     </DataTemplate>
@@ -64,14 +64,18 @@
                            Value="{Binding Path=DefaultValue, Converter={StaticResource GenericConverter}}" />
     </DataTemplate>
     <DataTemplate x:Key="DefaultValueEnumComboBoxEditor">
-        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
+        <ComboBox Style="{StaticResource MaterialDesignComboBox}"
+                  materialDesign:HintAssist.Hint="Default Value"
+                  materialDesign:HintAssist.IsFloating="True"
                   ItemsSource="{extensions:Enumeration {Binding Path=ValueType}}" 
                   DisplayMemberPath="Description" 
                   SelectedValuePath="Value" 
                   SelectedValue="{Binding Path=DefaultValue}" />
     </DataTemplate>
     <DataTemplate x:Key="DefaultValueCollectionComboBoxEditor">
-        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
+        <ComboBox Style="{StaticResource MaterialDesignComboBox}"
+                  materialDesign:HintAssist.Hint="Default Value"
+                  materialDesign:HintAssist.IsFloating="True"
                   ItemsSource="{Binding Path=ConstraintImplementation.Choices}" 
                   SelectedValue="{Binding Path=DefaultValue}" 
                   DisplayMemberPath="Value" 
@@ -80,14 +84,16 @@
     <DataTemplate x:Key="DefaultValueRangeEditor">
         <DockPanel>
             <TextBox DockPanel.Dock="Right"
-                         Text="{Binding Path=DefaultValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                         IsReadOnly="True" />
+                    Text="{Binding Path=DefaultValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                    IsReadOnly="True" />
+            
             <Slider Orientation="Horizontal" TickPlacement="BottomRight"
-                        Style="{StaticResource MaterialDesignDiscreteSlider}"
-                        TickFrequency="{Binding Path=StepValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Maximum="{Binding Path=MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Minimum="{Binding Path=MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Value="{Binding Path=DefaultValue, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
+                    materialDesign:HintAssist.Hint="Default Value"
+                    materialDesign:HintAssist.IsFloating="True"
+                    Style="{StaticResource MaterialDesignDiscreteSlider}"
+                    Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                    Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                    Value="{Binding Path=DefaultValue, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
         </DockPanel>
     </DataTemplate>
     <!-- End Default Value Editors -->

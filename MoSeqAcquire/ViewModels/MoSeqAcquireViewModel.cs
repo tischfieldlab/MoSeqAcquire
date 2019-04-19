@@ -21,6 +21,8 @@ namespace MoSeqAcquire.ViewModels
         {
             App.SetCurrentStatus("Loading Theme....");
             this.Theme = new ThemeViewModel();
+            App.SetCurrentStatus("Loading Components...");
+            ProtocolHelpers.FindComponents();
             App.SetCurrentStatus("Initializing Trigger Bus....");
             this.TriggerBus = new TriggerBus();
             App.SetCurrentStatus("Loading Media Sources....");

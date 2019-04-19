@@ -26,9 +26,12 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
 
         public MetadataViewModel()
         {
-            this.AvailableTypes = new ObservableCollection<Type>()
+            this.AvailableTypes = new ObservableCollection<AvailableTypeViewModel>()
             {
-                typeof(bool), typeof(int), typeof(double), typeof(string)
+                new AvailableTypeViewModel(typeof(bool)),
+                new AvailableTypeViewModel(typeof(int)),
+                new AvailableTypeViewModel(typeof(double)),
+                new AvailableTypeViewModel(typeof(string))
             };
             this.currentCollection = new MetadataCollection();
             this.CurrentState = MetadataViewState.Grid;
@@ -52,7 +55,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             get => (int)this.currentState;
         }
 
-        public ObservableCollection<Type> AvailableTypes { get; protected set; }
+        public ObservableCollection<AvailableTypeViewModel> AvailableTypes { get; protected set; }
 
         public MetadataCollection Items
         {
@@ -82,5 +85,28 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             this.CurrentState = MetadataViewState.Grid;
         });
         
+    }
+
+    public class AvailableTypeViewModel : BaseViewModel
+    {
+        protected Type type;
+        protected bool isEnabled;
+
+        public AvailableTypeViewModel(Type type, bool isEnabled = true)
+        {
+            this.Type = type;
+            this.IsEnabled = isEnabled;
+        }
+
+        public Type Type
+        {
+            get => this.type;
+            set => this.SetField(ref type, value);
+        }
+        public bool IsEnabled
+        {
+            get => this.isEnabled;
+            set => this.SetField(ref isEnabled, value);
+        }
     }
 }

@@ -59,6 +59,9 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
         {
             var cc = obj as ChoicesConstraint;
 
+            if (cc == null)
+                return false;
+
             if (!this.Choices.SequenceEqual(cc.Choices))
                 return false;
 

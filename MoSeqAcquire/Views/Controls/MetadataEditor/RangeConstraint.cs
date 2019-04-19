@@ -14,6 +14,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
 
         public RangeConstraint(MetadataItem Owner) : base(Owner)
         {
+            
         }
 
         public object MinValue

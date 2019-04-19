@@ -24,11 +24,11 @@ namespace MoSeqAcquire.Views.Converters
             var underlyingType = Nullable.GetUnderlyingType(targetType);
             if (underlyingType != null)
             {
-                if (underlyingType.IsValueType && value == null)
-                {
-                    value = Activator.CreateInstance(underlyingType);
-                }
-                return System.Convert.ChangeType(value, underlyingType);
+                targetType = underlyingType;
+            }
+            if (targetType.IsValueType && value == null)
+            {
+                value = Activator.CreateInstance(targetType);
             }
             return System.Convert.ChangeType(value, targetType);
         }

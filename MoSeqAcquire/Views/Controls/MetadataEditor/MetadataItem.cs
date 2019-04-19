@@ -31,6 +31,14 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
         protected ConstraintMode constraint;
         protected BaseConstraint constraintImplementation;
 
+        protected readonly Dictionary<Type, List<ConstraintMode>> validTypeConstraints = new Dictionary<Type, List<ConstraintMode>>()
+        {
+            { typeof(bool), new List<ConstraintMode>(){ConstraintMode.None } },
+            { typeof(string), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices } },
+            { typeof(int), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices, ConstraintMode.Range } },
+            { typeof(double), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices, ConstraintMode.Range } }
+        };
+
         public MetadataItem(string Name, Type ValueType) : this()
         {
             this.name = Name;
@@ -63,6 +71,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             set
             {
                 this.SetField(ref this.valueType, value);
+                this.NotifyPropertyChanged(nameof(this.ConstraintsAllowed));
                 this.CoerceAllValues();
             }
         }
@@ -85,9 +94,9 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             set => this.SetField(ref this.units, value);
         }
         [XmlIgnore]
-        public bool ConstraintsAllowed
+        public List<ConstraintMode> ConstraintsAllowed
         {
-            get => true;
+            get => this.validTypeConstraints[this.ValueType];
         }
         [XmlElement]
         public ConstraintMode Constraint
@@ -108,6 +117,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                 {
                     this.ConstraintImplementation = null;
                 }
+                this.CoerceAllValues();
             }
         }
 
@@ -120,10 +130,18 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
 
 
 
-
+        protected void ValidateConstraintForType()
+        {
+            if (!this.ConstraintsAllowed.Contains(this.Constraint))
+            {
+                this.Constraint = ConstraintMode.None;
+            }
+        }
         protected void CoerceAllValues()
         {
+            this.ValidateConstraintForType();
             this.Value = this.CoerceValue(this.value, this.ValueType);
+            this.DefaultValue = this.CoerceValue(this.defaultValue, this.ValueType);
             if (this.ConstraintImplementation is ChoicesConstraint)
             {
                 foreach (var c in (this.constraintImplementation as ChoicesConstraint).Choices)
@@ -145,18 +163,19 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             {
                 return Convert.ChangeType(value, type);
             } 
-            catch (FormatException e)
+            catch (Exception e)
             {
                 try
                 {
                     return TypeDescriptor.GetConverter(value.GetType()).ConvertTo(value, type);
-                }catch(NotSupportedException e2)
+                }catch(Exception e2)
                 {
                     return Activator.CreateInstance(type);
                 }
             }
         }
 
+        #region IXmlSerializable
         public XmlSchema GetSchema()
         {
             return null;
@@ -232,7 +251,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             }
             writer.WriteEndElement();
         }
-
+        #endregion IXmlSerializable
         public override bool Equals(object obj)
         {
             var mdi = obj as MetadataItem;

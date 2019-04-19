@@ -18,7 +18,8 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
                 PropertyChangedEventHandler lambda = null;
                 lambda = (o, args) =>
                 {
-                    if (args.PropertyName == nameof(pi.ValueType))
+                    if (args.PropertyName == nameof(pi.ValueType)
+                     || args.PropertyName == nameof(pi.Constraint))
                     {
                         pi.PropertyChanged -= lambda;
                         var cp = (ContentPresenter)container;

@@ -48,8 +48,10 @@
             <ComboBox Grid.Column="0" Grid.Row="1" Margin="16,8"
                       Name="propertyTypeCombobox" 
                       materialDesign:HintAssist.Hint="Property Type" 
-                      materialDesign:HintAssist.IsFloating="True" 
-                      SelectedItem="{Binding Path=ValueType}" 
+                      materialDesign:HintAssist.IsFloating="True"
+                      SelectedValuePath="Type"
+                      SelectedValue="{Binding Path=ValueType}"
+                      DisplayMemberPath="Type.FullName"
                       ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.AvailableTypes, Mode=OneWay}" />
 
             <TextBox Grid.Column="1" Grid.Row="0" Margin="16,8"
@@ -65,47 +67,77 @@
             <GroupBox Grid.Column="0" Grid.Row="2" Margin="16" Header="{Binding}">
                 <GroupBox.HeaderTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Constraints:" VerticalAlignment="Center" Margin="0,0,20,0" />
-                            <ComboBox materialDesign:HintAssist.Hint="Constraint Type" 
-                                      ItemsSource="{mve:Enumeration {x:Type local:ConstraintMode}}" 
-                                      DisplayMemberPath="Description" 
-                                      SelectedValuePath="Value" 
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="16,0,8,0"
+                                    Command="{Binding Path=AddChoice}"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                    Visibility="{Binding Path=Constraint, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ConstraintMode.Choices}}"
+                                    ToolTip="Add Choice">
+                                
+                                <materialDesign:PackIcon Kind="Plus"  />
+                            </Button>
+                            <TextBlock DockPanel.Dock="Left" Text="Constraint:" VerticalAlignment="Center" Margin="0,0,20,0" />
+                            <ComboBox DockPanel.Dock="Left" materialDesign:HintAssist.Hint="Constraint Type" 
+                                      ItemsSource="{Binding Path=ConstraintsAllowed}"
                                       SelectedValue="{Binding Path=Constraint}"  />
-                        </StackPanel>
+                        </DockPanel>
                     </DataTemplate>
                 </GroupBox.HeaderTemplate>
                 <GroupBox.Resources>
                     <DataTemplate x:Key="choicesTemplate">
                         <DockPanel>
-                            <ListBox ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
-                                <ListBox.ItemTemplate>
+                            
+                            <ListView HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
+                                <ListView.Style>
+                                    <Style TargetType="ListView">
+                                        <Style.Triggers>
+                                            <Trigger Property="HasItems" Value="False">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <Grid HorizontalAlignment="Center">
+                                                                <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
+                                                                    0 options. 
+                                                                    <Hyperlink Command="{Binding Path=AddChoice}">
+                                                                        Add one?
+                                                                    </Hyperlink>
+                                                                </TextBlock>
+                                                            </Grid>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListView.Style>
+                                <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
+                                        <DockPanel HorizontalAlignment="Stretch">
+                                            <Button DockPanel.Dock="Left" Height="24" Width="24" Margin="0,0,8,0"
                                                     Command="{Binding Path=DataContext.RemoveChoice, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                     CommandParameter="{Binding Path=.}"
                                                     Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                                                     ToolTip="Edit Item Details">
                                                 <materialDesign:PackIcon Kind="Close"  />
                                             </Button>
-                                            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ChoicesConstraintEditorDataTemplateSelector}" />
-                                        </StackPanel>
+                                            <ContentPresenter HorizontalAlignment="Stretch" Content="{Binding}" ContentTemplateSelector="{StaticResource ChoicesConstraintEditorDataTemplateSelector}" />
+                                        </DockPanel>
                                     </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="-30"
-                                            Command="{Binding Path=AddChoice}"
-                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            ToolTip="Add Choice">
-                                <materialDesign:PackIcon Kind="Plus"  />
-                            </Button>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            
                         </DockPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="rangeTemplate">
                         <StackPanel>
-                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"  Value="{Binding Path=ConstraintImplementation.MinValue}" />
-                            <mah:NumericUpDown Value="{Binding Path=ConstraintImplementation.MaxValue}" />
+                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"
+                                               materialDesign:HintAssist.IsFloating="True"
+                                               Margin="16,8"
+                                               Value="{Binding Path=ConstraintImplementation.MinValue}" />
+                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Maximum"
+                                               materialDesign:HintAssist.IsFloating="True"
+                                               Margin="16,8"
+                                               Value="{Binding Path=ConstraintImplementation.MaxValue}" />
                             <!--<TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MinValue}" />
                             <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MaxValue}" />-->
                         </StackPanel>
