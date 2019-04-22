@@ -58,7 +58,7 @@ namespace MoSeqAcquireTests2
             mdi1c.Choices.Add(new ChoicesConstraintChoice(mdi1) { Value = "Choice_1" });
             mdi1c.Choices.Add(new ChoicesConstraintChoice(mdi1) { Value = "Choice_2" });
             mdi1c.Choices.Add(new ChoicesConstraintChoice(mdi1) { Value = "Choice_3" });
-
+            mc.Add(mdi1);
 
             var serialized = WriteProtocol(mc);
             Console.Write(serialized);

@@ -174,6 +174,7 @@
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
     <Compile Include="ViewModels\DataChannelViewModel.cs" />
+    <Compile Include="ViewModels\Metadata\BaseConstraint.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorRecorderAdapter.cs" />

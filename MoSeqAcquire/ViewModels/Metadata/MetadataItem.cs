@@ -57,48 +57,42 @@ namespace MoSeqAcquire.ViewModels.Metadata
         {
             get => TypeDescriptor.GetConverter(this.ValueType);
         }
-
-        [XmlAttribute]
+        
         public string Name
         {
             get => this.name;
             set => this.SetField(ref this.name, value);
         }
-        [XmlAttribute]
+        
         public Type ValueType
         {
             get => this.valueType;
             set
             {
                 this.SetField(ref this.valueType, value);
-                this.NotifyPropertyChanged(nameof(this.ConstraintsAllowed));
                 this.CoerceAllValues();
+                this.NotifyPropertyChanged(nameof(this.ConstraintsAllowed));
             }
         }
-        [XmlAttribute]
         public object Value
         {
             get => this.value;
-            set => this.SetField(ref this.value, value);
+            set => this.SetField(ref this.value, value, this.CoerceAllValues);
         }
-        [XmlElement]
         public object DefaultValue
         {
             get => this.defaultValue;
-            set => this.SetField(ref this.defaultValue, value);
+            set => this.SetField(ref this.defaultValue, value, this.CoerceAllValues);
         }
-        [XmlAttribute]
         public string Units
         {
             get => this.units;
             set => this.SetField(ref this.units, value);
         }
-        [XmlIgnore]
         public List<ConstraintMode> ConstraintsAllowed
         {
             get => this.validTypeConstraints[this.ValueType];
         }
-        [XmlElement]
         public ConstraintMode Constraint
         {
             get => this.constraint;
@@ -127,19 +121,12 @@ namespace MoSeqAcquire.ViewModels.Metadata
             set => this.SetField(ref this.constraintImplementation, value);
         }
 
-
-
-
-        protected void ValidateConstraintForType()
+        protected void CoerceAllValues()
         {
             if (!this.ConstraintsAllowed.Contains(this.Constraint))
             {
                 this.Constraint = ConstraintMode.None;
             }
-        }
-        protected void CoerceAllValues()
-        {
-            this.ValidateConstraintForType();
             this.Value = this.CoerceValue(this.value, this.ValueType);
             this.DefaultValue = this.CoerceValue(this.defaultValue, this.ValueType);
             if (this.ConstraintImplementation is ChoicesConstraint)
@@ -299,23 +286,4 @@ namespace MoSeqAcquire.ViewModels.Metadata
             (this.constraintImplementation as ChoicesConstraint).Choices.Remove(p as ChoicesConstraintChoice);
         });
     }
-
-    public abstract class BaseConstraint : BaseViewModel, IXmlSerializable
-    {
-        public BaseConstraint(MetadataItem Owner)
-        {
-            this.Owner = Owner;
-        }
-        public MetadataItem Owner { get; protected set; }
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-        public abstract void ReadXml(XmlReader reader);
-        public abstract void WriteXml(XmlWriter writer);
-    }
-
-    
-
-    
 }

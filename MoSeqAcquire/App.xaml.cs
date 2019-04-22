@@ -38,7 +38,11 @@ namespace MoSeqAcquire
         }
         public static void SetCurrentStatus(String StatusText)
         {
-            (App.Current as App).loading.SetCurrentStatus(StatusText);
+            try
+            {
+                (App.Current as App).loading.SetCurrentStatus(StatusText);
+            }
+            catch { }
         }
 
         private void StartupHandler(object sender, StartupEventArgs e)
