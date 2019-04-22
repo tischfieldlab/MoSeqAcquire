@@ -11,6 +11,7 @@ using MvvmValidation;
 using System.Windows.Input;
 using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Triggers;
+using MoSeqAcquire.ViewModels.Metadata;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -117,7 +118,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             get => this.recordingManager.GeneralSettings;
         }
 
-        public RecordingMetadata RecordingMetadata
+        public MetadataViewModel RecordingMetadata
         {
             get => this.recordingManager.RecordingMetadata;
         }

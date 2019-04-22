@@ -197,6 +197,12 @@
     <Compile Include="ViewModels\Metadata\MetadataCollection.cs" />
     <Compile Include="ViewModels\Metadata\MetadataItem.cs" />
     <Compile Include="Views\Controls\MetadataEditor\ChoicesConstraintEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\Controls\MetadataEditor\MetadataEditorWindow.xaml.cs">
+      <DependentUpon>MetadataEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\MetadataEditor\MetadataList.xaml.cs">
+      <DependentUpon>MetadataList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemEditorDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataItemDataTemplateSelector.cs" />
     <Compile Include="Views\Controls\MetadataEditor\MetadataGrid.xaml.cs">
@@ -371,6 +377,14 @@
     <Page Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\MetadataEditor\MetadataEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\MetadataEditor\MetadataList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\MetadataEditor\MetadataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>

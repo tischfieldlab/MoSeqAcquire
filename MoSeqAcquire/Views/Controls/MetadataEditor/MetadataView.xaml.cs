@@ -15,10 +15,9 @@ namespace MoSeqAcquire.Views.Controls
 
         public MetadataView()
         {
-            this.InnerViewModel = new MetadataViewModel();
             InitializeComponent();
         }
-        public MetadataViewModel InnerViewModel { get; protected set; }
+        /*public MetadataViewModel InnerViewModel { get; protected set; }
 
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(object), typeof(MetadataView), new PropertyMetadata(null, new PropertyChangedCallback(ItemsSourceChangedCallBack)));
         public object ItemsSource
@@ -42,7 +41,7 @@ namespace MoSeqAcquire.Views.Controls
         {
             get { return (bool)GetValue(IsTemplateEditableProperty); }
             set { SetValue(IsTemplateEditableProperty, value); }
-        }
+        }*/
         
     }
 

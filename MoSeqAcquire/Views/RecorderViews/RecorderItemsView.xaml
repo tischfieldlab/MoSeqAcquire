@@ -34,7 +34,8 @@
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
                                                 No recorders have been added yet. Would you like to 
-                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                     add one
                                                 </Hyperlink>?
                                             </TextBlock>

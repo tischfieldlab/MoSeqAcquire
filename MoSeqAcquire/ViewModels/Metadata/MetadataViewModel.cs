@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MoSeqAcquire.Views.Controls;
 
 namespace MoSeqAcquire.ViewModels.Metadata
 {
@@ -35,6 +36,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
             };
             this.currentCollection = new MetadataCollection();
             this.CurrentState = MetadataViewState.Grid;
+            this.IsTemplateEditable = true;
         }
         public bool IsTemplateEditable
         {
@@ -91,7 +93,13 @@ namespace MoSeqAcquire.ViewModels.Metadata
         {
             this.CurrentState = MetadataViewState.Grid;
         });
-        
+        public ICommand ShowEditorWindow => new ActionCommand((o) =>
+        {
+            var win = new MetadataEditorWindow();
+            win.DataContext = this;
+            win.Show();
+        });
+
     }
 
     public class AvailableTypeViewModel : BaseViewModel

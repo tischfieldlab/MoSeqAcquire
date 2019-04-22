@@ -10,7 +10,6 @@
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              xmlns:bhv="clr-namespace:MoSeqAcquire.Views.Behaviors"
              xmlns:tvm="clr-namespace:MoSeqAcquire.ViewModels.Triggers"
-             Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" Name="pv"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -107,7 +106,8 @@
                                             <StackPanel HorizontalAlignment="Center">
                                                 <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
                                                     No triggers have been added yet. Would you like to 
-                                                    <Hyperlink Command="{Binding Path=DataContext.Commands.AddTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                                                    <Hyperlink Command="{Binding Path=DataContext.Commands.AddTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                               Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         add one
                                                     </Hyperlink>?
                                                 </TextBlock>
