@@ -28,7 +28,7 @@ namespace MoSeqAcquire.Models.Management
         {
             this.Name = Name;
         }
-        [XmlIgnore]
+        [XmlAttribute]
         public string Name { get; set; }
 
 

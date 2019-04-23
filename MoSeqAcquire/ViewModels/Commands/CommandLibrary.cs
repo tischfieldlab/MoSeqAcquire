@@ -39,6 +39,12 @@ namespace MoSeqAcquire.ViewModels.Commands
             this.RegisterCommand<ToggleProtocolLockCommand>();
             this.RegisterCommand<ToggleOpenMediaSourceConfigCommand>();
             this.RegisterCommand<ToggleChannelEnabledCommand>();
+
+            this.RegisterCommand<AddMetadataItemCommand>();
+            this.RegisterCommand<EditMetadataItemCommand>();
+            this.RegisterCommand<RemoveMetadataItemCommand>();
+            this.RegisterCommand<ShowMetadataDefinitionWindowCommand>();
+            this.RegisterCommand<CloseMetadataItemDefinitionEditorCommand>();
         }
 
         public OpenThemeDialogCommand OpenThemeDialog { get => this.GetCommand<OpenThemeDialogCommand>(); }
@@ -64,6 +70,12 @@ namespace MoSeqAcquire.ViewModels.Commands
         public ToggleProtocolLockCommand ToggleProtocolLock { get => this.GetCommand<ToggleProtocolLockCommand>(); }
         public ToggleOpenMediaSourceConfigCommand ToggleOpenMediaSourceConfig { get => this.GetCommand<ToggleOpenMediaSourceConfigCommand>(); }
         public ToggleChannelEnabledCommand ToggleChannelEnabled { get => this.GetCommand<ToggleChannelEnabledCommand>(); }
+
+        public AddMetadataItemCommand AddMetadataItem { get => this.GetCommand<AddMetadataItemCommand>(); }
+        public EditMetadataItemCommand EditMetadataItem { get => this.GetCommand<EditMetadataItemCommand>(); }
+        public RemoveMetadataItemCommand RemoveMetadataItem { get => this.GetCommand<RemoveMetadataItemCommand>(); }
+        public ShowMetadataDefinitionWindowCommand ShowMetadataDefinitionWindow { get => this.GetCommand<ShowMetadataDefinitionWindowCommand>(); }
+        public CloseMetadataItemDefinitionEditorCommand CloseMetadataItemDefinitionEditor { get => this.GetCommand<CloseMetadataItemDefinitionEditorCommand>(); }
 
     }
 }

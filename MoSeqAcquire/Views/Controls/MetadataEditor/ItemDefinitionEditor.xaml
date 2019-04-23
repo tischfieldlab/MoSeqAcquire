@@ -20,11 +20,11 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="8">
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="16">
             <DockPanel >
                 <Button DockPanel.Dock="Right" 
-                                        Command="{Binding Path=HomeViewCommand}"
-                                        ToolTip="Back">
+                        Command="{Binding Path=DataContext.Commands.CloseMetadataItemDefinitionEditor, RelativeSource={RelativeSource AncestorType=Window}}"
+                        ToolTip="Back">
                     <materialDesign:PackIcon Kind="Close" />
                 </Button>
                 <TextBlock Text="Property Details" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"  />

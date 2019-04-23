@@ -12,33 +12,15 @@
     </UserControl.Resources>
     <Grid>
         <ListView
-              Margin="0 8 0 0"
+              Margin="0"
             HorizontalContentAlignment="Stretch"
               ItemsSource="{Binding Path=Items}"
+              IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsProtocolForceLocked, Converter={StaticResource BooleanInvertConverter}}"
               materialDesign:DataGridAssist.CellPadding="13 8 8 8"
               materialDesign:DataGridAssist.ColumnHeaderPadding="8">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                            <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.EditItemDefinition}"
-                                        CommandParameter="{Binding}"
-                                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                        ToolTip="Edit Item Details">
-                                <materialDesign:PackIcon Kind="Pencil"  />
-                            </Button>
-                            <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RemoveItem}"
-                                        CommandParameter="{Binding}"
-                                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                        ToolTip="Remove Item">
-                                <materialDesign:PackIcon Kind="Delete"  />
-                            </Button>
-                        </StackPanel>
-
-
-                        
                         <TextBlock VerticalAlignment="Center" Text="{Binding Path=Name}" />
                         <TextBlock VerticalAlignment="Center" 
                                    Margin="16,0"
@@ -50,11 +32,10 @@
                                    Visibility="{Binding Path=Units, Converter={StaticResource StringEmptyVisibilityConverter}}"
                                    Foreground="{DynamicResource MaterialDesignBodyLight}"
                                    Text="{Binding Path=Units, StringFormat={}({0})}" />
+                        <TextBlock Text="{Binding Path=Error}" />
                         <ContentPresenter VerticalAlignment="Center" ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}" />
-                        
                     </DockPanel>
                 </DataTemplate>
-
             </ListView.ItemTemplate>
         </ListView>
     </Grid>

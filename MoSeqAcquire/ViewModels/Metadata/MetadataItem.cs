@@ -43,14 +43,44 @@ namespace MoSeqAcquire.ViewModels.Metadata
         {
             this.name = Name;
             this.valueType = ValueType;
+            this.defaultValue = this.CoerceValue(null, ValueType);
+            this.value = this.CoerceValue(null, ValueType);
         }
 
         protected MetadataItem()
         {
-            this.Validator.AddRule(nameof(this.Name), 
-                                () => RuleResult.Assert(!string.IsNullOrEmpty(this.Name), "Name is required"));
-            this.Validator.AddRule(nameof(this.Value), 
+            this.SetupValidationRules();
+        }
+
+        protected void SetupValidationRules()
+        {
+            this.Validator.RemoveAllRules();
+            //ensure property name is 
+            this.Validator.AddRequiredRule(() => this.Name, "Name is required");
+            //ensure value is of correct type
+            this.Validator.AddRule(nameof(this.Value),
                 () => RuleResult.Assert(this.ValueType.IsAssignableFrom(this.Value.GetType()), "Value is not a valid " + this.ValueType.Name));
+
+            if (this.Constraint != ConstraintMode.None)
+            {
+                switch (this.constraint)
+                {
+                    case ConstraintMode.Choices:
+                        var ccon = this.ConstraintImplementation as ChoicesConstraint;
+                        this.Validator.AddRule(nameof(this.Value),
+                            () => RuleResult.Assert(ccon.Choices.Contains(this.Value), 
+                                "Value must be one of available choices"));
+                        break;
+
+                    case ConstraintMode.Range:
+                        var rcon = this.ConstraintImplementation as RangeConstraint;
+                        this.Validator.AddRule(nameof(this.Value),
+                            () => RuleResult.Assert((this.Value as IComparable).CompareTo((rcon.MinValue as IComparable)) >= 0
+                                                 && (this.Value as IComparable).CompareTo((rcon.MaxValue as IComparable)) <= 0,
+                            "Value must be within range"));
+                        break;
+                }
+            }
         }
 
         public virtual TypeConverter Converter
@@ -71,19 +101,27 @@ namespace MoSeqAcquire.ViewModels.Metadata
             {
                 this.SetField(ref this.valueType, value);
                 this.CoerceAllValues();
-                this.NotifyPropertyChanged(nameof(this.ConstraintsAllowed));
             }
         }
         public object Value
         {
             get => this.value;
-            set => this.SetField(ref this.value, value, this.CoerceAllValues);
+            set
+            {
+                this.SetField(ref this.value, value);
+                this.CoerceAllValues();
+            }
         }
         public object DefaultValue
         {
             get => this.defaultValue;
-            set => this.SetField(ref this.defaultValue, value, this.CoerceAllValues);
+            set
+            {
+                this.SetField(ref this.defaultValue, value);
+                this.CoerceAllValues();
+            }
         }
+
         public string Units
         {
             get => this.units;
@@ -121,14 +159,16 @@ namespace MoSeqAcquire.ViewModels.Metadata
             set => this.SetField(ref this.constraintImplementation, value);
         }
 
+        #region Value Coerceion
         protected void CoerceAllValues()
         {
             if (!this.ConstraintsAllowed.Contains(this.Constraint))
             {
                 this.Constraint = ConstraintMode.None;
+                return;
             }
-            this.Value = this.CoerceValue(this.value, this.ValueType);
-            this.DefaultValue = this.CoerceValue(this.defaultValue, this.ValueType);
+            this.value = this.CoerceValue(this.value, this.ValueType);
+            this.defaultValue = this.CoerceValue(this.defaultValue, this.ValueType);
             if (this.ConstraintImplementation is ChoicesConstraint)
             {
                 foreach (var c in (this.constraintImplementation as ChoicesConstraint).Choices)
@@ -142,13 +182,25 @@ namespace MoSeqAcquire.ViewModels.Metadata
                 rc.MinValue = this.CoerceValue(rc.MinValue, this.ValueType);
                 rc.MaxValue = this.CoerceValue(rc.MaxValue, this.ValueType);
             }
-            
+            this.SetupValidationRules();
+            this.Validator.ValidateAll();
+            this.NotifyPropertyChanged(null);
         }
         protected object CoerceValue(object value, Type type)
         {
             try
             {
-                return Convert.ChangeType(value, type);
+                value = Convert.ChangeType(value, type);
+                if (value == null)
+                {
+                    if (type == typeof(string))
+                    {
+                        return string.Empty;
+                    }
+                    return Activator.CreateInstance(type);
+                }
+
+                return value;
             } 
             catch (Exception e)
             {
@@ -160,6 +212,12 @@ namespace MoSeqAcquire.ViewModels.Metadata
                     return Activator.CreateInstance(type);
                 }
             }
+        }
+#endregion
+
+        public void ResetValue()
+        {
+            this.Value = this.DefaultValue;
         }
 
         #region IXmlSerializable
@@ -268,17 +326,16 @@ namespace MoSeqAcquire.ViewModels.Metadata
 
         public ICommand AddChoice => new ActionCommand((p) =>
         {
+            var constraint = (this.constraintImplementation as ChoicesConstraint);
             object val = null;
             if (this.ValueType == typeof(string))
             {
-                val = "New Option";
+                val = "New Option "+constraint.Choices.Count;
             }
             else
             {
                 val = Activator.CreateInstance(this.ValueType);
             }
-
-            var constraint = (this.constraintImplementation as ChoicesConstraint);
             constraint.Choices.Add(new ChoicesConstraintChoice(this) { Value = val });
         });
         public ICommand RemoveChoice => new ActionCommand((p) =>

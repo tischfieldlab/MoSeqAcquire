@@ -12,6 +12,6 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MetadataEditorWindow" Height="450" Width="800">
-    <local:MetadataView />
+        Title="Metadata Template Editor" Height="450" Width="800">
+    <local:MetadataView DataContext="{Binding Path=Recorder.RecordingMetadata}" />
 </Window>

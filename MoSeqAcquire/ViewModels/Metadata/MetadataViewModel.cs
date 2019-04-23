@@ -25,6 +25,8 @@ namespace MoSeqAcquire.ViewModels.Metadata
         protected MetadataCollection currentCollection;
         protected MetadataItem currentItem;
 
+        protected MetadataEditorWindow metadataEditorWindow;
+
         public MetadataViewModel()
         {
             this.AvailableTypes = new ObservableCollection<AvailableTypeViewModel>()
@@ -70,58 +72,5 @@ namespace MoSeqAcquire.ViewModels.Metadata
             set => this.SetField(ref this.currentItem, value);
         }
 
-        public ICommand NewItemCommand => new ActionCommand(
-            (p) => {
-                var itm = new MetadataItem("New Item", typeof(string)) { Value = "Some Value" };
-                this.Items.Add(itm);
-                this.EditItemDefinition.Execute(itm);
-            },
-            (p) => this.IsTemplateEditable
-        );
-        public ICommand EditItemDefinition => new ActionCommand(
-            (p) => {
-                this.CurrentItem = p as MetadataItem;
-                this.CurrentState = MetadataViewState.Property;
-            },
-            (p) => this.IsTemplateEditable
-        );
-        public ICommand RemoveItem => new ActionCommand(
-            (p) => this.Items.Remove(p as MetadataItem),
-            (p) => this.IsTemplateEditable
-        );
-        public ICommand HomeViewCommand => new ActionCommand((o) =>
-        {
-            this.CurrentState = MetadataViewState.Grid;
-        });
-        public ICommand ShowEditorWindow => new ActionCommand((o) =>
-        {
-            var win = new MetadataEditorWindow();
-            win.DataContext = this;
-            win.Show();
-        });
-
-    }
-
-    public class AvailableTypeViewModel : BaseViewModel
-    {
-        protected Type type;
-        protected bool isEnabled;
-
-        public AvailableTypeViewModel(Type type, bool isEnabled = true)
-        {
-            this.Type = type;
-            this.IsEnabled = isEnabled;
-        }
-
-        public Type Type
-        {
-            get => this.type;
-            set => this.SetField(ref type, value);
-        }
-        public bool IsEnabled
-        {
-            get => this.isEnabled;
-            set => this.SetField(ref isEnabled, value);
-        }
     }
 }

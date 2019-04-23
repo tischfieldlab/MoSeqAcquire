@@ -15,8 +15,8 @@
         <local:MetadataItemDataTemplateSelector x:Key="MetadataItemDataTemplateSelector" />
         <local:MetadataItemEditorDataTemplateSelector x:Key="MetadataItemEditorDataTemplateSelector" />
     </UserControl.Resources>
-    <Grid DataContext="{Binding ElementName=pv, Path=InnerViewModel}">
-        <materialDesign:Transitioner SelectedIndex="{Binding Path=CurrentIndex, Mode=OneWay}" Grid.ColumnSpan="2" Grid.Row="1">
+    <Grid >
+        <materialDesign:Transitioner SelectedIndex="{Binding Path=CurrentIndex, Mode=OneWay}">
             <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
                 <local:MetadataGrid />
             </materialDesign:TransitionerSlide>

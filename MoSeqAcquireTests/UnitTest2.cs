@@ -43,6 +43,23 @@ namespace MoSeqAcquireTests2
         }
 
         [TestMethod]
+        public void Test_Vanilla1()
+        {
+            var mc = new MetadataCollection();
+            mc.Add(new MetadataItem("test", typeof(string))
+            {
+                DefaultValue = "Some Value"
+            });
+
+            var serialized = WriteProtocol(mc);
+
+            Console.Write(serialized);
+
+            var deserialized = ProtocolFromString(serialized);
+            Assert.AreEqual(mc, deserialized);
+        }
+
+        [TestMethod]
         public void Test_Vanilla2()
         {
             var mc = new MetadataCollection();

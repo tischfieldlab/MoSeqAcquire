@@ -8,6 +8,7 @@
     <converters:GenericConverter x:Key="GenericConverter" />
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
     <converters:StringEmptyVisibilityConverter x:Key="StringEmptyVisibilityConverter" />
+    <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
 
     <!-- Begin Value Editors -->
     <DataTemplate x:Key="CheckboxEditor">

@@ -7,13 +7,22 @@ using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels
 {
-    public class ValidatingBaseViewModel : BaseViewModel, INotifyDataErrorInfo
+    public class ValidatingBaseViewModel : BaseViewModel, INotifyDataErrorInfo, IDataErrorInfo
     {
         private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }
 
         public ValidatingBaseViewModel() : base()
         {
-            NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(Validator);
+            NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);
+        }
+        public string this[string columnName]
+        {
+            get { return this.Validator.GetResult(columnName).ToString(); }
+        }
+
+        public string Error
+        {
+            get { return this.Validator.GetResult().ToString(); }
         }
 
         public IEnumerable GetErrors(string propertyName)

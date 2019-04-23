@@ -133,7 +133,15 @@ namespace MoSeqAcquire.Models.Configuration
 
             //Read setting value type
             string valueTypeString = reader.GetAttribute("Type");
-            this.ValueType = knownTypes.FirstOrDefault(t => t.FullName.Equals(valueTypeString)); //try to find in known types
+            if (typeof(TimeSpan).FullName.Equals(valueTypeString))
+            {
+                this.ValueType = typeof(TimeSpan);
+            }
+            else
+            {
+                this.ValueType = knownTypes.FirstOrDefault(t => t.FullName.Equals(valueTypeString)); //try to find in known types
+            }
+            
             if (this.ValueType == null)
             {
                 this.ValueType = System.Type.GetType(valueTypeString); //fall back to this method
@@ -165,6 +173,10 @@ namespace MoSeqAcquire.Models.Configuration
                     if (typeof(Enum).IsAssignableFrom(this.ValueType))
                     {
                         this.Value = Enum.Parse(this.ValueType, valueString);
+                    }
+                    else if (typeof(TimeSpan).IsAssignableFrom(this.ValueType))
+                    {
+                        this.Value = TimeSpan.Parse(valueString);
                     }
                     else if (typeof(IConvertible).IsAssignableFrom(this.ValueType))
                     {

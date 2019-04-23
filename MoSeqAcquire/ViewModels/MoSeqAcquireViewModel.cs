@@ -50,6 +50,7 @@ namespace MoSeqAcquire.ViewModels
             {
                 this.forceProtocolLock++;
                 this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+                this.NotifyPropertyChanged(nameof(this.IsProtocolForceLocked));
             });
         }
         public void UndoForceProtoclLocked()
@@ -62,9 +63,15 @@ namespace MoSeqAcquire.ViewModels
                     this.forceProtocolLock = 0;
                 }
                 this.NotifyPropertyChanged(nameof(this.IsProtocolLocked));
+
+                this.NotifyPropertyChanged(nameof(this.IsProtocolForceLocked));
             });
         }
 
+        public bool IsProtocolForceLocked
+        {
+            get => this.forceProtocolLock > 0;
+        }
         public bool IsProtocolLocked
         {
             get => this.isProtocolLocked || this.forceProtocolLock > 0;
@@ -98,6 +105,8 @@ namespace MoSeqAcquire.ViewModels
             {
                 pcol.Triggers.Add(tvm.GetTriggerDefinition());
             }
+
+            pcol.Metadata = this.Recorder.RecordingMetadata.Items;
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
             pcol.Locked = this.isProtocolLocked;
             this.CurrentProtocol = pcol;
@@ -153,6 +162,8 @@ namespace MoSeqAcquire.ViewModels
                             this.Triggers.AddTrigger(trigger);
                         }
                     }
+
+                    this.Recorder.RecordingMetadata.Items = protocol.Metadata;
                     this.isProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
                     this.UndoForceProtoclLocked();

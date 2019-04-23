@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels.Metadata
 {
@@ -22,5 +23,6 @@ namespace MoSeqAcquire.ViewModels.Metadata
         }
         public abstract void ReadXml(XmlReader reader);
         public abstract void WriteXml(XmlWriter writer);
+        
     }
 }
