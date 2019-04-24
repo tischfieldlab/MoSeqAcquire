@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data.Metadata.Edm;
 using System.Windows;
 using System.Windows.Controls;
-using MoSeqAcquire.ViewModels.Metadata;
+using MoSeqAcquire.Models.Metadata;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.Views.Metadata
 {
     public class ChoicesConstraintEditorDataTemplateSelector : DataTemplateSelector
     {
@@ -14,7 +15,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             {
                 FrameworkElement elemnt = container as FrameworkElement;
                 ChoicesConstraintChoice ccc = item as ChoicesConstraintChoice;
-                MetadataItem pi = ccc.Owner; 
+                MetadataItemDefinition pi = ccc.Owner; 
                 Type pit = pi.ValueType;
 
                 PropertyChangedEventHandler lambda = null;

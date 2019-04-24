@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MoSeqAcquire.Views.Controls
+namespace MoSeqAcquire.Views.Metadata
 {
     /// <summary>
     /// Interaction logic for MetadataEditorWindow.xaml

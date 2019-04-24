@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MoSeqAcquire.ViewModels.Metadata;
+using MoSeqAcquire.Models.Metadata;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -24,7 +24,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            var itm = new MetadataItem("New Item", typeof(string)) { DefaultValue = "Some Value" };
+            var itm = new MetadataItemDefinition("New Item", typeof(string)) { DefaultValue = "Some Value" };
             this.ViewModel.Recorder.RecordingMetadata.Items.Add(itm);
             this.ViewModel.Commands.EditMetadataItem.Execute(itm);
         }

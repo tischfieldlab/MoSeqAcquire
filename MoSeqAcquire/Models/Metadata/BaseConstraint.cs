@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using MoSeqAcquire.ViewModels;
 using MvvmValidation;
 
-namespace MoSeqAcquire.ViewModels.Metadata
+namespace MoSeqAcquire.Models.Metadata
 {
     public abstract class BaseConstraint : BaseViewModel, IXmlSerializable
     {
-        public BaseConstraint(MetadataItem Owner)
+        public BaseConstraint(MetadataItemDefinition Owner)
         {
             this.Owner = Owner;
         }
-        public MetadataItem Owner { get; protected set; }
+        public MetadataItemDefinition Owner { get; protected set; }
         public XmlSchema GetSchema()
         {
             return null;

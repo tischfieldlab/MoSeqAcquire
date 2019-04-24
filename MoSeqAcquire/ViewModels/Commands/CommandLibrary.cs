@@ -45,6 +45,7 @@ namespace MoSeqAcquire.ViewModels.Commands
             this.RegisterCommand<RemoveMetadataItemCommand>();
             this.RegisterCommand<ShowMetadataDefinitionWindowCommand>();
             this.RegisterCommand<CloseMetadataItemDefinitionEditorCommand>();
+            this.RegisterCommand<ResetMetadataItemValuesCommand>();
         }
 
         public OpenThemeDialogCommand OpenThemeDialog { get => this.GetCommand<OpenThemeDialogCommand>(); }
@@ -76,6 +77,6 @@ namespace MoSeqAcquire.ViewModels.Commands
         public RemoveMetadataItemCommand RemoveMetadataItem { get => this.GetCommand<RemoveMetadataItemCommand>(); }
         public ShowMetadataDefinitionWindowCommand ShowMetadataDefinitionWindow { get => this.GetCommand<ShowMetadataDefinitionWindowCommand>(); }
         public CloseMetadataItemDefinitionEditorCommand CloseMetadataItemDefinitionEditor { get => this.GetCommand<CloseMetadataItemDefinitionEditorCommand>(); }
-
+        public ResetMetadataItemValuesCommand ResetMetadataItemValues { get => this.GetCommand<ResetMetadataItemValuesCommand>(); }
     }
 }

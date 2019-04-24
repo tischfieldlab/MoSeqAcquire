@@ -1,19 +1,20 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data.Metadata.Edm;
 using System.Windows;
 using System.Windows.Controls;
-using MoSeqAcquire.ViewModels.Metadata;
+using MoSeqAcquire.Models.Metadata;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.Views.Metadata
 {
     public class MetadataItemEditorDataTemplateSelector : DataTemplateSelector
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is MetadataItem)
+            if (item is MetadataItemDefinition)
             {
                 FrameworkElement elemnt = container as FrameworkElement;
-                MetadataItem pi = item as MetadataItem;
+                MetadataItemDefinition pi = item as MetadataItemDefinition;
                 Type pit = pi.ValueType;
 
                 PropertyChangedEventHandler lambda = null;

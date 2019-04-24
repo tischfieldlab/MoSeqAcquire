@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data.Metadata.Edm;
 using System.Windows;
 using System.Windows.Controls;
+using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.ViewModels.Metadata;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.Views.Metadata
 {
     public class MetadataItemDataTemplateSelector : DataTemplateSelector
     {
@@ -12,7 +14,7 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor
             if (item is MetadataItem)
             {
                 FrameworkElement elemnt = container as FrameworkElement;
-                MetadataItem pi = item as MetadataItem;
+                MetadataItemDefinition pi = item as MetadataItemDefinition;
                 Type pit = pi.ValueType;
                 if (pit.Equals(typeof(bool)))
                 {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MoSeqAcquire.Views.Controls;
+using MoSeqAcquire.Views.Metadata;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {

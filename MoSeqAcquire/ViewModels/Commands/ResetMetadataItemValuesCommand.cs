@@ -1,18 +1,17 @@
 ﻿using MoSeqAcquire.ViewModels.Recording;
-using MoSeqAcquire.Views;
+using MoSeqAcquire.ViewModels.Triggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using MoSeqAcquire.Models.Metadata;
+using MoSeqAcquire.ViewModels.Metadata;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class RemoveMetadataItemCommand : BaseCommand
+    public class ResetMetadataItemValuesCommand : BaseCommand
     {
-        public RemoveMetadataItemCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        public ResetMetadataItemValuesCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
         }
 
@@ -25,7 +24,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Recorder.RecordingMetadata.Items.Remove(parameter as MetadataItemDefinition);
+            foreach (var item in this.ViewModel.Recorder.RecordingMetadata.Items)
+            {
+                item.ResetValue();
+            }
         }
     }
 }

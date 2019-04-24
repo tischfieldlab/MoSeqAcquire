@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using System.Xml;
 using MvvmValidation;
 
-namespace MoSeqAcquire.ViewModels.Metadata
+namespace MoSeqAcquire.Models.Metadata
 {
     public class RangeConstraint : BaseConstraint
     {
         protected object minValue;
         protected object maxValue;
 
-        public RangeConstraint(MetadataItem Owner) : base(Owner)
+        public RangeConstraint(MetadataItemDefinition Owner) : base(Owner)
         {
             
         }

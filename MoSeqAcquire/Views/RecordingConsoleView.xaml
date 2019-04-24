@@ -15,6 +15,8 @@
              xmlns:mvb="clr-namespace:MoSeqAcquire.Views.Behaviors"
              xmlns:mvrv="clr-namespace:MoSeqAcquire.Views.RecorderViews"
              xmlns:metadataEditor="clr-namespace:MoSeqAcquire.Views.Controls.MetadataEditor"
+             xmlns:metadata="clr-namespace:MoSeqAcquire.Views.Metadata"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -55,26 +57,11 @@
         </materialDesign:Card>
 
         <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="8">
+            <ItemsControl Margin="8" >
                 <mvrv:RecorderItemsView />
                 <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
-                <GroupBox Header="{Binding}" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16,8" >
-                    <GroupBox.HeaderTemplate>
-                        <DataTemplate>
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
-                                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                        Command="{Binding Path=Root.Commands.ShowMetadataDefinitionWindow}"
-                                        ToolTip="Edit Metadata Template">
-                                    <materialDesign:PackIcon Kind="Pencil"  />
-                                </Button>
-                                <TextBlock Text="Recording Metadata" VerticalAlignment="Center" />
-                            </DockPanel>
-                        </DataTemplate>
-                    </GroupBox.HeaderTemplate>
-                    <metadataEditor:MetadataList DataContext="{Binding Path=RecordingMetadata}" />
-                </GroupBox>
-            </StackPanel>
+                <metadata:MetadataList />
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </UserControl>

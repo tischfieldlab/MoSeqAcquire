@@ -13,7 +13,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace MoSeqAcquire.ViewModels.Metadata
+namespace MoSeqAcquire.Models.Metadata
 {
     public enum ConstraintMode
     {
@@ -21,7 +21,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
         Choices,
         Range
     }
-    public class MetadataItem : ValidatingBaseViewModel, IXmlSerializable
+    public class MetadataItemDefinition : ValidatingBaseViewModel, IXmlSerializable
     {
         protected string name;
         protected Type valueType;
@@ -39,7 +39,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
             { typeof(double), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices, ConstraintMode.Range } }
         };
 
-        public MetadataItem(string Name, Type ValueType) : this()
+        public MetadataItemDefinition(string Name, Type ValueType) : this()
         {
             this.name = Name;
             this.valueType = ValueType;
@@ -47,7 +47,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
             this.value = this.CoerceValue(null, ValueType);
         }
 
-        protected MetadataItem()
+        protected MetadataItemDefinition()
         {
             this.SetupValidationRules();
         }
@@ -263,7 +263,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
             //reader.ReadToFollowing("Units");
             if (reader.IsEmptyElement)
             {
-                reader.ReadStartElement();
+                reader.ReadStartElement(); 
             }
             else
             {
@@ -272,10 +272,15 @@ namespace MoSeqAcquire.ViewModels.Metadata
 
             //reader.ReadToFollowing("Constraint");
             this.Constraint = (ConstraintMode)Enum.Parse(typeof(ConstraintMode), reader.GetAttribute("Type"));
-            if (this.constraint != ConstraintMode.None)
+            if (this.constraint == ConstraintMode.None)
             {
+                reader.ReadStartElement();
+            }
+            else
+            { 
                 this.constraintImplementation.ReadXml(reader);
             }
+            reader.ReadEndElement();
             this.CoerceAllValues();
         }
 
@@ -299,7 +304,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
         #endregion IXmlSerializable
         public override bool Equals(object obj)
         {
-            var mdi = obj as MetadataItem;
+            var mdi = obj as MetadataItemDefinition;
 
             if (mdi == null)
                 return false;

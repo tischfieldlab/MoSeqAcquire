@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoSeqAcquire.Models.Acquisition.DirectShow;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Recording.MPEGVideoWriter;
 using MoSeqAcquire.ViewModels.Metadata;
@@ -19,7 +20,7 @@ namespace MoSeqAcquireTests2
         [TestMethod]
         public void Test_Empty()
         {
-            var mc = new MetadataCollection();
+            var mc = new MetadataDefinitionCollection();
 
             var serialized = WriteProtocol(mc);
 
@@ -31,8 +32,8 @@ namespace MoSeqAcquireTests2
         [TestMethod]
         public void Test_Vanilla()
         {
-            var mc = new MetadataCollection();
-            mc.Add(new MetadataItem("test", typeof(string)));
+            var mc = new MetadataDefinitionCollection();
+            mc.Add(new MetadataItemDefinition("test", typeof(string)));
 
             var serialized = WriteProtocol(mc);
 
@@ -45,10 +46,14 @@ namespace MoSeqAcquireTests2
         [TestMethod]
         public void Test_Vanilla1()
         {
-            var mc = new MetadataCollection();
-            mc.Add(new MetadataItem("test", typeof(string))
+            var mc = new MetadataDefinitionCollection();
+            mc.Add(new MetadataItemDefinition("test1", typeof(string))
             {
-                DefaultValue = "Some Value"
+                DefaultValue = "Some Value 1"
+            });
+            mc.Add(new MetadataItemDefinition("test2", typeof(string))
+            {
+                DefaultValue = "Some Value 2"
             });
 
             var serialized = WriteProtocol(mc);
@@ -62,8 +67,8 @@ namespace MoSeqAcquireTests2
         [TestMethod]
         public void Test_Vanilla2()
         {
-            var mc = new MetadataCollection();
-            var mdi1 = new MetadataItem("test", typeof(string))
+            var mc = new MetadataDefinitionCollection();
+            var mdi1 = new MetadataItemDefinition("test", typeof(string))
             {
                 DefaultValue = "Choice_1",
                 Value = "Choice_3",
@@ -94,14 +99,14 @@ namespace MoSeqAcquireTests2
 
 
 
-        public static void WriteProtocol(string filename, MetadataCollection Configuration)
+        public static void WriteProtocol(string filename, MetadataDefinitionCollection Configuration)
         {
             using (var writer = new StreamWriter(filename))
             {
                 WriteProtocol(writer, Configuration);
             }
         }
-        public static string WriteProtocol(MetadataCollection Configuration)
+        public static string WriteProtocol(MetadataDefinitionCollection Configuration)
         {
             using (var writer = new UTF8StringWriter())
             {
@@ -109,36 +114,36 @@ namespace MoSeqAcquireTests2
                 return writer.ToString();
             }
         }
-        public static void WriteProtocol(TextWriter stream, MetadataCollection Configuration)
+        public static void WriteProtocol(TextWriter stream, MetadataDefinitionCollection Configuration)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(MetadataCollection));
+            XmlSerializer serializer = new XmlSerializer(typeof(MetadataDefinitionCollection));
             serializer.Serialize(stream, Configuration);
         }
-        public static MetadataCollection ReadProtocol(string filename)
+        public static MetadataDefinitionCollection ReadProtocol(string filename)
         {
-            MetadataCollection pcol;
+            MetadataDefinitionCollection pcol;
             using (var stream = new StreamReader(filename))
             {
                 pcol = ProtocolFromStream(stream);
             }
             return pcol;
         }
-        public static MetadataCollection ProtocolFromString(string contents)
+        public static MetadataDefinitionCollection ProtocolFromString(string contents)
         {
-            MetadataCollection pcol;
+            MetadataDefinitionCollection pcol;
             using (var stream = new StringReader(contents))
             {
                 pcol = ProtocolFromStream(stream);
             }
             return pcol;
         }
-        public static MetadataCollection ProtocolFromStream(TextReader textReader)
+        public static MetadataDefinitionCollection ProtocolFromStream(TextReader textReader)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(MetadataCollection));
+            XmlSerializer serializer = new XmlSerializer(typeof(MetadataDefinitionCollection));
             /*serializer.UnknownNode += new XmlNodeEventHandler(Serializer_UnknownNode);
             serializer.UnknownAttribute += new XmlAttributeEventHandler(Serializer_UnknownAttribute);
             serializer.UnknownElement += new XmlElementEventHandler(Serializer_UnknownElement);*/
-            return (MetadataCollection)serializer.Deserialize(textReader);
+            return (MetadataDefinitionCollection)serializer.Deserialize(textReader);
         }
     }
 }

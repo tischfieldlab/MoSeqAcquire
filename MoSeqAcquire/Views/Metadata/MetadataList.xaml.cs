@@ -3,14 +3,14 @@ using MoSeqAcquire.Views.Controls.PropertyInspector;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor
+namespace MoSeqAcquire.Views.Metadata
 {
     /// <summary>
     /// Interaction logic for PropertyView.xaml
     /// </summary>
-    public partial class MetadataGrid : UserControl
+    public partial class MetadataList : UserControl
     {
-        public MetadataGrid()
+        public MetadataList()
         {
             InitializeComponent();
         }

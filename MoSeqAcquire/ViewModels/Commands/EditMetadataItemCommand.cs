@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.ViewModels.Metadata;
 
 namespace MoSeqAcquire.ViewModels.Commands
@@ -25,7 +26,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Recorder.RecordingMetadata.CurrentItem = parameter as MetadataItem;
+            this.ViewModel.Recorder.RecordingMetadata.CurrentItem = parameter as MetadataItemDefinition;
             this.ViewModel.Recorder.RecordingMetadata.CurrentState = MetadataViewState.Property;
         }
     }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using MoSeqAcquire.Models.Metadata;
 
 namespace MoSeqAcquire.Models.Management
 {
@@ -22,7 +23,7 @@ namespace MoSeqAcquire.Models.Management
             this.Sources = new ProtocolSourceCollection();
             this.Recordings = new ProtocolRecordingsSetup();
             this.Triggers = new ProtocolTriggerCollection();
-            this.Metadata = new MetadataCollection();
+            this.Metadata = new MetadataDefinitionCollection();
         }
         public Protocol(String Name) : this()
         {
@@ -36,7 +37,7 @@ namespace MoSeqAcquire.Models.Management
         public ProtocolSourceCollection Sources { get; set; }
         public ProtocolRecordingsSetup Recordings { get; set; }
         public ProtocolTriggerCollection Triggers { get; set; }
-        public MetadataCollection Metadata { get; set; }
+        public MetadataDefinitionCollection Metadata { get; set; }
 
         public override bool Equals(object obj)
         {

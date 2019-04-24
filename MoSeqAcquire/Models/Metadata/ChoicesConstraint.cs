@@ -10,11 +10,11 @@ using System.Xml.Serialization;
 using MoSeqAcquire.ViewModels;
 using MvvmValidation;
 
-namespace MoSeqAcquire.ViewModels.Metadata
+namespace MoSeqAcquire.Models.Metadata
 {
     public class ChoicesConstraint : BaseConstraint
     {
-        public ChoicesConstraint(MetadataItem Owner) : base(Owner)
+        public ChoicesConstraint(MetadataItemDefinition Owner) : base(Owner)
         {
             this.Choices = new ObservableCollection<ChoicesConstraintChoice>();
         }
@@ -72,11 +72,11 @@ namespace MoSeqAcquire.ViewModels.Metadata
 
     public class ChoicesConstraintChoice : BaseViewModel, IXmlSerializable
     {
-        public ChoicesConstraintChoice(MetadataItem Owner)
+        public ChoicesConstraintChoice(MetadataItemDefinition Owner)
         {
             this.Owner = Owner;
         }
-        public MetadataItem Owner { get; protected set; }
+        public MetadataItemDefinition Owner { get; protected set; }
         protected object value;
         public object Value
         {

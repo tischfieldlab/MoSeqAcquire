@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MoSeqAcquire.Views.Controls;
+using MoSeqAcquire.Models.Metadata;
 
 namespace MoSeqAcquire.ViewModels.Metadata
 {
@@ -22,10 +22,8 @@ namespace MoSeqAcquire.ViewModels.Metadata
     {
         protected bool isTemplateEditable;
         protected MetadataViewState currentState;
-        protected MetadataCollection currentCollection;
-        protected MetadataItem currentItem;
-
-        protected MetadataEditorWindow metadataEditorWindow;
+        protected MetadataDefinitionCollection currentCollection;
+        protected MetadataItemDefinition currentItem;
 
         public MetadataViewModel()
         {
@@ -36,7 +34,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
                 new AvailableTypeViewModel(typeof(double)),
                 new AvailableTypeViewModel(typeof(string))
             };
-            this.currentCollection = new MetadataCollection();
+            this.currentCollection = new MetadataDefinitionCollection();
             this.CurrentState = MetadataViewState.Grid;
             this.IsTemplateEditable = true;
         }
@@ -61,12 +59,12 @@ namespace MoSeqAcquire.ViewModels.Metadata
 
         public ObservableCollection<AvailableTypeViewModel> AvailableTypes { get; protected set; }
 
-        public MetadataCollection Items
+        public MetadataDefinitionCollection Items
         {
             get => this.currentCollection;
             set => this.SetField(ref this.currentCollection, value);
         }
-        public MetadataItem CurrentItem
+        public MetadataItemDefinition CurrentItem
         {
             get => this.currentItem;
             set => this.SetField(ref this.currentItem, value);

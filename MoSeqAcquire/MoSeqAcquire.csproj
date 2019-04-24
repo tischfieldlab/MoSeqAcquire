@@ -48,6 +48,9 @@
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
     </Reference>
+    <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.2.0.1\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -112,7 +115,7 @@
     <Compile Include="Models\Core\Component.cs" />
     <Compile Include="Models\Core\ComponentSpecification.cs" />
     <Compile Include="Models\Management\ProtocolTriggerCollection.cs" />
-    <Compile Include="Models\Metadata\RecordingMetadata.cs" />
+    <Compile Include="Models\Metadata\RecordingMetadataSnapshot.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />
     <Compile Include="Models\Recording\MediaWriterPin.cs" />
@@ -156,6 +159,7 @@
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\Commands\ResetMetadataItemValuesCommand.cs" />
     <Compile Include="ViewModels\Commands\CloseMetadataItemDefinitionEditorCommand.cs" />
     <Compile Include="ViewModels\Commands\AddMetadataItemCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveMetadataItemCommand.cs" />
@@ -180,7 +184,7 @@
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
     <Compile Include="ViewModels\DataChannelViewModel.cs" />
     <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
-    <Compile Include="ViewModels\Metadata\BaseConstraint.cs" />
+    <Compile Include="Models\Metadata\BaseConstraint.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorRecorderAdapter.cs" />
@@ -196,32 +200,29 @@
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
-    <Compile Include="ViewModels\Metadata\ChoicesConstraint.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
+    <Compile Include="Models\Metadata\ChoicesConstraint.cs" />
+    <Compile Include="Views\Metadata\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Metadata\MetadataCollection.cs" />
-    <Compile Include="ViewModels\Metadata\MetadataItem.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\ChoicesConstraintEditorDataTemplateSelector.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataEditorWindow.xaml.cs">
+    <Compile Include="Models\Metadata\MetadataDefinitionCollection.cs" />
+    <Compile Include="Models\Metadata\MetadataItemDefinition.cs" />
+    <Compile Include="Views\Metadata\ChoicesConstraintEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\Metadata\MetadataEditorWindow.xaml.cs">
       <DependentUpon>MetadataEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataList.xaml.cs">
+    <Compile Include="Views\Metadata\MetadataList.xaml.cs">
       <DependentUpon>MetadataList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataItemEditorDataTemplateSelector.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataItemDataTemplateSelector.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataGrid.xaml.cs">
+    <Compile Include="Views\Metadata\MetadataItemEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\Metadata\MetadataItemDataTemplateSelector.cs" />
+    <Compile Include="Views\Metadata\MetadataGrid.xaml.cs">
       <DependentUpon>MetadataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataView.xaml.cs">
-      <DependentUpon>MetadataView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
-    <Compile Include="ViewModels\Metadata\RangeConstraint.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\Rules\BaseRule.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\Rules\RangeRule.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\Rules\RequiredRule.cs" />
+    <Compile Include="Models\Metadata\RangeConstraint.cs" />
+    <Compile Include="Views\Metadata\Rules\BaseRule.cs" />
+    <Compile Include="Views\Metadata\Rules\RangeRule.cs" />
+    <Compile Include="Views\Metadata\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyItem.cs" />
@@ -376,31 +377,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\MetadataEditor\ControlTemplates.xaml">
+    <Page Include="Views\Metadata\ControlTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml">
+    <Page Include="Views\Metadata\ItemDefinitionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\MetadataEditor\MetadataEditorWindow.xaml">
+    <Page Include="Views\Metadata\MetadataEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\MetadataEditor\MetadataList.xaml">
+    <Page Include="Views\Metadata\MetadataList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Controls\MetadataEditor\MetadataGrid.xaml">
+    <Page Include="Views\Metadata\MetadataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\PromptDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Controls\MetadataEditor\MetadataView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

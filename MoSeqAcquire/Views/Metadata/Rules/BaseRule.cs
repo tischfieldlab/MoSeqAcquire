@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MoSeqAcquire.ViewModels.Metadata;
+using MoSeqAcquire.Models.Metadata;
 
 namespace MoSeqAcquire.Views.Controls.MetadataEditor.Rules
 {
@@ -16,6 +16,6 @@ namespace MoSeqAcquire.Views.Controls.MetadataEditor.Rules
         }
         public string Name { get; protected set; }
         public bool IsActive { get; set; }
-        public abstract void Attach(MetadataItem Item);
+        public abstract void Attach(MetadataItemDefinition Item);
     }
 }

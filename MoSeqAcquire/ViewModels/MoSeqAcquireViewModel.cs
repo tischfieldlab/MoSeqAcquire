@@ -121,6 +121,7 @@ namespace MoSeqAcquire.ViewModels
             this.MediaSources.Clear();
             this.Recorder.ClearRecorders();
             this.Triggers.RemoveTriggers();
+            this.Recorder.RecordingMetadata.Items.Clear();
             this.isProtocolLocked = false;
             this.UndoForceProtoclLocked();
         }
