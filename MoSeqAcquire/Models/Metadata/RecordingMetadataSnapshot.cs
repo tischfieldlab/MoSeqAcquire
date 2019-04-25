@@ -11,7 +11,10 @@ namespace MoSeqAcquire.Models.Metadata
 {
     public class RecordingMetadataSnapshot : List<RecordingMetadataSnapshotItem>, IXmlSerializable
     {
-
+        public void Add(MetadataItemDefinition Item)
+        {
+            this.Add(new RecordingMetadataSnapshotItem(Item));
+        }
         #region IXmlSerializable Members
         public XmlSchema GetSchema()
         {
@@ -56,6 +59,15 @@ namespace MoSeqAcquire.Models.Metadata
 
     public class RecordingMetadataSnapshotItem : IXmlSerializable
     {
+        public RecordingMetadataSnapshotItem() { }
+
+        public RecordingMetadataSnapshotItem(MetadataItemDefinition Item)
+        {
+            this.Name = Item.Name;
+            this.Type = Item.ValueType;
+            this.Units = Item.Units;
+            this.Value = Item.Value;
+        }
         public string Name { get; set; }
         public Type Type { get; set; }
         public string Units { get; set; }

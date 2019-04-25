@@ -15,35 +15,65 @@
     <local:MetadataItemEditorDataTemplateSelector x:Key="MetadataItemEditorDataTemplateSelector" />
     <local:ChoicesConstraintEditorDataTemplateSelector x:Key="ChoicesConstraintEditorDataTemplateSelector" />
 
+    <DataTemplate x:Key="ErrorReportTemplate">
+        <TextBlock Text="{Binding Path=Error}">
+            <!--<TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=HasErrors}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>-->
+        </TextBlock>
+    </DataTemplate>
+
     <!-- Begin Value Editors -->
     <DataTemplate x:Key="CheckboxEditor">
-        <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+        <DockPanel>
+            <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+        </DockPanel>
     </DataTemplate>
     <DataTemplate x:Key="TextBoxEditor">
-        <TextBox Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
+        <DockPanel>
+            <TextBox Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
+            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+        </DockPanel>
     </DataTemplate>
     <DataTemplate x:Key="NumericEditor">
-        <mah:NumericUpDown Value="{Binding Path=Value, Converter={StaticResource GenericConverter}}" />
+        <StackPanel>
+            <mah:NumericUpDown Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}" />
+            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+        </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="EnumComboBoxEditor">
-        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
-                  ItemsSource="{extensions:Enumeration {Binding Path=ValueType}}" 
-                  DisplayMemberPath="Description" 
-                  SelectedValuePath="Value" 
-                  SelectedValue="{Binding Path=Value}" />
+        <StackPanel>
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
+                      ItemsSource="{extensions:Enumeration {Binding Path=ValueType}}" 
+                      DisplayMemberPath="Description" 
+                      SelectedValuePath="Value" 
+                      SelectedValue="{Binding Path=Value}" />
+            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+        </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="CollectionComboBoxEditor">
-        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
-                  ItemsSource="{Binding Path=ConstraintImplementation.Choices}" 
-                  SelectedValue="{Binding Path=Value}" 
-                  DisplayMemberPath="Value" 
-                  SelectedValuePath="Value" />
+        <StackPanel>
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
+                      ItemsSource="{Binding Path=ConstraintImplementation.Choices}" 
+                      SelectedValue="{Binding Path=Value}" 
+                      DisplayMemberPath="Value" 
+                      SelectedValuePath="Value" />
+            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+        </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="RangeEditor">
         <DockPanel>
             <TextBox DockPanel.Dock="Right" materialDesign:ValidationAssist.Suppress="True"
-                         Text="{Binding Path=Value, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                         IsReadOnly="True" />
+                         Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" 
+                         Width="50" />
+            <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{StaticResource ErrorReportTemplate}" />
             <Slider Orientation="Horizontal" TickPlacement="BottomRight"
                     materialDesign:ValidationAssist.UsePopup="True"
                     materialDesign:ValidationAssist.PopupPlacement="Top"
@@ -106,5 +136,46 @@
         </DockPanel>
     </DataTemplate>
     <!-- End Default Value Editors -->
-   
+
+
+    <!-- Begin Choice Value Editors -->
+    <DataTemplate x:Key="ChoiceCheckboxEditor">
+        <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+    </DataTemplate>
+    <DataTemplate x:Key="ChoiceTextBoxEditor">
+        <TextBox Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
+    </DataTemplate>
+    <DataTemplate x:Key="ChoiceNumericEditor">
+        <mah:NumericUpDown Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ChoiceEnumComboBoxEditor">
+        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
+                  ItemsSource="{extensions:Enumeration {Binding Path=ValueType}}" 
+                  DisplayMemberPath="Description" 
+                  SelectedValuePath="Value" 
+                  SelectedValue="{Binding Path=Value}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ChoiceCollectionComboBoxEditor">
+        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
+                  ItemsSource="{Binding Path=ConstraintImplementation.Choices}" 
+                  SelectedValue="{Binding Path=Value}" 
+                  DisplayMemberPath="Value" 
+                  SelectedValuePath="Value" />
+    </DataTemplate>
+    <DataTemplate x:Key="ChoiceRangeEditor">
+        <DockPanel>
+            <TextBox DockPanel.Dock="Right" materialDesign:ValidationAssist.Suppress="True"
+                         Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" 
+                         Width="50" />
+            <Slider Orientation="Horizontal" TickPlacement="BottomRight"
+                    materialDesign:ValidationAssist.UsePopup="True"
+                    materialDesign:ValidationAssist.PopupPlacement="Top"
+                        Style="{StaticResource MaterialDesignDiscreteSlider}"
+                        Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                        Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
+                        Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
+        </DockPanel>
+    </DataTemplate>
+    <!-- End Choice Value Editors -->
+
 </ResourceDictionary>

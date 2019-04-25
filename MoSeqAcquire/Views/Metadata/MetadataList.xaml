@@ -63,9 +63,14 @@
               AutoGenerateColumns="False"
               HeadersVisibility="None"
               CanUserResizeRows="False" 
-              CanUserReorderColumns="False" 
-              IsReadOnly="True" 
-              SelectionMode="Single">
+              CanUserReorderColumns="False"
+              SelectionMode="Single"
+              GridLinesVisibility="None"
+              DataGridCell.GotFocus="DataGridCell_OnSelected"
+              >
+            <Validation.ErrorTemplate>
+                <ControlTemplate />
+            </Validation.ErrorTemplate>
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource MaterialDesignDataGrid}">
                     <Style.Triggers>
@@ -95,27 +100,34 @@
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <materialDesign:MaterialDataGridTextColumn Header="Name"
-                                                           Binding="{Binding Path=Name}" />
+                <DataGridTemplateColumn Header="Name" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
 
 
                 <DataGridTemplateColumn Header="Value"
+                                        IsReadOnly="False"
                                         Width="*"
-                                        CellTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}" />
+                                        CellTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}"
+                                        CellEditingTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}"/>
 
-                <DataGridTemplateColumn Header="Units and Type">
+                <DataGridTemplateColumn Header="Units and Type" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="(" Foreground="{DynamicResource MaterialDesignBodyLight}" />
 
                                 <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding Path=Units}"/>
+                                            <Setter Property="Text" Value="{Binding Path=Units, NotifyOnValidationError=False}"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Units.Length, FallbackValue=0, TargetNullValue=0}" Value="0">
+                                                <DataTrigger Binding="{Binding Path=Units.Length, FallbackValue=0, TargetNullValue=0, NotifyOnValidationError=False}" Value="0">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                     <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBodyLight}" />
                                                     <Setter Property="FontStyle" Value="Italic" />
@@ -128,17 +140,17 @@
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Units.Length, FallbackValue=0, TargetNullValue=0}" Value="0">
+                                                <DataTrigger Binding="{Binding Path=Units.Length, FallbackValue=0, TargetNullValue=0, NotifyOnValidationError=False}" Value="0">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="{Binding Path=ValueType.Name}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                                <TextBlock Text="{Binding Path=ValueType.Name, NotifyOnValidationError=False}" Foreground="{DynamicResource MaterialDesignBodyLight}" >
+                                </TextBlock>
                                 <TextBlock Text=")" Foreground="{DynamicResource MaterialDesignBodyLight}" />
                             </StackPanel>
-
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

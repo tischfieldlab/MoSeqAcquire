@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Views.Extensions;
+using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Recording
 {
@@ -20,11 +23,18 @@ namespace MoSeqAcquire.Models.Recording
     public abstract class RecorderSettings : BaseConfiguration
     {
     }
-    public class GeneralRecordingSettings : BaseConfiguration
+    public class GeneralRecordingSettings : BaseConfiguration, INotifyDataErrorInfo, IDataErrorInfo
     {
+        private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }
+        protected ValidationHelper Validator { get; private set; }
         public GeneralRecordingSettings()
         {
+            Validator = new ValidationHelper();
+            NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);
+
             this.PropertyChanged += (s, e) => { if (!"IsValid".Equals(e.PropertyName)){ this.NotifyPropertyChanged("IsValid"); } };
+
+            Validator.AddRequiredRule(() => this.Directory, "Directory cannot be empty!");
         }
 
         protected string directory = "";
@@ -58,6 +68,7 @@ namespace MoSeqAcquire.Models.Recording
             get => this.recordingTime;
             set => this.SetField(ref this.recordingTime, value);
         }
+        [Hidden]
         public bool IsValid
         {
             get
@@ -68,6 +79,45 @@ namespace MoSeqAcquire.Models.Recording
                         || (this.recordingMode.Equals(RecordingMode.TimeCount) && this.recordingTime.TotalSeconds > 0)
                        );
             }
+        }
+
+
+
+
+        public string this[string columnName]
+        {
+            get { return this.Validator.GetResult(columnName).ToString(); }
+        }
+
+        public string Error
+        {
+            get { return this.Validator.GetResult().ToString(); }
+        }
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            if (propertyName == null)
+            {
+                ValidationResult result = this.Validator.GetResult();
+                if (result.IsValid)
+                    return (IEnumerable)Enumerable.Empty<string>();
+                return (IEnumerable)new string[1]
+                {
+                    result.ToString()
+                };
+            }
+            return NotifyDataErrorInfoAdapter.GetErrors(propertyName);
+        }
+
+        public bool HasErrors
+        {
+            get { return NotifyDataErrorInfoAdapter.HasErrors; }
+        }
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged
+        {
+            add { NotifyDataErrorInfoAdapter.ErrorsChanged += value; }
+            remove { NotifyDataErrorInfoAdapter.ErrorsChanged -= value; }
         }
     }    
 }

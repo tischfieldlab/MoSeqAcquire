@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using MvvmValidation;
 
@@ -27,6 +28,16 @@ namespace MoSeqAcquire.ViewModels
 
         public IEnumerable GetErrors(string propertyName)
         {
+            if (propertyName == null)
+            {
+                ValidationResult result = this.Validator.GetResult();
+                if (result.IsValid)
+                    return (IEnumerable)Enumerable.Empty<string>();
+                return (IEnumerable)new string[1]
+                {
+                    result.ToString()
+                };
+            }
             return NotifyDataErrorInfoAdapter.GetErrors(propertyName);
         }
 

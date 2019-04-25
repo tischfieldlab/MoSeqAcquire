@@ -43,6 +43,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Column="0">
@@ -53,6 +54,8 @@
                     <mvrv:RecorderProgress Margin="0,16,0,0" />
                 </StackPanel>
                 <mvrv:RecorderGeneralSettings Grid.Column="1" />
+
+                <TextBlock Text="{Binding Path=Error}" Grid.Row="1" />
             </Grid>
         </materialDesign:Card>
 

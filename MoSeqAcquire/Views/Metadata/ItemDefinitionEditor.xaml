@@ -30,7 +30,7 @@
                 <TextBlock Text="Property Details" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"  />
             </DockPanel>
         </materialDesign:ColorZone>
-        <Grid Grid.Row="1" DataContext="{Binding Path=CurrentItem}">
+        <Grid Grid.Row="1" DataContext="{Binding Path=CurrentItem}" materialDesign:ValidationAssist.Suppress="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -63,9 +63,16 @@
             <ContentPresenter Grid.Column="1" Grid.Row="1"  Margin="16,8" 
                               Name="DefaultValue" 
                               Content="{Binding}" 
-                              ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}" />
+                              ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate />
+                </Validation.ErrorTemplate>
+            </ContentPresenter>
 
             <GroupBox Grid.Column="0" Grid.Row="2" Margin="16" Header="{Binding}">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate />
+                </Validation.ErrorTemplate>
                 <GroupBox.HeaderTemplate>
                     <DataTemplate>
                         <DockPanel>
@@ -87,7 +94,7 @@
                 <GroupBox.Resources>
                     <DataTemplate x:Key="choicesTemplate">
                         <DockPanel>
-                            <ListView HorizontalContentAlignment="Stretch" Margin="-8" BorderThickness="0" ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
+                            <ListView materialDesign:ValidationAssist.Suppress="True" HorizontalContentAlignment="Stretch" Margin="-8" BorderThickness="0" ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
                                 <ListView.Style>
                                     <Style TargetType="ListView">
                                         <Style.Triggers>
@@ -120,7 +127,7 @@
                                                     ToolTip="Edit Item Details">
                                                 <materialDesign:PackIcon Kind="Close"  />
                                             </Button>
-                                            <ContentPresenter HorizontalAlignment="Stretch" Content="{Binding}" ContentTemplateSelector="{StaticResource ChoicesConstraintEditorDataTemplateSelector}" />
+                                            <ContentPresenter Name="Choice"  HorizontalAlignment="Stretch" Content="{Binding}" ContentTemplateSelector="{StaticResource ChoicesConstraintEditorDataTemplateSelector}" />
                                         </DockPanel>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -147,6 +154,9 @@
                     </DataTemplate>
                 </GroupBox.Resources>
                 <ContentControl Content="{Binding}">
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate />
+                    </Validation.ErrorTemplate>
                     <ContentControl.Style>
                         <Style TargetType="{x:Type ContentControl}">
                             <Setter Property="ContentTemplate" Value="{StaticResource noConstraintTemplate}" />

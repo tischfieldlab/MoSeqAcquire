@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data.Metadata.Edm;
 using System.Windows;
 using System.Windows.Controls;
 using MoSeqAcquire.Models.Metadata;

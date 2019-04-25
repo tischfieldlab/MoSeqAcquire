@@ -164,7 +164,14 @@ namespace MoSeqAcquire.ViewModels
                         }
                     }
 
-                    this.Recorder.RecordingMetadata.Items = protocol.Metadata;
+                    if (protocol.Metadata != null)
+                    {
+                        foreach (var item in protocol.Metadata)
+                        {
+                            this.Recorder.RecordingMetadata.Items.Add(item);
+                        }
+                    }
+                    this.Commands.ResetMetadataItemValues.Execute(null);
                     this.isProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
                     this.UndoForceProtoclLocked();

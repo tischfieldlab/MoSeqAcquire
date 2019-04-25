@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Core;
+using MoSeqAcquire.ViewModels;
 
 namespace MoSeqAcquire.Models.Configuration
 {

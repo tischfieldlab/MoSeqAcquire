@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Metadata;
 
 namespace MoSeqAcquire.Models.Recording
 {
@@ -15,6 +16,7 @@ namespace MoSeqAcquire.Models.Recording
             this.Recorders = new List<RecordingDevice>();
         }
         public List<RecordingDevice> Recorders { get; set; }
+        public RecordingMetadataSnapshot Metadata { get; set; }
     }
 
     public class RecordingDevice

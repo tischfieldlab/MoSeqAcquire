@@ -58,26 +58,37 @@ namespace MoSeqAcquire.Models.Metadata
             //ensure property name is 
             this.Validator.AddRequiredRule(() => this.Name, "Name is required");
             //ensure value is of correct type
-            this.Validator.AddRule(nameof(this.Value),
-                () => RuleResult.Assert(this.ValueType.IsAssignableFrom(this.Value.GetType()), "Value is not a valid " + this.ValueType.Name));
+            this.Validator.AddRule(() => this.Value,
+                                   () => RuleResult.Assert(this.ValueType.IsAssignableFrom(this.Value.GetType()), 
+                                   "Value is not a valid " + this.ValueType.Name));
 
             if (this.Constraint != ConstraintMode.None)
             {
                 switch (this.constraint)
                 {
                     case ConstraintMode.Choices:
-                        var ccon = this.ConstraintImplementation as ChoicesConstraint;
-                        this.Validator.AddRule(nameof(this.Value),
-                            () => RuleResult.Assert(ccon.Choices.Contains(this.Value), 
-                                "Value must be one of available choices"));
+                        
+                        this.Validator.AddRule(() => this.Value,
+                                               () =>
+                                               {
+                                                   var ccon = this.ConstraintImplementation as ChoicesConstraint;
+                                                   return RuleResult.Assert(ccon.Choices.Any(c => c.Value.Equals(this.value)), "Value must be one of available choices");
+                                               });
                         break;
 
                     case ConstraintMode.Range:
-                        var rcon = this.ConstraintImplementation as RangeConstraint;
-                        this.Validator.AddRule(nameof(this.Value),
-                            () => RuleResult.Assert((this.Value as IComparable).CompareTo((rcon.MinValue as IComparable)) >= 0
-                                                 && (this.Value as IComparable).CompareTo((rcon.MaxValue as IComparable)) <= 0,
-                            "Value must be within range"));
+                        
+                        this.Validator.AddRule(() => this.Value,
+                                               () =>
+                                               {
+                                                   var rcon = this.ConstraintImplementation as RangeConstraint;
+                                                   return RuleResult.Assert(
+                                                       (this.Value as IComparable).CompareTo(
+                                                           (rcon.MinValue as IComparable)) >= 0
+                                                       && (this.Value as IComparable).CompareTo(
+                                                           (rcon.MaxValue as IComparable)) <= 0,
+                                                       "Value must be within range");
+                                               });
                         break;
                 }
             }
@@ -188,19 +199,17 @@ namespace MoSeqAcquire.Models.Metadata
         }
         protected object CoerceValue(object value, Type type)
         {
+            if (value == null)
+            {
+                if (type == typeof(string))
+                {
+                    return string.Empty;
+                }
+                return Activator.CreateInstance(type);
+            }
             try
             {
-                value = Convert.ChangeType(value, type);
-                if (value == null)
-                {
-                    if (type == typeof(string))
-                    {
-                        return string.Empty;
-                    }
-                    return Activator.CreateInstance(type);
-                }
-
-                return value;
+                return Convert.ChangeType(value, type);
             } 
             catch (Exception e)
             {

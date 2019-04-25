@@ -13,8 +13,7 @@ namespace MoSeqAcquire.Models.Metadata
     {
 
         public MetadataDefinitionCollection() : base()
-        {
-            this.Initialize();  
+        { 
         }
 
         public new void Add(MetadataItemDefinition Item)
@@ -26,14 +25,18 @@ namespace MoSeqAcquire.Models.Metadata
             base.Remove(Item);
         }
 
-        protected void Initialize()
-        {
-        }
-
         public override bool Equals(object obj)
         {
             return this.SequenceEqual(obj as MetadataDefinitionCollection);
         }
+
+        public RecordingMetadataSnapshot GetSnapshot()
+        {
+            var snapshot = new RecordingMetadataSnapshot();
+            this.Items.ForEach(item => snapshot.Add(item));
+            return snapshot;
+        }
+
 
         #region IXmlSerializable Members
         public XmlSchema GetSchema()

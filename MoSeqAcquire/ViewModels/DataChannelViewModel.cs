@@ -16,6 +16,8 @@ namespace MoSeqAcquire.ViewModels
         public DataChannelViewModel(Channel channel) : base(channel)
         {
         }
+
+        protected ushort[] blank_array = new ushort[100 * 100];
         public override void BindChannel()
         {
             MediaBus.Instance.Subscribe(
@@ -39,7 +41,7 @@ namespace MoSeqAcquire.ViewModels
 
                         this.Stream.WritePixels(
                                 rect,
-                                new ushort[100 * 100],
+                                this.blank_array,
                                 wholestride,
                                 0);
                         

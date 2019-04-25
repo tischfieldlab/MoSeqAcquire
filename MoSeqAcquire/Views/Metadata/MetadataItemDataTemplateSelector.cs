@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Metadata.Edm;
 using System.Windows;
 using System.Windows.Controls;
 using MoSeqAcquire.Models.Metadata;
@@ -11,7 +10,7 @@ namespace MoSeqAcquire.Views.Metadata
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is MetadataItem)
+            if (item is MetadataItemDefinition)
             {
                 FrameworkElement elemnt = container as FrameworkElement;
                 MetadataItemDefinition pi = item as MetadataItemDefinition;
