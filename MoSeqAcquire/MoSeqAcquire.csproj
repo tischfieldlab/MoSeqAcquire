@@ -201,6 +201,7 @@
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
     <Compile Include="Models\Metadata\ChoicesConstraint.cs" />
+    <Compile Include="Views\Converters\MathConverter.cs" />
     <Compile Include="Views\Metadata\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>

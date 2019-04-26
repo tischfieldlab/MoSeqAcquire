@@ -37,7 +37,7 @@
         <DockPanel Grid.Row="0">
             <v:SystemInfoView DockPanel.Dock="Right" Margin="0,0,0,0" />
 
-            <Menu DockPanel.Dock="Left" >
+            <Menu DockPanel.Dock="Left" IsMainMenu="True" >
                 <MenuItem Header="File">
                     <MenuItem Header="Add New">
                         <MenuItem Header="Media Source" Command="{Binding Path=Commands.AddMediaSource}" />

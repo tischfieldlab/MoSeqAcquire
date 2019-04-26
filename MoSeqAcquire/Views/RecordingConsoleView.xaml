@@ -24,6 +24,8 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
         <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+        <conv:AdditionConverter x:Key="AdditionConverter" />
+        <conv:MathConverter x:Key="MathConverter" />
         
         <conv:ObjectEqualityConverter x:Key="ObjectEqualityConverter" />
         <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
@@ -35,11 +37,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <materialDesign:Card Margin="8,8,8,0" materialDesign:ShadowAssist.ShadowDepth="Depth5">
-            <Grid Margin="16">
+        <materialDesign:Card Margin="8,8,8,0" materialDesign:ShadowAssist.ShadowDepth="Depth5"  >
+            <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
@@ -49,23 +52,23 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0">
+                <StackPanel Grid.Column="0" Margin="16">
                     <WrapPanel>
                         <Button Content="Start" Width="100" Command="{Binding Path=Root.Commands.StartRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}"  Margin="8" />
                         <Button Content="Stop" Width="100" Command="{Binding Path=Root.Commands.StopRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="8" />
                     </WrapPanel>
                     <mvrv:RecorderProgress Margin="0,16,0,0" />
                 </StackPanel>
-                <mvrv:RecorderGeneralSettings Grid.Column="1" />
+                <mvrv:RecorderGeneralSettings Grid.Column="1" Margin="16" />
 
-                <StackPanel Grid.Row="1" Visibility="{Binding Path=HasErrors, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock Text="Please correct the following errors:" Foreground="Red" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-                    <TextBlock Text="{Binding Path=Error}" Foreground="Red"  />
-                </StackPanel>
+                <materialDesign:Snackbar Grid.ColumnSpan="2" Grid.Row="1" IsActive="{Binding Path=HasErrors}" HorizontalAlignment="Stretch" >
+                    <materialDesign:SnackbarMessage Content="Errors are preventing recording" />
+                </materialDesign:Snackbar>
             </Grid>
         </materialDesign:Card>
 
-        <ScrollViewer Grid.Row="1">
+
+        <ScrollViewer Grid.Row="2">
             <ItemsControl Margin="8" >
                 <mvrv:RecorderItemsView />
                 <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
