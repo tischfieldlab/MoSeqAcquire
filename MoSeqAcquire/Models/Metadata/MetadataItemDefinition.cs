@@ -136,7 +136,16 @@ namespace MoSeqAcquire.Models.Metadata
         public string Units
         {
             get => this.units;
-            set => this.SetField(ref this.units, value);
+            set
+            {
+                this.SetField(ref this.units, value);
+                this.NotifyPropertyChanged(nameof(this.HasUnits));
+            }
+        }
+
+        public bool HasUnits
+        {
+            get => !string.IsNullOrWhiteSpace(this.Units);
         }
         public List<ConstraintMode> ConstraintsAllowed
         {
@@ -338,6 +347,11 @@ namespace MoSeqAcquire.Models.Metadata
             return true;
         }
 
+        private void Choice_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.Validator.ValidateAll();
+        }
+
         public ICommand AddChoice => new ActionCommand((p) =>
         {
             var constraint = (this.constraintImplementation as ChoicesConstraint);
@@ -350,11 +364,17 @@ namespace MoSeqAcquire.Models.Metadata
             {
                 val = Activator.CreateInstance(this.ValueType);
             }
-            constraint.Choices.Add(new ChoicesConstraintChoice(this) { Value = val });
+
+            var choice = new ChoicesConstraintChoice(this) {Value = val};
+            choice.PropertyChanged += Choice_PropertyChanged;
+            constraint.Choices.Add(choice);
         });
+
         public ICommand RemoveChoice => new ActionCommand((p) =>
         {
-            (this.constraintImplementation as ChoicesConstraint).Choices.Remove(p as ChoicesConstraintChoice);
+            var choice = p as ChoicesConstraintChoice;
+            choice.PropertyChanged -= Choice_PropertyChanged;
+            (this.constraintImplementation as ChoicesConstraint).Choices.Remove(choice);
         });
     }
 }

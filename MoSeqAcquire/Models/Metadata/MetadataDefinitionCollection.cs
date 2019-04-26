@@ -1,28 +1,67 @@
 ﻿using System;
 using MoSeqAcquire.Models.Configuration;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoSeqAcquire.Models.Metadata
 {
-    public class MetadataDefinitionCollection : ObservableCollection<MetadataItemDefinition>, IXmlSerializable
+    public class MetadataDefinitionCollection : ObservableCollection<MetadataItemDefinition>, IXmlSerializable, INotifyDataErrorInfo
     {
+        
 
         public MetadataDefinitionCollection() : base()
-        { 
+        {
+            this.CollectionChanged += MetadataDefinitionCollection_CollectionChanged;
         }
 
-        public new void Add(MetadataItemDefinition Item)
+        private void MetadataDefinitionCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            base.Add(Item);
+            if (e.NewItems != null)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    (item as INotifyDataErrorInfo).ErrorsChanged += MetadataDefinitionCollection_ErrorsChanged; ;
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    (item as INotifyDataErrorInfo).ErrorsChanged -= MetadataDefinitionCollection_ErrorsChanged;
+                }
+            }
         }
-        public new void Remove(MetadataItemDefinition Item)
+
+        
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        private void MetadataDefinitionCollection_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
-            base.Remove(Item);
+            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(e.PropertyName));
+        }
+        protected void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(e.PropertyName));
+        }
+        public bool HasErrors => this.GetErrors(null).Cast<string>().Any();
+        public IEnumerable GetErrors(string propertyName)
+        {
+            var errors = new List<string>();
+            foreach (var item in this)
+            {
+                errors.AddRange(item.GetErrors(propertyName).Cast<string>());
+            }
+
+            return errors;
         }
 
         public override bool Equals(object obj)

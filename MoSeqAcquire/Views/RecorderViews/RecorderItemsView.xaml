@@ -10,6 +10,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <GroupBox Header="{Binding}" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16,8" >
+        <Validation.ErrorTemplate>
+            <ControlTemplate />
+        </Validation.ErrorTemplate>
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <DockPanel>

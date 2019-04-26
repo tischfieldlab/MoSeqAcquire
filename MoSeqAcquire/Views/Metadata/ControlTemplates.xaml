@@ -38,8 +38,8 @@
     </DataTemplate>
     <DataTemplate x:Key="TextBoxEditor">
         <DockPanel>
-            <TextBox Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
-            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+            <TextBox DockPanel.Dock="Top" Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
+            <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{StaticResource ErrorReportTemplate}" />
         </DockPanel>
     </DataTemplate>
     <DataTemplate x:Key="NumericEditor">

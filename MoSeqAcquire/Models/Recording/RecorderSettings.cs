@@ -32,9 +32,30 @@ namespace MoSeqAcquire.Models.Recording
             Validator = new ValidationHelper();
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);
 
-            this.PropertyChanged += (s, e) => { if (!"IsValid".Equals(e.PropertyName)){ this.NotifyPropertyChanged("IsValid"); } };
+            this.PropertyChanged += (s, e) =>
+            {
+                if (!"IsValid".Equals(e.PropertyName))
+                {
+                    this.NotifyPropertyChanged("IsValid");
+                }
+
+                this.Validator.ValidateAll();
+            };
 
             Validator.AddRequiredRule(() => this.Directory, "Directory cannot be empty!");
+            Validator.AddRule(nameof(this.RecordingMode),
+                              nameof(this.RecordingTime),
+                              () =>
+                              {
+                                  if (this.recordingMode.Equals(RecordingMode.Indeterminate))
+                                      return RuleResult.Valid();
+
+                                  if (this.recordingMode.Equals(RecordingMode.TimeCount) &&
+                                      this.recordingTime.TotalSeconds <= 0)
+                                      return RuleResult.Invalid("Recording Time must be greater than zero");
+
+                                  return RuleResult.Valid();
+                              });
         }
 
         protected string directory = "";

@@ -35,6 +35,9 @@
             </ListView.ItemTemplate>
         </ListView>-->
     <GroupBox Header="{Binding}" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16,8" >
+        <Validation.ErrorTemplate>
+            <ControlTemplate />
+        </Validation.ErrorTemplate>
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <DockPanel>
@@ -122,33 +125,17 @@
                             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="(" Foreground="{DynamicResource MaterialDesignBodyLight}" />
 
-                                <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding Path=Units, NotifyOnValidationError=False}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Units.Length, FallbackValue=0, TargetNullValue=0, NotifyOnValidationError=False}" Value="0">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBodyLight}" />
-                                                    <Setter Property="FontStyle" Value="Italic" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text=", " Foreground="{DynamicResource MaterialDesignBodyLight}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Units.Length, FallbackValue=0, TargetNullValue=0, NotifyOnValidationError=False}" Value="0">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="{Binding Path=ValueType.Name, NotifyOnValidationError=False}" Foreground="{DynamicResource MaterialDesignBodyLight}" >
-                                </TextBlock>
+                                <TextBlock Text="{Binding Path=Units}"
+                                           Visibility="{Binding Path=HasUnits, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                           FontStyle="Italic"
+                                           Foreground="{DynamicResource MaterialDesignBodyLight}" />
+
+                                <TextBlock Text=", " 
+                                           Visibility="{Binding Path=HasUnits, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                           Foreground="{DynamicResource MaterialDesignBodyLight}" />
+
+                                <TextBlock Text="{Binding Path=ValueType.Name}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+
                                 <TextBlock Text=")" Foreground="{DynamicResource MaterialDesignBodyLight}" />
                             </StackPanel>
                         </DataTemplate>

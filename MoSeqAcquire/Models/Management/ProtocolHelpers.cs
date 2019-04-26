@@ -132,7 +132,10 @@ namespace MoSeqAcquire.Models.Management
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));
                         }
-                        catch { }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine($" -> Error Loading assembly \"{file.FullName}\"...");
+                        }
                     }
                 }
             }

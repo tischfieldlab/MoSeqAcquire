@@ -42,15 +42,17 @@ namespace MoSeqAcquire.ViewModels.Recording
                 this.NotifyPropertyChanged(null);
             };
 
-            this.GeneralSettings.ErrorsChanged += (s, e) => this.ErrorsChanged?.Invoke(this, e);
-            this.RegisterRules();
+            this.GeneralSettings.ErrorsChanged += SubItemErrorsChanged;
+            this.RecordingMetadata.Items.ErrorsChanged += SubItemErrorsChanged;
         }
-        protected void RegisterRules()
-        {
-            
-            //Validator.AddRequiredRule(() => this.GeneralSettings.Directory, "Directory cannot be empty!");
 
+        private void SubItemErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            this.ErrorsChanged?.Invoke(this, e);
+            this.NotifyPropertyChanged(nameof(this.Error));
+            this.NotifyPropertyChanged(nameof(this.HasErrors));
         }
+
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public GeneralRecordingSettings GeneralSettings
         {
@@ -126,7 +128,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         public bool HasErrors
         {
-            get => string.IsNullOrEmpty(this.Error);
+            get => !string.IsNullOrEmpty(this.Error);
         }
 
         public string this[string columnName]
@@ -137,8 +139,8 @@ namespace MoSeqAcquire.ViewModels.Recording
         public IEnumerable GetErrors(string propertyName)
         {
             var errors = new List<string>();
-            errors.AddRange(this.GeneralSettings.GetErrors(propertyName).Cast<string>());
-            errors.AddRange(this.RecordingMetadata.Items.SelectMany(i => i.GetErrors(propertyName).Cast<string>()));
+            errors.AddRange(this.GeneralSettings.GetErrors(propertyName).Cast<string>().Select(e => "Recording Settings: "+e));
+            errors.AddRange(this.RecordingMetadata.Items.GetErrors(propertyName).Cast<string>().Select(e => "Recording Metadata: "+e));
             return errors;
         }
 

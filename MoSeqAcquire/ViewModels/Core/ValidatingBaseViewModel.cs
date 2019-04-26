@@ -15,6 +15,7 @@ namespace MoSeqAcquire.ViewModels
         public ValidatingBaseViewModel() : base()
         {
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);
+            
         }
         public string this[string columnName]
         {
