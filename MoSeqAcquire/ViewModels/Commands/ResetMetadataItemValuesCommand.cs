@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.ViewModels.Metadata;
+using MaterialDesignThemes.Wpf;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -24,10 +25,12 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
+            //var result = MaterialDesignThemes.Wpf.DialogHost.Show(parameter);//
             foreach (var item in this.ViewModel.Recorder.RecordingMetadata.Items)
             {
                 item.ResetValue();
             }
+            this.ViewModel.IsDialogOpen = false;
         }
     }
 }

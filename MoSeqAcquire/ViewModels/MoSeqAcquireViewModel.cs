@@ -14,6 +14,7 @@ namespace MoSeqAcquire.ViewModels
 {
     public class MoSeqAcquireViewModel : BaseViewModel
     {
+        protected bool isDialogOpen;
         protected bool isProtocolLocked;
         protected int forceProtocolLock;
 
@@ -76,6 +77,11 @@ namespace MoSeqAcquire.ViewModels
         {
             get => this.isProtocolLocked || this.forceProtocolLock > 0;
             set => this.SetField(ref this.isProtocolLocked, value);
+        }
+        public bool IsDialogOpen
+        {
+            get => this.isDialogOpen;
+            set => this.SetField(ref this.isDialogOpen, value);
         }
 
         public string MainWindowTitle

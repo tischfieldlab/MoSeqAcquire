@@ -27,12 +27,15 @@
             <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
         </ResourceDictionary>
     </Window.Resources>
+    <materialDesign:DialogHost Name="MainWindowDialogHost" IsOpen="{Binding IsDialogOpen}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        
+            
         
         <DockPanel Grid.Row="0">
             <v:SystemInfoView DockPanel.Dock="Right" Margin="0,0,0,0" />
@@ -82,4 +85,5 @@
             </dragablz:TabablzControl>
         </dockablz:Layout>
     </Grid>
+    </materialDesign:DialogHost>
 </Window>

@@ -37,8 +37,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <materialDesign:Card Margin="8,8,8,0" materialDesign:ShadowAssist.ShadowDepth="Depth5"  >
@@ -61,8 +60,16 @@
                 </StackPanel>
                 <mvrv:RecorderGeneralSettings Grid.Column="1" Margin="16" />
 
-                <materialDesign:Snackbar Grid.ColumnSpan="2" Grid.Row="1" IsActive="{Binding Path=HasErrors}" HorizontalAlignment="Stretch" >
-                    <materialDesign:SnackbarMessage Content="Errors are preventing recording" />
+                <materialDesign:Snackbar Grid.ColumnSpan="2" Grid.Row="1" 
+                                         IsActive="{Binding Path=HasErrors}" 
+                                         HorizontalAlignment="Stretch" 
+                                         Background="{StaticResource ValidationErrorBrush}" >
+                    <materialDesign:SnackbarMessage>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="WarningOctagon" Width="32" Height="32" Margin="-8,-8,8,-8" />
+                            <TextBlock Text="Errors are preventing recording." />
+                        </StackPanel>
+                    </materialDesign:SnackbarMessage>
                 </materialDesign:Snackbar>
             </Grid>
         </materialDesign:Card>

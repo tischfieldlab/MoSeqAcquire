@@ -199,6 +199,7 @@
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
+    <Compile Include="Views\Behaviors\SetPropertyAction.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
     <Compile Include="Models\Metadata\ChoicesConstraint.cs" />
     <Compile Include="Views\Converters\MathConverter.cs" />

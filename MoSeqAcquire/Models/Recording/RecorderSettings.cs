@@ -42,7 +42,27 @@ namespace MoSeqAcquire.Models.Recording
                 this.Validator.ValidateAll();
             };
 
-            Validator.AddRequiredRule(() => this.Directory, "Directory cannot be empty!");
+            Validator.AddRequiredRule(() => this.Directory, "Directory cannot be empty.");
+            Validator.AddRule(nameof(this.Directory), () =>
+            {
+                System.IO.FileInfo fi = null;
+                try
+                {
+                    fi = new System.IO.FileInfo(this.Directory);
+                }
+                catch (ArgumentException e) { return RuleResult.Invalid(e.Message); }
+                catch (System.IO.PathTooLongException e) { return RuleResult.Invalid(e.Message); }
+                catch (NotSupportedException e) { return RuleResult.Invalid(e.Message); }
+
+                if(!System.IO.Path.IsPathRooted(this.Directory))
+                    return RuleResult.Invalid("Invalid directory path.");
+
+                //this only works for filename component... not full path
+                if(Path.GetInvalidPathChars().Any(c => this.directory.Contains(c)))
+                    return RuleResult.Invalid("Directory cannot contain the characters "+string.Join("", Path.GetInvalidFileNameChars()));
+
+                return RuleResult.Valid();
+            });
             Validator.AddRule(nameof(this.RecordingMode),
                               nameof(this.RecordingTime),
                               () =>
@@ -52,10 +72,11 @@ namespace MoSeqAcquire.Models.Recording
 
                                   if (this.recordingMode.Equals(RecordingMode.TimeCount) &&
                                       this.recordingTime.TotalSeconds <= 0)
-                                      return RuleResult.Invalid("Recording Time must be greater than zero");
+                                      return RuleResult.Invalid("Recording Time must be greater than zero.");
 
                                   return RuleResult.Valid();
                               });
+            this.NotifyPropertyChanged(null);
         }
 
         protected string directory = "";

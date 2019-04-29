@@ -29,7 +29,7 @@ namespace MoSeqAcquire.Views.Controls
 
 
         public static readonly DependencyProperty PickerTypeProperty = DependencyProperty.Register("PickerType", typeof(PickerTypes), typeof(FileChooser), new PropertyMetadata(PickerTypes.Load, new PropertyChangedCallback(TypeChangedCallBack)));
-        public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register("SelectedPath", typeof(String), typeof(FileChooser), new FrameworkPropertyMetadata(String.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(ValidatePropertyWhenChangedCallback)));
+        public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register("SelectedPath", typeof(String), typeof(FileChooser), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(ValidatePropertyWhenChangedCallback)));
         public static readonly DependencyProperty MultiselectProperty = DependencyProperty.Register("Multiselect", typeof(Boolean), typeof(FileChooser), new PropertyMetadata(false));
         public static readonly DependencyProperty FileExtensionProperty = DependencyProperty.Register("FileExtension", typeof(String), typeof(FileChooser), new PropertyMetadata("*"));
         public static readonly DependencyProperty FileDescriptionProperty = DependencyProperty.Register("FileDescription", typeof(String), typeof(FileChooser), new PropertyMetadata("All Files"));
@@ -41,6 +41,7 @@ namespace MoSeqAcquire.Views.Controls
         {
             InitializeComponent();
             this.UpdateButtonIcon();
+            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null));
         }
         public PickerTypes PickerType
         {
@@ -226,6 +227,7 @@ namespace MoSeqAcquire.Views.Controls
         public void NotifyErrorsChanged(string propertyName)
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            
         }
 
         protected static void ValidatePropertyWhenChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)

@@ -30,7 +30,7 @@
         <TextBox Width="100" Height="40" Margin="0,0,20,16" VerticalAlignment="Center"
                                 materialDesign:HintAssist.Hint="Amount of Time" 
                                 materialDesign:HintAssist.IsFloating="True"
-                                Text="{Binding Path=GeneralSettings.RecordingTime}"
+                                Text="{Binding Path=GeneralSettings.RecordingTime, ValidatesOnNotifyDataErrors=True}"
                                 Visibility="{Binding Path=GeneralSettings.RecordingMode, 
                                                      Converter={StaticResource EnumToVisibilityConverter}, 
                                                      ConverterParameter={x:Static mio:RecordingMode.TimeCount}}"

@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MoSeqAcquire.Views.Controls.MetadataEditor"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behv="clr-namespace:MoSeqAcquire.Views.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -53,7 +55,35 @@
                             ToolTip="Reset Metadata Values">
                         <materialDesign:PackIcon Kind="Restore"  />
                     </Button>
+                    <!--:DialogHost.DialogClosingAttached="Sample2_DialogHost_OnDialogClosing"-->
+                    <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                            ToolTip="Reset Metadata Values">
+                        <Button.CommandParameter>
+                            <StackPanel Margin="16" Width="200">
+                                <TextBlock TextWrapping="Wrap"
+                                    Text="Are you sure you want to reset metadata values to defaults?" />
+                                
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Button Margin="16"
+                                            Style="{StaticResource MaterialDesignFlatButton}"                      
+                                            Command="{Binding Path=Root.Commands.ResetMetadataItemValues}"
+                                            HorizontalAlignment="Center" 
+                                            Content="YES" />
 
+                                    <Button Margin="16"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            IsCancel="True"
+                                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                            HorizontalAlignment="Center"
+                                            Content="NO" />
+                                    
+                                </StackPanel>
+                            </StackPanel>
+                        </Button.CommandParameter>
+                        <materialDesign:PackIcon Kind="Restore"  />
+                    </Button>
                     <TextBlock Text="Recording Metadata" VerticalAlignment="Center" />
                 </DockPanel>
             </DataTemplate>

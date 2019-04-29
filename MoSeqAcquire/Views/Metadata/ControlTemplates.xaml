@@ -4,7 +4,8 @@
                     xmlns:converters="clr-namespace:MoSeqAcquire.Views.Converters"
                     xmlns:extensions="clr-namespace:MoSeqAcquire.Views.Extensions"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:ext="clr-namespace:MoSeqAcquire.Views.Extensions">
 
     <converters:GenericConverter x:Key="GenericConverter" />
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
@@ -62,7 +63,7 @@
         <StackPanel>
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
                       ItemsSource="{Binding Path=ConstraintImplementation.Choices}" 
-                      SelectedValue="{Binding Path=Value}" 
+                      SelectedValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" 
                       DisplayMemberPath="Value" 
                       SelectedValuePath="Value" />
             <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
@@ -113,12 +114,22 @@
     </DataTemplate>
     <DataTemplate x:Key="DefaultValueCollectionComboBoxEditor">
         <ComboBox Style="{StaticResource MaterialDesignComboBox}"
+                  materialDesign:ComboBoxAssist.ClassicMode="True"
                   materialDesign:HintAssist.Hint="Default Value"
                   materialDesign:HintAssist.IsFloating="True"
-                  ItemsSource="{Binding Path=ConstraintImplementation.Choices}" 
                   SelectedValue="{Binding Path=DefaultValue}" 
                   DisplayMemberPath="Value" 
-                  SelectedValuePath="Value" />
+                  SelectedValuePath="Value">
+            <ComboBox.Resources>
+                <ext:BindingProxy x:Key="proxy" Data="{Binding}" />
+            </ComboBox.Resources>
+            <ComboBox.ItemsSource>
+                <CompositeCollection>
+                    <ComboBoxItem>No Default Value</ComboBoxItem>
+                    <CollectionContainer Collection="{Binding Path=ConstraintImplementation.Choices, Source={StaticResource proxy}}" />
+                </CompositeCollection>
+            </ComboBox.ItemsSource>
+        </ComboBox>
     </DataTemplate>
     <DataTemplate x:Key="DefaultValueRangeEditor">
         <DockPanel>
