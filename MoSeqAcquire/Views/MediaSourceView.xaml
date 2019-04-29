@@ -37,19 +37,18 @@
                                           VerticalAlignment="Center"
                                           Style="{StaticResource MaterialDesignSubheadingTextBlock}"
                                           Text="{Binding MediaSource.Name}" />
-                                    <Button DockPanel.Dock="Right"  Width="24" Height="24"
-                                            Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" 
+                                    <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                                            Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                                             CommandParameter="{Binding}"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                            ToolTip="Remove Source">
+                                            ToolTip="Remove Media Source">
                                         <materialDesign:PackIcon Kind="Close"  />
                                     </Button>
-                                    <Button DockPanel.Dock="Right" Width="24" Height="24"
+                                    <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
                                             Command="{Binding Path=DataContext.Commands.ToggleOpenMediaSourceConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                                             CommandParameter="{Binding}"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                            ToolTip="Open Config"
-                                            Margin="4">
+                                            ToolTip="Open Config">
                                         <materialDesign:PackIcon Kind="Settings" />
                                     </Button>
                                 </DockPanel>

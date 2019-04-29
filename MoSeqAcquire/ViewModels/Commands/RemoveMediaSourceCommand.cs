@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using MaterialDesignThemes.Wpf;
+using MoSeqAcquire.Views.Controls;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -23,13 +26,26 @@ namespace MoSeqAcquire.ViewModels.Commands
             return true;
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
-            if(parameter != null && parameter is MediaSourceViewModel)
+            if (parameter != null && parameter is MediaSourceViewModel)
             {
-                var msvm = parameter as MediaSourceViewModel;
-                msvm.MediaSource.Stop();
-                this.ViewModel.MediaSources.Remove(msvm);
+                var view = new ConfirmDialog
+                {
+                    DataContext = new ConfirmDialogViewModel()
+                    {
+                        Title = "Confirm Remove Source",
+                        Message = "Are you sure you want to remove this media source?"
+                    }
+                };
+                var result = await DialogHost.Show(view, "MainWindowDialogHost");
+
+                if ((bool)result)
+                {
+                    var msvm = parameter as MediaSourceViewModel;
+                    msvm.MediaSource.Stop();
+                    this.ViewModel.MediaSources.Remove(msvm);
+                }
             }
         }
     }

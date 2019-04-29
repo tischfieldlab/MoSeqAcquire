@@ -8,6 +8,7 @@ using System.Windows;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Properties;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -36,11 +37,15 @@ namespace MoSeqAcquire.ViewModels.Commands
                 try
                 {
                     pcol = MediaSettingsWriter.ReadProtocol(path as string);
+
+                    //push the path into the recent protocols collection
+                    this.ViewModel.PushRecentProtocol(path);
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show("Error loading protocol \"" + path + "\":\n\n" + e.Message);
                 }
+                
             }
             else if(parameter is Protocol)
             {

@@ -170,6 +170,7 @@
     <Compile Include="ViewModels\Commands\ToggleChannelEnabledCommand.cs" />
     <Compile Include="ViewModels\Commands\ToggleProtocolLockCommand.cs" />
     <Compile Include="ViewModels\Commands\ShowPerformanceMonitorCommand.cs" />
+    <Compile Include="ViewModels\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Core\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveTriggerCommand.cs" />
@@ -202,6 +203,10 @@
     <Compile Include="Views\Behaviors\SetPropertyAction.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
     <Compile Include="Models\Metadata\ChoicesConstraint.cs" />
+    <Compile Include="Views\Controls\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
     <Compile Include="Views\Converters\MathConverter.cs" />
     <Compile Include="Views\Metadata\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
@@ -372,6 +377,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\ColorStreamViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ConfirmDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

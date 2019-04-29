@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.ViewModels.Metadata;
 using MaterialDesignThemes.Wpf;
+using MoSeqAcquire.Views.Controls;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -23,14 +24,25 @@ namespace MoSeqAcquire.ViewModels.Commands
             return true;
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
-            //var result = MaterialDesignThemes.Wpf.DialogHost.Show(parameter);//
-            foreach (var item in this.ViewModel.Recorder.RecordingMetadata.Items)
+            var view = new ConfirmDialog
             {
-                item.ResetValue();
+                DataContext = new ConfirmDialogViewModel()
+                {
+                    Title = "Confirm Reset of Values",
+                    Message = "Are you sure you want to reset metadata values to defaults?"
+                }
+            };
+            var result = await DialogHost.Show(view, "MainWindowDialogHost");
+
+            if ((bool) result)
+            {
+                foreach (var item in this.ViewModel.Recorder.RecordingMetadata.Items)
+                {
+                    item.ResetValue();
+                }
             }
-            this.ViewModel.IsDialogOpen = false;
         }
     }
 }

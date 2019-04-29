@@ -38,28 +38,11 @@ namespace MoSeqAcquire.ViewModels.Metadata
                 new AvailableTypeViewModel(typeof(string))
             };
             this.currentCollection = new MetadataDefinitionCollection();
-            //this.currentCollection.CollectionChanged += CurrentCollection_CollectionChanged;
             this.CurrentState = MetadataViewState.Grid;
-            //this.IsTemplateEditable = true;
         }
-
-        /*private void CurrentCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            e.NewItems.OfType<INotifyPropertyChanged>().ForEach(item => item.PropertyChanged += Item_PropertyChanged);
-            e.OldItems.OfType<INotifyPropertyChanged>().ForEach(item => item.PropertyChanged -= Item_PropertyChanged);
-        }
-
-        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(e.PropertyName));
-        }*/
 
         public ObservableCollection<AvailableTypeViewModel> AvailableTypes { get; protected set; }
-        /*public bool IsTemplateEditable
-        {
-            get => this.isTemplateEditable;
-            set => this.SetField(ref this.isTemplateEditable, value);
-        }*/
+
         public MetadataViewState CurrentState
         {
             get => this.currentState;

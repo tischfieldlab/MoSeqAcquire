@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MaterialDesignThemes.Wpf;
+using MoSeqAcquire.Views.Controls;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -18,14 +20,29 @@ namespace MoSeqAcquire.ViewModels.Commands
             if (this.ViewModel.IsProtocolLocked)
                 return false;
 
-            var rvm = this.GetRecorderViewModel(parameter);
-            return !(rvm == null);
+            return null != this.GetRecorderViewModel(parameter);
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
             var rvm = this.GetRecorderViewModel(parameter);
-            this.ViewModel.Recorder.RemoveRecorder(rvm);
+            if (rvm != null)
+            {
+                var view = new ConfirmDialog
+                {
+                    DataContext = new ConfirmDialogViewModel()
+                    {
+                        Title = "Confirm Remove Recorder",
+                        Message = "Are you sure you want to remove this recorder?"
+                    }
+                };
+                var result = await DialogHost.Show(view, "MainWindowDialogHost");
+
+                if ((bool) result)
+                {
+                    this.ViewModel.Recorder.RemoveRecorder(rvm);
+                }
+            }
         }
         protected RecorderViewModel GetRecorderViewModel(object parameter)
         {

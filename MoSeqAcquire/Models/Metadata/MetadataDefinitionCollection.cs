@@ -41,8 +41,29 @@ namespace MoSeqAcquire.Models.Metadata
             }
         }
 
-        
 
+
+
+        public override bool Equals(object obj)
+        {
+            return this.SequenceEqual(obj as MetadataDefinitionCollection);
+        }
+
+        public void ResetValuesToDefaults()
+        {
+            foreach (var item in this)
+            {
+                item.ResetValue();
+            }
+        }
+        public RecordingMetadataSnapshot GetSnapshot()
+        {
+            var snapshot = new RecordingMetadataSnapshot();
+            this.Items.ForEach(item => snapshot.Add(item));
+            return snapshot;
+        }
+
+        #region INotifyDataErrorInfo Implementation
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
         private void MetadataDefinitionCollection_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
@@ -63,18 +84,7 @@ namespace MoSeqAcquire.Models.Metadata
 
             return errors;
         }
-
-        public override bool Equals(object obj)
-        {
-            return this.SequenceEqual(obj as MetadataDefinitionCollection);
-        }
-
-        public RecordingMetadataSnapshot GetSnapshot()
-        {
-            var snapshot = new RecordingMetadataSnapshot();
-            this.Items.ForEach(item => snapshot.Add(item));
-            return snapshot;
-        }
+        #endregion INotifyDataErrorInfo Implementation
 
 
         #region IXmlSerializable Members

@@ -8,6 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:v="clr-namespace:MoSeqAcquire.Views"
         xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
+        xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -27,63 +28,103 @@
             <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
         </ResourceDictionary>
     </Window.Resources>
-    <materialDesign:DialogHost Name="MainWindowDialogHost" IsOpen="{Binding IsDialogOpen}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        
+    <materialDesign:DialogHost Identifier="MainWindowDialogHost">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             
-        
-        <DockPanel Grid.Row="0">
-            <v:SystemInfoView DockPanel.Dock="Right" Margin="0,0,0,0" />
+                
+            
+            <DockPanel Grid.Row="0">
+                <v:SystemInfoView DockPanel.Dock="Right" Margin="0,0,0,0" />
 
-            <Menu DockPanel.Dock="Left" IsMainMenu="True" >
-                <MenuItem Header="File">
-                    <MenuItem Header="Add New">
-                        <MenuItem Header="Media Source" Command="{Binding Path=Commands.AddMediaSource}" />
-                        <MenuItem Header="Recorder" Command="{Binding Path=Commands.AddRecorder}" />
-                        <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" />
+                <Menu DockPanel.Dock="Left" IsMainMenu="True" >
+                    <MenuItem Header="File">
+                        <MenuItem Header="Add New">
+                            <MenuItem Header="Media Source" Command="{Binding Path=Commands.AddMediaSource}">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="Camcorder" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Recorder" Command="{Binding Path=Commands.AddRecorder}" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="RecordRec" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="Pistol" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" >
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentSave" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
+                        <MenuItem Header="Recently Used" ItemsSource="{Binding Path=RecentlyUsedProtocols}" >
+                            <MenuItem.ItemContainerStyle>
+                                <Style TargetType="MenuItem" BasedOn="{StaticResource MaterialDesignMenuItem}">
+                                    <Setter Property="HeaderTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <controls:PathTrimmingTextBlock Path="{Binding}" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Command" Value="{Binding Path=DataContext.Commands.LoadProtocol, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                    <Setter Property="CommandParameter" Value="{Binding}" />
+                                </Style>
+                            </MenuItem.ItemContainerStyle>
+                        </MenuItem>
+                        <MenuItem Header="Unload Protocol" Command="{Binding Path=Commands.UnloadProtocol}" />
+                        <Separator />
+                        <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLock}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked, Mode=OneWay}" >
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="SecurityLock" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
-                    <Separator />
-                    <MenuItem Header="Save Protocol" Command="{Binding Path=Commands.SaveProtocol}" />
-                    <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
-                    <MenuItem Header="Unload Protocol" Command="{Binding Path=Commands.UnloadProtocol}" />
-                    <Separator />
-                    <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLock}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked, Mode=OneWay}" >
-                        <MenuItem.Icon>
-                            <materialDesign:PackIcon Kind="SecurityLock" />
-                        </MenuItem.Icon>
+                    
+                    <MenuItem Header="View">
+                        <MenuItem Header="Theme" Command="{Binding Path=Commands.OpenThemeDialog}" >
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Theme" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Performance" Command="{Binding Path=Commands.ShowPerformanceMonitor}" >
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Pulse" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
-                </MenuItem>
-                <MenuItem Header="View">
-                    <MenuItem Header="Theme" Command="{Binding Path=Commands.OpenThemeDialog}" />
-                    <MenuItem Header="Performance" Command="{Binding Path=Commands.ShowPerformanceMonitor}" />
-                </MenuItem>
-            </Menu>
-        </DockPanel>
-        
+                </Menu>
+            </DockPanel>
+            
 
-        <dockablz:Layout Grid.Row="1">
-            <dragablz:TabablzControl BorderThickness="0" Margin="0,-1,0,1">
-                <dragablz:TabablzControl.InterTabController>
-                    <dragablz:InterTabController />
-                </dragablz:TabablzControl.InterTabController>
-                <TabItem Header="ACQUIRE">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+            <dockablz:Layout Grid.Row="1">
+                <dragablz:TabablzControl BorderThickness="0" Margin="0,-1,0,1">
+                    <dragablz:TabablzControl.InterTabController>
+                        <dragablz:InterTabController />
+                    </dragablz:TabablzControl.InterTabController>
+                    <TabItem Header="ACQUIRE">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
 
-                        <v:MediaSourceView HorizontalAlignment="Stretch" Grid.Column="0" Margin="8" />
-                        <v:RecordingConsoleView Grid.Column="1" DataContext="{Binding Path=Recorder}" />
-                    </Grid>
-                </TabItem>
-            </dragablz:TabablzControl>
-        </dockablz:Layout>
-    </Grid>
+                            <v:MediaSourceView HorizontalAlignment="Stretch" Grid.Column="0" Margin="8" />
+                            <v:RecordingConsoleView Grid.Column="1" DataContext="{Binding Path=Recorder}" />
+                        </Grid>
+                    </TabItem>
+                </dragablz:TabablzControl>
+            </dockablz:Layout>
+        </Grid>
     </materialDesign:DialogHost>
 </Window>

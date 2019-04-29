@@ -6,19 +6,28 @@ using MoSeqAcquire.ViewModels.Recording;
 using MoSeqAcquire.ViewModels.Triggers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using MoSeqAcquire.Properties;
 
 namespace MoSeqAcquire.ViewModels
 {
     public class MoSeqAcquireViewModel : BaseViewModel
     {
-        protected bool isDialogOpen;
         protected bool isProtocolLocked;
         protected int forceProtocolLock;
+        
 
         public MoSeqAcquireViewModel()
+        {
+            this.RecentlyUsedProtocols = new ObservableCollection<string>(Settings.Default.RecentProtocols.Cast<string>());
+
+            this.Initialize();
+        }
+
+        protected void Initialize()
         {
             App.SetCurrentStatus("Loading Theme....");
             this.Theme = new ThemeViewModel();
@@ -38,12 +47,38 @@ namespace MoSeqAcquire.ViewModels
             App.SetCurrentStatus("Loading default protocol....");
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
+
+        public void PushRecentProtocol(string path)
+        {
+            if (this.RecentlyUsedProtocols.Contains(path))
+            {
+                this.RecentlyUsedProtocols.Move(this.RecentlyUsedProtocols.IndexOf(path), 0);
+            }
+            else
+            {
+                this.RecentlyUsedProtocols.Insert(0, path);
+            }
+
+            if (this.RecentlyUsedProtocols.Count > Settings.Default.MaxRecentProtocolsToRemember)
+            {
+                this.RecentlyUsedProtocols
+                    .Skip(Settings.Default.MaxRecentProtocolsToRemember)
+                    .ToList()
+                    .ForEach(rup => this.RecentlyUsedProtocols.Remove(rup));
+            }
+
+            Settings.Default.RecentProtocols.Clear();
+            Settings.Default.RecentProtocols.AddRange(this.RecentlyUsedProtocols.ToArray());
+            Settings.Default.Save();
+        }
+
         public CommandLibrary Commands { get; protected set; }
         public ThemeViewModel Theme { get; protected set; }
         public TriggerBus TriggerBus { get; protected set; }
         public ObservableCollection<MediaSourceViewModel> MediaSources { get; protected set; }
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
+        public ObservableCollection<string> RecentlyUsedProtocols { get; protected set; }
 
         public void ForceProtocolLocked()
         {
@@ -77,11 +112,6 @@ namespace MoSeqAcquire.ViewModels
         {
             get => this.isProtocolLocked || this.forceProtocolLock > 0;
             set => this.SetField(ref this.isProtocolLocked, value);
-        }
-        public bool IsDialogOpen
-        {
-            get => this.isDialogOpen;
-            set => this.SetField(ref this.isDialogOpen, value);
         }
 
         public string MainWindowTitle
@@ -177,7 +207,7 @@ namespace MoSeqAcquire.ViewModels
                             this.Recorder.RecordingMetadata.Items.Add(item);
                         }
                     }
-                    this.Commands.ResetMetadataItemValues.Execute(null);
+                    this.Recorder.RecordingMetadata.Items.ResetValuesToDefaults();
                     this.isProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
                     this.UndoForceProtoclLocked();

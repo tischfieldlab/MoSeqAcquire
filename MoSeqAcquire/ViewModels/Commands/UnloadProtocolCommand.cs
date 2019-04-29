@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using MaterialDesignThemes.Wpf;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Views.Controls;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -22,9 +24,22 @@ namespace MoSeqAcquire.ViewModels.Commands
             return true;
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
-            this.ViewModel.UnloadProtocol();
+            var view = new ConfirmDialog
+            {
+                DataContext = new ConfirmDialogViewModel()
+                {
+                    Title = "Confirm Unload Protocol",
+                    Message = "Are you sure you want to unload the current protocol?"
+                }
+            };
+            var result = await DialogHost.Show(view, "MainWindowDialogHost");
+
+            if ((bool)result)
+            {
+                this.ViewModel.UnloadProtocol();
+            }
         }
     }
 }

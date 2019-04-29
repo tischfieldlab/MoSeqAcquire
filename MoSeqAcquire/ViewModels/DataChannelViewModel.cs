@@ -24,14 +24,14 @@ namespace MoSeqAcquire.ViewModels
                 bc => bc.Channel == this.channel,
                 new ActionBlock<ChannelFrame>(frame =>
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
                         var meta = frame.Metadata as VideoChannelFrameMetadata;
                         if (this.Stream == null || !this.CheckBitmapOk(frame))
                         {
                             this.Stream = new WriteableBitmap(100, 100, 96, 96, PixelFormats.Gray16, null);
                         }
-                        float[] data = frame.FrameData as float[];
+                        /*float[] data = frame.FrameData as float[];
                         var max = data.Select(x => Math.Abs(x)).Max();
                         int width = (int)(this.Stream.PixelWidth / frame.FrameData.Length);
                         int half = (this.Stream.PixelHeight / 2);
@@ -82,7 +82,7 @@ namespace MoSeqAcquire.ViewModels
                                 catch (Exception e) { }
 
                             }
-                        }
+                        }*/
                         
                         this.Performance.Increment();
                     }));
@@ -95,7 +95,7 @@ namespace MoSeqAcquire.ViewModels
             if (this.Stream.PixelHeight != meta.Height) return false;
             if (this.Stream.PixelWidth != meta.Width) return false;
             if (this.Stream.Format != meta.PixelFormat) return false;*/
-            return true;
+                        return true;
         }
         private WriteableBitmap _stream;
         public WriteableBitmap Stream { get => _stream; set => SetField(ref _stream, value); }

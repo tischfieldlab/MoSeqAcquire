@@ -60,10 +60,10 @@
                             <Expander.Header>
                                 <DockPanel HorizontalAlignment="Stretch">
                                     <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="0,0,8,0"
-                                                            Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                                            CommandParameter="{Binding}"
-                                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                                            ToolTip="Remove Recorder">
+                                            Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                            ToolTip="Remove Recorder">
                                         <materialDesign:PackIcon Kind="Close"  />
                                     </Button>
                                     <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"

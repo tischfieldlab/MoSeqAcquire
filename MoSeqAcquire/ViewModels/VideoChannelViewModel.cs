@@ -21,15 +21,16 @@ namespace MoSeqAcquire.ViewModels
                 bc => bc.Channel == this.channel,
                 new ActionBlock<ChannelFrame>(frame =>
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
                         var meta = frame.Metadata as VideoChannelFrameMetadata;
                         if (this.Stream == null || !this.CheckBitmapOk(frame))
                         {
+                            this._rect = new Int32Rect(0, 0, meta.Width, meta.Height);
                             this.Stream = new WriteableBitmap(meta.Width, meta.Height, 96, 96, meta.PixelFormat, null);
                         }
                         this.Stream.WritePixels(
-                            new Int32Rect(0, 0, meta.Width, meta.Height),
+                            this._rect,
                             frame.FrameData,
                             meta.Stride,
                             0);
@@ -48,6 +49,7 @@ namespace MoSeqAcquire.ViewModels
             return true;
         }
         private WriteableBitmap _stream;
+        private Int32Rect _rect;
         public WriteableBitmap Stream { get => _stream; set => SetField(ref _stream, value); }
 
         protected bool showCrosshairs;
