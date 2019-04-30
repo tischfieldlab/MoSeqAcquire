@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using MoSeqAcquire.Models.Acquisition;
 
-namespace MoSeqAcquire.ViewModels
+namespace MoSeqAcquire.ViewModels.MediaSources
 {
     public class VideoChannelViewModel : ChannelViewModel
     {
@@ -28,6 +28,7 @@ namespace MoSeqAcquire.ViewModels
                         {
                             this._rect = new Int32Rect(0, 0, meta.Width, meta.Height);
                             this.Stream = new WriteableBitmap(meta.Width, meta.Height, 96, 96, meta.PixelFormat, null);
+                            this.sizeHelper.Ratio = (double)meta.Height / (double)meta.Width;
                         }
                         this.Stream.WritePixels(
                             this._rect,

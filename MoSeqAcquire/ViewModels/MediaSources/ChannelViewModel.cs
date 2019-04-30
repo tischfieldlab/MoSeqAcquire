@@ -9,18 +9,27 @@ using System.Windows.Media.Imaging;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Performance;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.ViewModels.Core;
 
-namespace MoSeqAcquire.ViewModels
+namespace MoSeqAcquire.ViewModels.MediaSources
 {
     public abstract class ChannelViewModel : BaseViewModel, IPerformanceProvider
     {
         protected Channel channel;
+        protected SizeHelper sizeHelper;
+
+        
+
+
         public ChannelViewModel(Channel channel)
         {
             this.channel = channel;
             this.BindChannel();
             this.Performance = new TotalFrameCounter();
             this.Performance.Start();
+
+            this.sizeHelper = new SizeHelper(50, 500, 50, 500, 200, 150);
+
         }
         public abstract void BindChannel();
         
@@ -30,6 +39,11 @@ namespace MoSeqAcquire.ViewModels
         public string FullName { get => this.channel.FullName; }
         public bool Enabled { get => this.channel.Enabled; set => this.channel.Enabled = value; }
         public TotalFrameCounter Performance { get; protected set; }
+
+        public SizeHelper DisplaySize { get => this.sizeHelper; }
+
+        
+
 
 
         public static ChannelViewModel FromChannel(Channel channel)

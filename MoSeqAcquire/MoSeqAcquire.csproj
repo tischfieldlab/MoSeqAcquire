@@ -183,7 +183,9 @@
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
-    <Compile Include="ViewModels\DataChannelViewModel.cs" />
+    <Compile Include="ViewModels\Core\SizeHelper.cs" />
+    <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
     <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
     <Compile Include="Models\Metadata\BaseConstraint.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
@@ -208,6 +210,9 @@
     </Compile>
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
     <Compile Include="Views\Converters\MathConverter.cs" />
+    <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
+      <DependentUpon>MediaSourceConfigView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Metadata\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
@@ -303,7 +308,7 @@
     <Compile Include="Models\Management\Protocol.cs" />
     <Compile Include="Models\Performance\FrameRateCounter.cs" />
     <Compile Include="Models\Core\ObservableObject.cs" />
-    <Compile Include="ViewModels\AudioChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\Commands\BaseCommandLibrary.cs" />
     <Compile Include="ViewModels\Commands\StartRecordingCommand.cs" />
     <Compile Include="ViewModels\Commands\EditRecorderCommand.cs" />
@@ -312,12 +317,12 @@
     <Compile Include="ViewModels\Commands\CommandLibrary.cs" />
     <Compile Include="ViewModels\Recording\RecordingManagerViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderViewModel.cs" />
-    <Compile Include="ViewModels\VideoChannelViewModel.cs" />
-    <Compile Include="ViewModels\ChannelViewModel.cs" />
-    <Compile Include="ViewModels\MediaSourceViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\VideoChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\ChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\MediaSourceViewModel.cs" />
     <Compile Include="ViewModels\MoSeqAcquireViewModel.cs" />
     <Compile Include="Views\Controls\AudioSpectrum.cs" />
-    <Compile Include="Views\ChannelView.xaml.cs">
+    <Compile Include="Views\MediaSourceViews\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RecorderViews\RecorderGeneralSettings.xaml.cs">
@@ -343,7 +348,7 @@
     </Compile>
     <Compile Include="Views\Extensions\BindingProxy.cs" />
     <Compile Include="Views\Extensions\EnumerationExtension.cs" />
-    <Compile Include="Views\NewMediaSourceDialog.xaml.cs">
+    <Compile Include="Views\MediaSourceViews\NewMediaSourceDialog.xaml.cs">
       <DependentUpon>NewMediaSourceDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\PropertyInspector\PropertyView.xaml.cs">
@@ -360,13 +365,13 @@
     <Compile Include="Views\TriggerManagerView.xaml.cs">
       <DependentUpon>TriggerManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecorderEditor.xaml.cs">
+    <Compile Include="Views\RecorderViews\RecorderEditor.xaml.cs">
       <DependentUpon>RecorderEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MediaSourceView.xaml.cs">
+    <Compile Include="Views\MediaSourceViews\MediaSourceView.xaml.cs">
       <DependentUpon>MediaSourceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecordingConsoleView.xaml.cs">
+    <Compile Include="Views\RecorderViews\RecordingConsoleView.xaml.cs">
       <DependentUpon>RecordingConsoleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ThemeSettingsDialog.xaml.cs">
@@ -387,6 +392,10 @@
     <Page Include="Views\Controls\FileChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MediaSourceViews\MediaSourceConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Metadata\ControlTemplates.xaml">
       <SubType>Designer</SubType>
@@ -428,7 +437,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ChannelView.xaml">
+    <Page Include="Views\MediaSourceViews\ChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -456,7 +465,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewMediaSourceDialog.xaml">
+    <Page Include="Views\MediaSourceViews\NewMediaSourceDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -476,15 +485,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\RecorderEditor.xaml">
+    <Page Include="Views\RecorderViews\RecorderEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MediaSourceView.xaml">
+    <Page Include="Views\MediaSourceViews\MediaSourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RecordingConsoleView.xaml">
+    <Page Include="Views\RecorderViews\RecordingConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using MaterialDesignThemes.Wpf;
+using MoSeqAcquire.ViewModels.MediaSources;
 using MoSeqAcquire.Views.Controls;
 
 namespace MoSeqAcquire.ViewModels.Commands
@@ -44,7 +45,7 @@ namespace MoSeqAcquire.ViewModels.Commands
                 {
                     var msvm = parameter as MediaSourceViewModel;
                     msvm.MediaSource.Stop();
-                    this.ViewModel.MediaSources.Remove(msvm);
+                    this.ViewModel.MediaSources.Items.Remove(msvm);
                 }
             }
         }

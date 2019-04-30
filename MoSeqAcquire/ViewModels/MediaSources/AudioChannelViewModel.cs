@@ -11,7 +11,7 @@ using CSCore.DSP;
 using MoSeqAcquire.Models.Acquisition;
 using WinformsVisualization.Visualization;
 
-namespace MoSeqAcquire.ViewModels
+namespace MoSeqAcquire.ViewModels.MediaSources
 {
     public class AudioChannelViewModel : ChannelViewModel
     {

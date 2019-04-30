@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using MoSeqAcquire.Properties;
+using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels
 {
@@ -36,7 +37,7 @@ namespace MoSeqAcquire.ViewModels
             App.SetCurrentStatus("Initializing Trigger Bus....");
             this.TriggerBus = new TriggerBus();
             App.SetCurrentStatus("Loading Media Sources....");
-            this.MediaSources = new ObservableCollection<MediaSourceViewModel>();
+            this.MediaSources = new MediaSourceCollectionViewModel();
             App.SetCurrentStatus("Loading Recording Console....");
             this.Recorder = new RecordingManagerViewModel(this);
             App.SetCurrentStatus("Loading Triggers....");
@@ -75,7 +76,7 @@ namespace MoSeqAcquire.ViewModels
         public CommandLibrary Commands { get; protected set; }
         public ThemeViewModel Theme { get; protected set; }
         public TriggerBus TriggerBus { get; protected set; }
-        public ObservableCollection<MediaSourceViewModel> MediaSources { get; protected set; }
+        public MediaSourceCollectionViewModel MediaSources { get; protected set; }
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
         public ObservableCollection<string> RecentlyUsedProtocols { get; protected set; }
@@ -129,7 +130,7 @@ namespace MoSeqAcquire.ViewModels
         {
             this.ForceProtocolLocked();
             var pcol = new Protocol("basic");
-            foreach (var ms in this.MediaSources)
+            foreach (var ms in this.MediaSources.Items)
             {
                 pcol.Sources.Add(ms.MediaSource.GetType(), ms.MediaSource.DeviceId, ms.Config.GetSnapshot());
             }
@@ -153,8 +154,8 @@ namespace MoSeqAcquire.ViewModels
         {
             this.ForceProtocolLocked();
             //prepare
-            this.MediaSources.ForEach(s => s.MediaSource.Stop());
-            this.MediaSources.Clear();
+            this.MediaSources.Items.ForEach(s => s.MediaSource.Stop());
+            this.MediaSources.Items.Clear();
             this.Recorder.ClearRecorders();
             this.Triggers.RemoveTriggers();
             this.Recorder.RecordingMetadata.Items.Clear();
@@ -175,7 +176,7 @@ namespace MoSeqAcquire.ViewModels
             {
                 var msvm = new MediaSourceViewModel(s);
                 tasks.Add(msvm.InitTask);
-                this.MediaSources.Add(msvm);
+                this.MediaSources.Items.Add(msvm);
             }
 
             //necessary to wait for all hardware to load prior to applying recorders

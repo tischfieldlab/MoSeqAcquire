@@ -7,6 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mvmr="clr-namespace:MoSeqAcquire.ViewModels.Recording"
              xmlns:mvm="clr-namespace:MoSeqAcquire.ViewModels"
+             xmlns:mediaSources="clr-namespace:MoSeqAcquire.ViewModels.MediaSources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <GroupBox Header="{Binding}" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16,8" >
@@ -107,7 +108,7 @@
                                                     </Style>
                                                 </ItemsControl.Style>
                                                 <ItemsControl.ItemTemplate>
-                                                    <DataTemplate DataType="{x:Type mvm:ChannelViewModel}">
+                                                    <DataTemplate DataType="{x:Type mediaSources:ChannelViewModel}">
                                                         <StackPanel Orientation="Horizontal" Margin="48,0,0,0">
                                                             <materialDesign:PackIcon Kind="SubdirectoryArrowRight" />
                                                             <TextBlock Text="{Binding Path=FullName}" Foreground="{DynamicResource MaterialDesignBodyLight}" />

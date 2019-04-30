@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MoSeqAcquire.Models.Acquisition;
 
-namespace MoSeqAcquire.ViewModels
+namespace MoSeqAcquire.ViewModels.MediaSources
 {
     public class DataChannelViewModel : ChannelViewModel
     {
@@ -31,7 +31,7 @@ namespace MoSeqAcquire.ViewModels
                         {
                             this.Stream = new WriteableBitmap(100, 100, 96, 96, PixelFormats.Gray16, null);
                         }
-                        /*float[] data = frame.FrameData as float[];
+                        float[] data = frame.FrameData as float[];
                         var max = data.Select(x => Math.Abs(x)).Max();
                         int width = (int)(this.Stream.PixelWidth / frame.FrameData.Length);
                         int half = (this.Stream.PixelHeight / 2);
@@ -82,7 +82,7 @@ namespace MoSeqAcquire.ViewModels
                                 catch (Exception e) { }
 
                             }
-                        }*/
+                        }
                         
                         this.Performance.Increment();
                     }));

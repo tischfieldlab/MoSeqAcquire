@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels.Performance
 {
@@ -11,8 +12,8 @@ namespace MoSeqAcquire.ViewModels.Performance
     {
         public PerformanceMonitorPreviewAdapter(PerformanceMonitorViewModel Owner) : base(Owner)
         {
-            Owner.Root.MediaSources.CollectionChanged += MediaSources_CollectionChanged;
-            Owner.Root.MediaSources
+            Owner.Root.MediaSources.Items.CollectionChanged += MediaSources_CollectionChanged;
+            Owner.Root.MediaSources.Items
                  .SelectMany(msvm => msvm.Channels)
                  .Select(cvm => this.ItemFactory(cvm))
                  .ForEach(p => this.Owner.Performances.Add(p));

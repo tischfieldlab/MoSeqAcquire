@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MoSeqAcquire.ViewModels.MediaSources;
+using MoSeqAcquire.Views;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class ToggleOpenMediaSourceConfigCommand : BaseCommand
+    public class OpenMediaSourceConfigCommand : BaseCommand
     {
-        public ToggleOpenMediaSourceConfigCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        public OpenMediaSourceConfigCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
         }
 
@@ -28,8 +30,11 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             if (parameter != null && parameter is MediaSourceViewModel)
             {
-                var msvm = parameter as MediaSourceViewModel;
-                msvm.IsConfigOpen = !msvm.IsConfigOpen;
+                var mscd = new MediaSourceConfigView()
+                {
+                    DataContext = parameter as MediaSourceViewModel
+                };
+                mscd.ShowDialog();
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -36,7 +37,7 @@ namespace MoSeqAcquire.ViewModels.Commands
                 };
 
                 var msvm = new MediaSourceViewModel(ps);
-                this.ViewModel.MediaSources.Add(msvm);
+                this.ViewModel.MediaSources.Items.Add(msvm);
             }
         }
     }

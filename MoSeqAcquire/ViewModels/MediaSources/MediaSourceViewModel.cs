@@ -7,15 +7,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using GongSolutions.Wpf.DragDrop;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 
-namespace MoSeqAcquire.ViewModels
+namespace MoSeqAcquire.ViewModels.MediaSources
 {
     public class MediaSourceViewModel : BaseViewModel
     {
-        protected bool isConfigOpen;
+        //protected bool isConfigOpen;
         protected ObservableCollection<ChannelViewModel> _channels;
         protected ReadOnlyObservableCollection<ChannelViewModel> _ro_Channels;
 
@@ -36,28 +37,31 @@ namespace MoSeqAcquire.ViewModels
         public MediaSourceViewModel(ProtocolSource mediaSource) : this()
         {
             this.MediaSource = (MediaSource)mediaSource.Create();
+            Task.Run(() =>
+            {
+                while (!this.isReady)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        this.NotifyPropertyChanged(nameof(this.CurrentStatus));
+                    }));
+                    Thread.Sleep(100);
+                }
+            });
             this.InitTask = Task.Run(() =>
             {
                 while (!this.MediaSource.Initalize(mediaSource.DeviceId))
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        this.NotifyPropertyChanged("CurrentStatus");
-                    });
                     Thread.Sleep(100);
                 }
                 this.MediaSource.Settings.ApplySnapshot(mediaSource.Config);
                 this.MediaSource.Start();
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.RetrieveChannels();
                     this.IsReady = true;
                     this.NotifyPropertyChanged(null);
-                    /*if(this.MediaSource is DirectShowSource)
-                    {
-                        (this.MediaSource as DirectShowSource).Device.DisplayPropertyPage(new WindowInteropHelper(Application.Current.MainWindow).Handle);
-                    }*/
-                });
+                }));
             });
         }
         public Task InitTask { get; protected set; }
@@ -65,11 +69,6 @@ namespace MoSeqAcquire.ViewModels
         {
             get => this.isReady;
             set => this.SetField(ref this.isReady, value);
-        }
-        public bool IsConfigOpen
-        {
-            get => this.isConfigOpen;
-            set => this.SetField(ref this.isConfigOpen, value);
         }
         public string CurrentStatus
         {
@@ -86,6 +85,6 @@ namespace MoSeqAcquire.ViewModels
 
         public MediaSource MediaSource { get; protected set; }
         public BaseConfiguration Config { get => this.isReady ? MediaSource.Settings : null; }
-        public ReadOnlyObservableCollection<ChannelViewModel> Channels { get => this._ro_Channels; }
+        public ObservableCollection<ChannelViewModel> Channels { get => this._channels; }
     }
 }
