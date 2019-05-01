@@ -3,58 +3,67 @@ using MoSeqAcquire.Models.Management;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmValidation;
 using System.Windows.Input;
+using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Triggers;
+using MoSeqAcquire.ViewModels.Metadata;
+using System.Collections;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
 
-    public class RecordingManagerViewModel : ValidatingBaseViewModel
+    public class RecordingManagerViewModel : BaseViewModel, INotifyDataErrorInfo, IDataErrorInfo
     {
         protected MoSeqAcquireViewModel rootViewModel;
         protected ObservableCollection<RecorderViewModel> recorders;
         protected RecorderViewModel selectedRecorder;
         protected RecordingManager recordingManager;
 
+        
 
-        public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel)
+        public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel) : base()
         {
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
 
             this.recordingManager = new RecordingManager(this.rootViewModel.TriggerBus);
+            this.recordingManager.BeforeStartRecording += (s, e) => this.Root.ForceProtocolLocked();
+            this.recordingManager.RecordingFinished += (s, e) => this.Root.UndoForceProtoclLocked();
+            this.recordingManager.RecordingFinished += (s, e) => this.RecordingMetadata.Items.ResetValuesToDefaults();
+            this.recordingManager.RecordingAborted += (s, e) => this.Root.UndoForceProtoclLocked();
             this.recordingManager.PropertyChanged += (s, e) =>
             {
                 this.NotifyPropertyChanged(null);
             };
-            this.RegisterRules();
 
-            this.rootViewModel.TriggerBus.Subscribe(typeof(BeforeRecordingStartedTrigger),
-                                                    new ActionTriggerAction() {
-                                                        Priority = int.MinValue,
-                                                        Delegate = (t) => this.Root.ForceProtocolLocked()
-                                                    });
-            this.rootViewModel.TriggerBus.Subscribe(typeof(AfterRecordingFinishedTrigger),
-                                                    new ActionTriggerAction()
-                                                    {
-                                                        Priority = int.MaxValue,
-                                                        Delegate = (t) => this.Root.UndoForceProtoclLocked()
-                                                    });
+            this.GeneralSettings.ErrorsChanged += SubItemErrorsChanged;
+            this.RecordingMetadata.Items.ErrorsChanged += SubItemErrorsChanged;
         }
-        protected void RegisterRules()
+
+        private void SubItemErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
-            Validator.AddRequiredRule(() => this.GeneralSettings.Directory, "Directory cannot be empty!");
-
+            this.ErrorsChanged?.Invoke(this, e);
+            this.NotifyPropertyChanged(nameof(this.Error));
+            this.NotifyPropertyChanged(nameof(this.HasErrors));
         }
+
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
+        public GeneralRecordingSettings GeneralSettings
+        {
+            get => this.recordingManager.GeneralSettings;
+        }
+        public MetadataViewModel RecordingMetadata
+        {
+            get => this.recordingManager.RecordingMetadata;
+        }
 
-
-        #region support typed recorder creation
+        #region Recorder CRUD Operations
         public void AddRecorder(Type RecorderType)
         {
             var recorder = new RecorderViewModel(this.rootViewModel, RecorderType);
@@ -75,10 +84,6 @@ namespace MoSeqAcquire.ViewModels.Recording
             }
             this.Recorders.Remove(Recorder);
         }
-        public void RemoveSelectedRecorder()
-        {
-            this.RemoveRecorder(this.SelectedRecorder);
-        }
         public string GetNextDefaultRecorderName()
         {
             string namebase = "Recorder";
@@ -95,7 +100,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             }
             return realname;
         }
-        #endregion
+        
 
         public ObservableCollection<RecorderViewModel> Recorders { get => this.recorders; }
         public RecorderViewModel SelectedRecorder
@@ -109,25 +114,45 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.recordingManager.ClearRecorders();
             this.recorders.Clear();
         }
+#endregion
+
+        
 
 
-        public GeneralRecordingSettings GeneralSettings
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public string Error
         {
-            get => this.recordingManager.GeneralSettings;
+            get => string.Join(" ", this.GetErrors(null).Cast<string>());
         }
-        public RecordingManagerState State
+
+        public bool HasErrors
         {
-            get => this.recordingManager.State;
+            get => !string.IsNullOrEmpty(this.Error);
         }
-        public string CurrentTask
+
+        public string this[string columnName]
         {
-            get => this.recordingManager.CurrentTask;
+            get { return this.GetErrors(columnName).Cast<string>().FirstOrDefault(); }
         }
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            var errors = new List<string>();
+            errors.AddRange(this.GeneralSettings.GetErrors(propertyName).Cast<string>().Select(e => "Recording Settings: "+e));
+            errors.AddRange(this.RecordingMetadata.Items.GetErrors(propertyName).Cast<string>().Select(e => "Recording Metadata: "+e));
+            return errors;
+        }
+
+
+
+        #region Recording Life Cycle
+        public RecordingManagerState State { get => this.recordingManager.State; }
+        public string CurrentTask { get => this.recordingManager.CurrentTask; }
         public TimeSpan? Duration { get => this.recordingManager?.Duration; }
         public double? Progress { get => this.recordingManager?.Progress; }
         public TimeSpan? TimeRemaining { get => this.recordingManager?.TimeRemaining; }
 
-        
         public void StartRecording()
         {
             this.Root.Triggers.ResetStatuses();
@@ -150,5 +175,6 @@ namespace MoSeqAcquire.ViewModels.Recording
                 this.recordingManager.Abort();
             });
         }
+        #endregion
     }
 }

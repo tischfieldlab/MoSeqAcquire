@@ -38,19 +38,24 @@ namespace MoSeqAcquire
         }
         public static void SetCurrentStatus(String StatusText)
         {
-            (App.Current as App).loading.SetCurrentStatus(StatusText);
+            try
+            {
+                (App.Current as App).loading.SetCurrentStatus(StatusText);
+            }
+            catch { }
         }
 
         private void StartupHandler(object sender, StartupEventArgs e)
         {
             try
             {
-                this.MainWindow = new MainWindow();
-                this.MainWindow.WindowState = WindowState.Maximized;
-                this.MainWindow.Loaded += (s, evt) =>
+                this.MainWindow = new MainWindow()
                 {
-                    this.loading.EndWaiting();
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    ShowActivated = true
                 };
+                this.MainWindow.Loaded += (s, evt) => { this.loading.EndWaiting(); };
                 this.MainWindow.Show();
             }
             catch (Exception ex)

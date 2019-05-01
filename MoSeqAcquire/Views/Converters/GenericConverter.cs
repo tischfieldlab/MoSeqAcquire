@@ -21,9 +21,14 @@ namespace MoSeqAcquire.Views.Converters
 
         protected object Convert(object value, Type targetType)
         {
-            if (Nullable.GetUnderlyingType(targetType) != null)
+            var underlyingType = Nullable.GetUnderlyingType(targetType);
+            if (underlyingType != null)
             {
-                return System.Convert.ChangeType(value, Nullable.GetUnderlyingType(targetType));
+                targetType = underlyingType;
+            }
+            if (targetType.IsValueType && value == null)
+            {
+                value = Activator.CreateInstance(targetType);
             }
             return System.Convert.ChangeType(value, targetType);
         }

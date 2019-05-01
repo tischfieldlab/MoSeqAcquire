@@ -7,6 +7,7 @@ using System.Windows.Data;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -83,6 +84,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.AvailableChannels = new ReadOnlyObservableCollection<SelectableChannelViewModel>(this.availableChannels);
             this.Root
                 .MediaSources
+                .Items
                 .SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)))
                 .ForEach(scvm => this.availableChannels.Add(scvm));
 

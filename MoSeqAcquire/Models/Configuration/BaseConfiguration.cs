@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Core;
+using MoSeqAcquire.ViewModels;
 
 namespace MoSeqAcquire.Models.Configuration
 {
@@ -119,15 +120,7 @@ namespace MoSeqAcquire.Models.Configuration
                     }
                     else
                     {
-                        if (prop.PropertyType.Equals(typeof(TimeSpan)))
-                        {
-                            prop.SetValue(this, TimeSpan.Parse((string)snapshot[key].Value));
-                        }
-                        else
-                        {
-                            prop.SetValue(this, snapshot[key].Value);
-                        }
-                        
+                        prop.SetValue(this, snapshot[key].Value);
                     }
                 }
                 else

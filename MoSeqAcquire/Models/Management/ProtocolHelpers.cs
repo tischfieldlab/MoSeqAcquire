@@ -53,7 +53,7 @@ namespace MoSeqAcquire.Models.Management
         #region TriggerProviders
         public static IEnumerable<Type> FindTriggerTypes()
         {
-            return ExtractPluginsImplementing<Trigger>(Properties.Settings.Default.PluginPaths);
+            return ExtractPluginsImplementing<Trigger>(new StringCollection());
         }
         public static IEnumerable<ComponentSpecification> FindTriggerActions()
         {
@@ -72,6 +72,14 @@ namespace MoSeqAcquire.Models.Management
             if (UseCache && __pluginTypeCache.ContainsKey(typeof(T)))
             {
                 return __pluginTypeCache[typeof(T)];
+            }
+            if (UseCache && __pluginTypeCache.Keys.Any(t => t.IsAssignableFrom(typeof(T))))
+            {
+                //looks like we may have the types but stored under a more abstract type
+                return __pluginTypeCache.Keys
+                                        .Where(t => t.IsAssignableFrom(typeof(T)))
+                                        .SelectMany(t => __pluginTypeCache[t])
+                                        .ToList();
             }
             else
             {
@@ -132,7 +140,10 @@ namespace MoSeqAcquire.Models.Management
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));
                         }
-                        catch { }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine($" -> Error Loading assembly \"{file.FullName}\"...");
+                        }
                     }
                 }
             }

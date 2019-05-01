@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.Controls.ConfirmDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MoSeqAcquire.Views.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             >
+    <StackPanel Margin="16">
+        <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}"
+                   Margin="0,0,0,16"
+                   Text="{Binding Path=Title}" />
+
+        <TextBlock TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   MaxWidth="250"
+                   Text="{Binding Path=Message}" />
+
+        <StackPanel Margin="0,16,0,0" HorizontalAlignment="Center" Orientation="Horizontal">
+
+            <Button Margin="16,0"
+                    Style="{StaticResource MaterialDesignFlatButton}"   
+                    IsDefault="True"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    HorizontalAlignment="Center" 
+                    Content="YES" >
+                <Button.CommandParameter>
+                    <system:Boolean>True</system:Boolean>
+                </Button.CommandParameter>
+            </Button>
+
+            <Button Margin="16,0"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    IsCancel="True"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    HorizontalAlignment="Center"
+                    Content="NO">
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+            </Button>
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>

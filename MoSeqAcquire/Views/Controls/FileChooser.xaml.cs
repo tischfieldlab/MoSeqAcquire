@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -18,7 +20,7 @@ namespace MoSeqAcquire.Views.Controls
     /// <summary>
     /// Interaction logic for FileChooser.xaml
     /// </summary>
-    public partial class FileChooser : UserControl
+    public partial class FileChooser : UserControl, INotifyDataErrorInfo
     {
         public enum PickerTypes
         {
@@ -27,7 +29,7 @@ namespace MoSeqAcquire.Views.Controls
 
 
         public static readonly DependencyProperty PickerTypeProperty = DependencyProperty.Register("PickerType", typeof(PickerTypes), typeof(FileChooser), new PropertyMetadata(PickerTypes.Load, new PropertyChangedCallback(TypeChangedCallBack)));
-        public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register("SelectedPath", typeof(String), typeof(FileChooser), new FrameworkPropertyMetadata(String.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register("SelectedPath", typeof(String), typeof(FileChooser), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(ValidatePropertyWhenChangedCallback)));
         public static readonly DependencyProperty MultiselectProperty = DependencyProperty.Register("Multiselect", typeof(Boolean), typeof(FileChooser), new PropertyMetadata(false));
         public static readonly DependencyProperty FileExtensionProperty = DependencyProperty.Register("FileExtension", typeof(String), typeof(FileChooser), new PropertyMetadata("*"));
         public static readonly DependencyProperty FileDescriptionProperty = DependencyProperty.Register("FileDescription", typeof(String), typeof(FileChooser), new PropertyMetadata("All Files"));
@@ -39,6 +41,7 @@ namespace MoSeqAcquire.Views.Controls
         {
             InitializeComponent();
             this.UpdateButtonIcon();
+            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null));
         }
         public PickerTypes PickerType
         {
@@ -191,6 +194,45 @@ namespace MoSeqAcquire.Views.Controls
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 this.SelectedPath = files.FirstOrDefault();
             }
+        }
+
+
+
+
+
+
+        public delegate void ErrorsChangedEventHandler(object sender, DataErrorsChangedEventArgs e);
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        public bool HasErrors
+        {
+            get
+            {
+                var validationErrors = Validation.GetErrors(this);
+                return validationErrors.Any();
+            }
+        }
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            var validationErrors = Validation.GetErrors(this);
+            var specificValidationErrors =
+                validationErrors.Where(
+                    error => ((BindingExpression)error.BindingInError).TargetProperty.Name == propertyName).ToList();
+            var specificValidationErrorMessages = specificValidationErrors.Select(valError => valError.ErrorContent);
+            return specificValidationErrorMessages;
+        }
+
+        public void NotifyErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            
+        }
+
+        protected static void ValidatePropertyWhenChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            ((FileChooser)dependencyObject).NotifyErrorsChanged(dependencyPropertyChangedEventArgs.Property.Name);
         }
     }
 }

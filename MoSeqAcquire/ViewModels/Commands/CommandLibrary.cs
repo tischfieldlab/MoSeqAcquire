@@ -17,7 +17,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             this.RegisterCommand<OpenThemeDialogCommand>();
             this.RegisterCommand<ShowPerformanceMonitorCommand>();
-
+            
             this.RegisterCommand<AddRecorderCommand>();
             this.RegisterCommand<EditRecorderCommand>();
             this.RegisterCommand<RemoveRecorderCommand>();
@@ -32,13 +32,19 @@ namespace MoSeqAcquire.ViewModels.Commands
             this.RegisterCommand<LoadProtocolCommand>();
             this.RegisterCommand<SaveProtocolCommand>();
             this.RegisterCommand<UnloadProtocolCommand>();
+            this.RegisterCommand<ToggleProtocolLockCommand>();
 
             this.RegisterCommand<AddMediaSourceCommand>();
             this.RegisterCommand<RemoveMediaSourceCommand>();
-
-            this.RegisterCommand<ToggleProtocolLockCommand>();
-            this.RegisterCommand<ToggleOpenMediaSourceConfigCommand>();
+            this.RegisterCommand<OpenMediaSourceConfigCommand>();
             this.RegisterCommand<ToggleChannelEnabledCommand>();
+
+            this.RegisterCommand<AddMetadataItemCommand>();
+            this.RegisterCommand<EditMetadataItemCommand>();
+            this.RegisterCommand<RemoveMetadataItemCommand>();
+            this.RegisterCommand<ShowMetadataDefinitionWindowCommand>();
+            this.RegisterCommand<CloseMetadataItemDefinitionEditorCommand>();
+            this.RegisterCommand<ResetMetadataItemValuesCommand>();
         }
 
         public OpenThemeDialogCommand OpenThemeDialog { get => this.GetCommand<OpenThemeDialogCommand>(); }
@@ -62,8 +68,14 @@ namespace MoSeqAcquire.ViewModels.Commands
         public RemoveMediaSourceCommand RemoveMediaSource { get => this.GetCommand<RemoveMediaSourceCommand>(); }
 
         public ToggleProtocolLockCommand ToggleProtocolLock { get => this.GetCommand<ToggleProtocolLockCommand>(); }
-        public ToggleOpenMediaSourceConfigCommand ToggleOpenMediaSourceConfig { get => this.GetCommand<ToggleOpenMediaSourceConfigCommand>(); }
+        public OpenMediaSourceConfigCommand ToggleOpenMediaSourceConfig { get => this.GetCommand<OpenMediaSourceConfigCommand>(); }
         public ToggleChannelEnabledCommand ToggleChannelEnabled { get => this.GetCommand<ToggleChannelEnabledCommand>(); }
 
+        public AddMetadataItemCommand AddMetadataItem { get => this.GetCommand<AddMetadataItemCommand>(); }
+        public EditMetadataItemCommand EditMetadataItem { get => this.GetCommand<EditMetadataItemCommand>(); }
+        public RemoveMetadataItemCommand RemoveMetadataItem { get => this.GetCommand<RemoveMetadataItemCommand>(); }
+        public ShowMetadataDefinitionWindowCommand ShowMetadataDefinitionWindow { get => this.GetCommand<ShowMetadataDefinitionWindowCommand>(); }
+        public CloseMetadataItemDefinitionEditorCommand CloseMetadataItemDefinitionEditor { get => this.GetCommand<CloseMetadataItemDefinitionEditorCommand>(); }
+        public ResetMetadataItemValuesCommand ResetMetadataItemValues { get => this.GetCommand<ResetMetadataItemValuesCommand>(); }
     }
 }

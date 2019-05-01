@@ -24,7 +24,14 @@ namespace MoSeqAcquire.Views.Controls
         }
         private static void selectedObjectChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as PropertyView).ItemsGrid.ItemsSource = new PropertyCollection(e.NewValue);
+            var propView = d as PropertyView;
+            propView.ItemsGrid.ItemsSource = new PropertyCollection(e.NewValue);
+
+            foreach (var col in (propView.ItemsGrid.View as GridView).Columns)
+            {
+                if (double.IsNaN(col.Width)) col.Width = col.ActualWidth;
+                col.Width = double.NaN;
+            }
         }
 
     }

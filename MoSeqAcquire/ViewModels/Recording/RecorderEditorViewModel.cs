@@ -13,6 +13,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 {
     public class RecorderEditorViewModel : BaseViewModel
     {
+        protected bool isNewRecorder;
         protected int currentStep;
         protected MoSeqAcquireViewModel rootViewModel;
         protected RecorderViewModel recorderViewModel;
@@ -29,10 +30,12 @@ namespace MoSeqAcquire.ViewModels.Recording
             {
                 this.RecorderViewModel = recorderViewModel;
                 this.CurrentStep = 1;
+                this.IsNewRecorder = false;
             }
             else
             {
                 this.CurrentStep = 0;
+                this.IsNewRecorder = true;
             }
         }
         public string Header
@@ -53,6 +56,11 @@ namespace MoSeqAcquire.ViewModels.Recording
                 }
                 return "Continue";
             }
+        }
+        public bool IsNewRecorder
+        {
+            get => this.isNewRecorder;
+            set => this.SetField(ref this.isNewRecorder, value);
         }
         public int CurrentStep
         {

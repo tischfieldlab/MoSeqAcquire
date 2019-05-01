@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.Metadata.MetadataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="ControlTemplates.xaml" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="16">
+            <DockPanel >
+                <Button DockPanel.Dock="Right" 
+                        Command="{Binding Path=DataContext.Commands.AddMetadataItem, RelativeSource={RelativeSource AncestorType=Window}}"
+                        ToolTip="Add Metadata Item">
+                    <materialDesign:PackIcon Kind="Plus" />
+                </Button>
+                <TextBlock Text="Metadata Template Items" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"  />
+            </DockPanel>
+        </materialDesign:ColorZone>
+        <ListView Grid.Row="1"
+              HorizontalContentAlignment="Stretch"
+              ItemsSource="{Binding Path=Items}"
+              SelectedItem="{Binding Path=CurrentItem}"
+              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+              materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+            <!--<ListView.Style>
+                <Style TargetType="ListView">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
+                                                No metadata items have been added yet. Would you like to 
+                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddMetadataItem, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}">
+                                                    add one
+                                                </Hyperlink>?
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Style>-->
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Actions">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0">
+                                    <Button Height="24" Width="24" Margin="0,0,8,0"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.Commands.EditMetadataItem}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                ToolTip="Edit Item Details">
+                                        <materialDesign:PackIcon Kind="Pencil"  />
+                                    </Button>
+                                    <Button Height="24" Width="24" Margin="0,0,8,0"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.Commands.RemoveMetadataItem}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                ToolTip="Remove Item">
+                                        <materialDesign:PackIcon Kind="Delete"  />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Property Name" DisplayMemberBinding="{Binding Path=Name}" />
+                    <GridViewColumn Header="Data Type" DisplayMemberBinding="{Binding Path=ValueType.Name}" />
+                    <GridViewColumn Header="Default Value" DisplayMemberBinding="{Binding Path=DefaultValue}" />
+                    <GridViewColumn Header="Units" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding Path=Units}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Units.Length, FallbackValue=0, TargetNullValue=0}" Value="0">
+                                                    <Setter Property="Text" Value="none" />
+                                                    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBodyLight}" />
+                                                    <Setter Property="FontStyle" Value="Italic" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

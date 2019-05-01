@@ -7,9 +7,13 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mvmr="clr-namespace:MoSeqAcquire.ViewModels.Recording"
              xmlns:mvm="clr-namespace:MoSeqAcquire.ViewModels"
+             xmlns:mediaSources="clr-namespace:MoSeqAcquire.ViewModels.MediaSources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <GroupBox Header="{Binding}" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16,8" >
+        <Validation.ErrorTemplate>
+            <ControlTemplate />
+        </Validation.ErrorTemplate>
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <DockPanel>
@@ -34,7 +38,8 @@
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
                                                 No recorders have been added yet. Would you like to 
-                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                     add one
                                                 </Hyperlink>?
                                             </TextBlock>
@@ -56,10 +61,10 @@
                             <Expander.Header>
                                 <DockPanel HorizontalAlignment="Stretch">
                                     <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="0,0,8,0"
-                                                            Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                                            CommandParameter="{Binding}"
-                                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                                            ToolTip="Remove Recorder">
+                                            Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                            ToolTip="Remove Recorder">
                                         <materialDesign:PackIcon Kind="Close"  />
                                     </Button>
                                     <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
@@ -103,7 +108,7 @@
                                                     </Style>
                                                 </ItemsControl.Style>
                                                 <ItemsControl.ItemTemplate>
-                                                    <DataTemplate DataType="{x:Type mvm:ChannelViewModel}">
+                                                    <DataTemplate DataType="{x:Type mediaSources:ChannelViewModel}">
                                                         <StackPanel Orientation="Horizontal" Margin="48,0,0,0">
                                                             <materialDesign:PackIcon Kind="SubdirectoryArrowRight" />
                                                             <TextBlock Text="{Binding Path=FullName}" Foreground="{DynamicResource MaterialDesignBodyLight}" />

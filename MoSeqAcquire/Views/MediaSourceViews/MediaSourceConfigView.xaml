@@ -1,0 +1,61 @@
+﻿<Window x:Class="MoSeqAcquire.Views.MediaSourceConfigView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MoSeqAcquire.Views"
+        xmlns:mvmr="clr-namespace:MoSeqAcquire.ViewModels.Recording"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:ctrl="clr-namespace:MoSeqAcquire.Views.Controls"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:swd="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
+        xmlns:ext="clr-namespace:MoSeqAcquire.Views.Extensions"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Edit Media Source Configuration" Height="450" Width="800">
+    <Window.Resources>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2" Mode="PrimaryDark" Padding="16">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button Width="72" Height="48" Margin="8,0,8,0"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                    Command="{Binding Path=CancelCommand}"
+                                    ToolTip="Cancel">
+
+                        <materialDesign:PackIcon Kind="Close" Width="36" Height="36" />
+                    </Button>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Cogs" 
+                                             Width="36" Height="36" 
+                                             VerticalAlignment="Center" 
+                                             Margin="0,0,16,0" />
+
+                    <TextBlock VerticalAlignment="Center" 
+                               Text="Configure " 
+                               Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+
+                    <TextBlock VerticalAlignment="Center" 
+                               Text="{Binding Path=MediaSource.Name}" 
+                               Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                </StackPanel>
+            </DockPanel>
+        </materialDesign:ColorZone>
+
+        <ctrl:PropertyView SelectedObject="{Binding Path=Config}" Grid.Row="1" />
+    </Grid>
+</Window>

@@ -48,6 +48,9 @@
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
     </Reference>
+    <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.2.0.1\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -112,7 +115,7 @@
     <Compile Include="Models\Core\Component.cs" />
     <Compile Include="Models\Core\ComponentSpecification.cs" />
     <Compile Include="Models\Management\ProtocolTriggerCollection.cs" />
-    <Compile Include="Models\Metadata\RecordingMetadata.cs" />
+    <Compile Include="Models\Metadata\RecordingMetadataSnapshot.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />
     <Compile Include="Models\Recording\MediaWriterPin.cs" />
@@ -156,11 +159,18 @@
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\Commands\ResetMetadataItemValuesCommand.cs" />
+    <Compile Include="ViewModels\Commands\CloseMetadataItemDefinitionEditorCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddMetadataItemCommand.cs" />
+    <Compile Include="ViewModels\Commands\RemoveMetadataItemCommand.cs" />
+    <Compile Include="ViewModels\Commands\EditMetadataItemCommand.cs" />
+    <Compile Include="ViewModels\Commands\ShowMetadataDefinitionWindowCommand.cs" />
     <Compile Include="ViewModels\Commands\UnloadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenMediaSourceConfigCommand.cs" />
     <Compile Include="ViewModels\Commands\ToggleChannelEnabledCommand.cs" />
     <Compile Include="ViewModels\Commands\ToggleProtocolLockCommand.cs" />
     <Compile Include="ViewModels\Commands\ShowPerformanceMonitorCommand.cs" />
+    <Compile Include="ViewModels\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Core\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveTriggerCommand.cs" />
@@ -173,7 +183,11 @@
     <Compile Include="ViewModels\Commands\SaveProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
-    <Compile Include="ViewModels\DataChannelViewModel.cs" />
+    <Compile Include="ViewModels\Core\SizeHelper.cs" />
+    <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
+    <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
+    <Compile Include="Models\Metadata\BaseConstraint.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorRecorderAdapter.cs" />
@@ -182,30 +196,47 @@
     <Compile Include="ViewModels\Performance\PerformanceMonitorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderProduct.cs" />
     <Compile Include="ViewModels\Recording\SelectableChannelViewModel.cs" />
+    <Compile Include="ViewModels\TaskbarItemInfoViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
+    <Compile Include="Views\Behaviors\SetPropertyAction.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml.cs">
+    <Compile Include="Models\Metadata\ChoicesConstraint.cs" />
+    <Compile Include="Views\Controls\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
+    <Compile Include="Views\Converters\MathConverter.cs" />
+    <Compile Include="Views\Converters\PackIconImageSourceConverter.cs" />
+    <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
+      <DependentUpon>MediaSourceConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MetadataViews\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataCollection.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataItem.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataItemEditorDataTemplateSelector.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataItemDataTemplateSelector.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\MetadataGrid.xaml.cs">
+    <Compile Include="Models\Metadata\MetadataDefinitionCollection.cs" />
+    <Compile Include="Models\Metadata\MetadataItemDefinition.cs" />
+    <Compile Include="Views\MetadataViews\ChoicesConstraintEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\MetadataViews\MetadataEditorWindow.xaml.cs">
+      <DependentUpon>MetadataEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MetadataViews\MetadataList.xaml.cs">
+      <DependentUpon>MetadataList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MetadataViews\MetadataItemEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\MetadataViews\MetadataItemDataTemplateSelector.cs" />
+    <Compile Include="Views\MetadataViews\MetadataGrid.xaml.cs">
       <DependentUpon>MetadataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataView.xaml.cs">
-      <DependentUpon>MetadataView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\MetadataEditor\MetadataViewModel.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\Rules\BaseRule.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\Rules\RangeRule.cs" />
-    <Compile Include="Views\Controls\MetadataEditor\Rules\RequiredRule.cs" />
+    <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
+    <Compile Include="Models\Metadata\RangeConstraint.cs" />
+    <Compile Include="Views\MetadataViews\Rules\BaseRule.cs" />
+    <Compile Include="Views\MetadataViews\Rules\RangeRule.cs" />
+    <Compile Include="Views\MetadataViews\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyItem.cs" />
@@ -232,6 +263,7 @@
     </Compile>
     <Compile Include="Views\Controls\WaitingWindowManager.cs" />
     <Compile Include="Views\Converters\GenericConverter.cs" />
+    <Compile Include="Views\Converters\StringEmptyVisibilityConverter.cs" />
     <Compile Include="Views\Converters\TimeSpanFormatConverter.cs" />
     <Compile Include="Views\Converters\AdditionConverter.cs" />
     <Compile Include="Views\Converters\BooleanInvertConverter.cs" />
@@ -278,7 +310,7 @@
     <Compile Include="Models\Management\Protocol.cs" />
     <Compile Include="Models\Performance\FrameRateCounter.cs" />
     <Compile Include="Models\Core\ObservableObject.cs" />
-    <Compile Include="ViewModels\AudioChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\Commands\BaseCommandLibrary.cs" />
     <Compile Include="ViewModels\Commands\StartRecordingCommand.cs" />
     <Compile Include="ViewModels\Commands\EditRecorderCommand.cs" />
@@ -287,12 +319,12 @@
     <Compile Include="ViewModels\Commands\CommandLibrary.cs" />
     <Compile Include="ViewModels\Recording\RecordingManagerViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderViewModel.cs" />
-    <Compile Include="ViewModels\VideoChannelViewModel.cs" />
-    <Compile Include="ViewModels\ChannelViewModel.cs" />
-    <Compile Include="ViewModels\MediaSourceViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\VideoChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\ChannelViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\MediaSourceViewModel.cs" />
     <Compile Include="ViewModels\MoSeqAcquireViewModel.cs" />
     <Compile Include="Views\Controls\AudioSpectrum.cs" />
-    <Compile Include="Views\ChannelView.xaml.cs">
+    <Compile Include="Views\MediaSourceViews\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RecorderViews\RecorderGeneralSettings.xaml.cs">
@@ -313,12 +345,12 @@
     <Compile Include="Views\SystemInfo\SystemInfoView.xaml.cs">
       <DependentUpon>SystemInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DirectoryTreeView.xaml.cs">
+    <Compile Include="Views\Controls\DirectoryTreeView.xaml.cs">
       <DependentUpon>DirectoryTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Extensions\BindingProxy.cs" />
     <Compile Include="Views\Extensions\EnumerationExtension.cs" />
-    <Compile Include="Views\NewMediaSourceDialog.xaml.cs">
+    <Compile Include="Views\MediaSourceViews\NewMediaSourceDialog.xaml.cs">
       <DependentUpon>NewMediaSourceDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\PropertyInspector\PropertyView.xaml.cs">
@@ -329,19 +361,19 @@
     </Compile>
     <Compile Include="Views\SystemInfo\SystemMonitorItemViewModel.cs" />
     <Compile Include="Views\SystemInfo\SystemMonitorViewModel.cs" />
-    <Compile Include="Views\TriggerConfigView.xaml.cs">
+    <Compile Include="Views\TriggerViews\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TriggerManagerView.xaml.cs">
+    <Compile Include="Views\TriggerViews\TriggerManagerView.xaml.cs">
       <DependentUpon>TriggerManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecorderEditor.xaml.cs">
+    <Compile Include="Views\RecorderViews\RecorderEditor.xaml.cs">
       <DependentUpon>RecorderEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MediaSourceView.xaml.cs">
+    <Compile Include="Views\MediaSourceViews\MediaSourceView.xaml.cs">
       <DependentUpon>MediaSourceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecordingConsoleView.xaml.cs">
+    <Compile Include="Views\RecorderViews\RecordingConsoleView.xaml.cs">
       <DependentUpon>RecordingConsoleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ThemeSettingsDialog.xaml.cs">
@@ -355,23 +387,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\ConfirmDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\FileChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\MetadataEditor\ItemDefinitionEditor.xaml">
+    <Page Include="Views\MediaSourceViews\MediaSourceConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MetadataViews\ControlTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\MetadataEditor\MetadataGrid.xaml">
+    <Page Include="Views\MetadataViews\ItemDefinitionEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MetadataViews\MetadataEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MetadataViews\MetadataList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MetadataViews\MetadataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\PromptDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Controls\MetadataEditor\MetadataView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -391,7 +439,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ChannelView.xaml">
+    <Page Include="Views\MediaSourceViews\ChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -415,11 +463,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DirectoryTreeView.xaml">
+    <Page Include="Views\Controls\DirectoryTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewMediaSourceDialog.xaml">
+    <Page Include="Views\MediaSourceViews\NewMediaSourceDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -431,23 +479,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TriggerConfigView.xaml">
+    <Page Include="Views\TriggerViews\TriggerConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TriggerManagerView.xaml">
+    <Page Include="Views\TriggerViews\TriggerManagerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\RecorderEditor.xaml">
+    <Page Include="Views\RecorderViews\RecorderEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MediaSourceView.xaml">
+    <Page Include="Views\MediaSourceViews\MediaSourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RecordingConsoleView.xaml">
+    <Page Include="Views\RecorderViews\RecordingConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,12 +1,14 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.ViewModels.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using MoSeqAcquire.Models.Metadata;
 
 namespace MoSeqAcquire.Models.Management
 {
@@ -21,12 +23,13 @@ namespace MoSeqAcquire.Models.Management
             this.Sources = new ProtocolSourceCollection();
             this.Recordings = new ProtocolRecordingsSetup();
             this.Triggers = new ProtocolTriggerCollection();
+            this.Metadata = new MetadataDefinitionCollection();
         }
         public Protocol(String Name) : this()
         {
             this.Name = Name;
         }
-        [XmlIgnore]
+        [XmlAttribute]
         public string Name { get; set; }
 
 
@@ -34,6 +37,7 @@ namespace MoSeqAcquire.Models.Management
         public ProtocolSourceCollection Sources { get; set; }
         public ProtocolRecordingsSetup Recordings { get; set; }
         public ProtocolTriggerCollection Triggers { get; set; }
+        public MetadataDefinitionCollection Metadata { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -48,6 +52,8 @@ namespace MoSeqAcquire.Models.Management
             if (!this.Recordings.Equals(pcol.Recordings))
                 return false;
             if (!this.Triggers.SequenceEqual(pcol.Triggers))
+                return false;
+            if (!this.Metadata.SequenceEqual(pcol.Metadata))
                 return false;
             return true;
         }

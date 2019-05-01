@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.ChannelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MoSeqAcquire.Views"
+             xmlns:views="clr-namespace:MoSeqAcquire.Views"
+             xmlns:vm="clr-namespace:MoSeqAcquire.ViewModels"
+             xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mediaSources="clr-namespace:MoSeqAcquire.ViewModels.MediaSources"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="250">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <DataTemplate DataType="{x:Type mediaSources:VideoChannelViewModel}">
+            <Grid Background="DarkGray">
+                <Image Source="{Binding Path=Stream}" Stretch="Fill"  />
+                <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.5" X2="0.5" Y1="0.0" Y2="1.0" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.0" X2="1.0" Y1="0.5" Y2="0.5" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type mediaSources:DataChannelViewModel}">
+            <Grid Background="DarkGray">
+                <Image Source="{Binding Path=Stream}" Stretch="Fill"  />
+                <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.5" X2="0.5" Y1="0.0" Y2="1.0" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.0" X2="1.0" Y1="0.5" Y2="0.5" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type mediaSources:AudioChannelViewModel}">
+            <controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" Margin="10" />
+            <!--<Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" MaxWidth="400" MaxHeight="100" Margin="10"  />
+            <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="400" MaxHeight="100" Margin="10"  />-->
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <md:Card Margin="5">
+        <StackPanel>
+            <DockPanel Margin="8">
+                <ToggleButton DockPanel.Dock="Right" 
+                              IsChecked="{Binding Path=Enabled, Mode=OneWay}" 
+                              Command="{Binding Path=DataContext.Commands.ToggleChannelEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MainWindow}}}" 
+                              CommandParameter="{Binding}" />
+                <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <ContentPresenter Content="{Binding}" Width="{Binding Path=DisplaySize.Width}" Height="{Binding Path=DisplaySize.Height}">
+                <ContentPresenter.ContextMenu>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget.Content, RelativeSource={RelativeSource Self}}" >
+                        <MenuItem Header="Show Crosshairs" IsCheckable="True" IsChecked="{Binding Path=ShowCrosshairs}" />
+                    </ContextMenu>
+                </ContentPresenter.ContextMenu>
+            </ContentPresenter>
+
+            <DockPanel AllowDrop="False" >
+                <Grid DockPanel.Dock="Right">
+                    <Thumb Name="ResizeThumb" 
+                           HorizontalAlignment="Stretch"
+                           
+                           Style="{StaticResource MaterialDesignThumb}"
+                           DragStarted="Thumb_OnDragStarted"
+                           DragCompleted="Thumb_OnDragCompleted"
+                           DragDelta="Thumb_OnDragDelta"
+                           dd:DragDrop.IsDragSource="False"
+                           dd:DragDrop.DragSourceIgnore="True"
+                           Cursor="SizeNWSE"
+                           />
+                    <md:PackIcon Kind="ResizeBottomRight" 
+                                 Width="24" Height="24" 
+                                 Margin="0,0,3,0"
+                                 VerticalAlignment="Stretch" 
+                                 HorizontalAlignment="Stretch" >
+                        <md:PackIcon.Style>
+                            <Style TargetType="md:PackIcon">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsDragging, ElementName=ResizeThumb}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource SecondaryAccentBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </md:PackIcon.Style>
+                    </md:PackIcon>
+                </Grid>
+
+                <TextBlock Margin="8" 
+                           DockPanel.Dock="Left" 
+                           Text="{Binding Performance.FrameRate, Mode=OneWay, StringFormat=\{0:F2\} FPS}" />
+            </DockPanel>
+        </StackPanel>
+    </md:Card>
+</UserControl>

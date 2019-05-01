@@ -8,7 +8,13 @@ namespace MoSeqAcquire.ViewModels
     {
         public BaseViewModel()
         {
-            Validator = new ValidationHelper();
+            Validator = new ValidationHelper(new ValidationSettings()
+            {
+                DefaultRuleSettings = new ValidationRuleSettings()
+                {
+                    ExecuteOnAlreadyInvalidTarget = true
+                }
+            });
         }
         protected ValidationHelper Validator { get; private set; }
     }

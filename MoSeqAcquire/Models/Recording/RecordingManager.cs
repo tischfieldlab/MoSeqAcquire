@@ -6,7 +6,9 @@ using System.Text;
 using System.Timers;
 using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Triggers;
+using MoSeqAcquire.ViewModels.Metadata;
 
 namespace MoSeqAcquire.Models.Recording
 {
@@ -41,15 +43,18 @@ namespace MoSeqAcquire.Models.Recording
         protected RecordingManagerState state;
         protected string currentTask;
 
-        public event EventHandler RecordingStarted;
-        public event EventHandler RecordingFinished;
-        public event EventHandler RecordingAborted;
+        public event EventHandler BeforeStartRecording; //fires before recording has started 
+
+        public event EventHandler RecordingStarted;     //fires once recording has commenced
+        public event EventHandler RecordingFinished;    //fires once recording has finished
+        public event EventHandler RecordingAborted;     //fires 
 
         public RecordingManager(TriggerBus triggerBus)
         {
             this.triggerBus = triggerBus;
             this.writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
+            this.RecordingMetadata = new MetadataViewModel();
         }
 
         public void AddRecorder(MediaWriter Writer)
@@ -96,8 +101,8 @@ namespace MoSeqAcquire.Models.Recording
         public double? Progress { get => this.terminator?.Progress; }
         public TimeSpan? TimeRemaining { get => this.terminator?.TimeRemaining; }
         public GeneralRecordingSettings GeneralSettings { get; protected set; }
+        public MetadataViewModel RecordingMetadata { get; protected set; }
 
-        
         protected IRecordingLengthStrategy TerminatorFactory()
         {
             switch (this.GeneralSettings.RecordingMode)
@@ -135,7 +140,8 @@ namespace MoSeqAcquire.Models.Recording
         public void Start()
         {
             this.EnsureState(RecordingManagerState.Idle, "Recording Manager must be idle before starting!");
-            
+
+            this.BeforeStartRecording?.Invoke(this, new EventArgs());
 
             this.State = RecordingManagerState.Starting;
             this.abortRequested = false;
@@ -157,9 +163,9 @@ namespace MoSeqAcquire.Models.Recording
             this.TerminatorFactory().Start();
 
             this.State = RecordingManagerState.Recording;
-            this.CurrentTask = RecordingManagerTasks.RunningAfterStartTriggers;
-            this.RecordingStarted?.Invoke(this, new EventArgs());
+            this.CurrentTask = RecordingManagerTasks.RunningAfterStartTriggers; 
             this.triggerBus.Trigger(new AfterRecordingStartedTrigger());
+            this.RecordingStarted?.Invoke(this, new EventArgs());
             this.CurrentTask = RecordingManagerTasks.ActivelyRecording;
         }
         public void Stop()
@@ -184,8 +190,9 @@ namespace MoSeqAcquire.Models.Recording
 
             // run after complete triggers
             this.CurrentTask = RecordingManagerTasks.RunningAfterCompleteTriggers;
-            this.RecordingFinished?.Invoke(this, new EventArgs());
+            
             this.triggerBus.Trigger(new AfterRecordingFinishedTrigger());
+            this.RecordingFinished?.Invoke(this, new EventArgs());
 
             //set state to idle
             this.State = RecordingManagerState.Idle;
@@ -215,8 +222,8 @@ namespace MoSeqAcquire.Models.Recording
             }
 
             this.CurrentTask = RecordingManagerTasks.RunningAfterCompleteTriggers;
-            this.RecordingAborted?.Invoke(this, new EventArgs());
             this.triggerBus.Trigger(new AfterRecordingFinishedTrigger() { Aborted = true });
+            this.RecordingAborted?.Invoke(this, new EventArgs());
 
             this.State = RecordingManagerState.Idle;
             this.CurrentTask = RecordingManagerTasks.None;
@@ -229,6 +236,8 @@ namespace MoSeqAcquire.Models.Recording
             {
                 summary.Recorders.Add(writer.GetDeviceInfo());
             }
+
+            summary.Metadata = this.RecordingMetadata.Items.GetSnapshot();
             string dest = Path.Combine(this.ReplyToDestinationRequest(), "info.xml");
             RecordingInfoWriter.Write(dest, summary);
         }

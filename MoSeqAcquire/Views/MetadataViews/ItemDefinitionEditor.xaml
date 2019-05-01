@@ -1,0 +1,185 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.Metadata.ItemDefinitionEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MoSeqAcquire.Views.Controls.MetadataEditor"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
+             xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:metadata="clr-namespace:MoSeqAcquire.Models.Metadata"
+             mc:Ignorable="d" 
+        
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="ControlTemplates.xaml" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="16">
+            <DockPanel >
+                <Button DockPanel.Dock="Right" 
+                        Command="{Binding Path=DataContext.Commands.CloseMetadataItemDefinitionEditor, RelativeSource={RelativeSource AncestorType=Window}}"
+                        ToolTip="Back">
+                    <materialDesign:PackIcon Kind="Close" />
+                </Button>
+                <TextBlock Text="Property Details" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"  />
+            </DockPanel>
+        </materialDesign:ColorZone>
+        <Grid Grid.Row="1" DataContext="{Binding Path=CurrentItem}" materialDesign:ValidationAssist.Suppress="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBox Grid.Column="0" Grid.Row="0" Margin="16,8"
+                     materialDesign:HintAssist.Hint="Property Name" 
+                     materialDesign:HintAssist.IsFloating="True" 
+                     Text="{Binding Path=Name}" />
+
+            <ComboBox Grid.Column="0" Grid.Row="1" Margin="16,8"
+                      Name="propertyTypeCombobox" 
+                      materialDesign:HintAssist.Hint="Property Type" 
+                      materialDesign:HintAssist.IsFloating="True"
+                      SelectedValuePath="Type"
+                      SelectedValue="{Binding Path=ValueType}"
+                      DisplayMemberPath="Type.FullName"
+                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.AvailableTypes, Mode=OneWay}" />
+
+            <TextBox Grid.Column="1" Grid.Row="0" Margin="16,8"
+                     materialDesign:HintAssist.Hint="Units" 
+                     materialDesign:HintAssist.IsFloating="True" 
+                     Text="{Binding Path=Units}" />
+
+            <ContentPresenter Grid.Column="1" Grid.Row="1"  Margin="16,8" 
+                              Name="DefaultValue" 
+                              Content="{Binding}" 
+                              ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate />
+                </Validation.ErrorTemplate>
+            </ContentPresenter>
+
+            <GroupBox Grid.Column="0" Grid.Row="2" Margin="16" Header="{Binding}">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate />
+                </Validation.ErrorTemplate>
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="16,0,8,0"
+                                    Command="{Binding Path=AddChoice}"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                    Visibility="{Binding Path=Constraint, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static metadata:ConstraintMode.Choices}}"
+                                    ToolTip="Add Choice">
+                                
+                                <materialDesign:PackIcon Kind="Plus"  />
+                            </Button>
+                            <TextBlock DockPanel.Dock="Left" Text="Constraint:" VerticalAlignment="Center" Margin="0,0,20,0" />
+                            <ComboBox DockPanel.Dock="Left" materialDesign:HintAssist.Hint="Constraint Type" 
+                                      ItemsSource="{Binding Path=ConstraintsAllowed}"
+                                      SelectedValue="{Binding Path=Constraint}"  />
+                        </DockPanel>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <GroupBox.Resources>
+                    <DataTemplate x:Key="choicesTemplate">
+                        <DockPanel>
+                            <ListView materialDesign:ValidationAssist.Suppress="True" HorizontalContentAlignment="Stretch" Margin="-8" BorderThickness="0" ItemsSource="{Binding Path=ConstraintImplementation.Choices}">
+                                <ListView.Style>
+                                    <Style TargetType="ListView">
+                                        <Style.Triggers>
+                                            <Trigger Property="HasItems" Value="False">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <Grid HorizontalAlignment="Center">
+                                                                <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
+                                                                    0 options. 
+                                                                    <Hyperlink Command="{Binding Path=AddChoice}">
+                                                                        Add one?
+                                                                    </Hyperlink>
+                                                                </TextBlock>
+                                                            </Grid>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListView.Style>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel HorizontalAlignment="Stretch">
+                                            <Button DockPanel.Dock="Left" Height="24" Width="24" Margin="0,0,8,0"
+                                                    Command="{Binding Path=DataContext.RemoveChoice, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                    CommandParameter="{Binding Path=.}"
+                                                    Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                    ToolTip="Edit Item Details">
+                                                <materialDesign:PackIcon Kind="Close"  />
+                                            </Button>
+                                            <ContentPresenter Name="Choice"  HorizontalAlignment="Stretch" Content="{Binding}" ContentTemplateSelector="{StaticResource ChoicesConstraintEditorDataTemplateSelector}" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            
+                        </DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="rangeTemplate">
+                        <StackPanel>
+                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"
+                                               materialDesign:HintAssist.IsFloating="True"
+                                               Margin="16,8"
+                                               Value="{Binding Path=ConstraintImplementation.MinValue}" />
+                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Maximum"
+                                               materialDesign:HintAssist.IsFloating="True"
+                                               Margin="16,8"
+                                               Value="{Binding Path=ConstraintImplementation.MaxValue}" />
+                            <!--<TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MinValue}" />
+                            <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MaxValue}" />-->
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="noConstraintTemplate">
+                        <TextBlock Text="No constraint selected." VerticalAlignment="Center" HorizontalAlignment="Center" FontStyle="Italic" />
+                    </DataTemplate>
+                </GroupBox.Resources>
+                <ContentControl Content="{Binding}">
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate />
+                    </Validation.ErrorTemplate>
+                    <ContentControl.Style>
+                        <Style TargetType="{x:Type ContentControl}">
+                            <Setter Property="ContentTemplate" Value="{StaticResource noConstraintTemplate}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Constraint}" Value="Choices">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource choicesTemplate}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Constraint}" Value="Range">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource rangeTemplate}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </GroupBox>
+            <GroupBox Header="Validation" Grid.Column="1" Grid.Row="2" Margin="16">
+                <StackPanel>
+                    <WrapPanel>
+                        <CheckBox />
+                        <TextBlock>Required</TextBlock>
+                    </WrapPanel>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>

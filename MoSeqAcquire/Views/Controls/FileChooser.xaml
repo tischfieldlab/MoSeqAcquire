@@ -4,13 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls">
     <UserControl.Resources>
         <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     </UserControl.Resources>
+    <Validation.ErrorTemplate>
+        <ControlTemplate />
+    </Validation.ErrorTemplate>
     <Grid>
-        <TextBox Name="PathText" Text="{Binding Path=SelectedPath, ElementName=RootFC, Mode=TwoWay}" IsReadOnly="{Binding Path=ForcePickerUse, ElementName=RootFC, Mode=OneWay}" AllowDrop="True" Drop="PathText_Drop" MouseDoubleClick="ButtonClicked" HorizontalAlignment="Stretch" />
-        <Button Name="SelectButton" Padding="0" Width="24" Height="24" Click="ButtonClicked" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{DynamicResource MaterialDesignToolForegroundButton}">
+
+        <TextBox Name="PathText" 
+                 AllowDrop="True" 
+                 Drop="PathText_Drop" 
+                 MouseDoubleClick="ButtonClicked" 
+                 HorizontalAlignment="Stretch" >
+            <TextBox.Text>
+                <Binding Path="SelectedPath"
+                         RelativeSource="{RelativeSource AncestorType={x:Type controls:FileChooser}}"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnNotifyDataErrors="True" />
+            </TextBox.Text>
+            <TextBox.IsReadOnly>
+                <Binding Path="ForcePickerUse"
+                         RelativeSource="{RelativeSource AncestorType={x:Type controls:FileChooser}}"
+                         Mode="OneWay" />
+            </TextBox.IsReadOnly>
+        </TextBox>
+        <Button Name="SelectButton" 
+                Padding="0" 
+                Width="24" Height="24" 
+                Click="ButtonClicked" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" 
+                Style="{DynamicResource MaterialDesignToolForegroundButton}">
             <materialDesign:PackIcon Name="ButtonImage" Width="24" Height="24"  />
         </Button>
     </Grid>
