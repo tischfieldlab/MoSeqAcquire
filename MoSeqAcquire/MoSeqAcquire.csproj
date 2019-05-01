@@ -210,6 +210,7 @@
     </Compile>
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
     <Compile Include="Views\Converters\MathConverter.cs" />
+    <Compile Include="Views\Converters\PackIconImageSourceConverter.cs" />
     <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
       <DependentUpon>MediaSourceConfigView.xaml</DependentUpon>
     </Compile>
