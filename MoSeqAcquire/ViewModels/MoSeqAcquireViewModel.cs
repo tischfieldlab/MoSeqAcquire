@@ -33,18 +33,16 @@ namespace MoSeqAcquire.ViewModels
             App.SetCurrentStatus("Loading Theme....");
             this.Theme = new ThemeViewModel();
             App.SetCurrentStatus("Loading Components...");
-            ProtocolHelpers.FindComponents();
-            App.SetCurrentStatus("Initializing Trigger Bus....");
-            this.TriggerBus = new TriggerBus();
-            App.SetCurrentStatus("Loading Media Sources....");
-            this.MediaSources = new MediaSourceCollectionViewModel();
-            App.SetCurrentStatus("Loading Recording Console....");
-            this.Recorder = new RecordingManagerViewModel(this);
-            App.SetCurrentStatus("Loading Triggers....");
-            this.Triggers = new TriggerManagerViewModel(this);
+            ProtocolHelpers.FindComponents(); //preload assemblies here...
 
-            App.SetCurrentStatus("Initializing Commands....");
+            App.SetCurrentStatus("Initializing Views....");
+            this.TriggerBus = new TriggerBus();
+            this.MediaSources = new MediaSourceCollectionViewModel();
+            this.Recorder = new RecordingManagerViewModel(this);
+            this.Triggers = new TriggerManagerViewModel(this);
             this.Commands = new CommandLibrary(this);
+            this.TaskbarItemInfo = new TaskbarItemInfoViewModel(this);
+
             App.SetCurrentStatus("Loading default protocol....");
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
         }
@@ -72,7 +70,7 @@ namespace MoSeqAcquire.ViewModels
             Settings.Default.RecentProtocols.AddRange(this.RecentlyUsedProtocols.ToArray());
             Settings.Default.Save();
         }
-
+        public TaskbarItemInfoViewModel TaskbarItemInfo { get; protected set; }
         public CommandLibrary Commands { get; protected set; }
         public ThemeViewModel Theme { get; protected set; }
         public TriggerBus TriggerBus { get; protected set; }

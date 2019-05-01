@@ -24,13 +24,13 @@ namespace MoSeqAcquire.ViewModels.Commands
             set { this.viewModel = value; }
         }
 
-        /*protected void RegisterInputGesture(KeyGesture Gesture)
+        protected void RegisterInputGesture(KeyGesture Gesture)
         {
-           this.viewModel.InputBindings.Add(new KeyBinding(this, Gesture));
+            Application.Current.MainWindow.InputBindings.Add(new KeyBinding(this, Gesture));
         }
         protected void RegisterRoutedCommand(ICommand Command)
         {
-            this.viewModel.CommandBindings.Add(new CommandBinding(Command,
+            Application.Current.MainWindow.CommandBindings.Add(new CommandBinding(Command,
                 (s, e) => {
                     this.Execute(e.Parameter);
                 },
@@ -38,7 +38,7 @@ namespace MoSeqAcquire.ViewModels.Commands
                     e.CanExecute = this.CanExecute(e.Parameter);
                 }
             ));
-        }*/
+        }
 
 
 

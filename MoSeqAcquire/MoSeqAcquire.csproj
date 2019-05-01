@@ -196,6 +196,7 @@
     <Compile Include="ViewModels\Performance\PerformanceMonitorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderProduct.cs" />
     <Compile Include="ViewModels\Recording\SelectableChannelViewModel.cs" />
+    <Compile Include="ViewModels\TaskbarItemInfoViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
@@ -214,28 +215,28 @@
     <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
       <DependentUpon>MediaSourceConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Metadata\ItemDefinitionEditor.xaml.cs">
+    <Compile Include="Views\MetadataViews\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Metadata\MetadataDefinitionCollection.cs" />
     <Compile Include="Models\Metadata\MetadataItemDefinition.cs" />
-    <Compile Include="Views\Metadata\ChoicesConstraintEditorDataTemplateSelector.cs" />
-    <Compile Include="Views\Metadata\MetadataEditorWindow.xaml.cs">
+    <Compile Include="Views\MetadataViews\ChoicesConstraintEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\MetadataViews\MetadataEditorWindow.xaml.cs">
       <DependentUpon>MetadataEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Metadata\MetadataList.xaml.cs">
+    <Compile Include="Views\MetadataViews\MetadataList.xaml.cs">
       <DependentUpon>MetadataList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Metadata\MetadataItemEditorDataTemplateSelector.cs" />
-    <Compile Include="Views\Metadata\MetadataItemDataTemplateSelector.cs" />
-    <Compile Include="Views\Metadata\MetadataGrid.xaml.cs">
+    <Compile Include="Views\MetadataViews\MetadataItemEditorDataTemplateSelector.cs" />
+    <Compile Include="Views\MetadataViews\MetadataItemDataTemplateSelector.cs" />
+    <Compile Include="Views\MetadataViews\MetadataGrid.xaml.cs">
       <DependentUpon>MetadataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
     <Compile Include="Models\Metadata\RangeConstraint.cs" />
-    <Compile Include="Views\Metadata\Rules\BaseRule.cs" />
-    <Compile Include="Views\Metadata\Rules\RangeRule.cs" />
-    <Compile Include="Views\Metadata\Rules\RequiredRule.cs" />
+    <Compile Include="Views\MetadataViews\Rules\BaseRule.cs" />
+    <Compile Include="Views\MetadataViews\Rules\RangeRule.cs" />
+    <Compile Include="Views\MetadataViews\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyItem.cs" />
@@ -344,7 +345,7 @@
     <Compile Include="Views\SystemInfo\SystemInfoView.xaml.cs">
       <DependentUpon>SystemInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DirectoryTreeView.xaml.cs">
+    <Compile Include="Views\Controls\DirectoryTreeView.xaml.cs">
       <DependentUpon>DirectoryTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Extensions\BindingProxy.cs" />
@@ -360,10 +361,10 @@
     </Compile>
     <Compile Include="Views\SystemInfo\SystemMonitorItemViewModel.cs" />
     <Compile Include="Views\SystemInfo\SystemMonitorViewModel.cs" />
-    <Compile Include="Views\TriggerConfigView.xaml.cs">
+    <Compile Include="Views\TriggerViews\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TriggerManagerView.xaml.cs">
+    <Compile Include="Views\TriggerViews\TriggerManagerView.xaml.cs">
       <DependentUpon>TriggerManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RecorderViews\RecorderEditor.xaml.cs">
@@ -398,23 +399,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Metadata\ControlTemplates.xaml">
+    <Page Include="Views\MetadataViews\ControlTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Metadata\ItemDefinitionEditor.xaml">
+    <Page Include="Views\MetadataViews\ItemDefinitionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Metadata\MetadataEditorWindow.xaml">
+    <Page Include="Views\MetadataViews\MetadataEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Metadata\MetadataList.xaml">
+    <Page Include="Views\MetadataViews\MetadataList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Metadata\MetadataGrid.xaml">
+    <Page Include="Views\MetadataViews\MetadataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -462,7 +463,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DirectoryTreeView.xaml">
+    <Page Include="Views\Controls\DirectoryTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -478,11 +479,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TriggerConfigView.xaml">
+    <Page Include="Views\TriggerViews\TriggerConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TriggerManagerView.xaml">
+    <Page Include="Views\TriggerViews\TriggerManagerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

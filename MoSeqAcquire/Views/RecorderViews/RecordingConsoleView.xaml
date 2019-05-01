@@ -3,18 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:ctrl="clr-namespace:MoSeqAcquire.Views.Controls"
-             xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
-             xmlns:mio="clr-namespace:MoSeqAcquire.Models.Recording"             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"          
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
              xmlns:local="clr-namespace:MoSeqAcquire.Views"
-             xmlns:mvmr="clr-namespace:MoSeqAcquire.ViewModels.Recording"
-             xmlns:mvm="clr-namespace:MoSeqAcquire.ViewModels"
-             xmlns:mmr="clr-namespace:MoSeqAcquire.Models.Recording"
-             xmlns:mvb="clr-namespace:MoSeqAcquire.Views.Behaviors"
              xmlns:mvrv="clr-namespace:MoSeqAcquire.Views.RecorderViews"
-             xmlns:metadataEditor="clr-namespace:MoSeqAcquire.Views.Controls.MetadataEditor"
              xmlns:metadata="clr-namespace:MoSeqAcquire.Views.Metadata"
              xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d" 
@@ -76,10 +68,14 @@
 
 
         <ScrollViewer Grid.Row="2">
-            <ItemsControl Margin="8" >
-                <mvrv:RecorderItemsView />
-                <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
-                <metadata:MetadataList />
+            <ItemsControl Margin="8" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" >
+                <ItemsControl.ItemsSource>
+                    <CompositeCollection >
+                        <mvrv:RecorderItemsView />
+                        <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
+                        <metadata:MetadataList />
+                    </CompositeCollection>
+                </ItemsControl.ItemsSource>
             </ItemsControl>
         </ScrollViewer>
     </Grid>

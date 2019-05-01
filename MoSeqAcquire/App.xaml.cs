@@ -49,12 +49,13 @@ namespace MoSeqAcquire
         {
             try
             {
-                this.MainWindow = new MainWindow();
-                this.MainWindow.WindowState = WindowState.Maximized;
-                this.MainWindow.Loaded += (s, evt) =>
+                this.MainWindow = new MainWindow()
                 {
-                    this.loading.EndWaiting();
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    ShowActivated = true
                 };
+                this.MainWindow.Loaded += (s, evt) => { this.loading.EndWaiting(); };
                 this.MainWindow.Show();
             }
             catch (Exception ex)

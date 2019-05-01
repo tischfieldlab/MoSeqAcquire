@@ -21,32 +21,36 @@
     <Window.Resources>
         <ResourceDictionary>
             <conv:IsNullToBoolInvertConverter x:Key="IsNullToBoolInvertConverter" />
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <conv:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <conv:EnumEqualityConverter x:Key="EnumEqualityConverter" />
             <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
             <conv:ObjectEqualityConverter x:Key="ObjectEqualityConverter" />
             <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
             <conv:PackIconKindImageSourceConverter x:Key="PackIconKindImageSourceConverter" />
+            <SolidColorBrush Color="Red" x:Key="RedSolidColorBrush" />
         </ResourceDictionary>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo x:Name="taskBarItemInfo1" 
-                         Overlay="{Binding Source={x:Static materialDesign:PackIconKind.Record}, Converter={StaticResource PackIconKindImageSourceConverter}}"
-                     Description="Taskbar Item Info Sample">
-            
-            <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfoCollection>
+                         Overlay="{Binding Path=TaskbarItemInfo.Overlay}"
+                         ProgressState="{Binding Path=TaskbarItemInfo.ProgressState}"
+                         ProgressValue="{Binding Path=TaskbarItemInfo.ProgressValue}"
+                         Description="{Binding Path=TaskbarItemInfo.Description}">
+
+            <!--<TaskbarItemInfo.ThumbButtonInfos >
+                <ThumbButtonInfoCollection >
                     <ThumbButtonInfo
                         DismissWhenClicked="False"
                         Command="MediaCommands.Play"
-                        Description="Play"/>
+                        Description="Play" IsBackgroundVisible="true"
+                        ImageSource="{Binding Source={x:Static materialDesign:PackIconKind.Stop}, Converter={StaticResource PackIconKindImageSourceConverter}}"/>
                     <ThumbButtonInfo
-                        DismissWhenClicked="True"
+                        DismissWhenClicked="False"
                         Command="MediaCommands.Stop"
-                        Description="Stop"
-                        ImageSource="{Binding Source={x:Static materialDesign:PackIconKind.Record}, Converter={StaticResource PackIconKindImageSourceConverter}}"/>
+                        Description="Stop" IsBackgroundVisible="false"
+                        ImageSource="{Binding Source={x:Static materialDesign:PackIconKind.RecordRec}, Converter={StaticResource PackIconKindImageSourceConverter}}"/>
                 </ThumbButtonInfoCollection>
-            </TaskbarItemInfo.ThumbButtonInfos>
+            </TaskbarItemInfo.ThumbButtonInfos>-->
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
     <materialDesign:DialogHost Identifier="MainWindowDialogHost">
