@@ -45,18 +45,20 @@
                     </WrapPanel>
                     <WrapPanel Margin="52,0,0,0">
                         <TextBlock Text="When " 
-                                   Foreground="{StaticResource SecondaryAccentBrush}" 
+                                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
                                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                         
                         <TextBlock Text="{Binding Path=TriggerType.Name}" 
+                                   TextDecorations="Underline"
                                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
                                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                         
                         <TextBlock Text=" Execute " 
-                                   Foreground="{StaticResource SecondaryAccentBrush}" 
+                                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
                                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                         
                         <TextBlock Text="{Binding Path=ActionType.Name}" 
+                                   TextDecorations="Underline"
                                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
                                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                     </WrapPanel>
