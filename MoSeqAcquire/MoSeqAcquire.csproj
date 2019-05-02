@@ -234,9 +234,9 @@
     </Compile>
     <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
     <Compile Include="Models\Metadata\RangeConstraint.cs" />
-    <Compile Include="Views\MetadataViews\Rules\BaseRule.cs" />
-    <Compile Include="Views\MetadataViews\Rules\RangeRule.cs" />
-    <Compile Include="Views\MetadataViews\Rules\RequiredRule.cs" />
+    <Compile Include="Models\Metadata\Rules\BaseRule.cs" />
+    <Compile Include="Models\Metadata\Rules\RangeRule.cs" />
+    <Compile Include="Models\Metadata\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyItem.cs" />

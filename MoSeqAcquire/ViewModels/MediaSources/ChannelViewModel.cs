@@ -28,7 +28,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             this.Performance = new TotalFrameCounter();
             this.Performance.Start();
 
-            this.sizeHelper = new SizeHelper(50, 500, 50, 500, 200, 150);
+            this.sizeHelper = new SizeHelper(150, 500, 100, 500, 200, 150);
 
         }
         public abstract void BindChannel();

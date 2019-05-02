@@ -10,7 +10,6 @@ using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Recording.MPEGVideoWriter;
 using MoSeqAcquire.ViewModels.Metadata;
-using MoSeqAcquire.Views.Controls.MetadataEditor;
 
 namespace MoSeqAcquireTests2
 {

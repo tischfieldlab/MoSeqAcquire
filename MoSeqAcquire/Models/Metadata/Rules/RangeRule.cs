@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor.Rules
+namespace MoSeqAcquire.Models.Metadata.Rules
 {
     public class RangeRule : ValidationRule
     {
