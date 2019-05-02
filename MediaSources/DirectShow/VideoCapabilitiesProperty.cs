@@ -10,22 +10,22 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     class VideoCapabilitiesProperty : ComplexProperty
     {
-        protected DirectShowSource source;
-        public VideoCapabilitiesProperty(DirectShowSource Source)
+        protected IVideoProvider source;
+        public VideoCapabilitiesProperty(IVideoProvider Source)
         {
             this.source = Source;
         }
         public override object Value
         {
-            get => this.source.Device.VideoResolution.ToString();
+            get => this.source.VideoDevice.VideoResolution.ToString();
             set
             {
-                this.source.Device.SignalToStop();
-                this.source.Device.WaitForStop();
-                this.source.Device.VideoResolution = this.source.Device.VideoCapabilities
+                this.source.VideoDevice.SignalToStop();
+                this.source.VideoDevice.WaitForStop();
+                this.source.VideoDevice.VideoResolution = this.source.VideoDevice.VideoCapabilities
                                                                        .Where(vc => vc.ToString().Equals(value))
                                                                        .First();
-                this.source.Device.Start();
+                this.source.VideoDevice.Start();
             }
         }
         public override bool IsAutomatic
@@ -45,7 +45,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             {
                 IsSupported = true,
                 AllowsAuto = false,
-                Choices = this.source.Device.VideoCapabilities.Select(vc => vc.ToString())
+                Choices = this.source.VideoDevice.VideoCapabilities.Select(vc => vc.ToString())
             };
             cpc.Default = cpc.Choices.Last();
             return cpc;

@@ -10,14 +10,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     class CameraControlPropInfo : ComplexProperty
     {
-        protected DirectShowSource source;
+        protected IVideoProvider source;
         protected CameraControlProperty property;
 
         protected int currentValue;
         protected CameraControlFlags currentFlags;
 
 
-        public CameraControlPropInfo(DirectShowSource Source, CameraControlProperty Property)
+        public CameraControlPropInfo(IVideoProvider Source, CameraControlProperty Property)
         {
             this.source = Source;
             this.property = Property;
@@ -58,15 +58,15 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
         protected override void PushCurrentValue()
         {
-            this.source.Device.SetCameraProperty(this.property, this.currentValue, this.currentFlags);
+            this.source.VideoDevice.SetCameraProperty(this.property, this.currentValue, this.currentFlags);
         }
         protected override void ReadCurrentValue()
         {
-            this.source.Device.GetCameraProperty(this.property, out this.currentValue, out this.currentFlags);
+            this.source.VideoDevice.GetCameraProperty(this.property, out this.currentValue, out this.currentFlags);
         }
         protected override PropertyCapability ReadCapability()
         {
-            this.source.Device.GetCameraPropertyRange(property, 
+            this.source.VideoDevice.GetCameraPropertyRange(property, 
                                                       out int min, 
                                                       out int max, 
                                                       out int step, 

@@ -10,7 +10,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     class PowerLineFrequencyProperty : ProcAmpPropInfo
     {
-        public PowerLineFrequencyProperty(DirectShowSource Source) : base(Source, VideoProcAmpProperty.PowerlineFrequency)
+        public PowerLineFrequencyProperty(IVideoProvider Source) : base(Source, VideoProcAmpProperty.PowerlineFrequency)
         {
         }
 
