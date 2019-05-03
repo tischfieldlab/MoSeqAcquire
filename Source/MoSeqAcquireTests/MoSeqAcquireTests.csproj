@@ -29,7 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,7 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
@@ -72,23 +72,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaSources\DirectShow\DirectShow.csproj">
-      <Project>{7BA83073-4DFB-44CB-81BC-8FD9083F51BE}</Project>
-      <Name>DirectShow</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MoSeqAcquire\MoSeqAcquire.csproj">
-      <Project>{BF8FDFEC-1160-4F80-A276-E8D9AED4F064}</Project>
-      <Name>MoSeqAcquire</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Recorders\MPEGVideoWriter\MPEGVideoWriter.csproj">
-      <Project>{0ED7502F-663F-456C-B6FE-F336C393689B}</Project>
-      <Name>MPEGVideoWriter</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="test_protocol1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DirectShow\DirectShow.csproj">
+      <Project>{7ba83073-4dfb-44cb-81bc-8fd9083f51be}</Project>
+      <Name>DirectShow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoSeqAcquire\MoSeqAcquire.csproj">
+      <Project>{bf8fdfec-1160-4f80-a276-e8d9aed4f064}</Project>
+      <Name>MoSeqAcquire</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPEGVideoWriter\MPEGVideoWriter.csproj">
+      <Project>{0ed7502f-663f-456c-b6fe-f336c393689b}</Project>
+      <Name>MPEGVideoWriter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

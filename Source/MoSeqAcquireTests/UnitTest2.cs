@@ -8,7 +8,6 @@ using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Recording;
-using MoSeqAcquire.Models.Recording.MPEGVideoWriter;
 using MoSeqAcquire.ViewModels.Metadata;
 using MoSeqAcquire.Views.Controls.MetadataEditor;
 

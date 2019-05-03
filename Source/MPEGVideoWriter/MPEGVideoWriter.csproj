@@ -4,40 +4,42 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{36213CF0-706B-48A8-ABDC-A88965101E5B}</ProjectGuid>
+    <ProjectGuid>{0ED7502F-663F-456C-B6FE-F336C393689B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SynapseTriggers</RootNamespace>
-    <AssemblyName>SynapseTriggers</AssemblyName>
+    <RootNamespace>MPEGVideoWriter</RootNamespace>
+    <AssemblyName>MPEGVideoWriter</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\Triggers\SynapseTriggers\</OutputPath>
+    <OutputPath>..\..\Build\bin\Debug\Recorders\MPEGVideoWriter\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\Triggers\SynapseTriggers\</OutputPath>
+    <OutputPath>..\..\Build\bin\Release\Recorders\MPEGVideoWriter\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SynapseTools">
-      <HintPath>..\..\..\SynapseTools\SynapseTools\bin\Debug\SynapseTools.dll</HintPath>
-    </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,19 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SetSynapseMode.cs" />
-    <Compile Include="SynapseTriggers.cs" />
+    <Compile Include="MPEGVideoWriter.cs" />
+    <Compile Include="MPEGVideoWriterSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MoSeqAcquire\MoSeqAcquire.csproj">
-      <Project>{bf8fdfec-1160-4f80-a276-e8d9aed4f064}</Project>
+    <ProjectReference Include="..\MoSeqAcquire\MoSeqAcquire.csproj">
+      <Project>{BF8FDFEC-1160-4F80-A276-E8D9AED4F064}</Project>
       <Name>MoSeqAcquire</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
