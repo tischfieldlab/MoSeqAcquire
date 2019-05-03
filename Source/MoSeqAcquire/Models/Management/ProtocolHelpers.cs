@@ -11,6 +11,7 @@ using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Triggers;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Management
 {
@@ -113,7 +114,7 @@ namespace MoSeqAcquire.Models.Management
 
             SearchPaths.Cast<string>()
                        .SelectMany(p => FindAssembliesForPath(p))
-                       .Distinct(a => a.FullName)
+                       .Distinct(EqualityComparer<Assembly>.Default)
                        .ForEach(a => plugInAssemblyList.Add(a.FullName, a));
 
             if (IncludeCurrentAssembly)

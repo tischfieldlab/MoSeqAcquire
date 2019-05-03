@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MoSeqAcquire.Properties;
 using MoSeqAcquire.ViewModels.MediaSources;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.ViewModels
 {

@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Utility;
 using MoSeqAcquire.ViewModels.Recording;
 using System;
 using System.Collections.Specialized;

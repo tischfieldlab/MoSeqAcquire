@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using MoSeqAcquire.ViewModels.MediaSources;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.ViewModels.Performance
 {

@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Metadata
 {

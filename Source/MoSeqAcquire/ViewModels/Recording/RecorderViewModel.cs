@@ -7,6 +7,7 @@ using System.Windows.Data;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.Models.Utility;
 using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels.Recording

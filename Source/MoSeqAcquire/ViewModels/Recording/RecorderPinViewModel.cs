@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.Models.Utility;
 using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels.Recording

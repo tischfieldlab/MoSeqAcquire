@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using MoSeqAcquire.Models.Utility;
 using MoSeqAcquire.ViewModels;
 
 namespace MoSeqAcquire.Views.SystemInfo

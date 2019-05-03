@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {

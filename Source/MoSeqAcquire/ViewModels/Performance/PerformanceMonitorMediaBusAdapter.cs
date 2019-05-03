@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Utility;
 using System;
 using System.Linq;
 using System.Windows;
