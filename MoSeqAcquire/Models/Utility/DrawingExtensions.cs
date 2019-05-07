@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoSeqAcquire.Models
+namespace MoSeqAcquire.Models.Utility
 {
     public static class DrawingExtensions
     {

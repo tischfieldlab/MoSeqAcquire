@@ -81,11 +81,12 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="8" FontStyle="Italic">
                                                 No metadata items have been added yet. Would you like to 
                                                 <Hyperlink Command="{Binding Path=DataContext.Commands.ShowMetadataDefinitionWindow, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}">
+                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}"
+                                                           TextDecorations="underline">
                                                     add one
                                                 </Hyperlink>?
                                             </TextBlock>

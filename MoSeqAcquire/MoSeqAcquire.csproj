@@ -66,6 +66,15 @@
     <Reference Include="MvvmValidation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=113792d2053ac461, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmValidation.3.1.0\lib\netstandard1.0\MvvmValidation.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.8.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Console, Version=3.1.1.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Console.3.1.1\lib\net45\Serilog.Sinks.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.4.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -137,7 +146,7 @@
     <Compile Include="Models\Configuration\IConfigSnapshotProvider.cs" />
     <Compile Include="Models\Configuration\PropertyCapability.cs" />
     <Compile Include="Models\Configuration\PropertyInfoInterfaces.cs" />
-    <Compile Include="Models\DrawingExtensions.cs" />
+    <Compile Include="Models\Utility\DrawingExtensions.cs" />
     <Compile Include="Models\Attributes\AttributeExtensions.cs" />
     <Compile Include="Models\Attributes\KnownTypeAttribute.cs" />
     <Compile Include="Models\Recording\IMediaWriter.cs" />
@@ -198,6 +207,9 @@
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
+    <Compile Include="Views\ApplicationSettingsWindow.xaml.cs">
+      <DependentUpon>ApplicationSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\SetPropertyAction.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
@@ -375,6 +387,10 @@
     <Compile Include="Views\ThemeSettingsDialog.xaml.cs">
       <DependentUpon>ThemeSettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ApplicationSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

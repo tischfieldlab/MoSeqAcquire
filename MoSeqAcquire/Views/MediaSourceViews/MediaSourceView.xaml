@@ -22,6 +22,29 @@
                       dd:DragDrop.IsDragSource="True"
                       dd:DragDrop.IsDropTarget="True"
                       Margin="0,10">
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
+                                                No Media Sources have been added yet. Would you like to 
+                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}" TextDecorations="Underline">
+                                                    add one
+                                                </Hyperlink>?
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Style>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <GroupBox Margin="10,10" Style="{DynamicResource MaterialDesignCardGroupBox}" Header="{Binding}">

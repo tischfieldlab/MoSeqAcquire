@@ -103,11 +103,12 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <StackPanel HorizontalAlignment="Center">
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                                 <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
                                                     No triggers have been added yet. Would you like to 
                                                     <Hyperlink Command="{Binding Path=DataContext.Commands.AddTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                                               Style="{StaticResource MaterialDesignBody1Hyperlink}">
+                                                               Style="{StaticResource MaterialDesignBody1Hyperlink}" 
+                                                               TextDecorations="underline">
                                                         add one
                                                     </Hyperlink>?
                                                 </TextBlock>

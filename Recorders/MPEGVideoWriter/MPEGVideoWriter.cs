@@ -4,6 +4,7 @@ using System.Drawing;
 using Accord.Video.FFMPEG;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 {
