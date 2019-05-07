@@ -1,7 +1,6 @@
 ﻿using Microsoft.Kinect;
 using MoSeqAcquire.Models.Utility;
 using System.Windows.Media;
-using System.Threading.Tasks.Dataflow;
 using System;
 
 namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
@@ -61,7 +60,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
                     var meta = new VideoChannelFrameMetadata()
                     {
                         // FrameId = depthFrame.
-                        Timestamp = depthFrame.RelativeTime.Ticks,
+                        //Timestamp = depthFrame.RelativeTime.Ticks,
                         AbsoluteTime = PreciseDatetime.Now,
                         Width = depthFrame.FrameDescription.Width,
                         Height = depthFrame.FrameDescription.Height,
