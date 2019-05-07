@@ -31,13 +31,13 @@
         <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2" Mode="PrimaryDark" Padding="16">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <Button Width="72" Height="48" Margin="8,0,8,0"
+                    <!--<Button Width="72" Height="48" Margin="8,0,8,0"
                                     Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Command="{Binding Path=CancelCommand}"
                                     ToolTip="Cancel">
 
                         <materialDesign:PackIcon Kind="Close" Width="36" Height="36" />
-                    </Button>
+                    </Button>-->
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Cogs" 

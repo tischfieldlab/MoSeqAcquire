@@ -57,10 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraControlPropInfo.cs" />
+    <Compile Include="HybridConfig.cs" />
+    <Compile Include="HybridSource.cs" />
+    <Compile Include="DirectSoundConfig.cs" />
+    <Compile Include="DirectSoundChannel.cs" />
     <Compile Include="DirectShowChannel.cs" />
     <Compile Include="DirectShowConfig.cs" />
+    <Compile Include="DirectSoundSource.cs" />
     <Compile Include="DirectShowSource.cs" />
-    <Compile Include="DirectShowVideoChannel.cs" />
+    <Compile Include="Interfaces.cs" />
     <Compile Include="Internal\ExVideoCaptureDevice.cs" />
     <Compile Include="Internal\IAMVideoProcAmp.cs" />
     <Compile Include="Internal\VideoProcAmpProperty.cs" />

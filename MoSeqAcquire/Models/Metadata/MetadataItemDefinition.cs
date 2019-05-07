@@ -1,4 +1,5 @@
-﻿using MoSeqAcquire.ViewModels;
+﻿using MoSeqAcquire.Models.Metadata.Rules;
+using MoSeqAcquire.ViewModels;
 using MoSeqAcquire.ViewModels.Commands;
 using MvvmValidation;
 using System;
@@ -30,6 +31,7 @@ namespace MoSeqAcquire.Models.Metadata
         protected string units;
         protected ConstraintMode constraint;
         protected BaseConstraint constraintImplementation;
+        protected ObservableCollection<BaseRule> validators;
 
         protected readonly Dictionary<Type, List<ConstraintMode>> validTypeConstraints = new Dictionary<Type, List<ConstraintMode>>()
         {
@@ -49,7 +51,19 @@ namespace MoSeqAcquire.Models.Metadata
 
         protected MetadataItemDefinition()
         {
+            this.validators = new ObservableCollection<BaseRule>()
+            {
+                new RequiredRule()
+            };
+            this.validators.ForEach(v => v.PropertyChanged += Validator_PropertyChanged);
             this.SetupValidationRules();
+        }
+
+        private void Validator_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.SetupValidationRules();
+            this.Validator.ValidateAll();
+            this.NotifyPropertyChanged(null);
         }
 
         protected void SetupValidationRules()
@@ -90,6 +104,14 @@ namespace MoSeqAcquire.Models.Metadata
                                                        "Value must be within range");
                                                });
                         break;
+                }
+            }
+
+            foreach(var rule in this.validators)
+            {
+                if (rule.IsActive)
+                {
+                    this.Validator.AddRule(() => this.Value, () => rule.Validate(this));
                 }
             }
         }
@@ -177,6 +199,10 @@ namespace MoSeqAcquire.Models.Metadata
         {
             get => this.constraintImplementation;
             set => this.SetField(ref this.constraintImplementation, value);
+        }
+        public ObservableCollection<BaseRule> Validators
+        {
+            get => this.validators;
         }
 
         #region Value Coerceion

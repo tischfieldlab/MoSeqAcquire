@@ -7,46 +7,50 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.DirectSound;
 
 namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     //[KnownType(typeof(DirectShowConfigSnapshot))]
-    [DisplayName("Direct Show Source")]
-    [SettingsImplementation(typeof(DirectShowConfig))]
-    public class DirectShowSource : MediaSource, IVideoProvider
+    [DisplayName("Direct Sound Source")]
+    [SettingsImplementation(typeof(DirectSoundConfig))]
+    public class DirectSoundSource : MediaSource, IAudioProvider
     {
-        public DirectShowSource() : base()
+        public DirectSoundSource() : base()
         {
-            this.Name = "Direct Show Device";
+            this.Name = "Direct Sound Device";
             
         }
-        public ExVideoCaptureDevice VideoDevice { get; protected set; }
+        public AudioCaptureDevice AudioDevice { get; protected set; }
         public override List<Tuple<string, string>> ListAvailableDevices()
         {
             var items = new List<Tuple<string, string>>();
-            var videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (var device in videoDevices)
+            var devices = new AudioDeviceCollection(AudioDeviceCategory.Capture);
+            foreach (var device in devices)
             {
-                items.Add(new Tuple<string, string>(device.Name, device.MonikerString));
+                items.Add(new Tuple<string, string>(device.Description, device.Guid.ToString()));
             }
             return items;
         }
         public override bool Initalize(string DeviceId)
         {
             this.DeviceId = DeviceId;
-            var videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            if(videoDevices.FindAll(fi => fi.MonikerString.Equals(DeviceId)).Count == 0)
+            var devices = new AudioDeviceCollection(AudioDeviceCategory.Capture);
+
+            var targetDevice = devices.FirstOrDefault(di => di.Guid.ToString().Equals(DeviceId));
+
+            if (targetDevice == null)
             {
                 this.Status = "Disconnected";
                 return false;
             }
-            this.Name = videoDevices.Find(fi => fi.MonikerString.Equals(DeviceId)).Name;
+
+            this.Name = targetDevice.Description;
             this.Status = "Initializing";
-            this.VideoDevice = new ExVideoCaptureDevice(DeviceId);
-            this.VideoDevice.VideoResolution = this.VideoDevice.VideoCapabilities.Last();
+            this.AudioDevice = new AudioCaptureDevice(targetDevice);
             
 
-            this.RegisterChannel(new DirectShowChannel(this));
+            this.RegisterChannel(new DirectSoundChannel(this));
             this.BindConfig();
             this.IsInitialized = true;
 
@@ -54,7 +58,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         }
         public override void Start()
         {
-            this.VideoDevice.Start();
+            this.AudioDevice.Start();
             
             base.Start();
         }
@@ -62,13 +66,13 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         {
             if (!this.IsInitialized) { return; }
             base.Stop();
-            this.VideoDevice.SignalToStop();
-            this.VideoDevice.WaitForStop();
+            this.AudioDevice.SignalToStop();
+            this.AudioDevice.WaitForStop();
         }
 
         protected void BindConfig()
         {
-            var cfg = this.Settings as DirectShowConfig;
+            /*var cfg = this.Settings as DirectShowConfig;
             cfg.RegisterComplexProperty(nameof(cfg.ImageFormat), new VideoCapabilitiesProperty(this));
             cfg.RegisterComplexProperty(nameof(cfg.PowerlineFrequency), new PowerLineFrequencyProperty(this));
 
@@ -94,7 +98,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             cfg.RegisterComplexProperty(nameof(cfg.Pan), new CameraControlPropInfo(this, CameraControlProperty.Pan));
             cfg.RegisterComplexProperty(nameof(cfg.Roll), new CameraControlPropInfo(this, CameraControlProperty.Roll));
             cfg.RegisterComplexProperty(nameof(cfg.Tilt), new CameraControlPropInfo(this, CameraControlProperty.Tilt));
-            cfg.RegisterComplexProperty(nameof(cfg.Zoom), new CameraControlPropInfo(this, CameraControlProperty.Zoom));
+            cfg.RegisterComplexProperty(nameof(cfg.Zoom), new CameraControlPropInfo(this, CameraControlProperty.Zoom));*/
         }
     }
 }

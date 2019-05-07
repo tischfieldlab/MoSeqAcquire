@@ -4,18 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MoSeqAcquire.Models.Metadata;
+using MvvmValidation;
 
-namespace MoSeqAcquire.Views.Controls.MetadataEditor.Rules
+namespace MoSeqAcquire.Models.Metadata.Rules
 {
     public abstract class BaseRule : BaseViewModel
     {
+        protected bool isActive;
+
         public BaseRule(string Name)
         {
             this.Name = Name;
         }
         public string Name { get; protected set; }
-        public bool IsActive { get; set; }
-        public abstract void Attach(MetadataItemDefinition Item);
+        public bool IsActive
+        {
+            get => this.isActive;
+            set => this.SetField(ref this.isActive, value);
+        }
+        public abstract RuleResult Validate(MetadataItemDefinition Item);
     }
 }

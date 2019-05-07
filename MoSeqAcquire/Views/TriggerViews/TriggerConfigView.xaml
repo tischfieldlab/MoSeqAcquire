@@ -13,12 +13,12 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-     TextElement.FontWeight="Regular"
-     TextElement.FontSize="13"
-     TextOptions.TextFormattingMode="Ideal"
-     TextOptions.TextRenderingMode="Auto"
-     Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Edit Trigger Configuration" Height="450" Width="800">
     <Window.Resources>
 
@@ -31,21 +31,36 @@
         <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2" Mode="PrimaryDark" Padding="16">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <Button Width="72" Height="48" Margin="8,0,8,0"
+                    <!--<Button Width="72" Height="48" Margin="8,0,8,0"
                                     Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Command="{Binding Path=CancelCommand}"
                                     ToolTip="Cancel">
                         <materialDesign:PackIcon Kind="Close" Width="36" Height="36" />
-                    </Button>
+                    </Button>-->
                 </StackPanel>
-                <StackPanel  DockPanel.Dock="Left">
+                <StackPanel DockPanel.Dock="Left">
                     <WrapPanel>
-                        <materialDesign:PackIcon Kind="AlarmLight" Width="36" Height="36" />
-                        <TextBlock  VerticalAlignment="Center" Text="{Binding Path=TriggerType.Name}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                        <materialDesign:PackIcon Kind="Cogs" Width="36" Height="36" Margin="0,0,16,0" />
+                        <TextBlock Text="Configure Trigger" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"/>
                     </WrapPanel>
-                    <WrapPanel>
-                        <materialDesign:PackIcon Kind="Engine" Width="36" Height="36" />
-                        <TextBlock  VerticalAlignment="Center" Text="{Binding Path=ActionType.Name}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                    <WrapPanel Margin="52,0,0,0">
+                        <TextBlock Text="When " 
+                                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
+                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                        
+                        <TextBlock Text="{Binding Path=TriggerType.Name}" 
+                                   TextDecorations="Underline"
+                                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
+                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                        
+                        <TextBlock Text=" Execute " 
+                                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
+                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                        
+                        <TextBlock Text="{Binding Path=ActionType.Name}" 
+                                   TextDecorations="Underline"
+                                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
+                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                     </WrapPanel>
                 </StackPanel>
             </DockPanel>

@@ -36,6 +36,9 @@ namespace MoSeqAcquire.ViewModels.Commands
             {
                 //expects parameter to be string path to protocol
                 MediaSettingsWriter.WriteProtocol(path, this.ViewModel.GenerateProtocol());
+
+                //push the path into the recent protocols collection
+                this.ViewModel.PushRecentProtocol(path);
             }
         }
 
@@ -62,7 +65,5 @@ namespace MoSeqAcquire.ViewModels.Commands
             var prep = string.Join(";", ext.Select(s => "*." + s));
             return desc + " (" + prep + ")|" + prep;
         }
-
-
     }
 }

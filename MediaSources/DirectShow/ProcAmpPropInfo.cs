@@ -10,14 +10,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 {
     class ProcAmpPropInfo : ComplexProperty
     {
-        protected DirectShowSource source;
+        protected IVideoProvider source;
         protected VideoProcAmpProperty property;
 
         protected int currentValue;
         protected VideoProcAmpFlags currentFlags;
 
 
-        public ProcAmpPropInfo(DirectShowSource Source, VideoProcAmpProperty Property)
+        public ProcAmpPropInfo(IVideoProvider Source, VideoProcAmpProperty Property)
         {
             this.source = Source;
             this.property = Property;
@@ -60,17 +60,17 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         {
             if (!this.IsSupported)
                 return;
-            this.source.Device.SetVideoProcAmpProperty(this.property, this.currentValue, this.currentFlags);
+            this.source.VideoDevice.SetVideoProcAmpProperty(this.property, this.currentValue, this.currentFlags);
         }
         protected override void ReadCurrentValue()
         {
             if (!this.IsSupported)
                 return;
-            this.source.Device.GetVideoProcAmpProperty(this.property, out this.currentValue, out this.currentFlags);
+            this.source.VideoDevice.GetVideoProcAmpProperty(this.property, out this.currentValue, out this.currentFlags);
         }
         protected override PropertyCapability ReadCapability()
         {
-            this.source.Device.GetVideoProcAmpRange(property, 
+            this.source.VideoDevice.GetVideoProcAmpRange(property, 
                                                     out int min, 
                                                     out int max, 
                                                     out int step, 

@@ -10,7 +10,6 @@
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mediaSources="clr-namespace:MoSeqAcquire.ViewModels.MediaSources"
              xmlns:dd="urn:gong-wpf-dragdrop"
-
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="250">
     <UserControl.Resources>
@@ -33,9 +32,11 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type mediaSources:AudioChannelViewModel}">
-            <controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" Margin="10" />
-            <!--<Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" MaxWidth="400" MaxHeight="100" Margin="10"  />
-            <Image Source="{Binding Path=VoicePrintSpectrum}" MaxWidth="400" MaxHeight="100" Margin="10"  />-->
+            <StackPanel>
+                <controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" Margin="10" />
+                <Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" Stretch="Fill"  />
+                <Image Source="{Binding Path=VoicePrintSpectrum}" Stretch="Fill"  />
+            </StackPanel>
         </DataTemplate>
 
     </UserControl.Resources>

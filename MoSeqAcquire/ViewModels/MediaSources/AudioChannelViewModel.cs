@@ -28,7 +28,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
         {
             //this.VisualHost = new AudioVisualHost();
             this.spectrumProvider = new BasicSpectrumProvider(1, 16000, fftSize);
-            /*this.__lineSpectrum = new LineSpectrum(fftSize)
+            this.__lineSpectrum = new LineSpectrum(fftSize)
             {
                 SpectrumProvider = spectrumProvider,
                 UseAverage = true,
@@ -44,7 +44,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                 PointCount = 200,
                 IsXLogScale = true,
                 ScalingStrategy = ScalingStrategy.Sqrt,
-            };*/
+            };
         }
         public BitmapSource LineSpectrum { get => this.__lineSpectrumBitmap; }
         public BitmapSource VoicePrintSpectrum { get => this.__voicePrint3DSpectrumBitmap; }
@@ -71,13 +71,13 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                         }
                         spectrumProvider.Add(this.__buffer, nsamples);
 
-                        //this.EnsureBitmaps();
-                        //float xpos = (float)this.framecount % this.__voicePrint3DSpectrumBitmap.PixelWidth;
-                        //this.__voicePrint3DSpectrum.CreateVoicePrint3D(this.__voicePrint3DSpectrumBitmap, xpos, Colors.Black);
-                        //this.__lineSpectrum.CreateSpectrumLine(this.__lineSpectrumBitmap, Colors.Green, Colors.Red, Colors.White);
+                        this.EnsureBitmaps();
+                        float xpos = (float)this.framecount % this.__voicePrint3DSpectrumBitmap.PixelWidth;
+                        this.__voicePrint3DSpectrum.CreateVoicePrint3D(this.__voicePrint3DSpectrumBitmap, xpos, Colors.Black);
+                        this.__lineSpectrum.UpdateVisual();
 
-                        //this.NotifyPropertyChanged("LineSpectrum");
-                        //this.NotifyPropertyChanged("VoicePrintSpectrum");
+                        this.NotifyPropertyChanged("LineSpectrum");
+                        this.NotifyPropertyChanged("VoicePrintSpectrum");
                         this.framecount++;
                         this.Performance.Increment();
                     }));

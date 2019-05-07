@@ -1,6 +1,4 @@
-﻿using MoSeqAcquire.Views.Controls.MetadataEditor;
-using MoSeqAcquire.Views.Controls.PropertyInspector;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace MoSeqAcquire.Views.Metadata

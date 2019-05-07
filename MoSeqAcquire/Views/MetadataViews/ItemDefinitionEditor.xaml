@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MoSeqAcquire.Views.Controls.MetadataEditor"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mve="clr-namespace:MoSeqAcquire.Views.Extensions"
              xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
@@ -173,12 +172,16 @@
                 </ContentControl>
             </GroupBox>
             <GroupBox Header="Validation" Grid.Column="1" Grid.Row="2" Margin="16">
-                <StackPanel>
-                    <WrapPanel>
-                        <CheckBox />
-                        <TextBlock>Required</TextBlock>
-                    </WrapPanel>
-                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Path=Validators}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding Path=IsActive}" />
+                                <TextBlock Text="{Binding Path=Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </GroupBox>
         </Grid>
     </Grid>
