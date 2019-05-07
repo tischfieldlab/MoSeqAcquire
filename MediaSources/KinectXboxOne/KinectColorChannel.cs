@@ -54,7 +54,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
                 {
                     var meta = new VideoChannelFrameMetadata()
                     {
-                        Timestamp = colorFrame.RelativeTime.Ticks,
+                        //Timestamp = colorFrame.RelativeTime.Ticks,
                         AbsoluteTime = PreciseDatetime.Now,
                         Width = colorFrame.FrameDescription.Width,
                         Height = colorFrame.FrameDescription.Height,
