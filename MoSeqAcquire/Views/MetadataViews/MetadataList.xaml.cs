@@ -56,12 +56,10 @@ namespace MoSeqAcquire.Views.Metadata
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(prop); i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild((prop), i) as DependencyObject;
-                if (child == null)
+                if (!(VisualTreeHelper.GetChild((prop), i) is DependencyObject child))
                     continue;
 
-                T castedProp = child as T;
-                if (castedProp != null)
+                if (child is T castedProp)
                     return castedProp;
 
                 castedProp = GetFirstChildByType<T>(child);
@@ -80,8 +78,7 @@ namespace MoSeqAcquire.Views.Metadata
             if (parentObject == null) return null;
 
             //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if (parent != null)
+            if (parentObject is T parent)
                 return parent;
             else
                 return GetParentByType<T>(parentObject);

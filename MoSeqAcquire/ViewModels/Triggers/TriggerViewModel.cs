@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Models.Utility;
@@ -74,6 +75,17 @@ namespace MoSeqAcquire.ViewModels.Triggers
             }
         }
         public TriggerConfig Settings { get => this.trigger.Config; }
+
+        public UserControl DesignerImplementation
+        {
+            get
+            {
+                var spec = this.trigger.Specification as TriggerActionSpecification;
+                if (spec.HasDesignerImplementation)
+                    return (UserControl)Activator.CreateInstance(spec.DesignerImplementation);
+                return null;
+            }
+        }
         public TriggerState TriggerState
         {
             get => this.triggerState;

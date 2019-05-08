@@ -58,9 +58,8 @@ namespace MoSeqAcquire.Models.Metadata
 
         public override bool Equals(object obj)
         {
-            var cc = obj as ChoicesConstraint;
 
-            if (cc == null)
+            if (!(obj is ChoicesConstraint cc))
                 return false;
 
             if (!this.Choices.SequenceEqual(cc.Choices))
@@ -101,9 +100,8 @@ namespace MoSeqAcquire.Models.Metadata
 
         public override bool Equals(object obj)
         {
-            var ccc = obj as ChoicesConstraintChoice;
 
-            if (ccc == null)
+            if (!(obj is ChoicesConstraintChoice ccc))
                 return false;
 
             if (!this.Value.Equals(ccc.Value))

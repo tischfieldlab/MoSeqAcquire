@@ -348,9 +348,8 @@ namespace MoSeqAcquire.Models.Metadata
         #endregion IXmlSerializable
         public override bool Equals(object obj)
         {
-            var mdi = obj as MetadataItemDefinition;
 
-            if (mdi == null)
+            if (!(obj is MetadataItemDefinition mdi))
                 return false;
 
             if (!this.Name.Equals(mdi.Name))

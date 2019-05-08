@@ -14,6 +14,12 @@ namespace MoSeqAcquire.Models.Triggers
         public event EventHandler<TriggerLifetimeEventArgs> TriggerExecutionFinished;
         public event EventHandler<TriggerFaultedEventArgs> TriggerFaulted;
 
+        public TriggerAction() : base()
+        {
+            this.Specification = new TriggerActionSpecification(this.GetType());
+            this.Config = (TriggerConfig)this.Specification.SettingsFactory();
+        }
+
         public bool IsCritical { get; set; }
         public int Priority { get; set; }
         public TriggerConfig Config { get; protected set; }

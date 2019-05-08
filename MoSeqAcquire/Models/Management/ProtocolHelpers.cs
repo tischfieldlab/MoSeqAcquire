@@ -11,29 +11,36 @@ using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.Models.Triggers;
+using Serilog;
 
 namespace MoSeqAcquire.Models.Management
 {
     public static class ProtocolHelpers
     {
+        private static readonly ILogger Log = Serilog.Log.Logger;
+
         public static IEnumerable<ComponentSpecification> FindComponents()
         {
-            return ExtractPluginsImplementing<Component>(Properties.Settings.Default.PluginPaths).Select(c => GetSpecification(c)).Where(s => !s.IsHidden);
+            return ExtractPluginsImplementing<Component>(Properties.Settings.Default.PluginPaths).Select(GetSpecification).Where(s => !s.IsHidden);
         }
-        private static ComponentSpecification GetSpecification(Type ComponentType)
+        private static ComponentSpecification GetSpecification(Type componentType)
         {
-            App.SetCurrentStatus($"Loading Component {ComponentType.FullName}....");
-            if (typeof(MediaSource).IsAssignableFrom(ComponentType))
+            App.SetCurrentStatus($"Loading Component {componentType.FullName}....");
+            if (typeof(MediaSource).IsAssignableFrom(componentType))
             {
-                return new MediaSourceSpecification(ComponentType);
+                return new MediaSourceSpecification(componentType);
             }
-            else if (typeof(IMediaWriter).IsAssignableFrom(ComponentType))
+            else if (typeof(IMediaWriter).IsAssignableFrom(componentType))
             {
-                return new RecorderSpecification(ComponentType);
+                return new RecorderSpecification(componentType);
+            }
+            else if (typeof(TriggerAction).IsAssignableFrom(componentType))
+            {
+                return new TriggerActionSpecification(componentType);
             }
             else
             {
-                return new ComponentSpecification(ComponentType);
+                return new ComponentSpecification(componentType);
             }
         }
         #region MediaSourceProviders
@@ -88,15 +95,7 @@ namespace MoSeqAcquire.Models.Management
                                     .Where(t => !t.IsAbstract && typeof(T).IsAssignableFrom(t))
                                     .ToList();
 
-                Console.WriteLine("Found the following plugins implementing \"" + typeof(T).AssemblyQualifiedName + "\":");
-                if (filteredList.Count > 0)
-                {
-                    Console.WriteLine(string.Join("\n", filteredList));
-                }
-                else
-                {
-                    Console.WriteLine("None found!");
-                }
+                Log.Information("Found the following plugins implementing {PluginType}: {PluginList}", typeof(T), filteredList);
                 __pluginTypeCache[typeof(T)] = filteredList;
                 return filteredList;
             }
@@ -125,7 +124,7 @@ namespace MoSeqAcquire.Models.Management
         }
         public static List<Assembly> FindAssembliesForPath(String Path)
         {
-            //Console.WriteLine("Searching path \"" + Path + "\" for plugins");
+            Log.Information("Searching path {PluginPath} for plugins", Path);
             List<Assembly> assemblyList = new List<Assembly>();
             DirectoryInfo dInfo = new DirectoryInfo(Path);
             if (dInfo.Exists)
@@ -135,14 +134,14 @@ namespace MoSeqAcquire.Models.Management
                 {
                     foreach (FileInfo file in files)
                     {
-                        //Console.WriteLine(" -> Loading assembly \"" + file.FullName + "\"...");
+                        Log.Debug(" -> Loading dll file \"{Filename}\"", file.FullName);
                         try
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));
                         }
                         catch(Exception e)
                         {
-                            Console.WriteLine($" -> Error Loading assembly \"{file.FullName}\"...");
+                            Log.Warning(e, " -> Error Loading dll file \"{Filename}\"", file.FullName);
                         }
                     }
                 }

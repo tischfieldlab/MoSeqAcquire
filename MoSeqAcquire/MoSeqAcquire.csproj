@@ -116,6 +116,7 @@
     <Compile Include="Models\Acquisition\DataChannelFrameMetadata.cs" />
     <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
     <Compile Include="Models\Attributes\HiddenAttribute.cs" />
+    <Compile Include="Models\Attributes\DesignerImplementationAttribute.cs" />
     <Compile Include="Models\Configuration\IPropertyCapabilityProvider.cs" />
     <Compile Include="Models\Core\Component.cs" />
     <Compile Include="Models\Core\ComponentSpecification.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Models\Recording\TimestampCoWriter.cs" />
     <Compile Include="Models\Triggers\Trigger.cs" />
     <Compile Include="Models\Triggers\TriggerAction.cs" />
+    <Compile Include="Models\Triggers\TriggerActionSpecification.cs" />
     <Compile Include="Models\Triggers\TriggerBus.cs" />
     <Compile Include="Models\Triggers\TriggerConfig.cs" />
     <Compile Include="Models\Triggers\TriggerLifetimeEventArgs.cs" />

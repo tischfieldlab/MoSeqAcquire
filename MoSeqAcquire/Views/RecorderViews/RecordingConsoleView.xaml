@@ -67,7 +67,7 @@
         </materialDesign:Card>
 
 
-        <ScrollViewer Grid.Row="2">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ItemsControl Margin="8" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" >
                 <ItemsControl.ItemsSource>
                     <CompositeCollection >

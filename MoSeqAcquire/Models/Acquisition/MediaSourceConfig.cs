@@ -11,7 +11,7 @@ namespace MoSeqAcquire.Models.Acquisition
     {
         protected Dictionary<string, ComplexProperty> backingProperties;
 
-        public MediaSourceConfig()
+        public MediaSourceConfig() /*: base() */ //DO NOT CALL BASE CONSTRUCTOR !!
         {
             this.backingProperties = new Dictionary<string, ComplexProperty>();
         }
@@ -25,7 +25,8 @@ namespace MoSeqAcquire.Models.Acquisition
         }
         public bool IsPropertyComplex(string PropertyName)
         {
-            return this.backingProperties.ContainsKey(PropertyName)
+            return this.backingProperties != null 
+                && this.backingProperties.ContainsKey(PropertyName)
                 && this.backingProperties[PropertyName] != null;
         }
         public void RegisterComplexProperty(string PropertyName, ComplexProperty BackingProperty)
@@ -36,6 +37,7 @@ namespace MoSeqAcquire.Models.Acquisition
         {
             if (!this.IsPropertyComplex(propertyName))
             {
+                return false;
                 throw new ArgumentException(propertyName + " is not backed by a complex property!");
             }
             var bp = this.GetComplexProperty(propertyName);

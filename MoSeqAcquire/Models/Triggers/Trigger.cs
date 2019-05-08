@@ -8,7 +8,7 @@ namespace MoSeqAcquire.Models.Triggers
 {
     public abstract class Trigger
     {
-        public string Name { get; }
+        public string Name { get; protected set; }
 
     }
 }

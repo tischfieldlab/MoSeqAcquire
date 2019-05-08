@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Views.Controls.PropertyInspector
 {
@@ -35,7 +36,11 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
             }
             this.sourceObject
                 .GetType()
-                .GetProperties()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(pi => {
+                    var ha = pi.GetCustomAttribute<HiddenAttribute>();
+                    return (ha == null) || (ha != null && ha.IsHidden == false);
+                })
                 .Select<PropertyInfo, PropertyItem>((p) => {
                     if (typeof(IPropertyCapabilityProvider).IsAssignableFrom(this.sourceObject.GetType())
                     && (this.sourceObject as IPropertyCapabilityProvider).IsPropertyComplex(p.Name)) {

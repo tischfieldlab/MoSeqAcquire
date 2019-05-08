@@ -75,8 +75,7 @@ namespace MoSeqAcquire.Views.Converters
 
         private IExpression Parse(string s)
         {
-            IExpression result = null;
-            if (!_storedExpressions.TryGetValue(s, out result))
+            if (!_storedExpressions.TryGetValue(s, out var result))
             {
                 result = new Parser().Parse(s);
                 _storedExpressions[s] = result;
@@ -92,7 +91,7 @@ namespace MoSeqAcquire.Views.Converters
 
         class Constant : IExpression
         {
-            private decimal _value;
+            private readonly decimal _value;
 
             public Constant(string text)
             {
@@ -110,7 +109,7 @@ namespace MoSeqAcquire.Views.Converters
 
         class Variable : IExpression
         {
-            private int _index;
+            private readonly int _index;
 
             public Variable(string text)
             {
@@ -138,7 +137,7 @@ namespace MoSeqAcquire.Views.Converters
 
         class BinaryOperation : IExpression
         {
-            private Func<decimal, decimal, decimal> _operation;
+            private readonly Func<decimal, decimal, decimal> _operation;
             private IExpression _left;
             private IExpression _right;
 

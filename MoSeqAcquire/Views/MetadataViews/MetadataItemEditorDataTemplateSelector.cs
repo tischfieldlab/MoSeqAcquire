@@ -16,8 +16,7 @@ namespace MoSeqAcquire.Views.Metadata
                 MetadataItemDefinition pi = item as MetadataItemDefinition;
                 Type pit = pi.ValueType;
 
-                PropertyChangedEventHandler lambda = null;
-                lambda = (o, args) =>
+                void lambda(object o, PropertyChangedEventArgs args)
                 {
                     if (args.PropertyName == nameof(pi.ValueType)
                      || args.PropertyName == nameof(pi.Constraint))
@@ -27,7 +26,8 @@ namespace MoSeqAcquire.Views.Metadata
                         cp.ContentTemplateSelector = null;
                         cp.ContentTemplateSelector = this;
                     }
-                };
+                }
+
                 pi.PropertyChanged += lambda;
 
 

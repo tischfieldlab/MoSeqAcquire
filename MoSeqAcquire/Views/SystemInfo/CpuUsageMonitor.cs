@@ -15,10 +15,12 @@ namespace MoSeqAcquire.Views.SystemInfo
             this.Title = "Free CPU";
             this.Icon = MaterialDesignThemes.Wpf.PackIconKind.Chip;
 
-            this.counter = new PerformanceCounter();
-            this.counter.CategoryName = "Processor";
-            this.counter.CounterName = "% Processor Time";
-            this.counter.InstanceName = "_Total";
+            this.counter = new PerformanceCounter
+            {
+                CategoryName = "Processor",
+                CounterName = "% Processor Time",
+                InstanceName = "_Total"
+            };
             this.counter.NextValue();
         }
         public override void Update()

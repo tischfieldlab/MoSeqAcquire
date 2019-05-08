@@ -15,9 +15,11 @@ namespace MoSeqAcquire.Views.SystemInfo
             this.Title = "Free RAM";
             this.Icon = MaterialDesignThemes.Wpf.PackIconKind.Memory;
 
-            this.counter = new PerformanceCounter();
-            this.counter.CategoryName = "Memory";
-            this.counter.CounterName = "Available MBytes";
+            this.counter = new PerformanceCounter
+            {
+                CategoryName = "Memory",
+                CounterName = "Available MBytes"
+            };
             this.counter.NextValue();
         }
         public override void Update()

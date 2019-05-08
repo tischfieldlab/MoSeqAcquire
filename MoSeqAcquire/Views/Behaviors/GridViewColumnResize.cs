@@ -59,8 +59,7 @@ namespace MoSeqAcquire.Views.Behaviors
 
         private static void OnSetWidthCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var element = dependencyObject as GridViewColumn;
-            if (element != null)
+            if (dependencyObject is GridViewColumn element)
             {
                 GridViewColumnResizeBehavior behavior = GetOrCreateBehavior(element);
                 behavior.Width = e.NewValue as string;
@@ -74,8 +73,7 @@ namespace MoSeqAcquire.Views.Behaviors
 
         private static void OnSetEnabledCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var element = dependencyObject as ListView;
-            if (element != null)
+            if (dependencyObject is ListView element)
             {
                 ListViewResizeBehavior behavior = GetOrCreateBehavior(element);
                 behavior.Enabled = (bool)e.NewValue;
@@ -89,8 +87,7 @@ namespace MoSeqAcquire.Views.Behaviors
 
         private static ListViewResizeBehavior GetOrCreateBehavior(ListView element)
         {
-            var behavior = element.GetValue(GridViewColumnResizeBehaviorProperty) as ListViewResizeBehavior;
-            if (behavior == null)
+            if (!(element.GetValue(GridViewColumnResizeBehaviorProperty) is ListViewResizeBehavior behavior))
             {
                 behavior = new ListViewResizeBehavior(element);
                 element.SetValue(ListViewResizeBehaviorProperty, behavior);
@@ -101,8 +98,7 @@ namespace MoSeqAcquire.Views.Behaviors
 
         private static GridViewColumnResizeBehavior GetOrCreateBehavior(GridViewColumn element)
         {
-            var behavior = element.GetValue(GridViewColumnResizeBehaviorProperty) as GridViewColumnResizeBehavior;
-            if (behavior == null)
+            if (!(element.GetValue(GridViewColumnResizeBehaviorProperty) is GridViewColumnResizeBehavior behavior))
             {
                 behavior = new GridViewColumnResizeBehavior(element);
                 element.SetValue(GridViewColumnResizeBehaviorProperty, behavior);
@@ -131,16 +127,12 @@ namespace MoSeqAcquire.Views.Behaviors
 
             public bool IsStatic
             {
-                get { return StaticWidth >= 0; }
+                get => StaticWidth >= 0;
             }
 
             public double StaticWidth
             {
-                get
-                {
-                    double result;
-                    return double.TryParse(Width, out result) ? result : -1;
-                }
+                get => double.TryParse(Width, out double result) ? result : -1;
             }
 
             public double Percentage
@@ -162,8 +154,7 @@ namespace MoSeqAcquire.Views.Behaviors
                     if (Width == "*" || Width == "1*") return 1;
                     if (Width.EndsWith("*"))
                     {
-                        double perc;
-                        if (double.TryParse(Width.Substring(0, Width.Length - 1), out perc))
+                        if (double.TryParse(Width.Substring(0, Width.Length - 1), out double perc))
                         {
                             return perc;
                         }
@@ -204,8 +195,7 @@ namespace MoSeqAcquire.Views.Behaviors
 
             public ListViewResizeBehavior(ListView element)
             {
-                if (element == null) throw new ArgumentNullException("element");
-                _element = element;
+                _element = element ?? throw new ArgumentNullException("element");
                 element.Loaded += OnLoaded;
 
                 // Action for resizing and re-enable the size lookup
@@ -241,8 +231,7 @@ namespace MoSeqAcquire.Views.Behaviors
                 if (Enabled)
                 {
                     double totalWidth = _element.ActualWidth;
-                    var gv = _element.View as GridView;
-                    if (gv != null)
+                    if (_element.View is GridView gv)
                     {
                         double allowedSpace = totalWidth - GetAllocatedSpace(gv);
                         allowedSpace = allowedSpace - Margin;
@@ -259,9 +248,7 @@ namespace MoSeqAcquire.Views.Behaviors
             {
                 foreach (GridViewColumn t in gv.Columns)
                 {
-                    var gridViewColumnResizeBehavior =
-                        t.GetValue(GridViewColumnResizeBehaviorProperty) as GridViewColumnResizeBehavior;
-                    if (gridViewColumnResizeBehavior != null)
+                    if (t.GetValue(GridViewColumnResizeBehaviorProperty) is GridViewColumnResizeBehavior gridViewColumnResizeBehavior)
                     {
                         yield return gridViewColumnResizeBehavior;
                     }
@@ -273,9 +260,7 @@ namespace MoSeqAcquire.Views.Behaviors
                 double totalWidth = 0;
                 foreach (GridViewColumn t in gv.Columns)
                 {
-                    var gridViewColumnResizeBehavior =
-                        t.GetValue(GridViewColumnResizeBehaviorProperty) as GridViewColumnResizeBehavior;
-                    if (gridViewColumnResizeBehavior != null)
+                    if (t.GetValue(GridViewColumnResizeBehaviorProperty) is GridViewColumnResizeBehavior gridViewColumnResizeBehavior)
                     {
                         if (gridViewColumnResizeBehavior.IsStatic)
                         {

@@ -10,6 +10,7 @@ using SynapseTools;
 
 namespace SynapseTriggers
 {
+    [DisplayName("Synapse Set Mode")]
     [SettingsImplementation(typeof(SetSynapseModeConfig))]
     public class SetSynapseMode : BaseSynapseTrigger
     {

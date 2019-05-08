@@ -88,7 +88,7 @@
                       IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}"
                       ItemsSource="{Binding Path=Triggers}" 
                       
-                      bhv:GridViewColumnResize.Enabled="True">
+                      >
                 <!--<ItemsControl.ItemContainerStyle>
                     <Style TargetType="" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -181,7 +181,7 @@
                                               ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
                                               SelectedValue="{Binding Path=TriggerType}"
                                               SelectedValuePath="TriggerType"
-                                              DisplayMemberPath="TriggerType.Name" 
+                                              DisplayMemberPath="Name" 
                                               materialDesign:HintAssist.Hint="Triggering Event" 
                                               materialDesign:HintAssist.IsFloating="True"
                                               VerticalAlignment="Center"
@@ -192,7 +192,7 @@
                                               ItemsSource="{Binding Path=DataContext.AvailableActionTypes, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
                                               SelectedValue="{Binding Path=ActionType}" 
                                               SelectedValuePath="ActionType"
-                                              DisplayMemberPath="ActionType.Name" 
+                                              DisplayMemberPath="Name" 
                                               materialDesign:HintAssist.Hint="Action to Perform" 
                                               materialDesign:HintAssist.IsFloating="True"
                                               VerticalAlignment="Center"

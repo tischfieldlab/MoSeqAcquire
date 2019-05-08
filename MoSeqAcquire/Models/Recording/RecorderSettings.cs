@@ -22,12 +22,13 @@ namespace MoSeqAcquire.Models.Recording
     }
     public abstract class RecorderSettings : BaseConfiguration
     {
+        public RecorderSettings() : base() { }
     }
     public class GeneralRecordingSettings : BaseConfiguration, INotifyDataErrorInfo, IDataErrorInfo
     {
         private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }
         protected ValidationHelper Validator { get; private set; }
-        public GeneralRecordingSettings()
+        public GeneralRecordingSettings() : base()
         {
             Validator = new ValidationHelper();
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);

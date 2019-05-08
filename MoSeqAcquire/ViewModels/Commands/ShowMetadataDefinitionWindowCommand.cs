@@ -29,8 +29,10 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             if (this.metadataEditorWindow == null)
             {
-                this.metadataEditorWindow = new MetadataEditorWindow();
-                this.metadataEditorWindow.DataContext = this.ViewModel;
+                this.metadataEditorWindow = new MetadataEditorWindow
+                {
+                    DataContext = this.ViewModel
+                };
                 this.metadataEditorWindow.Closing += (sender, args) =>
                 {
                     (sender as MetadataEditorWindow).Hide();

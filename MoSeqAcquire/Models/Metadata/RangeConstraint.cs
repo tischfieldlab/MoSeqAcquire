@@ -42,9 +42,8 @@ namespace MoSeqAcquire.Models.Metadata
         }
         public override bool Equals(object obj)
         {
-            var rc = obj as RangeConstraint;
 
-            if (rc == null)
+            if (!(obj is RangeConstraint rc))
                 return false;
 
             if (!this.MinValue.Equals(rc.MinValue))

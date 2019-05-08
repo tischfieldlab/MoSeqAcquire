@@ -21,8 +21,10 @@ namespace MoSeqAcquire.Views.SystemInfo
             this.items.Add(new RamUsageMonitor());
             this.items.Add(new CpuUsageMonitor());
 
-            this.timer = new DispatcherTimer();
-            this.timer.Interval = TimeSpan.FromMilliseconds(1000);
+            this.timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(1000)
+            };
             this.timer.Tick += CheckTimer_Tick;
             this.timer.Start();
         }

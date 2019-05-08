@@ -11,6 +11,11 @@ namespace MoSeqAcquire.Models.Configuration
 {
     public abstract class BaseConfiguration : ObservableObject, IConfigSnapshotProvider
     {
+        public BaseConfiguration()
+        {
+            this.ApplyDefaults();
+        }
+
         protected IEnumerable<PropertyInfo> GetConfigurationProperties()
         {
             return this.GetType()

@@ -96,7 +96,7 @@ namespace MoSeqAcquire.Views.Controls
 
             if (this.mContainer != null)
             {
-                this.mContainer.SizeChanged += new SizeChangedEventHandler(this.container_SizeChanged);
+                this.mContainer.SizeChanged += new SizeChangedEventHandler(this.Container_SizeChanged);
 
                 this.Text = this.GetTrimmedPath(this.mContainer.ActualWidth);
             }
@@ -112,7 +112,7 @@ namespace MoSeqAcquire.Views.Controls
         private void PathTrimmingTextBlock_Unloaded(object sender, RoutedEventArgs e)
         {
             if (this.mContainer != null)
-                this.mContainer.SizeChanged -= this.container_SizeChanged;
+                this.mContainer.SizeChanged -= this.Container_SizeChanged;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace MoSeqAcquire.Views.Controls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void container_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Container_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (this.mContainer != null)
                 this.Text = this.GetTrimmedPath(this.mContainer.ActualWidth);
@@ -150,13 +150,15 @@ namespace MoSeqAcquire.Views.Controls
             bool widthOK = false;
             bool changedWidth = false;
 
-            TextBlock block = new TextBlock();
-            block.Style = this.Style;
-            block.FontWeight = this.FontWeight;
-            block.FontStyle = this.FontStyle;
-            block.FontStretch = this.FontStretch;
-            block.FontSize = this.FontSize;
-            block.FontFamily = this.FontFamily;
+            TextBlock block = new TextBlock
+            {
+                Style = this.Style,
+                FontWeight = this.FontWeight,
+                FontStyle = this.FontStyle,
+                FontStretch = this.FontStretch,
+                FontSize = this.FontSize,
+                FontFamily = this.FontFamily
+            };
 
             do
             {
@@ -212,9 +214,8 @@ namespace MoSeqAcquire.Views.Controls
                 child = VisualTreeHelper.GetParent(child);
             }
 
-            FrameworkElement frameworkParent = parent as FrameworkElement;
 
-            return frameworkParent != null ? frameworkParent.TemplatedParent as T : null;
+            return parent is FrameworkElement frameworkParent ? frameworkParent.TemplatedParent as T : null;
         }
     }
 }
