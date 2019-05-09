@@ -1,0 +1,103 @@
+﻿<Window x:Class="MoSeqAcquire.Views.TriggerEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mvmr="clr-namespace:MoSeqAcquire.ViewModels.Recording"
+        xmlns:ctrl="clr-namespace:MoSeqAcquire.Views.Controls"
+        xmlns:ext="clr-namespace:MoSeqAcquire.Views.Extensions"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="RecorderEditor" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2" Mode="PrimaryDark" Padding="16">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button Width="72" Height="48" Margin="8,0,8,0"
+                            Visibility="{Binding Path=IsNewTrigger, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}"
+                            Command="{Binding Path=CancelCommand}"
+                            ToolTip="Cancel">
+                        <materialDesign:PackIcon Kind="Cancel" Width="36" Height="36" />
+                    </Button>
+                    <Button Width="72" Height="48" Margin="8,0,8,0"
+                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                            Command="{Binding Path=NextCommand}"
+                            ToolTip="{Binding Path=ContinueHelp}">
+                        
+                        <materialDesign:PackIcon Kind="{Binding Path=ContinueIcon}" Width="36" Height="36" />
+                    </Button>
+                </StackPanel>
+                <materialDesign:PackIcon Kind="Cogs" Width="36" Height="36" Margin="0,0,16,0" />
+                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+            </DockPanel>
+        </materialDesign:ColorZone>
+        <materialDesign:Transitioner SelectedIndex="{Binding CurrentStep}" Grid.ColumnSpan="2" Grid.Row="1">
+            <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+                <DockPanel>
+                    <ComboBox ItemsSource="{Binding Path=AvailableActionTypes}" 
+                              SelectedValue="{Binding Path=SelectedTriggerType}" 
+                              SelectedValuePath="ActionType"
+                              DisplayMemberPath="Name"
+                              materialDesign:HintAssist.Hint="Select Trigger Action"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              Margin="0,-8,0,-8" 
+                              HorizontalAlignment="Center" 
+                              VerticalAlignment="Center" />
+                </DockPanel>
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <Grid DataContext="{Binding Path=TriggerViewModel}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="16">
+                        <TextBox Text="{Binding Path=Name}" 
+                                 Margin="16" 
+                                 materialDesign:HintAssist.Hint="Trigger Name" 
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                        <ComboBox ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                  SelectedValue="{Binding Path=TriggerType}"
+                                  SelectedValuePath="TriggerType"
+                                  DisplayMemberPath="Name" 
+                                  materialDesign:HintAssist.Hint="Triggering Event" 
+                                  materialDesign:HintAssist.IsFloating="True"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  Margin="16" />
+
+                        <StackPanel Orientation="Horizontal" Margin="16">
+                            <TextBlock Text="Is this action critical?" Margin="0,0,16,0" />
+                            <ToggleButton IsChecked="{Binding Path=IsCritical}" 
+                                          HorizontalAlignment="Center"
+                                          ToolTip="Critical"
+                                          Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <ctrl:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="1" Grid.Row="0" />
+                </Grid>
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
+    </Grid>
+</Window>

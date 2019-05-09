@@ -21,7 +21,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.rootViewModel = RootViewModel;
             this.triggers = new ObservableCollection<TriggerViewModel>();
             this.ro_triggers = new ReadOnlyObservableCollection<TriggerViewModel>(this.triggers);
-            this.PopulateAvailableTypes();
         }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public ReadOnlyObservableCollection<TriggerViewModel> Triggers { get => this.ro_triggers; }
@@ -31,23 +30,29 @@ namespace MoSeqAcquire.ViewModels.Triggers
             set => this.SetField(ref this.selectedTrigger, value);
         }
 
-        public void AddTrigger()
+        public void AddTrigger(TriggerViewModel Trigger)
         {
-            var vm = new TriggerViewModel(this.Root);
-            //vm.PropertyChanged += trigger_PropertyChanged;
-            this.triggers.Add(new TriggerViewModel(this.Root));
+            this.triggers.Add(Trigger);
         }
         public void AddTrigger(ProtocolTrigger ProtocolTrigger)
         {
-            var vm = new TriggerViewModel(this.Root)
+            this.AddTrigger(new TriggerViewModel(this.Root, ProtocolTrigger));
+        }
+        public string GetNextDefaultTriggerName()
+        {
+            string namebase = "Trigger";
+            string realname = "";
+            int count = 1;
+            while (count < int.MaxValue)
             {
-                Name = ProtocolTrigger.Name,
-                ActionType = ProtocolTrigger.GetActionType(),
-                TriggerType = ProtocolTrigger.GetEventType(),
-                IsCritical = ProtocolTrigger.Critical,
-            };
-            vm.Settings.ApplySnapshot(ProtocolTrigger.Config);
-            this.triggers.Add(vm);
+                realname = namebase + "_" + count.ToString();
+                if (this.triggers.Count(rvm => rvm.Name.Equals(realname)) == 0)
+                {
+                    break;
+                }
+                count++;
+            }
+            return realname;
         }
 
         public void RemoveTrigger(TriggerViewModel Trigger)
@@ -62,24 +67,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
         public void ResetStatuses()
         {
             this.triggers.ForEach(tvm => tvm.TriggerState = TriggerState.Queued);
-        }
-
-
-        
-
-        public ReadOnlyObservableCollection<AvailableTriggerTypeViewModel> AvailableTriggerTypes { get; protected set; }
-        public ReadOnlyObservableCollection<AvailableActionTypeViewModel> AvailableActionTypes { get; protected set; }
-        protected void PopulateAvailableTypes()
-        {
-            var oc1 = new ObservableCollection<AvailableTriggerTypeViewModel>(ProtocolHelpers.FindTriggerTypes().Select(t => new AvailableTriggerTypeViewModel(t)));
-            this.AvailableTriggerTypes = new ReadOnlyObservableCollection<AvailableTriggerTypeViewModel>(oc1);
-
-            var oc2 = new ObservableCollection<AvailableActionTypeViewModel>(ProtocolHelpers.FindTriggerActions().Select(t => new AvailableActionTypeViewModel(t.ComponentType)));
-            this.AvailableActionTypes = new ReadOnlyObservableCollection<AvailableActionTypeViewModel>(oc2);
-        }
-
-        
-
+        }     
     }
-
 }

@@ -21,35 +21,35 @@ namespace MoSeqAcquire.ViewModels.Commands
             if (this.ViewModel.IsProtocolLocked)
                 return false;
 
-            if (parameter != null && parameter is TriggerViewModel)
-            {
-                return true;
-            }
-
-            if (this.ViewModel.Triggers.SelectedTrigger != null)
-            {
-                return true;
-            }
-            return false;
+            var vm = this.GetTriggerViewModel(parameter);
+            return vm != null;
         }
 
         public override void Execute(object parameter)
         {
+            var vm = this.GetTriggerViewModel(parameter);
+            if (vm != null)
+            {
+                var dialog = new TriggerEditorWindow
+                {
+                    DataContext = new TriggerEditorViewModel(this.ViewModel, vm)
+                };
+                dialog.ShowDialog();
+            }
+        }
+
+        protected TriggerViewModel GetTriggerViewModel(object parameter)
+        {
             TriggerViewModel viewModel = null;
-            if (parameter != null && parameter is TriggerViewModel)
+            if (parameter is TriggerViewModel)
             {
                 viewModel = parameter as TriggerViewModel;
             }
-            else if(this.ViewModel.Triggers.SelectedTrigger != null)
+            else if (this.ViewModel.Triggers.SelectedTrigger != null)
             {
                 viewModel = this.ViewModel.Triggers.SelectedTrigger;
             }
-
-            var dialog = new TriggerConfigView
-            {
-                DataContext = viewModel
-            };
-            dialog.ShowDialog();
+            return viewModel;
         }
     }
 }

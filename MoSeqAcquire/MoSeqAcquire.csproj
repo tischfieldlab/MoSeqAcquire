@@ -206,6 +206,7 @@
     <Compile Include="ViewModels\TaskbarItemInfoViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerEditorViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
@@ -371,6 +372,9 @@
     </Compile>
     <Compile Include="Views\SystemInfo\SystemMonitorItemViewModel.cs" />
     <Compile Include="Views\SystemInfo\SystemMonitorViewModel.cs" />
+    <Compile Include="Views\TriggerViews\TriggerEditorWindow.xaml.cs">
+      <DependentUpon>TriggerEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TriggerViews\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
     </Compile>
@@ -490,6 +494,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PerformanceMonitor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TriggerViews\TriggerEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

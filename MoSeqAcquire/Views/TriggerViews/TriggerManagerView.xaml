@@ -86,16 +86,7 @@
             <!--SelectedItem="{Binding Path=SelectedTrigger}" -->
             <ItemsControl Name="ItemsGrid" 
                       IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}"
-                      ItemsSource="{Binding Path=Triggers}" 
-                      
-                      >
-                <!--<ItemsControl.ItemContainerStyle>
-                    <Style TargetType="" BasedOn="{StaticResource MaterialDesignGridViewItem}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                        <Setter Property="IsEnabled" Value="{Binding Path=IsEnabled}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>-->
+                      ItemsSource="{Binding Path=Triggers}" >
                 <ItemsControl.Style>
                     <Style TargetType="ItemsControl">
                         <Style.Triggers>
@@ -125,10 +116,6 @@
                         <StackPanel>
                             <DockPanel Margin="0,8">
                                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                    <ToggleButton IsChecked="{Binding Path=IsCritical}" 
-                                                  HorizontalAlignment="Center"
-                                                  ToolTip="Critical"
-                                                  Style="{StaticResource MaterialDesignSwitchToggleButton}" />
 
                                     <Button Width="24" Height="24" Margin="8,0,8,0"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
@@ -169,40 +156,34 @@
                                         </Style>
                                     </materialDesign:PackIcon.Style>
                                 </materialDesign:PackIcon>
-                                
+
                                 <WrapPanel>
-                                    <TextBox Width="150" Margin="0,0,16,0"
-                                             VerticalAlignment="Center"
-                                             materialDesign:HintAssist.Hint="Trigger Name" 
-                                             materialDesign:HintAssist.IsFloating="True"
-                                             Text="{Binding Path=Name}" />
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Path=Name}"
+                                                   Width="150" 
+                                                   Margin="0,0,16,0"
+                                                   VerticalAlignment="Center" />
 
-                                    <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
-                                              ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                                              SelectedValue="{Binding Path=TriggerType}"
-                                              SelectedValuePath="TriggerType"
-                                              DisplayMemberPath="Name" 
-                                              materialDesign:HintAssist.Hint="Triggering Event" 
-                                              materialDesign:HintAssist.IsFloating="True"
-                                              VerticalAlignment="Center"
-                                              Width="250"
-                                              Margin="0,0,16,0" 
-                                    />
-                                    <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
-                                              ItemsSource="{Binding Path=DataContext.AvailableActionTypes, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                                              SelectedValue="{Binding Path=ActionType}" 
-                                              SelectedValuePath="ActionType"
-                                              DisplayMemberPath="Name" 
-                                              materialDesign:HintAssist.Hint="Action to Perform" 
-                                              materialDesign:HintAssist.IsFloating="True"
-                                              VerticalAlignment="Center"
-                                              Width="200"
-                                              Margin="0,0,16,0" 
-                                    />
+                                        <TextBlock Text="(marked as critical)" />
+                                    </StackPanel>
 
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="On Event:" Width="75" />
+                                            <TextBlock Text="{Binding Path=TriggerEventName}"
+                                                   Width="250" 
+                                                   Margin="0,0,16,0"
+                                                   VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Execute:" Width="75" />
+                                            <TextBlock Text="{Binding Path=TriggerActionName}"
+                                                   Width="250" 
+                                                   Margin="0,0,16,0"
+                                                   VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </StackPanel>
                                 </WrapPanel>
-
-                                
                             </DockPanel>
                             <Separator Style="{StaticResource MaterialDesignLightSeparator}"  />
                         </StackPanel>
