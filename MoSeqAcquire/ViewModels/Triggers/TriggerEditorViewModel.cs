@@ -97,6 +97,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
                     if (this.selectedTriggerActionType != null)
                     {
                         this.TriggerViewModel = new TriggerViewModel(this.rootViewModel, this.selectedTriggerActionType);
+                        this.TriggerViewModel.TriggerType = this.AvailableTriggerTypes.FirstOrDefault().TriggerType;
                         this.CurrentStep = 1;
                         this.NotifyPropertyChanged(null);
                     }

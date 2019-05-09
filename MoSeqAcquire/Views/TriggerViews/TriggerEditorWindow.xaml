@@ -7,6 +7,7 @@
         xmlns:ctrl="clr-namespace:MoSeqAcquire.Views.Controls"
         xmlns:ext="clr-namespace:MoSeqAcquire.Views.Extensions"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -67,35 +68,72 @@
             </materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide>
                 <Grid DataContext="{Binding Path=TriggerViewModel}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="16">
-                        <TextBox Text="{Binding Path=Name}" 
-                                 Margin="16" 
-                                 materialDesign:HintAssist.Hint="Trigger Name" 
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-                        <ComboBox ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                  SelectedValue="{Binding Path=TriggerType}"
-                                  SelectedValuePath="TriggerType"
-                                  DisplayMemberPath="Name" 
-                                  materialDesign:HintAssist.Hint="Triggering Event" 
-                                  materialDesign:HintAssist.IsFloating="True"
-                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  Margin="16" />
 
-                        <StackPanel Orientation="Horizontal" Margin="16">
-                            <TextBlock Text="Is this action critical?" Margin="0,0,16,0" />
-                            <ToggleButton IsChecked="{Binding Path=IsCritical}" 
-                                          HorizontalAlignment="Center"
-                                          ToolTip="Critical"
-                                          Style="{StaticResource MaterialDesignSwitchToggleButton}" />
-                        </StackPanel>
-                    </StackPanel>
+                    <dragablz:TabablzControl Grid.Column="1" Grid.Row="0" Margin="0" >
+                        <dragablz:TabablzControl.InterTabController>
+                            <dragablz:InterTabController />
+                        </dragablz:TabablzControl.InterTabController>
+                        <TabItem Header="Basic Info">
+                            <StackPanel >
+                                <TextBox Text="{Binding Path=Name}" 
+                                     Margin="16" 
+                                     materialDesign:HintAssist.Hint="Trigger Name" 
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-                    <ctrl:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="1" Grid.Row="0" />
+                                <ComboBox ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                      SelectedValue="{Binding Path=TriggerType}"
+                                      SelectedValuePath="TriggerType"
+                                      DisplayMemberPath="Name" 
+                                      materialDesign:HintAssist.Hint="Triggering Event" 
+                                      materialDesign:HintAssist.IsFloating="True"
+                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      Margin="16" />
+                                <StackPanel Margin="16">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock Text="Is this action critical?" Margin="0,0,32,0" />
+                                        <ToggleButton IsChecked="{Binding Path=IsCritical}" 
+                                                  HorizontalAlignment="Center"
+                                                  ToolTip="Critical"
+                                                  Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                    </StackPanel>
+                                    <TextBlock Margin="0,8" 
+                                           FontSize="10"
+                                           Foreground="{DynamicResource MaterialDesignBodyLight}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=IsCritical}" Value="true">
+                                                        <Setter Property="Text" Value="A fault will cause the recording to abort." />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=IsCritical}" Value="false">
+                                                        <Setter Property="Text" Value="A fault will NOT cause the recording to abort." />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Settings">
+                            <ctrl:PropertyView SelectedObject="{Binding Path=Settings}"  />
+                        </TabItem>
+                        <TabItem Header="More...">
+                            <TabItem.Style>
+                                <Style TargetType="TabItem">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=HasDesignerImplementation}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TabItem.Style>
+                            <ContentPresenter Content="{Binding Path=DesignerImplementation}" />
+                        </TabItem>
+                    </dragablz:TabablzControl>
+                    
                 </Grid>
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>

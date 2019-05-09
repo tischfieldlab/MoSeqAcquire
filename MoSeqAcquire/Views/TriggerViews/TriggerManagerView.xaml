@@ -158,28 +158,47 @@
                                 </materialDesign:PackIcon>
 
                                 <WrapPanel>
-                                    <StackPanel>
+                                    <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Path=Name}"
                                                    Width="150" 
                                                    Margin="0,0,16,0"
                                                    VerticalAlignment="Center" />
 
-                                        <TextBlock Text="(marked as critical)" />
+                                        <TextBlock Text="(marked as critical)"
+                                                   Margin="0,4,0,0"
+                                                   Foreground="{DynamicResource MaterialDesignBodyLight}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=IsCritical}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </StackPanel>
 
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="On Event:" Width="75" />
-                                            <TextBlock Text="{Binding Path=TriggerEventName}"
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <TextBlock Text="Execute:" 
+                                                       Width="75" 
+                                                       TextAlignment="Right"
+                                                       Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                                            <TextBlock Text="{Binding Path=TriggerActionName}"
                                                    Width="250" 
-                                                   Margin="0,0,16,0"
+                                                   Margin="16,0,16,0"
                                                    VerticalAlignment="Center" />
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Execute:" Width="75" />
-                                            <TextBlock Text="{Binding Path=TriggerActionName}"
+                                            <TextBlock Text="On Event:" 
+                                                       Width="75" 
+                                                       TextAlignment="Right"
+                                                       Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                                            <TextBlock Text="{Binding Path=TriggerEventName}"
                                                    Width="250" 
-                                                   Margin="0,0,16,0"
+                                                   Margin="16,0,16,0"
                                                    VerticalAlignment="Center" />
                                         </StackPanel>
                                     </StackPanel>

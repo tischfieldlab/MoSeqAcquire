@@ -54,7 +54,7 @@
                             ToolTip="Reset Metadata Values">
                         <materialDesign:PackIcon Kind="Restore"  />
                     </Button>
-                    <TextBlock Text="Recording Metadata" VerticalAlignment="Center" />
+                    <TextBlock Text="Metadata" VerticalAlignment="Center" />
                 </DockPanel>
             </DataTemplate>
         </GroupBox.HeaderTemplate>
