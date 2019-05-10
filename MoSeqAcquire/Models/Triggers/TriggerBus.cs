@@ -9,18 +9,18 @@ namespace MoSeqAcquire.Models.Triggers
 {
     public class TriggerBus
     {
-        protected Dictionary<Type, SortedSet<TriggerAction>> subscribers;
+        protected Dictionary<Type, List<TriggerAction>> subscribers;
 
         public TriggerBus()
         {
-            this.subscribers = new Dictionary<Type, SortedSet<TriggerAction>>();
+            this.subscribers = new Dictionary<Type, List<TriggerAction>>();
         }
         
         public void Subscribe(Type Trigger, TriggerAction triggerAction)
         {
             if (!this.subscribers.ContainsKey(Trigger))
             {
-                this.subscribers[Trigger] = new SortedSet<TriggerAction>(new PriorityComparer());
+                this.subscribers[Trigger] = new List<TriggerAction>();
             }
             this.subscribers[Trigger].Add(triggerAction);
         }
@@ -34,6 +34,7 @@ namespace MoSeqAcquire.Models.Triggers
             if (this.subscribers.ContainsKey(typeof(TTrigger)))
             {
                 var tasks = this.subscribers[typeof(TTrigger)]
+                                .OrderByDescending(t => t.Priority)
                                 .Select(t => Task.Run(() => {
                                     t.Execute(trigger);
                                 })).ToArray();

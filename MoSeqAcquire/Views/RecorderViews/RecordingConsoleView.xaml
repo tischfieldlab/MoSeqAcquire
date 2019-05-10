@@ -45,8 +45,22 @@
 
                 <StackPanel Grid.Column="0" Margin="16">
                     <WrapPanel>
-                        <Button Content="Start" Width="100" Command="{Binding Path=Root.Commands.StartRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}"  Margin="8" />
-                        <Button Content="Stop" Width="100" Command="{Binding Path=Root.Commands.StopRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="8" />
+                        <Button Width="100" Margin="8"
+                                Command="{Binding Path=Root.Commands.StartRecording}" 
+                                Style="{StaticResource MaterialDesignRaisedAccentButton}" >
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="RecordRec" Margin="0,0,8,0" Width="24" Height="24" />
+                                <TextBlock Text="Start" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Width="100" Margin="8"
+                                Command="{Binding Path=Root.Commands.StopRecording}" 
+                                Style="{StaticResource MaterialDesignRaisedAccentButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Stop" Margin="0,0,8,0" Width="24" Height="24" />
+                                <TextBlock Text="Stop" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </WrapPanel>
                     <mvrv:RecorderProgress Margin="0,16,0,0" />
                 </StackPanel>

@@ -132,31 +132,121 @@
                                         <materialDesign:PackIcon Kind="Close"  />
                                     </Button>
                                 </StackPanel>
-                                <materialDesign:PackIcon VerticalAlignment="Center" Margin="8,0,16,0">
-                                    <materialDesign:PackIcon.Style>
-                                        <Style TargetType="materialDesign:PackIcon">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
-                                                    <Setter Property="Kind" Value="Timer" />
-                                                    <Setter Property="ToolTip" Value="Trigger is queued" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
-                                                    <Setter Property="Kind" Value="RunFast" />
-                                                    <Setter Property="ToolTip" Value="Trigger is currently running" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
-                                                    <Setter Property="Kind" Value="Check" />
-                                                    <Setter Property="ToolTip" Value="Trigger has completed successfuly" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
-                                                    <Setter Property="Kind" Value="Close" />
-                                                    <Setter Property="ToolTip" Value="{Binding Path=TriggerStateMessage}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </materialDesign:PackIcon.Style>
-                                </materialDesign:PackIcon>
-
+                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        VerticalAlignment="Center" Margin="8,0,16,0"
+                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                                    <Button.CommandParameter>
+                                        <StackPanel Margin="16">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Margin="0,0,16,0" 
+                                                                         Width="32" Height="32"
+                                                                         VerticalAlignment="Center">
+                                                    <materialDesign:PackIcon.Style>
+                                                        <Style TargetType="materialDesign:PackIcon">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
+                                                                    <Setter Property="Kind" Value="Timer" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
+                                                                    <Setter Property="Kind" Value="RunFast" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
+                                                                    <Setter Property="Kind" Value="Check" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
+                                                                    <Setter Property="Kind" Value="WarningOutline" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </materialDesign:PackIcon.Style>
+                                                </materialDesign:PackIcon>
+                                                <TextBlock VerticalAlignment="Center" >
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTitleTextBlock}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
+                                                                    <Setter Property="Text" Value="Trigger is queued" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
+                                                                    <Setter Property="Text" Value="Trigger is currently running" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
+                                                                    <Setter Property="Text" Value="Trigger has completed successfuly" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
+                                                                    <Setter Property="Text" Value="Trigger has faulted" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="0,16,0,0">
+                                                <StackPanel.Style>
+                                                    <Style TargetType="StackPanel">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </StackPanel.Style>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                                    <TextBlock TextWrapping="Wrap" MaxWidth="500" MaxHeight="300">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
+                                                                        <Setter Property="Text" Value="{Binding Path=TriggerStateMessage}" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </ScrollViewer>
+                                            </StackPanel>
+                                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                                    IsCancel="True" Margin="0,16,0,0"
+                                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                    HorizontalAlignment="Center"> 
+                                                Close
+                                            </Button>
+                                        </StackPanel>
+                                    </Button.CommandParameter>
+                                    <materialDesign:PackIcon >
+                                        <materialDesign:PackIcon.Style>
+                                            <Style TargetType="materialDesign:PackIcon">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
+                                                        <Setter Property="Kind" Value="Timer" />
+                                                        <Setter Property="ToolTip" Value="Trigger is queued" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
+                                                        <Setter Property="Kind" Value="RunFast" />
+                                                        <Setter Property="ToolTip" Value="Trigger is currently running" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
+                                                        <Setter Property="Kind" Value="Check" />
+                                                        <Setter Property="ToolTip" Value="Trigger has completed successfuly" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
+                                                        <Setter Property="Kind" Value="WarningOutline" />
+                                                        <Setter Property="ToolTip" Value="{Binding Path=TriggerStateMessage}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </materialDesign:PackIcon.Style>
+                                    </materialDesign:PackIcon>
+                                </Button>
                                 <WrapPanel>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Path=Name}"

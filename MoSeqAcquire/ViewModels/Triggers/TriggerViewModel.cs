@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Models.Utility;
@@ -62,6 +63,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             }
             this.trigger = (TriggerAction)Activator.CreateInstance(this.actionType);
             this.RegisterTrigger();
+            this.PropertyChanged += (s, e) => { this.RegisterTrigger(); };
         }
 
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
@@ -106,7 +108,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 this.NotifyPropertyChanged();
             }
         }
-        public TriggerConfig Settings { get => this.trigger.Config; }
+        public BaseConfiguration Settings { get => this.trigger.Settings; }
         public TriggerActionSpecification Specification
         {
             get => this.trigger.Specification as TriggerActionSpecification;

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.AvalonEdit.Document;
 using MoSeqAcquire.Models.Attributes;
-using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Triggers;
 
 namespace ScriptingTriggers
@@ -16,7 +17,46 @@ namespace ScriptingTriggers
     [DesignerImplementation(typeof(ScriptingTriggersDesigner))]
     public class RunScriptBlock : TriggerAction
     {
-        protected override Action<Trigger> Action => throw new NotImplementedException();
+        protected override Action<Trigger> Action => delegate (Trigger trigger)
+        {
+            var settings = this.Settings as RunScriptBlockSettings;
+
+            Process p = new Process();
+            ProcessStartInfo info = new ProcessStartInfo();
+
+            info.FileName = "cmd.exe";
+            info.RedirectStandardInput = true;
+            //info.RedirectStandardOutput = true;
+
+            info.UseShellExecute = false;
+            info.CreateNoWindow = false;
+            if (settings.WorkingDirectory != null && !String.Empty.Equals(settings.WorkingDirectory))
+            {
+                info.WorkingDirectory = settings.WorkingDirectory;
+            }
+
+            p.StartInfo = info;
+            //p.OutputDataReceived += new DataReceivedEventHandler(this.OutputRecievedHandler);
+
+            p.Start();
+            //p.BeginOutputReadLine();
+
+            String[] command;
+            command = settings.ScriptBlock.Split('\n');  
+
+            StreamWriter sw = p.StandardInput;
+            if (sw.BaseStream.CanWrite)
+            {
+                foreach (var c in command)
+                {
+                    sw.WriteLine(c);
+                }
+            }
+
+            sw.Close();
+            p.WaitForExit();
+            p.Close();
+        };
     }
 
     public class RunScriptBlockSettings : TriggerConfig
