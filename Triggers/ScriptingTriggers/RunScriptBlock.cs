@@ -26,7 +26,7 @@ namespace ScriptingTriggers
 
             info.FileName = "cmd.exe";
             info.RedirectStandardInput = true;
-            //info.RedirectStandardOutput = true;
+            info.RedirectStandardOutput = true;
 
             info.UseShellExecute = false;
             info.CreateNoWindow = false;
@@ -36,10 +36,10 @@ namespace ScriptingTriggers
             }
 
             p.StartInfo = info;
-            //p.OutputDataReceived += new DataReceivedEventHandler(this.OutputRecievedHandler);
+            p.OutputDataReceived += P_OutputDataReceived;
 
             p.Start();
-            //p.BeginOutputReadLine();
+            p.BeginOutputReadLine();
 
             String[] command;
             command = settings.ScriptBlock.Split('\n');  
@@ -57,6 +57,11 @@ namespace ScriptingTriggers
             p.WaitForExit();
             p.Close();
         };
+
+        private void P_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            this.Log.Information(e.Data);
+        }
     }
 
     public class RunScriptBlockSettings : TriggerConfig

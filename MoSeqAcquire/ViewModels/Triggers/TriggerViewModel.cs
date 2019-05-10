@@ -166,18 +166,21 @@ namespace MoSeqAcquire.ViewModels.Triggers
             }
         }
 
-        private void Trigger_TriggerExecutionFinished(object sender, TriggerLifetimeEventArgs e)
+        private void Trigger_TriggerExecutionFinished(object sender, TriggerFinishedEventArgs e)
         {
+            this.TriggerStateMessage = e.Output;
             this.TriggerState = TriggerState.Completed;
         }
 
         private void Trigger_TriggerExecutionStarted(object sender, TriggerLifetimeEventArgs e)
         {
+            this.TriggerStateMessage = string.Empty;
             this.TriggerState = TriggerState.Running;
         }
         private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
         {
-            this.TriggerStateMessage = e.Exception.GetAllMessages();
+            this.TriggerStateMessage = e.Output;
+            //this.TriggerStateMessage = e.Exception.GetAllMessages();
             this.TriggerState = TriggerState.Faulted;
             if(this.IsCritical)
             {

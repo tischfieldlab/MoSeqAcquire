@@ -10,7 +10,13 @@ namespace MoSeqAcquire.Models.Triggers
     {
         public Trigger Trigger;
     }
-    public class TriggerFaultedEventArgs : TriggerLifetimeEventArgs
+
+    public class TriggerFinishedEventArgs : TriggerLifetimeEventArgs
+    {
+        public string Output;
+    }
+
+    public class TriggerFaultedEventArgs : TriggerFinishedEventArgs
     {
         public Exception Exception;
     }

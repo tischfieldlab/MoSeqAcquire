@@ -146,15 +146,18 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
                                                                     <Setter Property="Kind" Value="Timer" />
+
                                                                 </DataTrigger>
                                                                 <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Running}">
                                                                     <Setter Property="Kind" Value="RunFast" />
                                                                 </DataTrigger>
                                                                 <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Completed}">
                                                                     <Setter Property="Kind" Value="Check" />
+                                                                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueDarkBrush}" />
                                                                 </DataTrigger>
                                                                 <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
                                                                     <Setter Property="Kind" Value="WarningOutline" />
+                                                                    <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -175,6 +178,7 @@
                                                                 </DataTrigger>
                                                                 <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
                                                                     <Setter Property="Text" Value="Trigger has faulted" />
+                                                                    <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -200,18 +204,13 @@
                                                         </Style.Triggers>
                                                     </Style>
                                                 </StackPanel.Style>
-                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                                    <TextBlock TextWrapping="Wrap" MaxWidth="500" MaxHeight="300">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
-                                                                        <Setter Property="Text" Value="{Binding Path=TriggerStateMessage}" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
+                                                <TextBlock Text="Execution Output:" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+                                                <ScrollViewer MaxWidth="800" 
+                                                              MaxHeight="500"
+                                                              VerticalScrollBarVisibility="Auto" 
+                                                              HorizontalScrollBarVisibility="Auto">
+                                                    <TextBlock Text="{Binding Path=TriggerStateMessage}"
+                                                               FontFamily="Consolas" />
                                                 </ScrollViewer>
                                             </StackPanel>
                                             <Button Style="{StaticResource MaterialDesignFlatButton}"
@@ -222,7 +221,7 @@
                                             </Button>
                                         </StackPanel>
                                     </Button.CommandParameter>
-                                    <materialDesign:PackIcon >
+                                    <materialDesign:PackIcon Width="24" Height="24" >
                                         <materialDesign:PackIcon.Style>
                                             <Style TargetType="materialDesign:PackIcon">
                                                 <Style.Triggers>
@@ -240,7 +239,8 @@
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
                                                         <Setter Property="Kind" Value="WarningOutline" />
-                                                        <Setter Property="ToolTip" Value="{Binding Path=TriggerStateMessage}" />
+                                                        <Setter Property="ToolTip" Value="Trigger faulted during execution" />
+                                                        <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
