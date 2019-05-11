@@ -35,30 +35,6 @@ namespace MoSeqAcquire.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("red")]
-        public string ThemePrimaryColor {
-            get {
-                return ((string)(this["ThemePrimaryColor"]));
-            }
-            set {
-                this["ThemePrimaryColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("yellow")]
-        public string ThemeAccentColor {
-            get {
-                return ((string)(this["ThemeAccentColor"]));
-            }
-            set {
-                this["ThemeAccentColor"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -119,6 +95,43 @@ namespace MoSeqAcquire.Properties {
         public int MaxRecentProtocolsToRemember {
             get {
                 return ((int)(this["MaxRecentProtocolsToRemember"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("green")]
+        public string ThemePrimaryColor {
+            get {
+                return ((string)(this["ThemePrimaryColor"]));
+            }
+            set {
+                this["ThemePrimaryColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("blue")]
+        public string ThemeAccentColor {
+            get {
+                return ((string)(this["ThemeAccentColor"]));
+            }
+            set {
+                this["ThemeAccentColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Synchronous")]
+        public Models.Triggers.TriggerExecutionMode TriggersExecutionMode {
+            get {
+                return ((Models.Triggers.TriggerExecutionMode)(this["TriggersExecutionMode"]));
+            }
+            set
+            {
+                this["TriggersExecutionMode"] = value;
             }
         }
     }

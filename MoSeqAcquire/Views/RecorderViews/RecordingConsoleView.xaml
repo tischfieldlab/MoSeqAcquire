@@ -83,13 +83,9 @@
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ItemsControl Margin="8" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" >
-                <ItemsControl.ItemsSource>
-                    <CompositeCollection >
-                        <mvrv:RecorderItemsView />
-                        <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
-                        <metadata:MetadataList />
-                    </CompositeCollection>
-                </ItemsControl.ItemsSource>
+                <mvrv:RecorderItemsView />
+                <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
+                <metadata:MetadataList />
             </ItemsControl>
         </ScrollViewer>
     </Grid>

@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MoSeqAcquire.Views
+namespace MoSeqAcquire.Views.AppSettings
 {
     /// <summary>
-    /// Interaction logic for ApplicationSettingsWindow.xaml
+    /// Interaction logic for TriggerSettings.xaml
     /// </summary>
-    public partial class ApplicationSettingsWindow : Window
+    public partial class TriggerSettings : UserControl
     {
-        public ApplicationSettingsWindow()
+        public TriggerSettings()
         {
             InitializeComponent();
         }

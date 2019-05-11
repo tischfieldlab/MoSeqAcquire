@@ -1,4 +1,5 @@
 ﻿using MoSeqAcquire.Models.Configuration;
+using MoSeqAcquire.Views.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Triggers
 {
+    [Serializable]
+    public enum TriggerExecutionMode
+    {
+        Synchronous,
+        Parallel
+    }
     public class TriggerBus
     {
         protected Dictionary<Type, List<TriggerAction>> subscribers;
@@ -33,12 +40,29 @@ namespace MoSeqAcquire.Models.Triggers
         {
             if (this.subscribers.ContainsKey(typeof(TTrigger)))
             {
-                var tasks = this.subscribers[typeof(TTrigger)]
-                                .OrderByDescending(t => t.Priority)
-                                .Select(t => Task.Run(() => {
-                                    t.Execute(trigger);
-                                })).ToArray();
-                Task.WaitAll(tasks); // wait for all triggers to complete
+                if (Properties.Settings.Default.TriggersExecutionMode == TriggerExecutionMode.Parallel)
+                {
+                    Task[] tasks = this.subscribers[typeof(TTrigger)]
+                                    .OrderByDescending(t => t.Priority)
+                                    .Select(t => Task.Run(() =>
+                                    {
+                                        t.Execute(trigger);
+                                    })).ToArray();
+                    Task.WaitAll(tasks); // wait for all triggers to complete
+                }
+                else
+                {
+                    Task tasks = this.subscribers[typeof(TTrigger)]
+                        .OrderByDescending(t => t.Priority)
+                        .Aggregate<TriggerAction, Task>(Task.CompletedTask, (prev, next) =>
+                        {
+                            return prev.ContinueWith((task) =>
+                            {
+                                next.Execute(trigger);
+                            });
+                        });
+                    Task.WaitAll(tasks);
+                }
             }
         }
     }

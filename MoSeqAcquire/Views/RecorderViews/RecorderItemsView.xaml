@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="MoSeqAcquire.Views.RecorderViews.RecorderItemsView"
+﻿<controls:SubsystemControl x:Class="MoSeqAcquire.Views.RecorderViews.RecorderItemsView"
+             xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -128,4 +129,4 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </GroupBox>
-</UserControl>
+</controls:SubsystemControl>

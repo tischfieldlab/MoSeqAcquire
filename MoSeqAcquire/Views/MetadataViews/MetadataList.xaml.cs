@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MoSeqAcquire.Views.Controls;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -7,7 +8,7 @@ namespace MoSeqAcquire.Views.Metadata
     /// <summary>
     /// Interaction logic for PropertyView.xaml
     /// </summary>
-    public partial class MetadataList : UserControl
+    public partial class MetadataList : SubsystemControl
     {
         public MetadataList()
         {

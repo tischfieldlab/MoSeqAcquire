@@ -1,4 +1,4 @@
-﻿using MoSeqAcquire.Views.Controls;
+﻿using MoSeqAcquire.ViewModels.AppSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +11,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MoSeqAcquire.Views.RecorderViews
+namespace MoSeqAcquire.Views
 {
     /// <summary>
-    /// Interaction logic for RecorderItemsView.xaml
+    /// Interaction logic for ApplicationSettingsWindow.xaml
     /// </summary>
-    public partial class RecorderItemsView : SubsystemControl
+    public partial class ApplicationSettingsWindow : Window
     {
-        public RecorderItemsView()
+        public ApplicationSettingsWindow()
         {
             InitializeComponent();
+            this.DataContext = new ApplicationSettingsViewModel();
         }
     }
 }

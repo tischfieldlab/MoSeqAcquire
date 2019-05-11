@@ -26,16 +26,17 @@
                                 SelectedValuePath="Value" 
                                 SelectedValue="{Binding Path=GeneralSettings.RecordingMode}" />
 
-
-        <TextBox Width="100" Height="40" Margin="0,0,20,16" VerticalAlignment="Center"
-                                materialDesign:HintAssist.Hint="Amount of Time" 
-                                materialDesign:HintAssist.IsFloating="True"
-                                Text="{Binding Path=GeneralSettings.RecordingTime, ValidatesOnNotifyDataErrors=True}"
-                                Visibility="{Binding Path=GeneralSettings.RecordingMode, 
+        <materialDesign:TimePicker materialDesign:HintAssist.Hint="Amount of Time"
+                                   materialDesign:HintAssist.IsFloating="True"
+                                   Is24Hours="True"
+                                   WithSeconds="True"
+                                   Margin="0,0,20,16" 
+                                   VerticalAlignment="Center"
+                                   Width="100" Height="40"
+                                   Text="{Binding Path=GeneralSettings.RecordingTime, ValidatesOnNotifyDataErrors=True}"
+                                   Visibility="{Binding Path=GeneralSettings.RecordingMode, 
                                                      Converter={StaticResource EnumToVisibilityConverter}, 
-                                                     ConverterParameter={x:Static mio:RecordingMode.TimeCount}}"
-                                />
-
+                                                     ConverterParameter={x:Static mio:RecordingMode.TimeCount}}" />
 
         <ctrl:FileChooser MinWidth="320" Height="40" Margin="0,0,20,16" VerticalAlignment="Center"
                                       PickerType="Folder" 

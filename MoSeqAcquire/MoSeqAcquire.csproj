@@ -169,6 +169,12 @@
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\AppSettings\ApplicationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\BaseComponentSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\RecordingSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\SystemSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\TriggerSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Commands\OpenAppSettingsCommand.cs" />
     <Compile Include="ViewModels\Commands\ResetMetadataItemValuesCommand.cs" />
     <Compile Include="ViewModels\Commands\CloseMetadataItemDefinitionEditorCommand.cs" />
     <Compile Include="ViewModels\Commands\AddMetadataItemCommand.cs" />
@@ -213,8 +219,14 @@
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
-    <Compile Include="Views\ApplicationSettingsWindow.xaml.cs">
+    <Compile Include="Views\AppSettings\ApplicationSettingsWindow.xaml.cs">
       <DependentUpon>ApplicationSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppSettings\SystemSettings.xaml.cs">
+      <DependentUpon>SystemSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppSettings\TriggerSettings.xaml.cs">
+      <DependentUpon>TriggerSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\SetPropertyAction.cs" />
@@ -224,6 +236,7 @@
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
+    <Compile Include="Views\Controls\SubsystemControl.cs" />
     <Compile Include="Views\Converters\MathConverter.cs" />
     <Compile Include="Views\Converters\PackIconImageSourceConverter.cs" />
     <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
@@ -396,7 +409,15 @@
     <Compile Include="Views\ThemeSettingsDialog.xaml.cs">
       <DependentUpon>ThemeSettingsDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ApplicationSettingsWindow.xaml">
+    <Page Include="Views\AppSettings\ApplicationSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AppSettings\SystemSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AppSettings\TriggerSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

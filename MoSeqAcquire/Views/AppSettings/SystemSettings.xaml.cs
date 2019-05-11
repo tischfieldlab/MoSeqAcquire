@@ -1,5 +1,4 @@
-﻿using MoSeqAcquire.Views.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MoSeqAcquire.Views.RecorderViews
+namespace MoSeqAcquire.Views.AppSettings
 {
     /// <summary>
-    /// Interaction logic for RecorderItemsView.xaml
+    /// Interaction logic for TriggerSettings.xaml
     /// </summary>
-    public partial class RecorderItemsView : SubsystemControl
+    public partial class SystemSettings : UserControl
     {
-        public RecorderItemsView()
+        public SystemSettings()
         {
             InitializeComponent();
         }

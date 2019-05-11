@@ -127,7 +127,13 @@
                                 <materialDesign:PackIcon Kind="Pulse" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem Header="Preferences" Command="{Binding Path=Commands.OpenAppSettings}" >
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Settings" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
+                    
                 </Menu>
             </DockPanel>
             
