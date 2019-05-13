@@ -1,6 +1,7 @@
 ﻿using MoSeqAcquire.Views.Controls;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace MoSeqAcquire.Views.Metadata
@@ -22,6 +23,10 @@ namespace MoSeqAcquire.Views.Metadata
             if (e.OriginalSource.GetType() == typeof(DataGridCell))
             {
                 cell = e.OriginalSource as DataGridCell;
+            }
+            else if(e.OriginalSource.GetType() == typeof(Hyperlink))
+            {
+                return;
             }
             else
             {
