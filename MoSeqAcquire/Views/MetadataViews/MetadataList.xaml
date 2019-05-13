@@ -55,11 +55,11 @@
                             ToolTip="Reset Metadata Values">
                         <materialDesign:PackIcon Kind="Restore"  />
                     </Button>
-                    <TextBlock Text="Metadata" VerticalAlignment="Center" />
+                    <TextBlock Text="Metadata" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                 </DockPanel>
             </DataTemplate>
         </GroupBox.HeaderTemplate>
-        <DataGrid Margin="-9" DataContext="{Binding Path=RecordingMetadata}"
+        <DataGrid Margin="-9"
               HorizontalContentAlignment="Stretch"
               ItemsSource="{Binding Path=Items}"
               SelectedItem="{Binding Path=CurrentItem}"

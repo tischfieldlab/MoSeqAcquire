@@ -24,7 +24,7 @@
                                         ToolTip="Add New Recorder">
                         <materialDesign:PackIcon Kind="Plus"  />
                     </Button>
-                    <TextBlock Text="Recorders" VerticalAlignment="Center" />
+                    <TextBlock Text="Recorders" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                 </DockPanel>
             </DataTemplate>
         </GroupBox.HeaderTemplate>

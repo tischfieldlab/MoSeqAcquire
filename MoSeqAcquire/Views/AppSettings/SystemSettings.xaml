@@ -8,30 +8,94 @@
              xmlns:triggers="clr-namespace:MoSeqAcquire.Models.Triggers"
              xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
-            <GroupBox Header="Plugin Search Paths" Margin="16">
-                <ListBox ItemsSource="{Binding Path=PluginPaths}" HorizontalContentAlignment="Stretch">
+            <GroupBox Header="{Binding}" Margin="16" Style="{DynamicResource MaterialDesignCardGroupBox}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                    Command="{Binding Path=AddPluginPath}"
+                                    ToolTip="Add New Plugin Path">
+                                <materialDesign:PackIcon Kind="Plus"  />
+                            </Button>
+                            <TextBlock Text="Plugin Search Paths (requires application restart)" VerticalAlignment="Center"  />
+                        </DockPanel>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <ListBox ItemsSource="{Binding Path=PluginPaths}" HorizontalContentAlignment="Stretch" Margin="-8">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <controls:FileChooser SelectedPath="{Binding Path=.}" PickerType="Folder"  />
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                        Command="{Binding Path=DataContext.RemovePluginPath, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}"
+                                        ToolTip="Remove Plugin Path">
+                                    <materialDesign:PackIcon Kind="Close"  />
+                                </Button>
+                                <controls:FileChooser SelectedPath="{Binding Path=Path}" PickerType="Folder" Margin="0,0,24,0"  />
+                            </DockPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </GroupBox>
-            <GroupBox Header="Resource Warning Threshold" Margin="16">
+            <GroupBox Header="Resource Warning Threshold" Margin="16" Style="{DynamicResource MaterialDesignCardGroupBox}">
                 <StackPanel>
-                    <TextBox Text=""
-                             materialDesign:HintAssist.IsFloating="True"
-                             materialDesign:HintAssist.Hint="CPU Threshold (Percent CPU)" />
-                    <TextBox Text=""
-                             materialDesign:HintAssist.IsFloating="True"
-                             materialDesign:HintAssist.Hint="RAM Threshold (Percent RAM Free)" />
-                    <TextBox Text=""
-                             materialDesign:HintAssist.IsFloating="True"
-                             materialDesign:HintAssist.Hint="Disk Threshold (Free GB)" />
+                    <StackPanel Orientation="Horizontal" Margin="0,8">
+                        <TextBlock Text="CPU Threshold" 
+                                   Width="120"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                        <mah:NumericUpDown Value="{Binding Path=CpuThreshold}" 
+                                           Minimum="0" Maximum="1" 
+                                           Interval="0.01"
+                                           StringFormat="{}{0:P0}" 
+                                           Width="150"/>
+                        <TextBlock Text="{Binding Path=CpuThreshold, StringFormat=Alert will trigger when CPU usage exceeds {0:P0}}"
+                                   FontSize="10"
+                                   Margin="16,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8">
+                        <TextBlock Text="RAM Threshold" 
+                                   Width="120"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                        <mah:NumericUpDown Value="{Binding Path=RamThreshold, Mode=TwoWay}" 
+                                           NumericInputMode="All" 
+                                           Minimum="0" Maximum="{Binding Path=MaxRam}" 
+                                           Interval="0.1"
+                                           StringFormat="{}{0:F1} GB" 
+                                           Width="150"/>
+                        <TextBlock Text="{Binding Path=RamThreshold, StringFormat=Alert will trigger when Free RAM goes under {0:F1} GB}"
+                                   FontSize="10"
+                                   Margin="16,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8">
+                        <TextBlock Text="Disk Threshold" 
+                                   Width="120"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                        <mah:NumericUpDown Value="{Binding Path=DiskThreshold}" 
+                                           NumericInputMode="All" 
+                                           Minimum="0" Maximum="{Binding Path=MaxDisk}" 
+                                           Interval="0.5"
+                                           StringFormat="{}{0:F1} GB" 
+                                           Width="150"/>
+                        <TextBlock Text="{Binding Path=DiskThreshold, StringFormat=Alert will trigger when Free Disk space goes under {0:F1} GB}"
+                                   FontSize="10"
+                                   Margin="16,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                    </StackPanel>
                 </StackPanel>
             </GroupBox>
         </StackPanel>

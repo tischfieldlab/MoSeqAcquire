@@ -18,19 +18,26 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Grid>
+                            <Grid.Background>
+                                <SolidColorBrush Color="{Binding Source={StaticResource ValidationErrorBrush}, Path=Color}" Opacity="0" />
+                            </Grid.Background>
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="Transparent"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Path=IsAlert}" Value="true">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard x:Name="MyStoryBoard_1">
                                                     <Storyboard>
-                                                        <ColorAnimation Storyboard.TargetProperty="Background.Color"
-                                                                        To="Red"
-                                                                        Duration="0:0:1"
+                                                        <DoubleAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Opacity)"
+                                                                        From="0"
+                                                                        To="1"
+                                                                        Duration="0:0:0.75"
                                                                         RepeatBehavior="Forever"
-                                                                        AutoReverse="True" />
+                                                                        AutoReverse="True" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <SineEase EasingMode="EaseInOut" />
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.EnterActions>
@@ -43,9 +50,6 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <Grid.RowDefinitions>
-                                <RowDefinition  />
-                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="*" />

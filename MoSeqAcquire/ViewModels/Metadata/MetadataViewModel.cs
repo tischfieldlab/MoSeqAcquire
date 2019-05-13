@@ -28,8 +28,9 @@ namespace MoSeqAcquire.ViewModels.Metadata
         protected MetadataDefinitionCollection currentCollection;
         protected MetadataItemDefinition currentItem;
 
-        public MetadataViewModel()
+        public MetadataViewModel(MoSeqAcquireViewModel RootViewModel)
         {
+            this.Root = RootViewModel;
             this.AvailableTypes = new ObservableCollection<AvailableTypeViewModel>()
             {
                 new AvailableTypeViewModel(typeof(bool)),
@@ -40,7 +41,7 @@ namespace MoSeqAcquire.ViewModels.Metadata
             this.currentCollection = new MetadataDefinitionCollection();
             this.CurrentState = MetadataViewState.Grid;
         }
-
+        public MoSeqAcquireViewModel Root { get; protected set; }
         public ObservableCollection<AvailableTypeViewModel> AvailableTypes { get; protected set; }
 
         public MetadataViewState CurrentState

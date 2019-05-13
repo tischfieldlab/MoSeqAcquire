@@ -32,7 +32,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
 
-            this.recordingManager = new RecordingManager(this.rootViewModel.TriggerBus);
+            this.recordingManager = new RecordingManager(this.rootViewModel.TriggerBus, RootViewModel.RecordingMetadata);
             this.recordingManager.BeforeStartRecording += (s, e) => this.Root.ForceProtocolLocked();
             this.recordingManager.RecordingFinished += (s, e) => this.Root.UndoForceProtoclLocked();
             this.recordingManager.RecordingFinished += (s, e) => this.RecordingMetadata.Items.ResetValuesToDefaults();

@@ -22,6 +22,11 @@ namespace MoSeqAcquire.Models.Triggers
         {
             this.subscribers = new Dictionary<Type, List<TriggerAction>>();
         }
+
+        public TriggerExecutionMode TriggerExecutionMode
+        {
+            get => (TriggerExecutionMode)Enum.Parse(typeof(TriggerExecutionMode), Properties.Settings.Default.TriggersExecutionMode);
+        }
         
         public void Subscribe(Type Trigger, TriggerAction triggerAction)
         {
@@ -40,7 +45,7 @@ namespace MoSeqAcquire.Models.Triggers
         {
             if (this.subscribers.ContainsKey(typeof(TTrigger)))
             {
-                if (Properties.Settings.Default.TriggersExecutionMode == TriggerExecutionMode.Parallel)
+                if (this.TriggerExecutionMode == TriggerExecutionMode.Parallel)
                 {
                     Task[] tasks = this.subscribers[typeof(TTrigger)]
                                     .OrderByDescending(t => t.Priority)

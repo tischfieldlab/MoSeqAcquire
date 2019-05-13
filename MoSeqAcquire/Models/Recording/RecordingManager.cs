@@ -49,12 +49,12 @@ namespace MoSeqAcquire.Models.Recording
         public event EventHandler RecordingFinished;    //fires once recording has finished
         public event EventHandler RecordingAborted;     //fires 
 
-        public RecordingManager(TriggerBus triggerBus)
+        public RecordingManager(TriggerBus triggerBus, MetadataViewModel Metadata)
         {
             this.triggerBus = triggerBus;
             this.writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
-            this.RecordingMetadata = new MetadataViewModel();
+            this.RecordingMetadata = Metadata;
         }
 
         public void AddRecorder(MediaWriter Writer)

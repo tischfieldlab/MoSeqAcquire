@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MoSeqAcquire.Properties;
 using MoSeqAcquire.ViewModels.MediaSources;
+using MoSeqAcquire.ViewModels.Metadata;
 
 namespace MoSeqAcquire.ViewModels
 {
@@ -38,10 +39,18 @@ namespace MoSeqAcquire.ViewModels
             App.SetCurrentStatus("Initializing Views....");
             this.TriggerBus = new TriggerBus();
             this.MediaSources = new MediaSourceCollectionViewModel();
+            this.RecordingMetadata = new MetadataViewModel(this);
             this.Recorder = new RecordingManagerViewModel(this);
             this.Triggers = new TriggerManagerViewModel(this);
             this.Commands = new CommandLibrary(this);
             this.TaskbarItemInfo = new TaskbarItemInfoViewModel(this);
+
+            this.SubsystemComponents = new ObservableCollection<BaseViewModel>()
+            {
+                this.Recorder,
+                this.Triggers,
+                this.RecordingMetadata
+            };
 
             App.SetCurrentStatus("Loading default protocol....");
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
@@ -70,11 +79,13 @@ namespace MoSeqAcquire.ViewModels
             Settings.Default.RecentProtocols.AddRange(this.RecentlyUsedProtocols.ToArray());
             Settings.Default.Save();
         }
+        public ObservableCollection<BaseViewModel> SubsystemComponents { get; protected set; }
         public TaskbarItemInfoViewModel TaskbarItemInfo { get; protected set; }
         public CommandLibrary Commands { get; protected set; }
         public ThemeViewModel Theme { get; protected set; }
         public TriggerBus TriggerBus { get; protected set; }
         public MediaSourceCollectionViewModel MediaSources { get; protected set; }
+        public MetadataViewModel RecordingMetadata { get; private set; }
         public RecordingManagerViewModel Recorder { get; protected set; }
         public TriggerManagerViewModel Triggers { get; protected set; }
         public ObservableCollection<string> RecentlyUsedProtocols { get; protected set; }
@@ -141,7 +152,7 @@ namespace MoSeqAcquire.ViewModels
                 pcol.Triggers.Add(tvm.GetTriggerDefinition());
             }
 
-            pcol.Metadata = this.Recorder.RecordingMetadata.Items;
+            pcol.Metadata = this.RecordingMetadata.Items;
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
             pcol.Locked = this.isProtocolLocked;
             this.CurrentProtocol = pcol;
@@ -156,7 +167,7 @@ namespace MoSeqAcquire.ViewModels
             this.MediaSources.Items.Clear();
             this.Recorder.ClearRecorders();
             this.Triggers.RemoveTriggers();
-            this.Recorder.RecordingMetadata.Items.Clear();
+            this.RecordingMetadata.Items.Clear();
             this.isProtocolLocked = false;
             this.UndoForceProtoclLocked();
         }
@@ -203,10 +214,10 @@ namespace MoSeqAcquire.ViewModels
                     {
                         foreach (var item in protocol.Metadata)
                         {
-                            this.Recorder.RecordingMetadata.Items.Add(item);
+                            this.RecordingMetadata.Items.Add(item);
                         }
                     }
-                    this.Recorder.RecordingMetadata.Items.ResetValuesToDefaults();
+                    this.RecordingMetadata.Items.ResetValuesToDefaults();
                     this.isProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
                     this.UndoForceProtoclLocked();

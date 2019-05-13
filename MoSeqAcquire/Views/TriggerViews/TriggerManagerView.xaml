@@ -79,7 +79,7 @@
                                         ToolTip="Add New Trigger">
                             <materialDesign:PackIcon Kind="Plus"  />
                         </Button>
-                        <TextBlock Text="Triggers" VerticalAlignment="Center"  />
+                        <TextBlock Text="Triggers" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}"  />
                     </DockPanel>
                 </DataTemplate>
             </GroupBox.HeaderTemplate>
@@ -135,6 +135,7 @@
                                 </StackPanel>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                                         VerticalAlignment="Center" Margin="8,0,16,0"
+                                        Name="TriggerStatusButton"
                                         Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
                                     <Button.CommandParameter>
                                         <StackPanel Margin="16">

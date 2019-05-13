@@ -9,7 +9,7 @@ namespace MoSeqAcquire.ViewModels.AppSettings
 {
     public class TriggerSettingsViewModel : BaseComponentSettingsViewModel
     {
-        private TriggerExecutionMode triggersExecutionMode;
+        
 
         public TriggerSettingsViewModel()
         {
@@ -18,11 +18,11 @@ namespace MoSeqAcquire.ViewModels.AppSettings
 
         public TriggerExecutionMode TriggersExecutionMode
         {
-            get => this.triggersExecutionMode;
+            get => (TriggerExecutionMode)Enum.Parse(typeof(TriggerExecutionMode), Properties.Settings.Default.TriggersExecutionMode);
             set
             {
-                this.SetField(ref this.triggersExecutionMode, value);
-                Properties.Settings.Default.TriggersExecutionMode = value;
+                Properties.Settings.Default.TriggersExecutionMode = value.ToString();
+                this.NotifyPropertyChanged();
             }
         }
     }

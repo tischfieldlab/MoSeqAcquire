@@ -8,12 +8,38 @@
              xmlns:triggers="clr-namespace:MoSeqAcquire.Models.Triggers"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
-                      ItemsSource="{extensions:Enumeration {x:Type triggers:TriggerExecutionMode}}" 
-                      DisplayMemberPath="Description" 
-                      SelectedValuePath="Value" 
-                      SelectedValue="{Binding Path=TriggersExecutionMode}"
-                  />
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <GroupBox Header="General" Margin="16" Style="{DynamicResource MaterialDesignCardGroupBox}">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                    <TextBlock Text="Trigger Execution Strategy"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                    <ComboBox Width="200" Margin="16,0"
+                              Style="{StaticResource MaterialDesignComboBox}" 
+                              ItemsSource="{extensions:Enumeration {x:Type triggers:TriggerExecutionMode}}" 
+                              DisplayMemberPath="Description" 
+                              SelectedValuePath="Value" 
+                              SelectedValue="{Binding Path=TriggersExecutionMode}" />
+                    <TextBlock FontSize="10"
+                               
+                               VerticalAlignment="Bottom"
+                               Foreground="{DynamicResource MaterialDesignBodyLight}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=TriggersExecutionMode}" Value="{x:Static triggers:TriggerExecutionMode.Synchronous}">
+                                        <Setter Property="Text" Value="Each trigger will be executed one at a time." />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=TriggersExecutionMode}" Value="{x:Static triggers:TriggerExecutionMode.Parallel}">
+                                        <Setter Property="Text" Value="Triggers will be executed in parallel." />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

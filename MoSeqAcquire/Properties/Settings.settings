@@ -5,7 +5,7 @@
     <Setting Name="ThemeIsDarkMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="PluginPaths" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+    <Setting Name="PluginPaths" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;MediaSources&lt;/string&gt;
@@ -13,20 +13,17 @@
   &lt;string&gt;Triggers&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="DiskUsageWarningThreshold" Type="System.Double" Scope="Application">
+    <Setting Name="DiskUsageWarningThreshold" Type="System.Double" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
-    <Setting Name="CPUUsageWarningThreshold" Type="System.Double" Scope="Application">
-      <Value Profile="(Default)">0.8</Value>
-    </Setting>
-    <Setting Name="RamUsageWarningThreshold" Type="System.Double" Scope="Application">
+    <Setting Name="CPUUsageWarningThreshold" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.8</Value>
     </Setting>
     <Setting Name="RecentProtocols" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Value>
     </Setting>
-    <Setting Name="MaxRecentProtocolsToRemember" Type="System.Int32" Scope="Application">
+    <Setting Name="MaxRecentProtocolsToRemember" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="ThemePrimaryColor" Type="System.String" Scope="User">
@@ -35,8 +32,17 @@
     <Setting Name="ThemeAccentColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">blue</Value>
     </Setting>
-    <Setting Name="TriggersExecutionMode" Type="Models.Triggers.TriggerExecutionMode" Scope="Application">
+    <Setting Name="TriggersExecutionMode" Type="System.String" Scope="User">
       <Value Profile="(Default)">Synchronous</Value>
+    </Setting>
+    <Setting Name="RamUsageWarningThreshold" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="SystemIdentity" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RecordingSummaryOutputFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">JSON</Value>
     </Setting>
   </Settings>
 </SettingsFile>
