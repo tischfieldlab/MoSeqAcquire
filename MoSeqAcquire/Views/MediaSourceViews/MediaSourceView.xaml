@@ -21,6 +21,8 @@
         <ItemsControl ItemsSource="{Binding MediaSources.Items}"
                       dd:DragDrop.IsDragSource="True"
                       dd:DragDrop.IsDropTarget="True"
+                      dd:DragDrop.DropHandler="{Binding}"
+                      dd:DragDrop.DragHandler="{Binding}"
                       Margin="0,10">
             <ItemsControl.Style>
                 <Style TargetType="ItemsControl">
@@ -92,6 +94,7 @@
                             <ItemsControl ItemsSource="{Binding Channels}"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.DropHandler="{Binding}"
                                           Margin="5">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>

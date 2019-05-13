@@ -14,7 +14,7 @@ using MoSeqAcquire.Models.Management;
 
 namespace MoSeqAcquire.ViewModels.MediaSources
 {
-    public class MediaSourceViewModel : BaseViewModel
+    public class MediaSourceViewModel : BaseViewModel, IDropTarget
     {
         //protected bool isConfigOpen;
         protected ObservableCollection<ChannelViewModel> _channels;
@@ -80,6 +80,23 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             foreach (var c in this.MediaSource.Channels)
             {
                 this._channels.Add(ChannelViewModel.FromChannel(c));
+            }
+        }
+
+        void IDropTarget.DragOver(IDropInfo dropInfo)
+        {
+            GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler.DragOver(dropInfo);
+            if (!this.Channels.Contains(dropInfo.Data as ChannelViewModel))
+            {
+                dropInfo.Effects = System.Windows.DragDropEffects.None;
+            }
+        }
+
+        void IDropTarget.Drop(IDropInfo dropInfo)
+        {
+            if (this.Channels.Contains(dropInfo.Data as ChannelViewModel))
+            {
+                GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler.Drop(dropInfo);
             }
         }
 
