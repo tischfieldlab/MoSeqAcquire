@@ -24,11 +24,24 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.pin = Pin;
             this.selectedChannels = new ObservableCollection<ChannelViewModel>();
             this.SelectedChannels = new ReadOnlyObservableCollection<ChannelViewModel>(this.selectedChannels);
-            this.selectedChannels.CollectionChanged += (s, e) => this.NotifyPropertyChanged();
+            this.selectedChannels.CollectionChanged += SelectedChannels_CollectionChanged;
             this.AvailableChannels = new CollectionViewSource { Source = AvailableChannels }.View;
             this.AvailableChannels.Filter = this.FilterAvailableChannels;
             this.RegisterRules();
         }
+
+        private void SelectedChannels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            e.NewItems?.Cast<ChannelViewModel>().ForEach(cvm => cvm.PropertyChanged += SelectedChannel_PropertyChanged);
+            e.OldItems?.Cast<ChannelViewModel>().ForEach(cvm => cvm.PropertyChanged -= SelectedChannel_PropertyChanged);
+            this.NotifyPropertyChanged();
+        }
+
+        private void SelectedChannel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.NotifyPropertyChanged();
+        }
+
         protected void RegisterRules()
         {
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);

@@ -64,19 +64,16 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
 
         #region Recorder CRUD Operations
-        /*public void AddRecorder(Type RecorderType)
-        {
-            var recorder = new RecorderViewModel(this.rootViewModel, RecorderType);
-            this.AddRecorder(recorder);
-        }*/
         public void AddRecorder(RecorderViewModel Recorder)
         {
+            Recorder.ErrorsChanged += this.SubItemErrorsChanged;
             this.Recorders.Add(Recorder);
             this.SelectedRecorder = Recorder;
             this.recordingManager.AddRecorder(Recorder.Writer);
         }
         public void RemoveRecorder(RecorderViewModel Recorder)
         {
+            Recorder.ErrorsChanged -= this.SubItemErrorsChanged;
             this.recordingManager.RemoveRecorder(Recorder.Writer);
             if(this.SelectedRecorder == Recorder)
             {
