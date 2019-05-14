@@ -99,7 +99,7 @@ namespace MoSeqAcquire.ViewModels
                 this.NotifyPropertyChanged(nameof(this.IsProtocolForceLocked));
             });
         }
-        public void UndoForceProtoclLocked()
+        public void UndoForceProtocolLocked()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -141,7 +141,7 @@ namespace MoSeqAcquire.ViewModels
             var pcol = new Protocol("basic");
             foreach (var ms in this.MediaSources.Items)
             {
-                pcol.Sources.Add(ms.MediaSource.GetType(), ms.MediaSource.DeviceId, ms.Config.GetSnapshot());
+                pcol.Sources.Add(ms.GetMediaSourceDefinition());
             }
             foreach(var mw in this.Recorder.Recorders)
             {
@@ -156,20 +156,20 @@ namespace MoSeqAcquire.ViewModels
             pcol.Recordings.GeneralSettings = this.Recorder.GeneralSettings.GetSnapshot();
             pcol.Locked = this.isProtocolLocked;
             this.CurrentProtocol = pcol;
-            this.UndoForceProtoclLocked();
+            this.UndoForceProtocolLocked();
             return pcol;
         }
         public void UnloadProtocol()
         {
             this.ForceProtocolLocked();
             //prepare
-            this.MediaSources.Items.ForEach(s => s.MediaSource.Stop());
+            this.MediaSources.Items.ForEach(s => s.Shutdown());
             this.MediaSources.Items.Clear();
             this.Recorder.ClearRecorders();
             this.Triggers.RemoveTriggers();
             this.RecordingMetadata.Items.Clear();
             this.isProtocolLocked = false;
-            this.UndoForceProtoclLocked();
+            this.UndoForceProtocolLocked();
         }
         public void ApplyProtocol(Protocol protocol)
         {
@@ -184,8 +184,8 @@ namespace MoSeqAcquire.ViewModels
             foreach(var s in protocol.Sources)
             {
                 var msvm = new MediaSourceViewModel(s);
-                tasks.Add(msvm.InitTask);
                 this.MediaSources.Items.Add(msvm);
+                tasks.Add(msvm.InitTask);
             }
 
             //necessary to wait for all hardware to load prior to applying recorders
@@ -220,7 +220,7 @@ namespace MoSeqAcquire.ViewModels
                     this.RecordingMetadata.Items.ResetValuesToDefaults();
                     this.isProtocolLocked = protocol.Locked;
                     this.NotifyPropertyChanged();
-                    this.UndoForceProtoclLocked();
+                    this.UndoForceProtocolLocked();
                 });
             }, TaskScheduler.Default);
         }

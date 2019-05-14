@@ -37,7 +37,17 @@ namespace MoSeqAcquire.ViewModels.MediaSources
         public string Name { get => this.channel.Name; }
         public string DeviceName { get => this.channel.DeviceName; }
         public string FullName { get => this.channel.FullName; }
-        public bool Enabled { get => this.channel.Enabled; set => this.channel.Enabled = value; }
+
+        public bool Enabled
+        {
+            get => this.channel.Enabled;
+            set
+            {
+                this.channel.Enabled = value;
+                this.NotifyPropertyChanged();
+            }
+        }
+
         public TotalFrameCounter Performance { get; protected set; }
 
         public SizeHelper DisplaySize { get => this.sizeHelper; }

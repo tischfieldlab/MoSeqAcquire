@@ -28,12 +28,6 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             this._channels = new ObservableCollection<ChannelViewModel>();
             this._ro_Channels = new ReadOnlyObservableCollection<ChannelViewModel>(this._channels);
         }
-
-        /*public MediaSourceViewModel(MediaSource mediaSource) : this()
-        {
-            this.MediaSource = mediaSource;
-            this.RetrieveChannels();
-        }*/
         public MediaSourceViewModel(ProtocolSource mediaSource) : this()
         {
             this.MediaSource = (MediaSource)mediaSource.Create();
@@ -56,7 +50,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                 }
                 this.MediaSource.Settings.ApplySnapshot(mediaSource.Config);
                 this.MediaSource.Start();
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     this.RetrieveChannels();
                     this.IsReady = true;
@@ -64,7 +58,17 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                 }));
             });
         }
+
+        public void Shutdown()
+        {
+            this.MediaSource.Stop();
+            while (this.Channels.Count > 0)
+            {
+                this.Channels.RemoveAt(this.Channels.Count - 1);
+            }
+        }
         public Task InitTask { get; protected set; }
+        public string Name => this.MediaSource.Name;
         public bool IsReady
         {
             get => this.isReady;
@@ -100,8 +104,18 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             }
         }
 
-        public MediaSource MediaSource { get; protected set; }
+        protected MediaSource MediaSource { get; set; }
         public BaseConfiguration Config { get => this.isReady ? MediaSource.Settings : null; }
         public ObservableCollection<ChannelViewModel> Channels { get => this._channels; }
+
+        public ProtocolSource GetMediaSourceDefinition()
+        {
+            return new ProtocolSource()
+            {
+                Provider = this.MediaSource.GetType().AssemblyQualifiedName,
+                DeviceId = this.MediaSource.DeviceId,
+                Config = this.Config.GetSnapshot()
+            };
+        }
     }
 }

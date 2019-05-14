@@ -61,25 +61,51 @@
                                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
                             </Expander.InputBindings>
                             <Expander.Header>
-                                <DockPanel HorizontalAlignment="Stretch">
-                                    <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="0,0,8,0"
-                                            Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            ToolTip="Remove Recorder">
-                                        <materialDesign:PackIcon Kind="Close"  />
-                                    </Button>
-                                    <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
-                                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" 
-                                                            Command="{Binding Path=DataContext.Commands.EditRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                                            CommandParameter="{Binding}"
-                                                            ToolTip="Edit Recorder">
-                                        <materialDesign:PackIcon Kind="Pencil"  />
-                                    </Button>
-                                    <materialDesign:PackIcon Kind="RecordRec" Width="24" Height="24"  Margin="0,0,8,0" />
-                                    <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding Path=SelectedChannelCount, Mode=OneWay, StringFormat={} ({0} Channels)}" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}" />
-                                </DockPanel>
+                                <StackPanel>
+                                    <DockPanel HorizontalAlignment="Stretch">
+                                        <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="0,0,8,0"
+                                                Command="{Binding Path=DataContext.Commands.RemoveRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                CommandParameter="{Binding}" materialDesign:ValidationAssist.Suppress="True"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                ToolTip="Remove Recorder">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate />
+                                            </Validation.ErrorTemplate>
+                                            <materialDesign:PackIcon Kind="Close"  />
+                                        </Button>
+                                        <Button DockPanel.Dock="Right" Height="24" Width="24" Margin="0,0,8,0"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" 
+                                                Command="{Binding Path=DataContext.Commands.EditRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit Recorder">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate />
+                                            </Validation.ErrorTemplate>
+                                            <materialDesign:PackIcon Kind="Pencil"  />
+                                        </Button>
+                                        <materialDesign:PackIcon Kind="RecordRec" Width="24" Height="24"  Margin="0,0,8,0" />
+                                        <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding Path=SelectedChannelCount, Mode=OneWay, StringFormat={} ({0} Channels)}" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}" />
+                                        
+                                    </DockPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="36,0,0,0">
+                                        <TextBlock Text="{Binding Path=Error}"
+                                                   Foreground="{StaticResource ValidationErrorBrush}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=HasErrors}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=HasErrors}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
                             </Expander.Header>
                             <ItemsControl ItemsSource="{Binding Products}">
                                 <ItemsControl.ItemTemplate>
@@ -114,6 +140,7 @@
                                                         <StackPanel Orientation="Horizontal" Margin="48,0,0,0">
                                                             <materialDesign:PackIcon Kind="SubdirectoryArrowRight" />
                                                             <TextBlock Text="{Binding Path=FullName}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                                                            
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>

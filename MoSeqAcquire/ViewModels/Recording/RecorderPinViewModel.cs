@@ -19,14 +19,15 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected MediaWriterPin pin;
         protected ObservableCollection<ChannelViewModel> selectedChannels;
 
-        public RecorderPinViewModel(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels)
+        public RecorderPinViewModel(MediaWriterPin Pin, AvailableRecordingChannelsProvider AvailableChannelsProvider)
         {
             this.pin = Pin;
             this.selectedChannels = new ObservableCollection<ChannelViewModel>();
             this.SelectedChannels = new ReadOnlyObservableCollection<ChannelViewModel>(this.selectedChannels);
             this.selectedChannels.CollectionChanged += SelectedChannels_CollectionChanged;
-            this.AvailableChannels = new CollectionViewSource { Source = AvailableChannels }.View;
+            this.AvailableChannels = new CollectionViewSource { Source = AvailableChannelsProvider }.View;
             this.AvailableChannels.Filter = this.FilterAvailableChannels;
+            AvailableChannelsProvider.CollectionChanged += (s, e) => { this.AvailableChannels.Refresh(); };
             this.RegisterRules();
         }
 
@@ -101,7 +102,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             remove { NotifyDataErrorInfoAdapter.ErrorsChanged -= value; }
         }
 
-        public static RecorderPinViewModel Factory(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels)
+        public static RecorderPinViewModel Factory(MediaWriterPin Pin, AvailableRecordingChannelsProvider AvailableChannels)
         {
             RecorderPinViewModel pinvm = null;
             switch (Pin.Capacity)
@@ -120,7 +121,7 @@ namespace MoSeqAcquire.ViewModels.Recording
     {
         private ChannelViewModel selectedChannel;
 
-        public SingleCapacityRecorderPin(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels) : base(Pin, AvailableChannels)
+        public SingleCapacityRecorderPin(MediaWriterPin Pin, AvailableRecordingChannelsProvider AvailableChannels) : base(Pin, AvailableChannels)
         {
             this.SelectedChannel = AvailableChannels.Where(scvm => scvm.Channel.Channel.Equals(pin.Channel))
                                                     .Select(scvm => scvm.Channel)
@@ -143,7 +144,7 @@ namespace MoSeqAcquire.ViewModels.Recording
     }
     public class MultipleCapacityRecorderPin : RecorderPinViewModel
     {
-        public MultipleCapacityRecorderPin(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels) : base(Pin, AvailableChannels)
+        public MultipleCapacityRecorderPin(MediaWriterPin Pin, AvailableRecordingChannelsProvider AvailableChannels) : base(Pin, AvailableChannels)
         {
             AvailableChannels.ForEach(scvm => scvm.PropertyChanged += Scvm_PropertyChanged);
         }

@@ -19,7 +19,6 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected MediaWriter writer;
 
         protected ObservableCollection<RecorderPinViewModel> recorderPins;
-        protected ObservableCollection<SelectableChannelViewModel> availableChannels;
         protected ObservableCollection<RecorderProduct> recorderProducts;
 
         public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
@@ -55,7 +54,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             get;
             protected set;
         }
-        public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels
+        public AvailableRecordingChannelsProvider AvailableChannels
         {
             get;
             protected set;
@@ -81,13 +80,8 @@ namespace MoSeqAcquire.ViewModels.Recording
             {
                 this.Name = this.rootViewModel.Recorder.GetNextDefaultRecorderName();
             }
-            this.availableChannels = new ObservableCollection<SelectableChannelViewModel>();
-            this.AvailableChannels = new ReadOnlyObservableCollection<SelectableChannelViewModel>(this.availableChannels);
-            this.Root
-                .MediaSources
-                .Items
-                .SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)))
-                .ForEach(scvm => this.availableChannels.Add(scvm));
+
+            this.AvailableChannels = new AvailableRecordingChannelsProvider(this.Root.MediaSources);
 
             this.recorderProducts = new ObservableCollection<RecorderProduct>();
             this.Products = new ReadOnlyObservableCollection<RecorderProduct>(this.recorderProducts);
@@ -97,7 +91,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 
             foreach (var wp in this.writer.Pins.Values)
             {
-                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp, this.availableChannels);
+                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp, this.AvailableChannels);
                 if (pin != null)
                 {
                     pin.PropertyChanged += (s,e) => this.updateRecorderProducts();

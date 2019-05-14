@@ -44,7 +44,7 @@ namespace MoSeqAcquire.ViewModels.Commands
                 if ((bool)result)
                 {
                     var msvm = parameter as MediaSourceViewModel;
-                    msvm.MediaSource.Stop();
+                    msvm.Shutdown();
                     this.ViewModel.MediaSources.Items.Remove(msvm);
                 }
             }
