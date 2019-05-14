@@ -64,13 +64,9 @@ namespace MoSeqAcquire.Models.Recording
 
                 return RuleResult.Valid();
             });
-            Validator.AddRule(nameof(this.RecordingMode),
-                              nameof(this.RecordingTime),
+            Validator.AddRule(nameof(this.RecordingTime),
                               () =>
                               {
-                                  if (this.recordingMode.Equals(RecordingMode.Indeterminate))
-                                      return RuleResult.Valid();
-
                                   if (this.recordingMode.Equals(RecordingMode.TimeCount) &&
                                       this.recordingTime.TotalSeconds <= 0)
                                       return RuleResult.Invalid("Recording Time must be greater than zero.");

@@ -140,6 +140,7 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             var errors = new List<string>();
             errors.AddRange(this.GeneralSettings.GetErrors(propertyName).Cast<string>().Select(e => "Recording Settings: "+e));
+            errors.AddRange(this.Recorders.SelectMany(r => r.GetErrors(propertyName).Cast<string>().Select(e => $"{r.Name}: {e}")));
             errors.AddRange(this.RecordingMetadata.Items.GetErrors(propertyName).Cast<string>().Select(e => "Recording Metadata: "+e));
             return errors;
         }

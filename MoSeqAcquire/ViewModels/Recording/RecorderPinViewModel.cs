@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,10 +10,11 @@ using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.ViewModels.MediaSources;
+using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    public abstract class RecorderPinViewModel : BaseViewModel
+    public abstract class RecorderPinViewModel : BaseViewModel, INotifyDataErrorInfo
     {
         protected MediaWriterPin pin;
         protected ObservableCollection<ChannelViewModel> selectedChannels;
@@ -25,6 +27,20 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.selectedChannels.CollectionChanged += (s, e) => this.NotifyPropertyChanged();
             this.AvailableChannels = new CollectionViewSource { Source = AvailableChannels }.View;
             this.AvailableChannels.Filter = this.FilterAvailableChannels;
+            this.RegisterRules();
+        }
+        protected void RegisterRules()
+        {
+            NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);
+            this.PropertyChanged += (s, e) => { Validator.ValidateAll(); };
+            Validator.AddRule(() =>
+            {
+                foreach (var sc in this.SelectedChannels) {
+                    if (!sc.Enabled)
+                        return RuleResult.Invalid($"Channel {sc.FullName} is not enabled.");
+                }
+                return RuleResult.Valid();
+            });
         }
         public MediaType MediaType { get => this.pin.MediaType; }
         public string PinName { get => this.pin.Name; }
@@ -43,6 +59,33 @@ namespace MoSeqAcquire.ViewModels.Recording
             }
             var scvm = potentiallyAvailableChannel as SelectableChannelViewModel;
             return scvm.Channel.Channel.MediaType == this.MediaType;
+        }
+
+        private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }
+        public IEnumerable GetErrors(string propertyName)
+        {
+            if (propertyName == null)
+            {
+                ValidationResult result = this.Validator.GetResult();
+                if (result.IsValid)
+                    return (IEnumerable)Enumerable.Empty<string>();
+                return (IEnumerable)new string[1]
+                {
+                    result.ToString()
+                };
+            }
+            return NotifyDataErrorInfoAdapter.GetErrors(propertyName);
+        }
+
+        public bool HasErrors
+        {
+            get { return NotifyDataErrorInfoAdapter.HasErrors; }
+        }
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged
+        {
+            add { NotifyDataErrorInfoAdapter.ErrorsChanged += value; }
+            remove { NotifyDataErrorInfoAdapter.ErrorsChanged -= value; }
         }
 
         public static RecorderPinViewModel Factory(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels)

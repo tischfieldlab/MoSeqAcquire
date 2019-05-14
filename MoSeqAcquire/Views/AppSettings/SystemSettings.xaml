@@ -13,7 +13,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
-            <GroupBox Header="{Binding}" Margin="16" Style="{DynamicResource MaterialDesignCardGroupBox}">
+            <GroupBox Header="{Binding}" Margin="16" Style="{DynamicResource MaterialDesignCardGroupBox}" MaxHeight="200">
                 <GroupBox.HeaderTemplate>
                     <DataTemplate>
                         <DockPanel>
@@ -27,22 +27,24 @@
                         </DockPanel>
                     </DataTemplate>
                 </GroupBox.HeaderTemplate>
-                <ListBox ItemsSource="{Binding Path=PluginPaths}" HorizontalContentAlignment="Stretch" Margin="-8">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
-                                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                        Command="{Binding Path=DataContext.RemovePluginPath, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                        CommandParameter="{Binding}"
-                                        ToolTip="Remove Plugin Path">
-                                    <materialDesign:PackIcon Kind="Close"  />
-                                </Button>
-                                <controls:FileChooser SelectedPath="{Binding Path=Path}" PickerType="Folder" Margin="0,0,24,0"  />
-                            </DockPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <ScrollViewer Margin="-8" VerticalScrollBarVisibility="Auto">
+                    <ListBox ItemsSource="{Binding Path=PluginPaths}" HorizontalContentAlignment="Stretch" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Left"  Width="24" Height="24" Margin="8,0,16,0"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                            Command="{Binding Path=DataContext.RemovePluginPath, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="Remove Plugin Path">
+                                        <materialDesign:PackIcon Kind="Close"  />
+                                    </Button>
+                                    <controls:FileChooser SelectedPath="{Binding Path=Path}" PickerType="Folder" Margin="0,0,24,0"  />
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
             </GroupBox>
             <GroupBox Header="Resource Warning Threshold" Margin="16" Style="{DynamicResource MaterialDesignCardGroupBox}">
                 <StackPanel>

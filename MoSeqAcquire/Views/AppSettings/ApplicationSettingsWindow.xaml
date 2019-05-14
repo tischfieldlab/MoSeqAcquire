@@ -30,9 +30,7 @@
                                  Margin="0,-1,0,1" 
                                  ItemsSource="{Binding Path=SettingsParts}" 
                                  HeaderMemberPath="Header">
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController  />
-            </dragablz:TabablzControl.InterTabController>
+        
 
         </dragablz:TabablzControl>
     </Grid>

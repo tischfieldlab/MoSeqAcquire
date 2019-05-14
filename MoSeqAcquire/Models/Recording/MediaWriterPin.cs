@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using MoSeqAcquire.Models.Acquisition;
+using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Recording
 {
@@ -34,6 +37,7 @@ namespace MoSeqAcquire.Models.Recording
         {
             this.name = name;
         }
+        
         public string Name
         {
             get => this.name;

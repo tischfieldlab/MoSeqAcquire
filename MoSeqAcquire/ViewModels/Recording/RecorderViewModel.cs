@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    public class RecorderViewModel : BaseViewModel
+    public class RecorderViewModel : BaseViewModel, INotifyDataErrorInfo
     {
         protected MoSeqAcquireViewModel rootViewModel;
 
@@ -100,6 +101,7 @@ namespace MoSeqAcquire.ViewModels.Recording
                 if (pin != null)
                 {
                     pin.PropertyChanged += (s,e) => this.updateRecorderProducts();
+                    pin.ErrorsChanged += (s, e) => { this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null)); };
                     this.recorderPins.Add(pin);
                 }
             }
@@ -118,8 +120,28 @@ namespace MoSeqAcquire.ViewModels.Recording
                 }).ForEach(rp => this.recorderProducts.Add(rp));
             this.NotifyPropertyChanged(null);
         }
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public string Error
+        {
+            get => string.Join(" ", this.GetErrors(null).Cast<string>());
+        }
+        public bool HasErrors
+        {
+            get => !string.IsNullOrEmpty(this.Error);
+        }
+        public string this[string columnName]
+        {
+            get { return this.GetErrors(columnName).Cast<string>().FirstOrDefault(); }
+        }
 
-        
+        public IEnumerable GetErrors(string propertyName)
+        {
+            var errors = new List<string>();
+            errors.AddRange(this.RecorderPins.SelectMany(mwp => mwp.GetErrors(propertyName).Cast<string>()));
+            return errors;
+        }
+
+
         public ProtocolRecorder GetRecorderDefinition()
         {
             return this.writer.GetProtocolRecorder();
