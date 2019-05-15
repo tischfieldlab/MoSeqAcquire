@@ -54,11 +54,6 @@ namespace MoSeqAcquire.ViewModels.Recording
             get;
             protected set;
         }
-        public AvailableRecordingChannelsProvider AvailableChannels
-        {
-            get;
-            protected set;
-        }
         public ReadOnlyObservableCollection<RecorderProduct> Products
         {
             get;
@@ -81,8 +76,6 @@ namespace MoSeqAcquire.ViewModels.Recording
                 this.Name = this.rootViewModel.Recorder.GetNextDefaultRecorderName();
             }
 
-            this.AvailableChannels = new AvailableRecordingChannelsProvider(this.Root.MediaSources);
-
             this.recorderProducts = new ObservableCollection<RecorderProduct>();
             this.Products = new ReadOnlyObservableCollection<RecorderProduct>(this.recorderProducts);
 
@@ -91,7 +84,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 
             foreach (var wp in this.writer.Pins.Values)
             {
-                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp, this.AvailableChannels);
+                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp);
                 if (pin != null)
                 {
                     pin.PropertyChanged += (s,e) => this.updateRecorderProducts();

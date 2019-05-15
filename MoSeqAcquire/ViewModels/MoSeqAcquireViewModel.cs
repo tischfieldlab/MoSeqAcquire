@@ -20,14 +20,18 @@ namespace MoSeqAcquire.ViewModels
     {
         protected bool isProtocolLocked;
         protected int forceProtocolLock;
+
         
 
-        public MoSeqAcquireViewModel()
+        private MoSeqAcquireViewModel()
         {
             this.RecentlyUsedProtocols = new ObservableCollection<string>(Settings.Default.RecentProtocols.Cast<string>());
 
             this.Initialize();
         }
+
+        private static MoSeqAcquireViewModel _instance;
+        public static MoSeqAcquireViewModel Instance => _instance ?? (_instance = new MoSeqAcquireViewModel());
 
         protected void Initialize()
         {

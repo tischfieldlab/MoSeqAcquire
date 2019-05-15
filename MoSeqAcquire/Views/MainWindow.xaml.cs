@@ -23,7 +23,7 @@ namespace MoSeqAcquire.Views
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MoSeqAcquireViewModel();
+            this.DataContext = MoSeqAcquireViewModel.Instance;
         }
         protected override void OnClosed(EventArgs e)
         {

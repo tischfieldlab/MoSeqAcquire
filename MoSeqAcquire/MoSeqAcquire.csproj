@@ -214,6 +214,7 @@
     <Compile Include="ViewModels\Performance\PerformanceMonitorPreviewAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorMediaBusAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorViewModel.cs" />
+    <Compile Include="ViewModels\Recording\AvailableRecordingChannelsProvider.cs" />
     <Compile Include="ViewModels\Recording\RecorderProduct.cs" />
     <Compile Include="ViewModels\Recording\SelectableChannelViewModel.cs" />
     <Compile Include="ViewModels\TaskbarItemInfoViewModel.cs" />

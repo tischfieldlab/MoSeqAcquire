@@ -14,39 +14,12 @@ using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.ViewModels.Metadata;
 using System.Collections;
+using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.ViewModels.MediaSources;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    public class AvailableRecordingChannelsProvider : ObservableCollection<SelectableChannelViewModel>
-    {
-        public AvailableRecordingChannelsProvider(MediaSourceCollectionViewModel MediaSources)
-        {
-            MediaSources.Items.CollectionChanged += Items_CollectionChanged;
-            MediaSources.Items
-                        .SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)))
-                        .ForEach(scvm => this.Add(scvm));
-        }
-
-        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            e.NewItems?.Cast<MediaSourceViewModel>().ForEach(msvm => msvm.Channels.CollectionChanged += Channels_CollectionChanged);
-            e.OldItems?.Cast<MediaSourceViewModel>().ForEach(msvm => msvm.Channels.CollectionChanged -= Channels_CollectionChanged);
-        }
-
-        private void Channels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            e.NewItems?.Cast<ChannelViewModel>().Select(cvm => new SelectableChannelViewModel(cvm)).ForEach(scvm => this.Add(scvm));
-
-            if (e.OldItems != null)
-            {
-                var toRemove = this.Where(scvm => e.OldItems.Cast<ChannelViewModel>().Contains(scvm.Channel)).ToList();
-                toRemove.ForEach(scvm => this.Remove(scvm));
-            }
-        }
-    }
-
     public class RecordingManagerViewModel : BaseViewModel, INotifyDataErrorInfo, IDataErrorInfo
     {
         protected MoSeqAcquireViewModel rootViewModel;
