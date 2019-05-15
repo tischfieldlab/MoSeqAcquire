@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 
@@ -21,9 +23,13 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.rootViewModel = RootViewModel;
             this.triggers = new ObservableCollection<TriggerViewModel>();
             this.ro_triggers = new ReadOnlyObservableCollection<TriggerViewModel>(this.triggers);
+            this.TriggersView = CollectionViewSource.GetDefaultView(this.triggers);
+            this.TriggersView.GroupDescriptions.Add(new PropertyGroupDescription("TriggerEventName"));
         }
         public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public ReadOnlyObservableCollection<TriggerViewModel> Triggers { get => this.ro_triggers; }
+        public ICollectionView TriggersView { get; protected set; }
+
         public TriggerViewModel SelectedTrigger
         {
             get => this.selectedTrigger;

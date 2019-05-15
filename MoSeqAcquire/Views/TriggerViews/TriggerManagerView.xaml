@@ -136,9 +136,9 @@
             </GroupBox.HeaderTemplate>
 
             <!--SelectedItem="{Binding Path=SelectedTrigger}" -->
-            <ItemsControl Name="ItemsGrid" 
+            <ItemsControl Name="ItemsGrid" Margin="-9"
                       IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}"
-                      ItemsSource="{Binding Path=Triggers}" >
+                      ItemsSource="{Binding Path=TriggersView}" >
                 <ItemsControl.Style>
                     <Style TargetType="ItemsControl">
                         <Style.Triggers>
@@ -146,7 +146,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
                                                 <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
                                                     No triggers have been added yet. Would you like to 
                                                     <Hyperlink Command="{Binding Path=DataContext.Commands.AddTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
@@ -163,9 +163,35 @@
                         </Style.Triggers>
                     </Style>
                 </ItemsControl.Style>
+                <ItemsControl.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Background="{StaticResource MaterialDesignPaper}">
+                                    <materialDesign:PackIcon Kind="LightningBolt"
+                                                             Margin="8,0,0,0"
+                                                             Width="16" Height="16" 
+                                                             VerticalAlignment="Center" />
+                                    <TextBlock Padding="8" Text="{Binding Path=Name}" Style="{StaticResource MaterialDesignBody2TextBlock}"  />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ItemsControl.GroupStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Margin="8,0,16,0">
+                            <Separator Height="1">
+                                <Separator.Style>
+                                    <Style TargetType="Separator" BasedOn="{StaticResource MaterialDesignLightSeparator}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Separator.Style>
+                            </Separator>
                             <DockPanel Margin="0,8">
                                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
 
@@ -184,7 +210,7 @@
                                         <materialDesign:PackIcon Kind="Close"  />
                                     </Button>
                                 </StackPanel>
-                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                <Button DockPanel.Dock="Left" Style="{StaticResource MaterialDesignFlatButton}"
                                         VerticalAlignment="Center" Margin="8,0,16,0"
                                         Name="TriggerStatusButton"
                                         Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
@@ -217,18 +243,22 @@
                                         </materialDesign:PackIcon.Style>
                                     </materialDesign:PackIcon>
                                 </Button>
-                                <WrapPanel>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Path=Name}"
-                                                   Width="150" 
-                                                   Margin="0,0,16,0"
-                                                   VerticalAlignment="Center" />
+                                <WrapPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                    
+                                    <StackPanel Orientation="Horizontal" Width="150">
+                                        <TextBlock Text="{Binding Path=Name}" 
+                                                   
+                                                   VerticalAlignment="Center"
+                                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
 
-                                        <TextBlock Text="(marked as critical)"
-                                                   Margin="0,4,0,0"
-                                                   Foreground="{DynamicResource MaterialDesignBodyLight}">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
+                                        <materialDesign:PackIcon Kind="StarRate"
+                                                                 ToolTip="Trigger is marked as critical"
+                                                                 Margin="8,0,0,0"
+                                                                 Width="16" Height="16" 
+                                                                 Foreground="{StaticResource SecondaryAccentBrush}"
+                                                                 VerticalAlignment="Center">
+                                            <materialDesign:PackIcon.Style>
+                                                <Style TargetType="materialDesign:PackIcon">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Path=IsCritical}" Value="True">
@@ -236,35 +266,19 @@
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                            </materialDesign:PackIcon.Style>
+                                        </materialDesign:PackIcon>
                                     </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Cogs" 
+                                                                 Margin="0,0,8,0"
+                                                                 Width="24" Height="24" 
+                                                                 VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding Path=TriggerActionName}" VerticalAlignment="Center" />
 
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                            <TextBlock Text="Execute:" 
-                                                       Width="75" 
-                                                       TextAlignment="Right"
-                                                       Foreground="{DynamicResource MaterialDesignBodyLight}" />
-                                            <TextBlock Text="{Binding Path=TriggerActionName}"
-                                                   Width="250" 
-                                                   Margin="16,0,16,0"
-                                                   VerticalAlignment="Center" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="On Event:" 
-                                                       Width="75" 
-                                                       TextAlignment="Right"
-                                                       Foreground="{DynamicResource MaterialDesignBodyLight}" />
-                                            <TextBlock Text="{Binding Path=TriggerEventName}"
-                                                   Width="250" 
-                                                   Margin="16,0,16,0"
-                                                   VerticalAlignment="Center" />
-                                        </StackPanel>
                                     </StackPanel>
                                 </WrapPanel>
                             </DockPanel>
-                            <Separator Style="{StaticResource MaterialDesignLightSeparator}"  />
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
