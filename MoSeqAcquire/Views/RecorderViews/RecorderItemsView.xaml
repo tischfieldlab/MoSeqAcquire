@@ -28,7 +28,7 @@
                 </DockPanel>
             </DataTemplate>
         </GroupBox.HeaderTemplate>
-        <ItemsControl ItemsSource="{Binding Path=Recorders}"  >
+        <ItemsControl ItemsSource="{Binding Path=Recorders}" Margin="-9" >
             <ItemsControl.Style>
                 <Style TargetType="ItemsControl">
                     <Style.Triggers>
@@ -56,6 +56,17 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
+                        <Separator Height="1" Margin="0" SnapsToDevicePixels="True">
+                            <Separator.Style>
+                                <Style TargetType="Separator" BasedOn="{StaticResource MaterialDesignLightSeparator}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Separator.Style>
+                        </Separator>
                         <Expander>
                             <Expander.InputBindings>
                                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
@@ -86,7 +97,7 @@
                                         <materialDesign:PackIcon Kind="RecordRec" Width="24" Height="24"  Margin="0,0,8,0" />
                                         <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" />
                                         <TextBlock Text="{Binding Path=SelectedChannelCount, Mode=OneWay, StringFormat={} ({0} Channels)}" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}" />
-                                        
+
                                     </DockPanel>
                                     <StackPanel Orientation="Horizontal" Margin="36,0,0,0">
                                         <TextBlock Text="{Binding Path=Error}"
@@ -140,7 +151,7 @@
                                                         <StackPanel Orientation="Horizontal" Margin="48,0,0,0">
                                                             <materialDesign:PackIcon Kind="SubdirectoryArrowRight" />
                                                             <TextBlock Text="{Binding Path=FullName}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
-                                                            
+
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
@@ -150,7 +161,6 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </Expander>
-                        <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" SnapsToDevicePixels="True" />
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

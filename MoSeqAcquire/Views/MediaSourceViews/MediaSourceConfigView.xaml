@@ -50,7 +50,7 @@
                                Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
 
                     <TextBlock VerticalAlignment="Center" 
-                               Text="{Binding Path=MediaSource.Name}" 
+                               Text="{Binding Path=Name}" 
                                Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
                 </StackPanel>
             </DockPanel>

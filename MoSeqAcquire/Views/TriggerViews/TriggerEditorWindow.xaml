@@ -68,8 +68,6 @@
             </materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide>
                 <Grid DataContext="{Binding Path=TriggerViewModel}">
-
-
                     <dragablz:TabablzControl Grid.Column="1" Grid.Row="0" Margin="0" >
                         <dragablz:TabablzControl.InterTabController>
                             <dragablz:InterTabController />
@@ -133,7 +131,6 @@
                             <ContentPresenter Content="{Binding Path=DesignerImplementation}" />
                         </TabItem>
                     </dragablz:TabablzControl>
-                    
                 </Grid>
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
