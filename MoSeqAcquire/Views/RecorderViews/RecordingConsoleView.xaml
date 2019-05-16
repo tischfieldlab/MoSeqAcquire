@@ -33,7 +33,7 @@
             <local:TriggerManagerView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type metadata1:MetadataViewModel}">
-            <metadata:MetadataList />
+            <metadata:MetadataList2 />
         </DataTemplate>
     </UserControl.Resources>
     <Validation.ErrorTemplate>
@@ -94,8 +94,8 @@
             </Grid>
         </materialDesign:Card>
 
-
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+
             <ItemsControl ItemsSource="{Binding Path=Root.SubsystemComponents}" 
                           Margin="8" 
                           dd:DragDrop.IsDragSource="True" 

@@ -18,15 +18,15 @@
 
     <DataTemplate x:Key="ErrorReportTemplate">
         <TextBlock Text="{Binding Path=Error}">
-            <!--<TextBlock.Style>
+            <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=HasErrors}" Value="True">
+                        <DataTrigger Binding="{Binding Path=HasErrors}" Value="False">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </TextBlock.Style>-->
+            </TextBlock.Style>
         </TextBlock>
     </DataTemplate>
 

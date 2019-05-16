@@ -1,0 +1,88 @@
+﻿<controls:SubsystemControl x:Class="MoSeqAcquire.Views.Metadata.MetadataList2"
+             xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behv="clr-namespace:MoSeqAcquire.Views.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <controls:SubsystemControl.Resources>
+        <ResourceDictionary Source="ControlTemplates.xaml" />
+    </controls:SubsystemControl.Resources>
+    <!---->
+    <GroupBox Header="{Binding}" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16,8" >
+        <Validation.ErrorTemplate>
+            <ControlTemplate />
+        </Validation.ErrorTemplate>
+        <GroupBox.HeaderTemplate>
+            <DataTemplate>
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Command="{Binding Path=Root.Commands.ShowMetadataDefinitionWindow}"
+                            ToolTip="Edit Metadata Template">
+                        <materialDesign:PackIcon Kind="Pencil"  />
+                    </Button>
+                    <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Command="{Binding Path=Root.Commands.ResetMetadataItemValues}"
+                            ToolTip="Reset Metadata Values">
+                        <materialDesign:PackIcon Kind="Restore"  />
+                    </Button>
+                    <TextBlock Text="Metadata" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                </DockPanel>
+            </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <ListView Margin="-9"
+                  Grid.IsSharedSizeScope="True"
+                  HorizontalContentAlignment="Stretch"
+                  ItemsSource="{Binding Path=Items}"
+                  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsProtocolForceLocked, Converter={StaticResource BooleanInvertConverter}}"> 
+            <Validation.ErrorTemplate>
+                <ControlTemplate />
+            </Validation.ErrorTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="B"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Margin="8,0,16,0" VerticalAlignment="Center" Text="{Binding Path=Name}" Grid.Column="0" />
+                        
+                        <ContentPresenter Grid.Column="1" VerticalAlignment="Center" ContentTemplateSelector="{StaticResource MetadataItemEditorDataTemplateSelector}" />
+                        
+                        <StackPanel Grid.Column="2" Margin="16,0,8,0" VerticalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Text="(" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+
+                            <TextBlock Text="{Binding Path=Units}"
+                                        Visibility="{Binding Path=HasUnits, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        FontStyle="Italic"
+                                        Foreground="{DynamicResource MaterialDesignBodyLight}" />
+
+                            <TextBlock Text=", " 
+                                        Visibility="{Binding Path=HasUnits, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Foreground="{DynamicResource MaterialDesignBodyLight}" />
+
+                            <TextBlock Text="{Binding Path=ValueType.Name}" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+
+                            <TextBlock Text=")" Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        
+        
+        
+        
+        
+    </GroupBox>
+</controls:SubsystemControl>
