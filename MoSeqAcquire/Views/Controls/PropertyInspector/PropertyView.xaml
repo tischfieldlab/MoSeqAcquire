@@ -55,8 +55,13 @@
         </DataTemplate>
         <local:PropertyItemDataTemplateSelector x:Key="PropertyItemDataTemplateSelector" />
     </UserControl.Resources>
-    <Grid>
-        <ListView Name="ItemsGrid">
+    <DockPanel Name="InnerContainer">
+        <Grid DockPanel.Dock="Top">
+            <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Margin="8,0,0,0"
+                Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
+            <TextBox Text="{Binding Path=FilterString, UpdateSourceTrigger=PropertyChanged}" Padding="24,0,0,0" Name="SearchTextBox" HorizontalAlignment="Stretch" />
+        </Grid>
+        <ListView Name="ItemsGrid" ItemsSource="{Binding Path=View}" DockPanel.Dock="Bottom" VerticalAlignment="Stretch">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -73,5 +78,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-    </Grid>
+        
+    </DockPanel>
 </UserControl>
