@@ -170,10 +170,16 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
         public void AbortRecording()
         {
-            Task.Run(() =>
-            {
+            /* TODO: try to find a better way here.
+             * so running this via task.run seems to introduce a race condition where the recorder
+             * can escape aborting. running sync seems to fix, but kills interactivity during this step.
+             * seems only to affect SLOW / low resource systems
+             * 
+             */
+            //Task.Run(() =>
+            //{
                 this.recordingManager.Abort();
-            });
+            //});
         }
         #endregion
     }

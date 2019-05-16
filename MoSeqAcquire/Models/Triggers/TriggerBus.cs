@@ -66,7 +66,7 @@ namespace MoSeqAcquire.Models.Triggers
                                 next.Execute(trigger);
                             });
                         });
-                    Task.WaitAll(tasks);
+                    tasks.Wait();
                 }
             }
         }
