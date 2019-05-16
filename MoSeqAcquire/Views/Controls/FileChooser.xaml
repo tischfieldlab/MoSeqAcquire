@@ -13,8 +13,7 @@
         <ControlTemplate />
     </Validation.ErrorTemplate>
     <Grid>
-
-        <TextBox Name="PathText" 
+        <TextBox x:Name="PathText" 
                  AllowDrop="True" 
                  Drop="PathText_Drop" 
                  MouseDoubleClick="ButtonClicked" 
@@ -38,7 +37,9 @@
                 Click="ButtonClicked" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom" 
-                Style="{DynamicResource MaterialDesignToolForegroundButton}">
+                Background="Transparent"
+                BorderThickness="0" Focusable="False"
+                Foreground="{Binding ElementName=PathText, Path=BorderBrush}">
             <materialDesign:PackIcon Name="ButtonImage" Width="24" Height="24"  />
         </Button>
     </Grid>

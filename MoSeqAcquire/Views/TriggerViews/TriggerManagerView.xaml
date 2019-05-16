@@ -274,7 +274,7 @@
                                                                  Margin="0,0,8,0"
                                                                  Width="24" Height="24" 
                                                                  VerticalAlignment="Center" />
-                                        <TextBlock Text="{Binding Path=TriggerActionName}" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding Path=TriggerActionName}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
 
                                     </StackPanel>
                                 </WrapPanel>
