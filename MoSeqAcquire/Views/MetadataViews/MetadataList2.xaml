@@ -44,6 +44,30 @@
             <Validation.ErrorTemplate>
                 <ControlTemplate />
             </Validation.ErrorTemplate>
+            <ListView.Style>
+                <Style TargetType="ListView" BasedOn="{StaticResource MaterialDesignListView}">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="8" FontStyle="Italic">
+                                                No metadata items have been added yet. Would you like to 
+                                                <Hyperlink Command="{Binding Path=DataContext.Commands.ShowMetadataDefinitionWindow, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}"
+                                                           TextDecorations="underline">
+                                                    add one
+                                                </Hyperlink>?
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Style>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     

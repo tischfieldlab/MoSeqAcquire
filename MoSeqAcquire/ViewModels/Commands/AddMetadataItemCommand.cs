@@ -24,8 +24,8 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            var itm = new MetadataItemDefinition("New Item", typeof(string)) { DefaultValue = "Some Value" };
-            this.ViewModel.Recorder.RecordingMetadata.Items.Add(itm);
+            var itm = new MetadataItemDefinition("New Metadata Item", typeof(string)) { DefaultValue = string.Empty };
+            this.ViewModel.RecordingMetadata.Items.Add(itm);
             this.ViewModel.Commands.EditMetadataItem.Execute(itm);
         }
     }
