@@ -76,8 +76,6 @@
                          Width="50" />
             <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{StaticResource ErrorReportTemplate}" />
             <Slider Orientation="Horizontal" TickPlacement="BottomRight"
-                    materialDesign:ValidationAssist.UsePopup="True"
-                    materialDesign:ValidationAssist.PopupPlacement="Top"
                         Style="{StaticResource MaterialDesignDiscreteSlider}"
                         Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                         Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 

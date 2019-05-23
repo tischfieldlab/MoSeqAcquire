@@ -139,11 +139,11 @@
                             <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"
                                                materialDesign:HintAssist.IsFloating="True"
                                                Margin="16,8"
-                                               Value="{Binding Path=ConstraintImplementation.MinValue}" />
+                                               Value="{Binding Path=ConstraintImplementation.MinValue, Converter={StaticResource GenericConverter}}" />
                             <mah:NumericUpDown materialDesign:HintAssist.Hint="Maximum"
                                                materialDesign:HintAssist.IsFloating="True"
                                                Margin="16,8"
-                                               Value="{Binding Path=ConstraintImplementation.MaxValue}" />
+                                               Value="{Binding Path=ConstraintImplementation.MaxValue, Converter={StaticResource GenericConverter}}" />
                             <!--<TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MinValue}" />
                             <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MaxValue}" />-->
                         </StackPanel>

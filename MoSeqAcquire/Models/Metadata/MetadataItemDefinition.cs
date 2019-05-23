@@ -377,6 +377,22 @@ namespace MoSeqAcquire.Models.Metadata
             this.Validator.ValidateAll();
         }
 
+        public override int GetHashCode()
+        {
+            var hashCode = -1563108727;
+            hashCode = hashCode * -1521134295 + EqualityComparer<TypeConverter>.Default.GetHashCode(Converter);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Type>.Default.GetHashCode(ValueType);
+            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Value);
+            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(DefaultValue);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Units);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<ConstraintMode>>.Default.GetHashCode(ConstraintsAllowed);
+            hashCode = hashCode * -1521134295 + Constraint.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<BaseConstraint>.Default.GetHashCode(ConstraintImplementation);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ObservableCollection<BaseRule>>.Default.GetHashCode(Validators);
+            return hashCode;
+        }
+
         public ICommand AddChoice => new ActionCommand((p) =>
         {
             var constraint = (this.constraintImplementation as ChoicesConstraint);
