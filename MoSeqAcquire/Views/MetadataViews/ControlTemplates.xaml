@@ -20,6 +20,10 @@
         <TextBlock Text="{Binding Path=Error}">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
+                    <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=HasErrors}" Value="False">
                             <Setter Property="Visibility" Value="Collapsed" />
@@ -33,19 +37,21 @@
     <!-- Begin Value Editors -->
     <DataTemplate x:Key="CheckboxEditor">
         <DockPanel>
-            <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+            <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" materialDesign:ValidationAssist.Suppress="True" />
             <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
         </DockPanel>
     </DataTemplate>
     <DataTemplate x:Key="TextBoxEditor">
         <DockPanel>
-            <TextBox DockPanel.Dock="Top" Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
+            <TextBox DockPanel.Dock="Top" materialDesign:ValidationAssist.Suppress="True"
+                     Text="{Binding Path=Value, Converter={StaticResource GenericConverter}, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Stretch" />
             <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{StaticResource ErrorReportTemplate}" />
         </DockPanel>
     </DataTemplate>
     <DataTemplate x:Key="NumericEditor">
         <StackPanel>
-            <mah:NumericUpDown Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}" />
+            <mah:NumericUpDown  Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}" />
             <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
         </StackPanel>
     </DataTemplate>
@@ -77,6 +83,7 @@
             <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{StaticResource ErrorReportTemplate}" />
             <Slider Orientation="Horizontal" TickPlacement="BottomRight"
                         Style="{StaticResource MaterialDesignDiscreteSlider}"
+                        materialDesign:ValidationAssist.Suppress="True"
                         Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                         Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                         Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
@@ -99,6 +106,7 @@
     <DataTemplate x:Key="DefaultValueNumericEditor">
         <mah:NumericUpDown materialDesign:HintAssist.Hint="Default Value"
                            materialDesign:HintAssist.IsFloating="True"
+                           
                            Value="{Binding Path=DefaultValue, Converter={StaticResource GenericConverter}}" />
     </DataTemplate>
     <DataTemplate x:Key="DefaultValueEnumComboBoxEditor">

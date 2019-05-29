@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using MoSeqAcquire.Models.Metadata.DataTypes;
 
 namespace MoSeqAcquire.Models.Metadata
 {
@@ -25,7 +26,7 @@ namespace MoSeqAcquire.Models.Metadata
     public class MetadataItemDefinition : ValidatingBaseViewModel, IXmlSerializable
     {
         protected string name;
-        protected Type valueType;
+        protected BaseDataType valueType;
         protected object value;
         protected object defaultValue;
         protected string units;
@@ -33,13 +34,13 @@ namespace MoSeqAcquire.Models.Metadata
         protected BaseConstraint constraintImplementation;
         protected ObservableCollection<BaseRule> validators;
 
-        protected readonly Dictionary<Type, List<ConstraintMode>> validTypeConstraints = new Dictionary<Type, List<ConstraintMode>>()
+        /*protected readonly Dictionary<Type, List<ConstraintMode>> validTypeConstraints = new Dictionary<Type, List<ConstraintMode>>()
         {
             { typeof(bool), new List<ConstraintMode>(){ConstraintMode.None } },
             { typeof(string), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices } },
             { typeof(int), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices, ConstraintMode.Range } },
             { typeof(double), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices, ConstraintMode.Range } }
-        };
+        };*/
 
         public MetadataItemDefinition(string Name, Type ValueType) : this()
         {
@@ -73,7 +74,7 @@ namespace MoSeqAcquire.Models.Metadata
             this.Validator.AddRequiredRule(() => this.Name, "Name is required");
             //ensure value is of correct type
             this.Validator.AddRule(() => this.Value,
-                                   () => RuleResult.Assert(this.ValueType.IsAssignableFrom(this.Value.GetType()), 
+                                   () => RuleResult.Assert(this.ValueType.Equals(this.Value.GetType()), 
                                    "Value is not a valid " + this.ValueType.Name));
 
             if (this.Constraint != ConstraintMode.None)
@@ -116,10 +117,10 @@ namespace MoSeqAcquire.Models.Metadata
             }
         }
 
-        public virtual TypeConverter Converter
+        /*public virtual TypeConverter Converter
         {
             get => TypeDescriptor.GetConverter(this.ValueType);
-        }
+        }*/
         
         public string Name
         {
@@ -127,7 +128,7 @@ namespace MoSeqAcquire.Models.Metadata
             set => this.SetField(ref this.name, value);
         }
         
-        public Type ValueType
+        public BaseDataType ValueType
         {
             get => this.valueType;
             set
@@ -165,14 +166,10 @@ namespace MoSeqAcquire.Models.Metadata
             }
         }
 
-        public bool HasUnits
-        {
-            get => !string.IsNullOrWhiteSpace(this.Units);
-        }
-        public List<ConstraintMode> ConstraintsAllowed
-        {
-            get => this.validTypeConstraints[this.ValueType];
-        }
+        public bool HasUnits  => !string.IsNullOrWhiteSpace(this.Units);
+
+        public List<ConstraintMode> ConstraintsAllowed  => this.valueType.ValidTypeConstraints;
+        
         public ConstraintMode Constraint
         {
             get => this.constraint;
@@ -198,7 +195,7 @@ namespace MoSeqAcquire.Models.Metadata
         public BaseConstraint ConstraintImplementation
         {
             get => this.constraintImplementation;
-            set => this.SetField(ref this.constraintImplementation, value);
+            protected set => this.SetField(ref this.constraintImplementation, value);
         }
         public ObservableCollection<BaseRule> Validators
         {
@@ -213,26 +210,26 @@ namespace MoSeqAcquire.Models.Metadata
                 this.Constraint = ConstraintMode.None;
                 return;
             }
-            this.value = this.CoerceValue(this.value, this.ValueType);
-            this.defaultValue = this.CoerceValue(this.defaultValue, this.ValueType);
+            this.value = this.valueType.CoerceValue(this.value);
+            this.defaultValue = this.valueType.CoerceValue(this.defaultValue);
             if (this.ConstraintImplementation is ChoicesConstraint)
             {
                 foreach (var c in (this.constraintImplementation as ChoicesConstraint).Choices)
                 {
-                    c.Value = this.CoerceValue(c.Value, this.ValueType);
+                    c.Value = this.valueType.CoerceValue(c.Value);
                 }
             }
             else if (this.ConstraintImplementation is RangeConstraint)
             {
                 var rc = this.constraintImplementation as RangeConstraint;
-                rc.MinValue = this.CoerceValue(rc.MinValue, this.ValueType);
-                rc.MaxValue = this.CoerceValue(rc.MaxValue, this.ValueType);
+                rc.MinValue = this.valueType.CoerceValue(rc.MinValue);
+                rc.MaxValue = this.valueType.CoerceValue(rc.MaxValue);
             }
             this.SetupValidationRules();
             this.Validator.ValidateAll();
             this.NotifyPropertyChanged(null);
         }
-        protected object CoerceValue(object value, Type type)
+        /*protected object CoerceValue(object value, Type type)
         {
             if (value == null)
             {
@@ -256,7 +253,7 @@ namespace MoSeqAcquire.Models.Metadata
                     return Activator.CreateInstance(type);
                 }
             }
-        }
+        }*/
 #endregion
 
         public void ResetValue()
@@ -332,7 +329,7 @@ namespace MoSeqAcquire.Models.Metadata
         {
             writer.WriteAttributeString("Name", this.Name);
 
-            writer.WriteElementString("DataType", this.ValueType.FullName);
+            writer.WriteElementString("DataType", this.ValueType.Name);
             writer.WriteElementString("DefaultValue", this.DefaultValue != null ? this.defaultValue.ToString() : string.Empty);
             writer.WriteElementString("CurrentValue", this.Value != null ? this.value.ToString() : string.Empty);
             writer.WriteElementString("Units", this.units);
@@ -380,7 +377,6 @@ namespace MoSeqAcquire.Models.Metadata
         public override int GetHashCode()
         {
             var hashCode = -1563108727;
-            hashCode = hashCode * -1521134295 + EqualityComparer<TypeConverter>.Default.GetHashCode(Converter);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + EqualityComparer<Type>.Default.GetHashCode(ValueType);
             hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Value);
