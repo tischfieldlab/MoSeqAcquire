@@ -36,13 +36,13 @@ namespace MoSeqAcquire.Views.Metadata
                 {
                     return elemnt.FindResource(elemnt.Name+"CheckboxEditor") as DataTemplate;
                 }
-                else if (pit.IsEnum)
-                {
-                    return elemnt.FindResource(elemnt.Name + "EnumComboBoxEditor") as DataTemplate;
-                }
                 else if (pit.Equals(typeof(int)) || pit.Equals(typeof(float)) || pit.Equals(typeof(double)))
                 {
                     return elemnt.FindResource(elemnt.Name + "NumericEditor") as DataTemplate;
+                }
+                else if (pit.Equals(typeof(DateTime)))
+                {
+                    return elemnt.FindResource(elemnt.Name + "DateTimeEditor") as DataTemplate;
                 }
                 else
                 {

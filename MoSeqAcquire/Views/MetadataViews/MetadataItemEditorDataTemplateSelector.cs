@@ -51,6 +51,10 @@ namespace MoSeqAcquire.Views.Metadata
                     }
                     return elemnt.FindResource(elemnt.Name + "NumericEditor") as DataTemplate;
                 }
+                else if (pit.Equals(typeof(DateTime)))
+                {
+                    return elemnt.FindResource(elemnt.Name + "DateTimeEditor") as DataTemplate;
+                }
                 else
                 {
                     return elemnt.FindResource(elemnt.Name + "TextBoxEditor") as DataTemplate;

@@ -32,31 +32,18 @@ namespace MoSeqAcquire.Models.Metadata
         protected string units;
         protected ConstraintMode constraint;
         protected BaseConstraint constraintImplementation;
-        protected ObservableCollection<BaseRule> validators;
+        //protected ObservableCollection<BaseRule> validators;
 
-        /*protected readonly Dictionary<Type, List<ConstraintMode>> validTypeConstraints = new Dictionary<Type, List<ConstraintMode>>()
-        {
-            { typeof(bool), new List<ConstraintMode>(){ConstraintMode.None } },
-            { typeof(string), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices } },
-            { typeof(int), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices, ConstraintMode.Range } },
-            { typeof(double), new List<ConstraintMode>(){ ConstraintMode.None, ConstraintMode.Choices, ConstraintMode.Range } }
-        };*/
-
-        public MetadataItemDefinition(string Name, Type ValueType) : this()
+        public MetadataItemDefinition(string Name, BaseDataType ValueType) : this()
         {
             this.name = Name;
             this.valueType = ValueType;
-            this.defaultValue = this.CoerceValue(null, ValueType);
-            this.value = this.CoerceValue(null, ValueType);
+            this.defaultValue = this.valueType.CoerceValue(null);
+            this.value = this.valueType.CoerceValue(null);
         }
 
         protected MetadataItemDefinition()
         {
-            this.validators = new ObservableCollection<BaseRule>()
-            {
-                new RequiredRule()
-            };
-            this.validators.ForEach(v => v.PropertyChanged += Validator_PropertyChanged);
             this.SetupValidationRules();
         }
 
@@ -66,6 +53,10 @@ namespace MoSeqAcquire.Models.Metadata
             this.Validator.ValidateAll();
             this.NotifyPropertyChanged(null);
         }
+        private void Choice_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.Validator.ValidateAll();
+        }
 
         protected void SetupValidationRules()
         {
@@ -74,53 +65,25 @@ namespace MoSeqAcquire.Models.Metadata
             this.Validator.AddRequiredRule(() => this.Name, "Name is required");
             //ensure value is of correct type
             this.Validator.AddRule(() => this.Value,
-                                   () => RuleResult.Assert(this.ValueType.Equals(this.Value.GetType()), 
+                                   () => RuleResult.Assert(this.ValueType.DataType.Equals(this.Value.GetType()), 
                                    "Value is not a valid " + this.ValueType.Name));
 
             if (this.Constraint != ConstraintMode.None)
             {
-                switch (this.constraint)
-                {
-                    case ConstraintMode.Choices:
-                        
-                        this.Validator.AddRule(() => this.Value,
-                                               () =>
-                                               {
-                                                   var ccon = this.ConstraintImplementation as ChoicesConstraint;
-                                                   return RuleResult.Assert(ccon.Choices.Any(c => c.Value.Equals(this.value)), "Value must be one of available choices");
-                                               });
-                        break;
-
-                    case ConstraintMode.Range:
-                        
-                        this.Validator.AddRule(() => this.Value,
-                                               () =>
-                                               {
-                                                   var rcon = this.ConstraintImplementation as RangeConstraint;
-                                                   return RuleResult.Assert(
-                                                       (this.Value as IComparable).CompareTo(
-                                                           (rcon.MinValue as IComparable)) >= 0
-                                                       && (this.Value as IComparable).CompareTo(
-                                                           (rcon.MaxValue as IComparable)) <= 0,
-                                                       "Value must be within range");
-                                               });
-                        break;
-                }
+                this.Validator.AddRule(() => this.Value, () => this.ConstraintImplementation.Validate(this.value));
             }
 
-            foreach(var rule in this.validators)
+            if (this.valueType != null)
             {
-                if (rule.IsActive)
+                foreach (var rule in this.valueType.Validators)
                 {
-                    this.Validator.AddRule(() => this.Value, () => rule.Validate(this));
+                    if (rule.IsActive)
+                    {
+                        this.Validator.AddRule(() => this.Value, () => rule.IsActive ? rule.Validate(this) : RuleResult.Valid());
+                    }
                 }
             }
         }
-
-        /*public virtual TypeConverter Converter
-        {
-            get => TypeDescriptor.GetConverter(this.ValueType);
-        }*/
         
         public string Name
         {
@@ -133,6 +96,8 @@ namespace MoSeqAcquire.Models.Metadata
             get => this.valueType;
             set
             {
+                this.valueType?.Validators.ForEach(r => r.PropertyChanged -= Validator_PropertyChanged);
+                value?.Validators.ForEach(r => r.PropertyChanged += Validator_PropertyChanged);
                 this.SetField(ref this.valueType, value);
                 this.CoerceAllValues();
             }
@@ -142,7 +107,7 @@ namespace MoSeqAcquire.Models.Metadata
             get => this.value;
             set
             {
-                this.SetField(ref this.value, value);
+                this.SetField(ref this.value, this.valueType.CoerceValue(value));
                 this.CoerceAllValues();
             }
         }
@@ -151,7 +116,7 @@ namespace MoSeqAcquire.Models.Metadata
             get => this.defaultValue;
             set
             {
-                this.SetField(ref this.defaultValue, value);
+                this.SetField(ref this.defaultValue, this.valueType.CoerceValue(value));
                 this.CoerceAllValues();
             }
         }
@@ -166,9 +131,9 @@ namespace MoSeqAcquire.Models.Metadata
             }
         }
 
-        public bool HasUnits  => !string.IsNullOrWhiteSpace(this.Units);
+        public bool HasUnits => !string.IsNullOrWhiteSpace(this.Units);
 
-        public List<ConstraintMode> ConstraintsAllowed  => this.valueType.ValidTypeConstraints;
+        public List<ConstraintMode> ConstraintsAllowed => this.valueType.ValidTypeConstraints;
         
         public ConstraintMode Constraint
         {
@@ -197,12 +162,16 @@ namespace MoSeqAcquire.Models.Metadata
             get => this.constraintImplementation;
             protected set => this.SetField(ref this.constraintImplementation, value);
         }
-        public ObservableCollection<BaseRule> Validators
+        public List<BaseRule> Validators
         {
-            get => this.validators;
+            get => this.valueType.Validators;
         }
 
         #region Value Coerceion
+        public void ResetValue()
+        {
+            this.Value = this.DefaultValue;
+        }
         protected void CoerceAllValues()
         {
             if (!this.ConstraintsAllowed.Contains(this.Constraint))
@@ -229,37 +198,9 @@ namespace MoSeqAcquire.Models.Metadata
             this.Validator.ValidateAll();
             this.NotifyPropertyChanged(null);
         }
-        /*protected object CoerceValue(object value, Type type)
-        {
-            if (value == null)
-            {
-                if (type == typeof(string))
-                {
-                    return string.Empty;
-                }
-                return Activator.CreateInstance(type);
-            }
-            try
-            {
-                return Convert.ChangeType(value, type);
-            } 
-            catch (Exception e)
-            {
-                try
-                {
-                    return TypeDescriptor.GetConverter(value.GetType()).ConvertTo(value, type);
-                }catch(Exception e2)
-                {
-                    return Activator.CreateInstance(type);
-                }
-            }
-        }*/
 #endregion
 
-        public void ResetValue()
-        {
-            this.Value = this.DefaultValue;
-        }
+        
 
         #region IXmlSerializable
         public XmlSchema GetSchema()
@@ -275,7 +216,7 @@ namespace MoSeqAcquire.Models.Metadata
 
             reader.ReadToDescendant("DataType");
             var typeStr = reader.ReadElementContentAsString();
-            this.ValueType = System.Type.GetType(typeStr);
+            this.ValueType = BaseDataType.FromType(System.Type.GetType(typeStr));
             if (this.ValueType == null)
             {
                 throw new ArgumentException("Unable to find Type for " + typeStr);
@@ -288,7 +229,7 @@ namespace MoSeqAcquire.Models.Metadata
             }
             else
             {
-                this.DefaultValue = reader.ReadElementContentAs(this.ValueType, null);
+                this.DefaultValue = reader.ReadElementContentAs(this.ValueType.DataType, null);
             }
 
             //reader.ReadToFollowing("CurrentValue");
@@ -298,7 +239,7 @@ namespace MoSeqAcquire.Models.Metadata
             }
             else
             {
-                this.Value = reader.ReadElementContentAs(this.ValueType, null);
+                this.Value = reader.ReadElementContentAs(this.ValueType.DataType, null);
             }
 
             //reader.ReadToFollowing("Units");
@@ -329,7 +270,7 @@ namespace MoSeqAcquire.Models.Metadata
         {
             writer.WriteAttributeString("Name", this.Name);
 
-            writer.WriteElementString("DataType", this.ValueType.Name);
+            writer.WriteElementString("DataType", this.ValueType.DataType.FullName);
             writer.WriteElementString("DefaultValue", this.DefaultValue != null ? this.defaultValue.ToString() : string.Empty);
             writer.WriteElementString("CurrentValue", this.Value != null ? this.value.ToString() : string.Empty);
             writer.WriteElementString("Units", this.units);
@@ -369,23 +310,20 @@ namespace MoSeqAcquire.Models.Metadata
             return true;
         }
 
-        private void Choice_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            this.Validator.ValidateAll();
-        }
+        
 
         public override int GetHashCode()
         {
             var hashCode = -1563108727;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Type>.Default.GetHashCode(ValueType);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Type>.Default.GetHashCode(ValueType.DataType);
             hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Value);
             hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(DefaultValue);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Units);
             hashCode = hashCode * -1521134295 + EqualityComparer<List<ConstraintMode>>.Default.GetHashCode(ConstraintsAllowed);
             hashCode = hashCode * -1521134295 + Constraint.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<BaseConstraint>.Default.GetHashCode(ConstraintImplementation);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ObservableCollection<BaseRule>>.Default.GetHashCode(Validators);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<BaseRule>>.Default.GetHashCode(Validators);
             return hashCode;
         }
 
@@ -393,13 +331,13 @@ namespace MoSeqAcquire.Models.Metadata
         {
             var constraint = (this.constraintImplementation as ChoicesConstraint);
             object val = null;
-            if (this.ValueType == typeof(string))
+            if (this.ValueType.DataType == typeof(string))
             {
                 val = "New Option "+constraint.Choices.Count;
             }
             else
             {
-                val = Activator.CreateInstance(this.ValueType);
+                val = Activator.CreateInstance(this.ValueType.DataType);
             }
 
             var choice = new ChoicesConstraintChoice(this) {Value = val};

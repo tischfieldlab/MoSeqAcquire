@@ -16,7 +16,7 @@ namespace MoSeqAcquire.Models.Metadata.Rules
 
         public override RuleResult Validate(MetadataItemDefinition Item)
         {
-            if (Item.ValueType.Equals(typeof(Boolean)))
+            if (Item.ValueType.DataType.Equals(typeof(Boolean)))
                 return (bool)Item.Value ? RuleResult.Valid() : RuleResult.Invalid("Value must be true");
 
             if (string.IsNullOrWhiteSpace(Item.Value as string))

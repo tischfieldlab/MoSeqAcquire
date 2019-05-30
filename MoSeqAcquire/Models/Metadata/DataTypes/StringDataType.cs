@@ -7,23 +7,17 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Metadata.DataTypes
 {
-    public class BooleanDataType : BaseDataType
+    public class StringDataType : BaseDataType
     {
-        public BooleanDataType() : base(typeof(bool))
+        public StringDataType() : base(typeof(string))
         {
+            this.ValidTypeConstraints.Add(ConstraintMode.Choices);
+
             this.Validators.Add(new RequiredRule());
         }
-
         public override object CoerceValue(object value)
         {
-            try
-            {
-                return Convert.ToBoolean(value);
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+            return Convert.ToString(value);
         }
     }
 }

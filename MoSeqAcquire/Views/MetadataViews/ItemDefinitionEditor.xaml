@@ -51,7 +51,7 @@
                       materialDesign:HintAssist.IsFloating="True"
                       SelectedValuePath="Type"
                       SelectedValue="{Binding Path=ValueType}"
-                      DisplayMemberPath="Type.FullName"
+                      DisplayMemberPath="Type.Name"
                       ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.AvailableTypes, Mode=OneWay}" />
 
             <TextBox Grid.Column="1" Grid.Row="0" Margin="16,8"
@@ -134,7 +134,7 @@
                             
                         </DockPanel>
                     </DataTemplate>
-                    <DataTemplate x:Key="rangeTemplate">
+                    <DataTemplate x:Key="numericRangeTemplate">
                         <StackPanel>
                             <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"
                                                materialDesign:HintAssist.IsFloating="True"
@@ -144,8 +144,24 @@
                                                materialDesign:HintAssist.IsFloating="True"
                                                Margin="16,8"
                                                Value="{Binding Path=ConstraintImplementation.MaxValue, Converter={StaticResource GenericConverter}}" />
-                            <!--<TextBox materialDesign:HintAssist.Hint="Minimum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MinValue}" />
-                            <TextBox materialDesign:HintAssist.Hint="Maximum" materialDesign:HintAssist.IsFloating="True" Text="{Binding Path=ConstraintImplementation.MaxValue}" />-->
+                            
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="dateTimeRangeTemplate">
+                        <StackPanel>
+                            <DatePicker SelectedDate="{Binding Path=ConstraintImplementation.MinValue, Converter={StaticResource GenericConverter}}" 
+                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                        HorizontalAlignment="Stretch" 
+                                        materialDesign:HintAssist.Hint="Minimum"
+                                        materialDesign:HintAssist.IsFloating="True"
+                                        materialDesign:ValidationAssist.Suppress="True" />
+
+                            <DatePicker SelectedDate="{Binding Path=ConstraintImplementation.MaxValue, Converter={StaticResource GenericConverter}}" 
+                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                        HorizontalAlignment="Stretch" 
+                                        materialDesign:HintAssist.Hint="Maximum"
+                                        materialDesign:HintAssist.IsFloating="True"
+                                        materialDesign:ValidationAssist.Suppress="True" />
                         </StackPanel>
                     </DataTemplate>
                     <DataTemplate x:Key="noConstraintTemplate">
@@ -163,9 +179,33 @@
                                 <DataTrigger Binding="{Binding Path=Constraint}" Value="Choices">
                                     <Setter Property="ContentTemplate" Value="{StaticResource choicesTemplate}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=Constraint}" Value="Range">
-                                    <Setter Property="ContentTemplate" Value="{StaticResource rangeTemplate}" />
-                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Constraint}" Value="Range" />
+                                        <Condition Binding="{Binding Path=ValueType.Name}" Value="Double" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="ContentTemplate" Value="{StaticResource numericRangeTemplate}" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Constraint}" Value="Range" />
+                                        <Condition Binding="{Binding Path=ValueType.Name}" Value="Int32" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="ContentTemplate" Value="{StaticResource numericRangeTemplate}" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Constraint}" Value="Range" />
+                                        <Condition Binding="{Binding Path=ValueType.Name}" Value="DateTime" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="ContentTemplate" Value="{StaticResource dateTimeRangeTemplate}" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
                     </ContentControl.Style>

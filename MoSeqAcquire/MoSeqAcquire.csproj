@@ -128,8 +128,14 @@
     <Compile Include="Models\Core\Component.cs" />
     <Compile Include="Models\Core\ComponentSpecification.cs" />
     <Compile Include="Models\Management\ProtocolTriggerCollection.cs" />
+    <Compile Include="Models\Metadata\DataTypes\BaseDataType.cs" />
     <Compile Include="Models\Metadata\DataTypes\BooleanDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\DateTimeDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\DoubleDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\IntDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\StringDataType.cs" />
     <Compile Include="Models\Metadata\RecordingMetadataSnapshot.cs" />
+    <Compile Include="Models\Metadata\Rules\DelegateRule.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />
     <Compile Include="Models\Recording\MediaWriterPin.cs" />
@@ -248,12 +254,12 @@
     <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
       <DependentUpon>MediaSourceConfigView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MetadataViews\ChoicesConstraintEditorDataTemplateSelector.cs" />
     <Compile Include="Views\MetadataViews\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Metadata\MetadataDefinitionCollection.cs" />
     <Compile Include="Models\Metadata\MetadataItemDefinition.cs" />
-    <Compile Include="Views\MetadataViews\ChoicesConstraintEditorDataTemplateSelector.cs" />
     <Compile Include="Views\MetadataViews\MetadataEditorWindow.xaml.cs">
       <DependentUpon>MetadataEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -271,7 +277,6 @@
     <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
     <Compile Include="Models\Metadata\RangeConstraint.cs" />
     <Compile Include="Models\Metadata\Rules\BaseRule.cs" />
-    <Compile Include="Models\Metadata\Rules\RangeRule.cs" />
     <Compile Include="Models\Metadata\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />

@@ -7,22 +7,24 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Metadata.DataTypes
 {
-    public class BooleanDataType : BaseDataType
+    public class DoubleDataType : BaseDataType
     {
-        public BooleanDataType() : base(typeof(bool))
+        public DoubleDataType() : base(typeof(double))
         {
+            this.ValidTypeConstraints.Add(ConstraintMode.Choices);
+            this.ValidTypeConstraints.Add(ConstraintMode.Range);
+
             this.Validators.Add(new RequiredRule());
         }
-
         public override object CoerceValue(object value)
         {
             try
             {
-                return Convert.ToBoolean(value);
+                return Convert.ToDouble(value);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                return false;
+                return default(double);
             }
         }
     }

@@ -12,7 +12,7 @@
     <converters:StringEmptyVisibilityConverter x:Key="StringEmptyVisibilityConverter" />
     <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
 
-    <local:MetadataItemDataTemplateSelector x:Key="MetadataItemDataTemplateSelector" />
+    <!--<local:MetadataItemDataTemplateSelector x:Key="MetadataItemDataTemplateSelector" />-->
     <local:MetadataItemEditorDataTemplateSelector x:Key="MetadataItemEditorDataTemplateSelector" />
     <local:ChoicesConstraintEditorDataTemplateSelector x:Key="ChoicesConstraintEditorDataTemplateSelector" />
 
@@ -35,6 +35,15 @@
     </DataTemplate>
 
     <!-- Begin Value Editors -->
+    <DataTemplate x:Key="DateTimeEditor">
+        <DockPanel>
+            <DatePicker SelectedDate="{Binding Path=Value}" 
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        HorizontalAlignment="Stretch" 
+                        materialDesign:ValidationAssist.Suppress="True" />
+            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+        </DockPanel>
+    </DataTemplate>
     <DataTemplate x:Key="CheckboxEditor">
         <DockPanel>
             <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" materialDesign:ValidationAssist.Suppress="True" />
@@ -55,16 +64,6 @@
             <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
         </StackPanel>
     </DataTemplate>
-    <DataTemplate x:Key="EnumComboBoxEditor">
-        <StackPanel>
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
-                      ItemsSource="{extensions:Enumeration {Binding Path=ValueType}}" 
-                      DisplayMemberPath="Description" 
-                      SelectedValuePath="Value" 
-                      SelectedValue="{Binding Path=Value}" />
-            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
-        </StackPanel>
-    </DataTemplate>
     <DataTemplate x:Key="CollectionComboBoxEditor">
         <StackPanel>
             <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
@@ -77,7 +76,11 @@
     </DataTemplate>
     <DataTemplate x:Key="RangeEditor">
         <DockPanel>
-            <TextBox DockPanel.Dock="Right" materialDesign:ValidationAssist.Suppress="True"
+            <mah:NumericUpDown  Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"
+                                Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}"
+                                Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" />
+            <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
+            <!--<TextBox DockPanel.Dock="Right" materialDesign:ValidationAssist.Suppress="True"
                          Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" 
                          Width="50" />
             <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{StaticResource ErrorReportTemplate}" />
@@ -86,12 +89,23 @@
                         materialDesign:ValidationAssist.Suppress="True"
                         Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                         Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
+                        Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />-->
         </DockPanel>
+
     </DataTemplate>
     <!-- End Value Editors -->
 
     <!-- Begin Default Value Editors -->
+    <DataTemplate x:Key="DefaultValueDateTimeEditor">
+        <DockPanel>
+            <DatePicker SelectedDate="{Binding Path=Value}" 
+                        materialDesign:HintAssist.IsFloating="True"
+                        materialDesign:HintAssist.Hint="Default Value"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        HorizontalAlignment="Stretch" 
+                        materialDesign:ValidationAssist.Suppress="True" />
+        </DockPanel>
+    </DataTemplate>
     <DataTemplate x:Key="DefaultValueCheckboxEditor">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <Label>Default Value: </Label>
@@ -108,15 +122,6 @@
                            materialDesign:HintAssist.IsFloating="True"
                            
                            Value="{Binding Path=DefaultValue, Converter={StaticResource GenericConverter}}" />
-    </DataTemplate>
-    <DataTemplate x:Key="DefaultValueEnumComboBoxEditor">
-        <ComboBox Style="{StaticResource MaterialDesignComboBox}"
-                  materialDesign:HintAssist.Hint="Default Value"
-                  materialDesign:HintAssist.IsFloating="True"
-                  ItemsSource="{extensions:Enumeration {Binding Path=ValueType}}" 
-                  DisplayMemberPath="Description" 
-                  SelectedValuePath="Value" 
-                  SelectedValue="{Binding Path=DefaultValue}" />
     </DataTemplate>
     <DataTemplate x:Key="DefaultValueCollectionComboBoxEditor">
         <ComboBox Style="{StaticResource MaterialDesignComboBox}"
@@ -137,27 +142,15 @@
             </ComboBox.ItemsSource>
         </ComboBox>
     </DataTemplate>
-    <DataTemplate x:Key="DefaultValueRangeEditor">
-        <DockPanel>
-            <TextBox DockPanel.Dock="Right"
-                    Text="{Binding Path=DefaultValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                    IsReadOnly="True" />
-            
-            <Slider Orientation="Horizontal" TickPlacement="BottomRight"
-                    materialDesign:HintAssist.Hint="Default Value"
-                    materialDesign:HintAssist.IsFloating="True"
-                    Style="{StaticResource MaterialDesignDiscreteSlider}"
-                    Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                    Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                    Value="{Binding Path=DefaultValue, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
-        </DockPanel>
-    </DataTemplate>
     <!-- End Default Value Editors -->
 
 
     <!-- Begin Choice Value Editors -->
-    <DataTemplate x:Key="ChoiceCheckboxEditor">
-        <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+    <DataTemplate x:Key="ChoiceDateTimeEditor">
+        <DatePicker SelectedDate="{Binding Path=Value}" 
+                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                    HorizontalAlignment="Stretch" 
+                    materialDesign:ValidationAssist.Suppress="True" />
     </DataTemplate>
     <DataTemplate x:Key="ChoiceTextBoxEditor">
         <TextBox Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" HorizontalAlignment="Stretch" />
@@ -165,33 +158,12 @@
     <DataTemplate x:Key="ChoiceNumericEditor">
         <mah:NumericUpDown Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}" />
     </DataTemplate>
-    <DataTemplate x:Key="ChoiceEnumComboBoxEditor">
-        <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
-                  ItemsSource="{extensions:Enumeration {Binding Path=ValueType}}" 
-                  DisplayMemberPath="Description" 
-                  SelectedValuePath="Value" 
-                  SelectedValue="{Binding Path=Value}" />
-    </DataTemplate>
     <DataTemplate x:Key="ChoiceCollectionComboBoxEditor">
         <ComboBox Style="{StaticResource MaterialDesignComboBox}" 
                   ItemsSource="{Binding Path=ConstraintImplementation.Choices}" 
                   SelectedValue="{Binding Path=Value}" 
                   DisplayMemberPath="Value" 
                   SelectedValuePath="Value" />
-    </DataTemplate>
-    <DataTemplate x:Key="ChoiceRangeEditor">
-        <DockPanel>
-            <TextBox DockPanel.Dock="Right" materialDesign:ValidationAssist.Suppress="True"
-                         Text="{Binding Path=Value, Converter={StaticResource GenericConverter}}" 
-                         Width="50" />
-            <Slider Orientation="Horizontal" TickPlacement="BottomRight"
-                    materialDesign:ValidationAssist.UsePopup="True"
-                    materialDesign:ValidationAssist.PopupPlacement="Top"
-                        Style="{StaticResource MaterialDesignDiscreteSlider}"
-                        Maximum="{Binding Path=ConstraintImplementation.MaxValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Minimum="{Binding Path=ConstraintImplementation.MinValue, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
-                        Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"  />
-        </DockPanel>
     </DataTemplate>
     <!-- End Choice Value Editors -->
 

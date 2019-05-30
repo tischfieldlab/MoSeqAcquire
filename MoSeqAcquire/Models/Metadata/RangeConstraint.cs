@@ -15,18 +15,18 @@ namespace MoSeqAcquire.Models.Metadata
 
         public RangeConstraint(MetadataItemDefinition Owner) : base(Owner)
         {
-            
+            this.Name = "Range";
         }
 
         public object MinValue
         {
             get => this.minValue;
-            set => this.SetField(ref this.minValue, value);
+            set => this.SetField(ref this.minValue, this.Owner.ValueType.CoerceValue(value));
         }
         public object MaxValue
         {
             get => this.maxValue;
-            set => this.SetField(ref this.maxValue, value);
+            set => this.SetField(ref this.maxValue, this.Owner.ValueType.CoerceValue(value));
         }
 
         public override void ReadXml(XmlReader reader)
@@ -52,6 +52,13 @@ namespace MoSeqAcquire.Models.Metadata
                 return false;
 
             return true;
+        }
+
+        public override RuleResult Validate(object value)
+        {
+            return RuleResult.Assert((value as IComparable).CompareTo((this.MinValue as IComparable)) >= 0
+                                  && (value as IComparable).CompareTo((this.MaxValue as IComparable)) <= 0,
+                                    $"Value must be within range [{this.MinValue}, {this.MaxValue}]");
         }
     }
 }

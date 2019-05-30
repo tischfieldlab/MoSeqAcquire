@@ -17,11 +17,13 @@ namespace MoSeqAcquire.Models.Metadata
         {
             this.Owner = Owner;
         }
+        public string Name { get; protected set; }
         public MetadataItemDefinition Owner { get; protected set; }
         public XmlSchema GetSchema()
         {
             return null;
         }
+        public abstract RuleResult Validate(object value);
         public abstract void ReadXml(XmlReader reader);
         public abstract void WriteXml(XmlWriter writer);
         

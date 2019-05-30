@@ -1,5 +1,4 @@
-﻿using MoSeqAcquire.Models.Metadata.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Metadata.DataTypes
 {
-    public class BooleanDataType : BaseDataType
+    public class DateTimeDataType : BaseDataType
     {
-        public BooleanDataType() : base(typeof(bool))
+        public DateTimeDataType() : base(typeof(DateTime))
         {
-            this.Validators.Add(new RequiredRule());
+            this.ValidTypeConstraints.Add(ConstraintMode.Choices);
+            this.ValidTypeConstraints.Add(ConstraintMode.Range);
         }
-
         public override object CoerceValue(object value)
         {
             try
             {
-                return Convert.ToBoolean(value);
+                return Convert.ToDateTime(value);
             }
             catch (Exception e)
             {
-                return false;
+                return DateTime.Now;
             }
         }
     }

@@ -16,6 +16,7 @@ namespace MoSeqAcquire.Models.Metadata
     {
         public ChoicesConstraint(MetadataItemDefinition Owner) : base(Owner)
         {
+            this.Name = "Choices";
             this.Choices = new ObservableCollection<ChoicesConstraintChoice>();
         }
         public ObservableCollection<ChoicesConstraintChoice> Choices { get; protected set; }
@@ -58,7 +59,6 @@ namespace MoSeqAcquire.Models.Metadata
 
         public override bool Equals(object obj)
         {
-
             if (!(obj is ChoicesConstraint cc))
                 return false;
 
@@ -66,6 +66,11 @@ namespace MoSeqAcquire.Models.Metadata
                 return false;
 
             return true;
+        }
+
+        public override RuleResult Validate(object value)
+        {
+            return RuleResult.Assert(this.Choices.Any(c => c.Value.Equals(value)), "Value must be one of available choices");
         }
     }
 
