@@ -118,6 +118,7 @@ namespace MoSeqAcquire.Models.Metadata
             {
                 this.SetField(ref this.defaultValue, this.valueType.CoerceValue(value));
                 this.CoerceAllValues();
+                this.ResetValue();
             }
         }
 
@@ -141,13 +142,24 @@ namespace MoSeqAcquire.Models.Metadata
             set
             {
                 this.SetField(ref this.constraint, value);
+
+                if(this.ConstraintImplementation != null)
+                    this.ConstraintImplementation.PropertyChanged -= ConstraintImplementation_PropertyChanged;
+
+                this.ConstraintImplementation = this.valueType.ProvideConstraintImplementation(this.constraint);
+
+                if (this.ConstraintImplementation != null)
+                    this.ConstraintImplementation.PropertyChanged += ConstraintImplementation_PropertyChanged;
+
                 if (this.constraint == ConstraintMode.Choices)
                 {
                     this.ConstraintImplementation = new ChoicesConstraint(this);
+                    this.ConstraintImplementation.PropertyChanged += ConstraintImplementation_PropertyChanged;
                 }
                 else if (this.constraint == ConstraintMode.Range)
                 {
                     this.ConstraintImplementation = new RangeConstraint(this);
+                    this.ConstraintImplementation.PropertyChanged += ConstraintImplementation_PropertyChanged;
                 }
                 else
                 {
@@ -155,6 +167,11 @@ namespace MoSeqAcquire.Models.Metadata
                 }
                 this.CoerceAllValues();
             }
+        }
+
+        private void ConstraintImplementation_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.CoerceAllValues();
         }
 
         public BaseConstraint ConstraintImplementation
@@ -340,14 +357,14 @@ namespace MoSeqAcquire.Models.Metadata
                 val = Activator.CreateInstance(this.ValueType.DataType);
             }
 
-            var choice = new ChoicesConstraintChoice(this) {Value = val};
+            var choice = new ChoicesChoice(this) {Value = val};
             choice.PropertyChanged += Choice_PropertyChanged;
             constraint.Choices.Add(choice);
         });
 
         public ICommand RemoveChoice => new ActionCommand((p) =>
         {
-            var choice = p as ChoicesConstraintChoice;
+            var choice = p as ChoicesChoice;
             choice.PropertyChanged -= Choice_PropertyChanged;
             (this.constraintImplementation as ChoicesConstraint).Choices.Remove(choice);
         });

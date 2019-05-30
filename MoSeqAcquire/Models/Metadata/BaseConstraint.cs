@@ -11,7 +11,7 @@ using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Metadata
 {
-    public abstract class BaseConstraint : BaseViewModel, IXmlSerializable
+    public abstract class BaseConstraint : BaseViewModel
     {
         public BaseConstraint(MetadataItemDefinition Owner)
         {
@@ -19,13 +19,7 @@ namespace MoSeqAcquire.Models.Metadata
         }
         public string Name { get; protected set; }
         public MetadataItemDefinition Owner { get; protected set; }
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-        public abstract RuleResult Validate(object value);
-        public abstract void ReadXml(XmlReader reader);
-        public abstract void WriteXml(XmlWriter writer);
+        
         
     }
 }

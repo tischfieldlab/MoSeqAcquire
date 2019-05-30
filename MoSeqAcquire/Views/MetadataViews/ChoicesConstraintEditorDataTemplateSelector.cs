@@ -11,10 +11,10 @@ namespace MoSeqAcquire.Views.Metadata
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is ChoicesConstraintChoice)
+            if (item is ChoicesChoice)
             {
                 FrameworkElement elemnt = container as FrameworkElement;
-                ChoicesConstraintChoice ccc = item as ChoicesConstraintChoice;
+                ChoicesChoice ccc = item as ChoicesChoice;
                 MetadataItemDefinition pi = ccc.Owner; 
                 Type pit = pi.ValueType;
 

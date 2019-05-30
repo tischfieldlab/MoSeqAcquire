@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Metadata.DataTypes
 {
@@ -11,7 +12,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
     {
         public BooleanDataType() : base(typeof(bool))
         {
-            this.Validators.Add(new RequiredRule());
+            this.Validators.Add(new DelegateRule("Required", (mid) => (bool)mid.Value ? RuleResult.Valid() : RuleResult.Invalid("Value must be true")));
         }
 
         public override object CoerceValue(object value)

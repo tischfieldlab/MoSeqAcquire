@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Metadata.Rules
@@ -23,6 +24,16 @@ namespace MoSeqAcquire.Models.Metadata.Rules
                 return RuleResult.Invalid("A value is required.");
 
             return RuleResult.Valid();
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            throw new NotImplementedException();
         }
     }
 }

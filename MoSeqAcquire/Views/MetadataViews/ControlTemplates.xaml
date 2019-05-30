@@ -40,6 +40,7 @@
             <DatePicker SelectedDate="{Binding Path=Value}" 
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         HorizontalAlignment="Stretch" 
+                        DockPanel.Dock="Top"
                         materialDesign:ValidationAssist.Suppress="True" />
             <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
         </DockPanel>

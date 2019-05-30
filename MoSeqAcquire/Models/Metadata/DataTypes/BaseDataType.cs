@@ -24,6 +24,9 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
 
         public abstract object CoerceValue(object value);
 
+        public abstract BaseConstraint ProvideConstraintImplementation(ConstraintMode constraint);
+
+        #region Operators
         public static implicit operator Type(BaseDataType dataType)
         {
             return dataType.DataType;
@@ -32,6 +35,9 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         {
             return FromType(type);
         }
+        #endregion
+
+        #region Factory
         public static BaseDataType FromType(Type type)
         {
             if (typeof(BaseDataType).IsAssignableFrom(type))
@@ -57,7 +63,9 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
                            .Where(t => typeof(BaseDataType).IsAssignableFrom(t))
                            .Where(t => !t.IsAbstract);
         }
+        #endregion
 
+        #region Equality
         public override bool Equals(object obj)
         {
             var type = obj as BaseDataType;
@@ -69,5 +77,6 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         {
             return -598241675 + EqualityComparer<Type>.Default.GetHashCode(DataType);
         }
+        #endregion
     }
 }

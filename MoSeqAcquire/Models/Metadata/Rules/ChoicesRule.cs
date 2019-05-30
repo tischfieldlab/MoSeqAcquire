@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using MoSeqAcquire.Models.Metadata.Rules;
 using MoSeqAcquire.ViewModels;
 using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Metadata
 {
-    public class ChoicesConstraint : BaseConstraint
+    public class ChoicesRule : BaseRule
     {
-        public ChoicesConstraint(MetadataItemDefinition Owner) : base(Owner)
+        public ChoicesRule() : base("Choices")
         {
-            this.Name = "Choices";
             this.Choices = new ObservableCollection<ChoicesChoice>();
             this.Choices.CollectionChanged += Choices_CollectionChanged;
         }

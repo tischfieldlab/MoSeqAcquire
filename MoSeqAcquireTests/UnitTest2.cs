@@ -76,9 +76,9 @@ namespace MoSeqAcquireTests2
                 
             };
             var mdi1c = (mdi1.ConstraintImplementation as ChoicesConstraint);
-            mdi1c.Choices.Add(new ChoicesConstraintChoice(mdi1) { Value = "Choice_1" });
-            mdi1c.Choices.Add(new ChoicesConstraintChoice(mdi1) { Value = "Choice_2" });
-            mdi1c.Choices.Add(new ChoicesConstraintChoice(mdi1) { Value = "Choice_3" });
+            mdi1c.Choices.Add(new ChoicesChoice(mdi1) { Value = "Choice_1" });
+            mdi1c.Choices.Add(new ChoicesChoice(mdi1) { Value = "Choice_2" });
+            mdi1c.Choices.Add(new ChoicesChoice(mdi1) { Value = "Choice_3" });
             mc.Add(mdi1);
 
             var serialized = WriteProtocol(mc);

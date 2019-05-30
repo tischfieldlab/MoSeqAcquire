@@ -135,7 +135,9 @@
     <Compile Include="Models\Metadata\DataTypes\IntDataType.cs" />
     <Compile Include="Models\Metadata\DataTypes\StringDataType.cs" />
     <Compile Include="Models\Metadata\RecordingMetadataSnapshot.cs" />
+    <Compile Include="Models\Metadata\Rules\ChoicesRule.cs" />
     <Compile Include="Models\Metadata\Rules\DelegateRule.cs" />
+    <Compile Include="Models\Metadata\Rules\RangeRule.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />
     <Compile Include="Models\Recording\MediaWriterPin.cs" />
