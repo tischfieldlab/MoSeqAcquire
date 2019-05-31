@@ -20,7 +20,11 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             return new List<BaseRule>()
             {
                 new RequiredRule(),
-                new RangeRule()
+                new RangeRule(this)
+                {
+                    MinValue = 1,
+                    MaxValue = 10
+                }
             };
         }
 
@@ -34,6 +38,11 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             {
                 return default(int);
             }
+        }
+
+        public override object Parse(string value)
+        {
+            return int.Parse(value);
         }
     }
 }

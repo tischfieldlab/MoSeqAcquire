@@ -142,12 +142,12 @@ namespace MoSeqAcquire.Models.Metadata
 
         public void ReadXml(XmlReader reader)
         {
-            this.value = reader.ReadElementContentAsString();
+            this.value = this.DataType.Parse(reader.ReadElementContentAsString());
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteRaw(this.Value.ToString());
+            writer.WriteRaw(this.DataType.Serialize(this.Value));
         }
 
         public override bool Equals(object obj)

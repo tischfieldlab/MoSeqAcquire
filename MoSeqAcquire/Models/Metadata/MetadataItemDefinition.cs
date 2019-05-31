@@ -191,7 +191,7 @@ namespace MoSeqAcquire.Models.Metadata
             }
             else
             {
-                this.DefaultValue = reader.ReadElementContentAs(this.ValueType.DataType, null);
+                this.DefaultValue = this.ValueType.Parse(reader.ReadElementContentAsString());
             }
 
             //reader.ReadToFollowing("CurrentValue");
@@ -201,7 +201,7 @@ namespace MoSeqAcquire.Models.Metadata
             }
             else
             {
-                this.Value = reader.ReadElementContentAs(this.ValueType.DataType, null);
+                this.Value = this.ValueType.Parse(reader.ReadElementContentAsString());
             }
 
             //reader.ReadToFollowing("Units");
@@ -259,8 +259,8 @@ namespace MoSeqAcquire.Models.Metadata
             writer.WriteAttributeString("Name", this.Name);
 
             writer.WriteElementString("DataType", this.ValueType.DataType.FullName);
-            writer.WriteElementString("DefaultValue", this.DefaultValue != null ? this.defaultValue.ToString() : string.Empty);
-            writer.WriteElementString("CurrentValue", this.Value != null ? this.value.ToString() : string.Empty);
+            writer.WriteElementString("DefaultValue", this.ValueType.Serialize(this.DefaultValue));
+            writer.WriteElementString("CurrentValue", this.ValueType.Serialize(this.Value));
             writer.WriteElementString("Units", this.units);
 
             writer.WriteStartElement("Validators");

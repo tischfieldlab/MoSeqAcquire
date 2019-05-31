@@ -21,6 +21,12 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
 
         public abstract List<BaseRule> GetValidators();
         public abstract object CoerceValue(object value);
+        public abstract object Parse(string value);
+
+        public virtual string Serialize(object value)
+        {
+            return value.ToString();
+        }
         
 
         #region Operators

@@ -27,6 +27,11 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             }
         }
 
+        public override object Parse(string value)
+        {
+            return bool.Parse(value);
+        }
+
         public override List<BaseRule> GetValidators()
         {
             return new List<BaseRule>()

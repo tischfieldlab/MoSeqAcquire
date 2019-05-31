@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using MoSeqAcquire.Models.Metadata.DataTypes;
 using MoSeqAcquire.Models.Metadata.Rules;
 using MvvmValidation;
 
@@ -14,11 +15,16 @@ namespace MoSeqAcquire.Models.Metadata
         protected object minValue;
         protected object maxValue;
 
-        public RangeRule() : base("Range")
+        public RangeRule(BaseDataType dataType) : base("Range")
         {
-
+            this.DataType = dataType;
         }
 
+        public BaseDataType DataType
+        {
+            get;
+            protected set;
+        }
         public object MinValue
         {
             get => this.minValue;
@@ -32,14 +38,15 @@ namespace MoSeqAcquire.Models.Metadata
 
         public override void ReadXml(XmlReader reader)
         {
-            this.MinValue = reader.ReadElementContentAsString("Minimum", null);
-            this.MaxValue = reader.ReadElementContentAsString("Maximum", null);
+            reader.ReadStartElement();
+            this.MinValue = this.DataType.Parse(reader.ReadElementContentAsString("Minimum", ""));
+            this.MaxValue = this.DataType.Parse(reader.ReadElementContentAsString("Maximum", ""));
         }
 
         public override void WriteXml(XmlWriter writer)
         {
-            writer.WriteElementString("Minimum", this.minValue.ToString());
-            writer.WriteElementString("Maximum", this.maxValue.ToString());
+            writer.WriteElementString("Minimum", this.DataType.Serialize(this.minValue));
+            writer.WriteElementString("Maximum", this.DataType.Serialize(this.maxValue));
         }
         public override bool Equals(object obj)
         {

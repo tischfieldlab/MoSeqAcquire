@@ -86,6 +86,46 @@ namespace MoSeqAcquireTests2
             Assert.AreEqual(mc, deserialized);
         }
 
+        [TestMethod]
+        public void Test_Vanilla3()
+        {
+            var mc = new MetadataDefinitionCollection();
+            var mdi1 = new MetadataItemDefinition("string item", typeof(string))
+            {
+                DefaultValue = "Choice_1",
+                Value = "Choice_3",
+                Units = "Arbitrary Units"
+            };
+            var mdi1c = mdi1.GetValidator<ChoicesRule>();
+            mdi1c.AddChoice("Choice_1");
+            mdi1c.AddChoice("Choice_2");
+            mdi1c.AddChoice("Choice_3");
+            mc.Add(mdi1);
+
+            mc.Add(new MetadataItemDefinition("int test", typeof(int))
+            {
+                DefaultValue = 1
+            });
+            mc.Add(new MetadataItemDefinition("double test", typeof(double))
+            {
+                DefaultValue = 2.5
+            });
+            mc.Add(new MetadataItemDefinition("date test", typeof(DateTime))
+            {
+                DefaultValue = DateTime.Now
+            });
+            mc.Add(new MetadataItemDefinition("bool test", typeof(bool))
+            {
+                DefaultValue = true
+            });
+
+            var serialized = WriteProtocol(mc);
+            Console.Write(serialized);
+
+            var deserialized = ProtocolFromString(serialized);
+            Assert.AreEqual(mc, deserialized);
+        }
+
 
 
 

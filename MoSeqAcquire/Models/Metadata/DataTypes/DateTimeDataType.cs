@@ -33,5 +33,15 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
                 return DateTime.Now;
             }
         }
+
+        public override object Parse(string value)
+        {
+            return DateTime.Parse(value);
+        }
+
+        public override string Serialize(object value)
+        {
+            return ((DateTime) value).ToString();
+        }
     }
 }

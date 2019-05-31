@@ -26,5 +26,10 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         {
             return Convert.ToString(value);
         }
+
+        public override object Parse(string value)
+        {
+            return value;
+        }
     }
 }
