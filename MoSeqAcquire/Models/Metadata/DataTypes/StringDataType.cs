@@ -11,10 +11,17 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
     {
         public StringDataType() : base(typeof(string))
         {
-            this.ValidTypeConstraints.Add(ConstraintMode.Choices);
-
-            this.Validators.Add(new RequiredRule());
         }
+
+        public override List<BaseRule> GetValidators()
+        {
+            return new List<BaseRule>()
+            {
+                new RequiredRule(),
+                new ChoicesRule(this)
+            };
+        }
+
         public override object CoerceValue(object value)
         {
             return Convert.ToString(value);

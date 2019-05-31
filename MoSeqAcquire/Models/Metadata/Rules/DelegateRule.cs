@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace MoSeqAcquire.Models.Metadata.Rules
 {
@@ -15,6 +16,17 @@ namespace MoSeqAcquire.Models.Metadata.Rules
         {
             this.action = action;
         }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            throw new NotImplementedException();
+        }
+
         public override RuleResult Validate(MetadataItemDefinition Item)
         {
             return action(Item);

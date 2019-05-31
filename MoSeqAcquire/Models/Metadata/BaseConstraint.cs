@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using MoSeqAcquire.ViewModels;
 using MvvmValidation;
 
-namespace MoSeqAcquire.Models.Metadata
+namespace MoSeqAcquire.Models.Metadata.Deprecated
 {
     public abstract class BaseConstraint : BaseViewModel
     {

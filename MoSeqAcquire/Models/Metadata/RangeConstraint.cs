@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using MvvmValidation;
 
-namespace MoSeqAcquire.Models.Metadata
+namespace MoSeqAcquire.Models.Metadata.Deprecated
 {
     public class RangeConstraint : BaseConstraint
     {
@@ -29,13 +29,13 @@ namespace MoSeqAcquire.Models.Metadata
             set => this.SetField(ref this.maxValue, this.Owner.ValueType.CoerceValue(value));
         }
 
-        public override void ReadXml(XmlReader reader)
+        public  void ReadXml(XmlReader reader)
         {
             this.MinValue = reader.ReadElementContentAsString("Minimum", null);
             this.MaxValue = reader.ReadElementContentAsString("Maximum", null);
         }
 
-        public override void WriteXml(XmlWriter writer)
+        public  void WriteXml(XmlWriter writer)
         {
             writer.WriteElementString("Minimum", this.minValue.ToString());
             writer.WriteElementString("Maximum", this.maxValue.ToString());
@@ -54,7 +54,7 @@ namespace MoSeqAcquire.Models.Metadata
             return true;
         }
 
-        public override RuleResult Validate(object value)
+        public  RuleResult Validate(object value)
         {
             return RuleResult.Assert((value as IComparable).CompareTo((this.MinValue as IComparable)) >= 0
                                   && (value as IComparable).CompareTo((this.MaxValue as IComparable)) <= 0,

@@ -25,15 +25,5 @@ namespace MoSeqAcquire.Models.Metadata.Rules
 
             return RuleResult.Valid();
         }
-
-        public override void ReadXml(XmlReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void WriteXml(XmlWriter writer)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

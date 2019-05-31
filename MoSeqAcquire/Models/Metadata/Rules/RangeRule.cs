@@ -44,7 +44,7 @@ namespace MoSeqAcquire.Models.Metadata
         public override bool Equals(object obj)
         {
 
-            if (!(obj is RangeConstraint rc))
+            if (!(obj is RangeRule rc))
                 return false;
 
             if (!this.MinValue.Equals(rc.MinValue))
@@ -55,16 +55,11 @@ namespace MoSeqAcquire.Models.Metadata
             return true;
         }
 
-        public override RuleResult Validate(object value)
-        {
-            return RuleResult.Assert((value as IComparable).CompareTo((this.MinValue as IComparable)) >= 0
-                                  && (value as IComparable).CompareTo((this.MaxValue as IComparable)) <= 0,
-                                    $"Value must be within range [{this.MinValue}, {this.MaxValue}]");
-        }
-
         public override RuleResult Validate(MetadataItemDefinition Item)
         {
-            throw new NotImplementedException();
+            return RuleResult.Assert((Item.Value as IComparable).CompareTo((this.MinValue as IComparable)) >= 0
+                                  && (Item.Value as IComparable).CompareTo((this.MaxValue as IComparable)) <= 0,
+                $"Value must be within range [{this.MinValue}, {this.MaxValue}]");
         }
     }
 }

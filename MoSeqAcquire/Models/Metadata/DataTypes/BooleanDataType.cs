@@ -12,7 +12,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
     {
         public BooleanDataType() : base(typeof(bool))
         {
-            this.Validators.Add(new DelegateRule("Required", (mid) => (bool)mid.Value ? RuleResult.Valid() : RuleResult.Invalid("Value must be true")));
+            //this.Validators.Add(new DelegateRule("Required", (mid) => (bool)mid.Value ? RuleResult.Valid() : RuleResult.Invalid("Value must be true")));
         }
 
         public override object CoerceValue(object value)
@@ -25,6 +25,14 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             {
                 return false;
             }
+        }
+
+        public override List<BaseRule> GetValidators()
+        {
+            return new List<BaseRule>()
+            {
+                new DelegateRule("Required", (mid) => (bool)mid.Value ? RuleResult.Valid() : RuleResult.Invalid("Value must be true"))
+            };
         }
     }
 }

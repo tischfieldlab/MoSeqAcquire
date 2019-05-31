@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 using MoSeqAcquire.ViewModels;
 using MvvmValidation;
 
-namespace MoSeqAcquire.Models.Metadata
+namespace MoSeqAcquire.Models.Metadata.Deprecated
 {
     public class ChoicesConstraint : BaseConstraint
     {
@@ -34,7 +34,7 @@ namespace MoSeqAcquire.Models.Metadata
 
         public ObservableCollection<ChoicesChoice> Choices { get; protected set; }
 
-        public override void ReadXml(XmlReader reader)
+        public  void ReadXml(XmlReader reader)
         {
             bool isEmptyElement = reader.IsEmptyElement;
             string selfName = reader.Name;
@@ -60,7 +60,7 @@ namespace MoSeqAcquire.Models.Metadata
             }
         }
 
-        public override void WriteXml(XmlWriter writer)
+        public  void WriteXml(XmlWriter writer)
         {
             foreach (var choice in this.Choices)
             {
@@ -70,7 +70,7 @@ namespace MoSeqAcquire.Models.Metadata
             }
         }
 
-        public override bool Equals(object obj)
+        public  bool Equals(object obj)
         {
             if (!(obj is ChoicesConstraint cc))
                 return false;
@@ -81,7 +81,7 @@ namespace MoSeqAcquire.Models.Metadata
             return true;
         }
 
-        public override RuleResult Validate(object value)
+        public  RuleResult Validate(object value)
         {
             return RuleResult.Assert(this.Choices.Any(c => c.Value.Equals(value)), "Value must be one of available choices");
         }

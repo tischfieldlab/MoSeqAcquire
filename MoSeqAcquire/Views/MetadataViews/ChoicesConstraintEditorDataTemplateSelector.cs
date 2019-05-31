@@ -11,11 +11,11 @@ namespace MoSeqAcquire.Views.Metadata
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is ChoicesChoice)
+            if (item is ChoicesRuleChoice)
             {
-                FrameworkElement elemnt = container as FrameworkElement;
-                ChoicesChoice ccc = item as ChoicesChoice;
-                MetadataItemDefinition pi = ccc.Owner; 
+                /*
+                ChoicesRuleChoice ccc = item as ChoicesRuleChoice;
+                //MetadataItemDefinition pi = ccc.Owner; 
                 Type pit = pi.ValueType;
 
                 void lambda(object o, PropertyChangedEventArgs args)
@@ -29,7 +29,10 @@ namespace MoSeqAcquire.Views.Metadata
                     }
                 }
 
-                pi.PropertyChanged += lambda;
+                pi.PropertyChanged += lambda;*/
+
+                FrameworkElement elemnt = container as FrameworkElement;
+                Type pit = (item as ChoicesRuleChoice).DataType;
 
 
                 if (pit.Equals(typeof(bool)))

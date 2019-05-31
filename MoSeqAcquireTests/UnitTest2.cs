@@ -71,14 +71,12 @@ namespace MoSeqAcquireTests2
             {
                 DefaultValue = "Choice_1",
                 Value = "Choice_3",
-                Units = "Arbitrary Units",
-                Constraint = ConstraintMode.Choices
-                
+                Units = "Arbitrary Units"
             };
-            var mdi1c = (mdi1.ConstraintImplementation as ChoicesConstraint);
-            mdi1c.Choices.Add(new ChoicesChoice(mdi1) { Value = "Choice_1" });
-            mdi1c.Choices.Add(new ChoicesChoice(mdi1) { Value = "Choice_2" });
-            mdi1c.Choices.Add(new ChoicesChoice(mdi1) { Value = "Choice_3" });
+            var mdi1c = mdi1.GetValidator<ChoicesRule>();
+            mdi1c.AddChoice("Choice_1");
+            mdi1c.AddChoice("Choice_2");
+            mdi1c.AddChoice("Choice_3");
             mc.Add(mdi1);
 
             var serialized = WriteProtocol(mc);

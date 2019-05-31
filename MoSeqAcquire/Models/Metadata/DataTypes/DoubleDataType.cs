@@ -11,11 +11,17 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
     {
         public DoubleDataType() : base(typeof(double))
         {
-            this.ValidTypeConstraints.Add(ConstraintMode.Choices);
-            this.ValidTypeConstraints.Add(ConstraintMode.Range);
-
-            this.Validators.Add(new RequiredRule());
         }
+
+        public override List<BaseRule> GetValidators()
+        {
+            return new List<BaseRule>()
+            {
+                new RequiredRule(),
+                new RangeRule()
+            };
+        }
+
         public override object CoerceValue(object value)
         {
             try

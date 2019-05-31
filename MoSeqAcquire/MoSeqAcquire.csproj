@@ -272,7 +272,6 @@
       <DependentUpon>MetadataList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MetadataViews\MetadataItemEditorDataTemplateSelector.cs" />
-    <Compile Include="Views\MetadataViews\MetadataItemDataTemplateSelector.cs" />
     <Compile Include="Views\MetadataViews\MetadataGrid.xaml.cs">
       <DependentUpon>MetadataGrid.xaml</DependentUpon>
     </Compile>

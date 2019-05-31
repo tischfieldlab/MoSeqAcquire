@@ -41,8 +41,14 @@ namespace MoSeqAcquire.Models.Metadata.Rules
         {
             return null;
         }
-        public abstract void ReadXml(XmlReader reader);
-        public abstract void WriteXml(XmlWriter writer);
+
+        public virtual void ReadXml(XmlReader reader)
+        {
+        }
+
+        public virtual void WriteXml(XmlWriter writer)
+        {
+        }
 
 
         public abstract RuleResult Validate(MetadataItemDefinition Item);

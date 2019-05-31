@@ -4,27 +4,32 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using MoSeqAcquire.Models.Metadata.DataTypes;
+using MoSeqAcquire.Models.Metadata.Deprecated;
 using MoSeqAcquire.Models.Metadata.Rules;
 using MoSeqAcquire.ViewModels;
+using MoSeqAcquire.ViewModels.Commands;
 using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Metadata
 {
     public class ChoicesRule : BaseRule
     {
-        public ChoicesRule() : base("Choices")
+        public ChoicesRule(BaseDataType dataType) : base("Choices")
         {
-            this.Choices = new ObservableCollection<ChoicesChoice>();
+            this.DataType = dataType;
+            this.Choices = new ObservableCollection<ChoicesRuleChoice>();
             this.Choices.CollectionChanged += Choices_CollectionChanged;
         }
 
         private void Choices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            e.NewItems?.Cast<ChoicesChoice>().ForEach(ccc => ccc.PropertyChanged += Choice_PropertyChanged);
-            e.OldItems?.Cast<ChoicesChoice>().ForEach(ccc => ccc.PropertyChanged -= Choice_PropertyChanged);
+            e.NewItems?.Cast<ChoicesRuleChoice>().ForEach(ccc => ccc.PropertyChanged += Choice_PropertyChanged);
+            e.OldItems?.Cast<ChoicesRuleChoice>().ForEach(ccc => ccc.PropertyChanged -= Choice_PropertyChanged);
         }
 
         private void Choice_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -32,7 +37,12 @@ namespace MoSeqAcquire.Models.Metadata
             this.NotifyPropertyChanged(null);
         }
 
-        public ObservableCollection<ChoicesChoice> Choices { get; protected set; }
+        public BaseDataType DataType
+        {
+            get; protected set;
+        }
+
+        public ObservableCollection<ChoicesRuleChoice> Choices { get; protected set; }
 
         public override void ReadXml(XmlReader reader)
         {
@@ -47,13 +57,14 @@ namespace MoSeqAcquire.Models.Metadata
                 {
                     if (reader.Name == "Choice" && reader.NodeType == XmlNodeType.Element)
                     {
-                        var choice = new ChoicesChoice(this.Owner);
+                        var choice = new ChoicesRuleChoice(this.DataType);
                         choice.ReadXml(reader);
                         this.Choices.Add(choice);
+                        //reader.ReadEndElement();
                     }
                     else if (reader.Name.Equals(selfName) && reader.NodeType == XmlNodeType.EndElement)
                     {
-                        reader.ReadEndElement();
+                        //reader.ReadEndElement();
                         return;
                     }
                 }
@@ -70,9 +81,14 @@ namespace MoSeqAcquire.Models.Metadata
             }
         }
 
+        public override RuleResult Validate(MetadataItemDefinition Item)
+        {
+            return RuleResult.Assert(this.Choices.Any(c => c.Value.Equals(Item.Value)), "Value must be one of available choices");
+        }
+
         public override bool Equals(object obj)
         {
-            if (!(obj is ChoicesConstraint cc))
+            if (!(obj is ChoicesRule cc))
                 return false;
 
             if (!this.Choices.SequenceEqual(cc.Choices))
@@ -81,24 +97,42 @@ namespace MoSeqAcquire.Models.Metadata
             return true;
         }
 
-        public override RuleResult Validate(object value)
+        public void AddChoice(object value)
         {
-            return RuleResult.Assert(this.Choices.Any(c => c.Value.Equals(value)), "Value must be one of available choices");
+            var choice = new ChoicesRuleChoice(this.DataType)
+            {
+                Value = this.DataType.CoerceValue(value)
+            };
+            choice.PropertyChanged += Choice_PropertyChanged;
+            this.Choices.Add(choice);
         }
+
+        public ICommand AddChoiceCommand => new ActionCommand((p) => { this.AddChoice(null); });
+
+        public ICommand RemoveChoiceCommand => new ActionCommand((p) =>
+        {
+            var choice = p as ChoicesRuleChoice;
+            choice.PropertyChanged -= Choice_PropertyChanged;
+            this.Choices.Remove(choice);
+        });
     }
 
-    public class ChoicesChoice : BaseViewModel, IXmlSerializable
+    public class ChoicesRuleChoice : BaseViewModel, IXmlSerializable
     {
-        public ChoicesChoice(MetadataItemDefinition Owner)
+        public ChoicesRuleChoice(BaseDataType dataType)
         {
-            this.Owner = Owner;
+            this.DataType = dataType;
+            this.value = dataType.CoerceValue(null);
         }
-        public MetadataItemDefinition Owner { get; protected set; }
         protected object value;
         public object Value
         {
             get => this.value;
             set => this.SetField(ref this.value, value);
+        }
+        public BaseDataType DataType
+        {
+            get; protected set;
         }
 
         public XmlSchema GetSchema()
@@ -119,7 +153,7 @@ namespace MoSeqAcquire.Models.Metadata
         public override bool Equals(object obj)
         {
 
-            if (!(obj is ChoicesChoice ccc))
+            if (!(obj is ChoicesRuleChoice ccc))
                 return false;
 
             if (!this.Value.Equals(ccc.Value))

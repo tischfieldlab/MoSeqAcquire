@@ -9,22 +9,19 @@ using System.Windows.Data;
 
 namespace MoSeqAcquire.Models.Metadata.DataTypes
 {
+
     public abstract class BaseDataType
     {
         protected BaseDataType(Type type)
         {
             this.DataType = type;
-            this.ValidTypeConstraints = new List<ConstraintMode>() { ConstraintMode.None };
-            this.Validators = new List<BaseRule>();
         }
         public Type DataType { get; private set; }
         public virtual string Name => this.DataType.Name;
-        public List<ConstraintMode> ValidTypeConstraints { get; private set; }
-        public List<BaseRule> Validators { get; private set; }
 
+        public abstract List<BaseRule> GetValidators();
         public abstract object CoerceValue(object value);
-
-        public abstract BaseConstraint ProvideConstraintImplementation(ConstraintMode constraint);
+        
 
         #region Operators
         public static implicit operator Type(BaseDataType dataType)
