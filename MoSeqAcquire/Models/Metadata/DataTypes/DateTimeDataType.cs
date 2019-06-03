@@ -50,5 +50,9 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         {
             return ((DateTime) value).Date.ToString();
         }
+        public override object GetReasonableDefault()
+        {
+            return DateTime.Now.Date;
+        }
     }
 }

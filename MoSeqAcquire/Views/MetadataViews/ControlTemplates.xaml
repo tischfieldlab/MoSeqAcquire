@@ -40,8 +40,8 @@
     <DataTemplate x:Key="DateTimeEditor">
         <DockPanel>
             <DatePicker SelectedDate="{Binding Path=Value}" 
-                        DisplayDateStart="{Binding Path=Minimum}"
-                        DisplayDateEnd="{Binding Path=Maximum}"
+                        DisplayDateStart="{Binding Path=Minimum, Mode=OneWay}"
+                        DisplayDateEnd="{Binding Path=Maximum, Mode=OneWay}"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         HorizontalAlignment="Stretch" 
                         DockPanel.Dock="Top" 
@@ -145,7 +145,8 @@
     <DataTemplate x:Key="ChoiceDateTimeEditor">
         <DatePicker SelectedDate="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" 
                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                    HorizontalAlignment="Stretch" 
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
                     materialDesign:ValidationAssist.Suppress="True" />
     </DataTemplate>
     <DataTemplate x:Key="ChoiceTextBoxEditor">

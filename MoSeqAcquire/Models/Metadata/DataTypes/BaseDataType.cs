@@ -27,6 +27,15 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         {
             return value.ToString();
         }
+
+        public virtual object GetReasonableDefault()
+        {
+            if (this.DataType.IsValueType)
+            {
+                return Activator.CreateInstance(this.DataType);
+            }
+            return null;
+        }
         
 
         #region Operators
@@ -58,6 +67,28 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
                 return new DateDataType();
 
             throw new NotSupportedException($"Type {type.FullName} is not supported!");
+        }
+        public static BaseDataType FromString(string type)
+        {
+            switch (type.ToLower())
+            {
+                case "string":
+                    return new StringDataType();
+                case "bool":
+                case "boolean":
+                    return new BooleanDataType();
+                case "int":
+                case "integer":
+                    return new IntDataType();
+                case "double":
+                case "decimal":
+                    return new DoubleDataType();
+                case "datetime":
+                case "date":
+                    return new DateDataType();
+            }
+
+            throw new NotSupportedException($"Type {type} is not supported!");
         }
         public static IEnumerable<Type> AvailableTypes()
         {

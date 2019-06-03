@@ -94,7 +94,7 @@
                                 <CheckBox IsChecked="{Binding Path=IsActive}" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
                                 </CheckBox>
-                                <ContentControl>
+                                <ContentControl Content="{Binding}">
                                     <ContentControl.Style>
                                         <Style TargetType="ContentControl">
                                             <Setter Property="ContentTemplate">
@@ -122,7 +122,7 @@
                                                         <Setter.Value>
                                                             <DataTemplate>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <DatePicker SelectedDate="{Binding Path=MinValue, Converter={StaticResource GenericConverter}}" 
+                                                                    <DatePicker SelectedDate="{Binding Path=MinValue}" 
                                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                                                 HorizontalAlignment="Stretch" 
                                                                                 Margin="16,0" Width="150"
@@ -130,7 +130,7 @@
                                                                                 materialDesign:HintAssist.Hint="Minimum"
                                                                                 materialDesign:HintAssist.IsFloating="True"/>
                                                                     
-                                                                    <DatePicker SelectedDate="{Binding Path=MaxValue, Converter={StaticResource GenericConverter}}" 
+                                                                    <DatePicker SelectedDate="{Binding Path=MaxValue}" 
                                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                                                 HorizontalAlignment="Stretch" 
                                                                                 Margin="16,0" Width="150"

@@ -12,7 +12,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         public DoubleDataType() : base(typeof(double))
         {
         }
-
+        public override string Name => "Decimal";
         public override List<BaseRule> GetValidators()
         {
             return new List<BaseRule>()

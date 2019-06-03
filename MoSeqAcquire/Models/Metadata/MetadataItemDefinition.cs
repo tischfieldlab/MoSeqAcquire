@@ -198,7 +198,7 @@ namespace MoSeqAcquire.Models.Metadata
 
             reader.ReadToDescendant("DataType");
             var typeStr = reader.ReadElementContentAsString();
-            this.ValueType = BaseDataType.FromType(System.Type.GetType(typeStr));
+            this.ValueType = BaseDataType.FromString(typeStr);
             if (this.ValueType == null)
             {
                 throw new ArgumentException("Unable to find Type for " + typeStr);
@@ -278,7 +278,7 @@ namespace MoSeqAcquire.Models.Metadata
         {
             writer.WriteAttributeString("Name", this.Name);
 
-            writer.WriteElementString("DataType", this.ValueType.DataType.FullName);
+            writer.WriteElementString("DataType", this.ValueType.Name);
             writer.WriteElementString("DefaultValue", this.ValueType.Serialize(this.DefaultValue));
             writer.WriteElementString("CurrentValue", this.ValueType.Serialize(this.Value));
             writer.WriteElementString("Units", this.units);
@@ -295,14 +295,6 @@ namespace MoSeqAcquire.Models.Metadata
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
-
-            /* writer.WriteStartElement("Constraint");
-             writer.WriteAttributeString("Type", this.constraint.ToString());
-             if (this.constraint != ConstraintMode.None)
-             {
-                 this.constraintImplementation.WriteXml(writer);
-             }
-             writer.WriteEndElement();*/
         }
         #endregion IXmlSerializable
         public override bool Equals(object obj)

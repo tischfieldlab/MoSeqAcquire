@@ -9,7 +9,6 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using MoSeqAcquire.Models.Metadata.DataTypes;
-using MoSeqAcquire.Models.Metadata.Deprecated;
 using MoSeqAcquire.Models.Metadata.Rules;
 using MoSeqAcquire.ViewModels;
 using MoSeqAcquire.ViewModels.Commands;
@@ -101,7 +100,7 @@ namespace MoSeqAcquire.Models.Metadata
         {
             var choice = new ChoicesRuleChoice(this.DataType)
             {
-                Value = this.DataType.CoerceValue(value)
+                Value = this.DataType.CoerceValue(this.DataType.GetReasonableDefault())
             };
             choice.PropertyChanged += Choice_PropertyChanged;
             this.Choices.Add(choice);

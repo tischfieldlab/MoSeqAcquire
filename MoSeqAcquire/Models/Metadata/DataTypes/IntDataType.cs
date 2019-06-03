@@ -14,7 +14,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         public IntDataType() : base(typeof(int))
         {
         }
-
+        public override string Name => "Integer";
         public override List<BaseRule> GetValidators()
         {
             return new List<BaseRule>()
