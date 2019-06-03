@@ -8,17 +8,24 @@ using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Metadata.DataTypes
 {
-    public class DateTimeDataType : BaseDataType
+    public class DateDataType : BaseDataType
     {
-        public DateTimeDataType() : base(typeof(DateTime))
+        public DateDataType() : base(typeof(DateTime))
         {
         }
+        public override string Name => "Date";
 
         public override List<BaseRule> GetValidators()
         {
             return new List<BaseRule>()
             {
-                new DelegateRule("Date in Past", (mid) => ((DateTime)mid.Value).Date < DateTime.Now.Date ? RuleResult.Valid() : RuleResult.Invalid("Value must be in the past"))
+                new DelegateRule("Date in Past", (mid) => ((DateTime)mid.Value).Date < DateTime.Now.Date ? RuleResult.Valid() : RuleResult.Invalid("Value must be in the past")),
+                new RangeRule(this)
+                {
+                    MinValue = DateTime.Now.Subtract(TimeSpan.FromDays(365)).Date,
+                    MaxValue = DateTime.Now.AddYears(1).Date
+                },
+                new ChoicesRule(this)
             };
         }
 
@@ -26,22 +33,22 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         {
             try
             {
-                return Convert.ToDateTime(value);
+                return Convert.ToDateTime(value).Date;
             }
             catch (Exception e)
             {
-                return DateTime.Now;
+                return DateTime.Now.Date;
             }
         }
 
         public override object Parse(string value)
         {
-            return DateTime.Parse(value);
+            return DateTime.Parse(value).Date;
         }
 
         public override string Serialize(object value)
         {
-            return ((DateTime) value).ToString();
+            return ((DateTime) value).Date.ToString();
         }
     }
 }

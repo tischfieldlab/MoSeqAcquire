@@ -131,6 +131,26 @@ namespace MoSeqAcquire.Models.Metadata
         {
             get => this.GetValidator<ChoicesRule>()?.Choices;
         }
+        public object Minimum
+        {
+            get
+            {
+                var v = this.GetValidator<RangeRule>();
+                if (v != null && v.IsActive)
+                    return v.MinValue;
+                return null;
+            }
+        }
+        public object Maximum
+        {
+            get
+            {
+                var v = this.GetValidator<RangeRule>();
+                if (v != null && v.IsActive)
+                    return v.MaxValue;
+                return null;
+            }
+        }
 
         public bool HasUnits => !string.IsNullOrWhiteSpace(this.Units);
 

@@ -24,7 +24,8 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
                 {
                     MinValue = 1,
                     MaxValue = 10
-                }
+                },
+                new ChoicesRule(this)
             };
         }
 

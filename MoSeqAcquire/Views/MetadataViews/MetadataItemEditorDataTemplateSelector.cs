@@ -36,10 +36,10 @@ namespace MoSeqAcquire.Views.Metadata
                 }
                 else if (pit.Equals(typeof(int)) || pit.Equals(typeof(float)) || pit.Equals(typeof(double)))
                 {
-                    if (pi.GetValidator<RangeRule>() is RangeRule rr && rr.IsActive)
+                    /*if (!elemnt.Name.Equals("DefaultValue") && pi.GetValidator<RangeRule>() is RangeRule rr && rr.IsActive)
                     {
                         return elemnt.FindResource(elemnt.Name + "RangeEditor") as DataTemplate;
-                    }
+                    }*/
                     return elemnt.FindResource(elemnt.Name + "NumericEditor") as DataTemplate;
                 }
                 else if (pit.Equals(typeof(DateTime)))

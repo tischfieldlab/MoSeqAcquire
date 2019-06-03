@@ -55,7 +55,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             if (type == typeof(double))
                 return new DoubleDataType();
             if (type == typeof(DateTime))
-                return new DateTimeDataType();
+                return new DateDataType();
 
             throw new NotSupportedException($"Type {type.FullName} is not supported!");
         }

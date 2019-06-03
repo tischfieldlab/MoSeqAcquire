@@ -265,6 +265,7 @@
     <Compile Include="Views\MetadataViews\MetadataEditorWindow.xaml.cs">
       <DependentUpon>MetadataEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MetadataViews\MetadataItemValueStringConverter.cs" />
     <Compile Include="Views\MetadataViews\MetadataList2.xaml.cs">
       <DependentUpon>MetadataList2.xaml</DependentUpon>
     </Compile>

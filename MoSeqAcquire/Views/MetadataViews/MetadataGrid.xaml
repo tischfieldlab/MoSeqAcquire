@@ -85,7 +85,7 @@
                     </GridViewColumn>
                     <GridViewColumn Header="Property Name" DisplayMemberBinding="{Binding Path=Name}" />
                     <GridViewColumn Header="Data Type" DisplayMemberBinding="{Binding Path=ValueType.Name}" />
-                    <GridViewColumn Header="Default Value" DisplayMemberBinding="{Binding Path=DefaultValue}" />
+                    <GridViewColumn Header="Default Value" DisplayMemberBinding="{Binding Path=DefaultValue, Converter={StaticResource MetadataItemValueStringConverter}, ConverterParameter=ValueType}" />
                     <GridViewColumn Header="Units" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

@@ -83,31 +83,78 @@
                     <ListView.Resources>
                         <DataTemplate DataType="{x:Type rules:BaseRule}">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding Path=IsActive}" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                <CheckBox IsChecked="{Binding Path=IsActive}" 
+                                          VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                </CheckBox>
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type metadata:RangeRule}">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding Path=IsActive}" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                <CheckBox IsChecked="{Binding Path=IsActive}" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                </CheckBox>
+                                <ContentControl>
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"
+                                                                               materialDesign:HintAssist.IsFloating="True"
+                                                                               Margin="16,0" Width="150"
+                                                                               IsEnabled="{Binding Path=IsActive}"
+                                                                               Value="{Binding Path=MinValue, Converter={StaticResource GenericConverter}}" />
 
-                                <mah:NumericUpDown materialDesign:HintAssist.Hint="Minimum"
-                                                   materialDesign:HintAssist.IsFloating="True"
-                                                   Margin="16,8"
-                                                   Value="{Binding Path=MinValue}" />
-
-                                <mah:NumericUpDown materialDesign:HintAssist.Hint="Maximum"
-                                                   materialDesign:HintAssist.IsFloating="True"
-                                                   Margin="16,8"
-                                                   Value="{Binding Path=MaxValue}" />
+                                                            <mah:NumericUpDown materialDesign:HintAssist.Hint="Maximum"
+                                                                               materialDesign:HintAssist.IsFloating="True"
+                                                                               Margin="16,0" Width="150"
+                                                                               IsEnabled="{Binding Path=IsActive}"
+                                                                               Value="{Binding Path=MaxValue, Converter={StaticResource GenericConverter}}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=DataType.Name}" Value="Date">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <DatePicker SelectedDate="{Binding Path=MinValue, Converter={StaticResource GenericConverter}}" 
+                                                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                                                                HorizontalAlignment="Stretch" 
+                                                                                Margin="16,0" Width="150"
+                                                                                IsEnabled="{Binding Path=IsActive}"
+                                                                                materialDesign:HintAssist.Hint="Minimum"
+                                                                                materialDesign:HintAssist.IsFloating="True"/>
+                                                                    
+                                                                    <DatePicker SelectedDate="{Binding Path=MaxValue, Converter={StaticResource GenericConverter}}" 
+                                                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                                                                HorizontalAlignment="Stretch" 
+                                                                                Margin="16,0" Width="150"
+                                                                                IsEnabled="{Binding Path=IsActive}"
+                                                                                materialDesign:HintAssist.Hint="Maximum"
+                                                                                materialDesign:HintAssist.IsFloating="True" />
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
+                                
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type metadata:ChoicesRule}">
                             <DockPanel>
                                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Top">
-                                    <CheckBox IsChecked="{Binding Path=IsActive}" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                    <CheckBox IsChecked="{Binding Path=IsActive}" VerticalAlignment="Center" >
+                                        <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                    </CheckBox>
                                     <Button Height="24" Width="24" Margin="16,0,8,0"
                                             IsEnabled="{Binding Path=IsActive}"
                                             Command="{Binding Path=AddChoiceCommand}"
@@ -163,11 +210,9 @@
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
-
                             </DockPanel>
                         </DataTemplate>
                     </ListView.Resources>
-                    
                 </ListView>
             </GroupBox>
         </Grid>

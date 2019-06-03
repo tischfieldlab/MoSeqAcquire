@@ -28,12 +28,12 @@ namespace MoSeqAcquire.Models.Metadata
         public object MinValue
         {
             get => this.minValue;
-            set => this.SetField(ref this.minValue, value);
+            set => this.SetField(ref this.minValue, this.DataType.CoerceValue(value));
         }
         public object MaxValue
         {
             get => this.maxValue;
-            set => this.SetField(ref this.maxValue, value);
+            set => this.SetField(ref this.maxValue, this.DataType.CoerceValue(value));
         }
 
         public override void ReadXml(XmlReader reader)
