@@ -31,8 +31,9 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
         {
             get
             {
-                return new VideoChannelMetadata()
+                return new AudioChannelMetadata()
                 {
+                    TargetFramesPerSecond = this.Device.AudioDevice.SampleRate,
                     /*Width = this.Device.Device.VideoResolution.FrameSize.Width,
                     Height = this.Device.Device.VideoResolution.FrameSize.Height,
                     TargetFramesPerSecond = this.Device.Device.VideoResolution.MaximumFrameRate,

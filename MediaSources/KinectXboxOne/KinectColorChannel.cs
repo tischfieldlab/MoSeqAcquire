@@ -38,7 +38,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
                 {
                     Width = colorFrameReader.ColorFrameSource.FrameDescription.Width,
                     Height = colorFrameReader.ColorFrameSource.FrameDescription.Height,
-                    FramesPerSecond = 30,
+                    TargetFramesPerSecond = 30.0,
                     BytesPerPixel = 4,
                     PixelFormat = PixelFormats.Bgra32
                 };

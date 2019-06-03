@@ -38,7 +38,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
                 { 
                     Width = depthFrameReader.DepthFrameSource.FrameDescription.Width,
                     Height = depthFrameReader.DepthFrameSource.FrameDescription.Height,
-                    FramesPerSecond = 30,
+                    TargetFramesPerSecond = 30,
                     BytesPerPixel = (int)depthFrameReader.DepthFrameSource.FrameDescription.BytesPerPixel,
                     PixelFormat = PixelFormats.Gray16
                 };

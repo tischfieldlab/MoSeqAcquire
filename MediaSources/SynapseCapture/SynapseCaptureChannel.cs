@@ -44,6 +44,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             {
                 return new ChannelMetadata()
                 {
+                   
                 };
             }
         }
