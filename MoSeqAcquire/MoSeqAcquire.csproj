@@ -216,7 +216,6 @@
     <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
     <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
-    <Compile Include="Models\Metadata\BaseConstraint.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorRecorderAdapter.cs" />
@@ -245,7 +244,6 @@
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\SetPropertyAction.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
-    <Compile Include="Models\Metadata\ChoicesConstraint.cs" />
     <Compile Include="Views\Controls\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
@@ -277,7 +275,6 @@
       <DependentUpon>MetadataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
-    <Compile Include="Models\Metadata\RangeConstraint.cs" />
     <Compile Include="Models\Metadata\Rules\BaseRule.cs" />
     <Compile Include="Models\Metadata\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
