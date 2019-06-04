@@ -36,6 +36,21 @@
         </TextBlock>
     </DataTemplate>
 
+    <ControlTemplate x:Key="CustomMahAppsValidationErrorTemplate">
+        <AdornedElementPlaceholder x:Name="placeholder">
+            <Grid SnapsToDevicePixels="True">
+                <Rectangle x:Name="PopupTargetElement"
+                           Margin="-5 0 -5 0"
+                           DataContext="{Binding ElementName=placeholder}"
+                           StrokeThickness="0" />
+                <Border x:Name="ValidationErrorElement"
+                        BorderBrush="{DynamicResource ControlsValidationBrush}"
+                        BorderThickness="0,0,0,1"
+                        DataContext="{Binding ElementName=placeholder}" />
+            </Grid>
+        </AdornedElementPlaceholder>
+    </ControlTemplate>
+
     <!-- Begin Value Editors -->
     <DataTemplate x:Key="DateTimeEditor">
         <DockPanel>
@@ -67,7 +82,14 @@
         <StackPanel>
             <mah:NumericUpDown  Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}"
                                 Maximum="{Binding Path=Maximum, Mode=OneWay, Converter={StaticResource GenericConverter}}"
-                                Minimum="{Binding Path=Minimum, Mode=OneWay, Converter={StaticResource GenericConverter}}" />
+                                Minimum="{Binding Path=Minimum, Mode=OneWay, Converter={StaticResource GenericConverter}}"
+                                materialDesign:ValidationAssist.Suppress="True"
+                                materialDesign:ValidationAssist.UsePopup="False" 
+                                mah:TextBoxHelper.Watermark="empty"
+                                mah:TextBoxHelper.AutoWatermark="True"
+                                Validation.ErrorTemplate="{StaticResource CustomMahAppsValidationErrorTemplate}" >
+
+            </mah:NumericUpDown>
             <ContentPresenter ContentTemplate="{StaticResource ErrorReportTemplate}" />
         </StackPanel>
     </DataTemplate>

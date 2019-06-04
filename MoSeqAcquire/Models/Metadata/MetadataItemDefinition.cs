@@ -1,15 +1,11 @@
 ﻿using MoSeqAcquire.Models.Metadata.Rules;
 using MoSeqAcquire.ViewModels;
-using MoSeqAcquire.ViewModels.Commands;
 using MvvmValidation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -102,7 +98,7 @@ namespace MoSeqAcquire.Models.Metadata
             get => this.value;
             set
             {
-                this.SetField(ref this.value, this.valueType.CoerceValue(value));
+              this.SetField(ref this.value, this.valueType.CoerceValue(value));
                 this.CoerceAllValues();
             }
         }
@@ -182,8 +178,6 @@ namespace MoSeqAcquire.Models.Metadata
         }
 #endregion
 
-        
-
         #region IXmlSerializable
         public XmlSchema GetSchema()
         {
@@ -193,8 +187,6 @@ namespace MoSeqAcquire.Models.Metadata
         public void ReadXml(XmlReader reader)
         {
             this.Name = reader.GetAttribute("Name");
-
-            
 
             reader.ReadToDescendant("DataType");
             var typeStr = reader.ReadElementContentAsString();
@@ -242,7 +234,6 @@ namespace MoSeqAcquire.Models.Metadata
             }
             else
             {
-                
                 while (true)
                 {
                     if (reader.Name.Equals("Validators") && reader.NodeType == XmlNodeType.EndElement)
@@ -297,6 +288,8 @@ namespace MoSeqAcquire.Models.Metadata
             writer.WriteEndElement();
         }
         #endregion IXmlSerializable
+
+        #region Equality
         public override bool Equals(object obj)
         {
 
@@ -322,9 +315,6 @@ namespace MoSeqAcquire.Models.Metadata
 
             return true;
         }
-
-        
-
         public override int GetHashCode()
         {
             var hashCode = -1563108727;
@@ -339,30 +329,6 @@ namespace MoSeqAcquire.Models.Metadata
             //hashCode = hashCode * -1521134295 + EqualityComparer<List<BaseRule>>.Default.GetHashCode(Validators);
             return hashCode;
         }
-
-        /*public ICommand AddChoice => new ActionCommand((p) =>
-        {
-            var constraint = (this.constraintImplementation as ChoicesConstraint);
-            object val = null;
-            if (this.ValueType.DataType == typeof(string))
-            {
-                val = "New Option "+constraint.Choices.Count;
-            }
-            else
-            {
-                val = Activator.CreateInstance(this.ValueType.DataType);
-            }
-
-            var choice = new ChoicesRuleChoice(this) {Value = val};
-            choice.PropertyChanged += Choice_PropertyChanged;
-            constraint.Choices.Add(choice);
-        });
-
-        public ICommand RemoveChoice => new ActionCommand((p) =>
-        {
-            var choice = p as ChoicesRuleChoice;
-            choice.PropertyChanged -= Choice_PropertyChanged;
-            (this.constraintImplementation as ChoicesConstraint).Choices.Remove(choice);
-        });*/
+        #endregion
     }
 }

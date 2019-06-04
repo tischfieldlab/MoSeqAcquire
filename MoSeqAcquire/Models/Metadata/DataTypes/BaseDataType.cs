@@ -70,7 +70,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
         }
         public static BaseDataType FromString(string type)
         {
-            switch (type.ToLower())
+            switch (type.Replace("System.", "").ToLower())
             {
                 case "string":
                     return new StringDataType();
@@ -78,6 +78,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
                 case "boolean":
                     return new BooleanDataType();
                 case "int":
+                case "int32":
                 case "integer":
                     return new IntDataType();
                 case "double":
