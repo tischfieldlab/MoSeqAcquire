@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MoSeqAcquire.Models.Recording
 {
@@ -20,30 +22,42 @@ namespace MoSeqAcquire.Models.Recording
     {
         protected static RecordingSummaryOutputFormat GetOutputFormat()
         {
-            //return (RecordingSummaryOutputFormat)Enum.Parse(typeof(RecordingSummaryOutputFormat),  Properties.Settings.Default.RecordingSummaryOutputFormat, true);
-            return RecordingSummaryOutputFormat.XML; // TODO: Currently JSON serialization does not work as expected.
+            return (RecordingSummaryOutputFormat)Enum.Parse(typeof(RecordingSummaryOutputFormat),  Properties.Settings.Default.RecordingSummaryOutputFormat, true);
         }
 
         public static void Write(string filename, RecordingSummary Configuration)
         {
             if (GetOutputFormat() == RecordingSummaryOutputFormat.JSON)
             {
-                JsonSerializer serializer = new JsonSerializer();
-                using (StreamWriter sw = new StreamWriter(filename))
-                using (JsonWriter writer = new JsonTextWriter(sw))
+                var xml = new XmlDocument();
+                xml.LoadXml(Write(Configuration));
+                using (TextWriter writer = new StreamWriter(filename+".json"))
                 {
-                    serializer.Serialize(writer, Configuration);
+                    writer.Write(JsonConvert.SerializeXmlNode(xml));
                 }
             }
             else
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(RecordingSummary), GetSerializedTypes());
-                using (TextWriter writer = new StreamWriter(filename))
+                using (TextWriter writer = new StreamWriter(filename+".xml"))
                 {
-                    serializer.Serialize(writer, Configuration);
+                    Write(writer, Configuration);
                 }
             }
         }
+        public static string Write(RecordingSummary Configuration)
+        {
+            using (var writer = new UTF8StringWriter())
+            {
+                Write(writer, Configuration);
+                return writer.ToString();
+            }
+        }
+        public static void Write(TextWriter stream, RecordingSummary Configuration)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(RecordingSummary), GetSerializedTypes());
+            serializer.Serialize(stream, Configuration);
+        }
+
         public static RecordingSummary Read(string filename)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(RecordingSummary), GetSerializedTypes());

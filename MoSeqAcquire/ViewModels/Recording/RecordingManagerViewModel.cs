@@ -14,6 +14,7 @@ using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.ViewModels.Metadata;
 using System.Collections;
+using System.Windows;
 using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.ViewModels.MediaSources;
@@ -37,7 +38,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.recordingManager = new RecordingManager(this.rootViewModel.TriggerBus, RootViewModel.RecordingMetadata);
             this.recordingManager.BeforeStartRecording += (s, e) => this.Root.ForceProtocolLocked();
             this.recordingManager.RecordingFinished += (s, e) => this.Root.UndoForceProtocolLocked();
-            this.recordingManager.RecordingFinished += (s, e) => this.RecordingMetadata.Items.ResetValuesToDefaults();
+            this.recordingManager.RecordingFinished += (s, e) => Application.Current.Dispatcher.Invoke(() => this.RecordingMetadata.Items.ResetValuesToDefaults());
             this.recordingManager.RecordingAborted += (s, e) => this.Root.UndoForceProtocolLocked();
             this.recordingManager.PropertyChanged += (s, e) =>
             {

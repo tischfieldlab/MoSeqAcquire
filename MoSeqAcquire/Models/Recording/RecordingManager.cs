@@ -238,7 +238,7 @@ namespace MoSeqAcquire.Models.Recording
             }
 
             summary.Metadata = this.RecordingMetadata.Items.GetSnapshot();
-            string dest = Path.Combine(this.ReplyToDestinationRequest(), "info.xml");
+            string dest = Path.Combine(this.ReplyToDestinationRequest(), "info");
             RecordingInfoWriter.Write(dest, summary);
         }
 

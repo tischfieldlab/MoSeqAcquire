@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Metadata;
@@ -43,6 +44,7 @@ namespace MoSeqAcquire.Models.Recording
     public class RecordingRecord
     {
         public string Filename { get; set; }
+        [XmlArrayItem(ElementName="Channel")]
         public List<string> Channels { get; set; }
     }
 }

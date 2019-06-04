@@ -238,6 +238,9 @@
     <Compile Include="Views\AppSettings\SystemSettings.xaml.cs">
       <DependentUpon>SystemSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AppSettings\RecordingSettings.xaml.cs">
+      <DependentUpon>RecordingSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AppSettings\TriggerSettings.xaml.cs">
       <DependentUpon>TriggerSettings.xaml</DependentUpon>
     </Compile>
@@ -427,6 +430,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AppSettings\SystemSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AppSettings\RecordingSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
