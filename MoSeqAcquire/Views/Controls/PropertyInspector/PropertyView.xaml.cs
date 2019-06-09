@@ -16,6 +16,7 @@ namespace MoSeqAcquire.Views.Controls
         public PropertyView()
         {
             InitializeComponent();
+            this.InnerContainer.DataContext = new PropertyCollection(null);
         }
         public object SelectedObject
         {
