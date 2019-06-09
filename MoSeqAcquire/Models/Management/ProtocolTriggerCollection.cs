@@ -10,7 +10,7 @@ namespace MoSeqAcquire.Models.Management
     [XmlRoot("Sources")]
     public class ProtocolTriggerCollection : Collection<ProtocolTrigger>
     {
-        public void Add(string Name, Type EventType, Type ActionType, ConfigSnapshot Settings)
+        /*public void Add(string Name, Type EventType, Type ActionType, ConfigSnapshot Settings)
         {
             base.Add(new ProtocolTrigger()
             {
@@ -19,7 +19,7 @@ namespace MoSeqAcquire.Models.Management
                 Action = ActionType.AssemblyQualifiedName,
                 Config = Settings
             });
-        }
+        }*/
     }
 
     [XmlType("Trigger")]
@@ -29,6 +29,8 @@ namespace MoSeqAcquire.Models.Management
         public string Name { get; set; }
         [XmlAttribute]
         public bool Critical { get; set; }
+        [XmlAttribute]
+        public int Priority { get; set; }
         [XmlElement]
         public string Event { get; set; }
         [XmlElement]
@@ -52,6 +54,8 @@ namespace MoSeqAcquire.Models.Management
             if (!this.Name.Equals(source.Name))
                 return false;
             if (!this.Critical.Equals(source.Critical))
+                return false;
+            if (!this.Priority.Equals(source.Priority))
                 return false;
             if (!this.Event.Equals(source.Event))
                 return false;

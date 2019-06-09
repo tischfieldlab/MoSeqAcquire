@@ -105,7 +105,16 @@ namespace MoSeqAcquire.ViewModels.Triggers
             set
             {
                 this.trigger.IsCritical = value;
-                this.NotifyPropertyChanged();
+                this.NotifyPropertyChanged(nameof(this.IsCritical));
+            }
+        }
+        public int Priority
+        {
+            get => this.trigger.Priority;
+            set
+            {
+                this.trigger.Priority = value;
+                this.NotifyPropertyChanged(nameof(this.Priority));
             }
         }
         public BaseConfiguration Settings { get => this.trigger.Settings; }
@@ -198,6 +207,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             {
                 Name = this.Name,
                 Critical = this.IsCritical,
+                Priority = this.Priority,
                 Event = this.TriggerType.AssemblyQualifiedName,
                 Action = this.ActionType.AssemblyQualifiedName,
                 Config = this.Settings.GetSnapshot()

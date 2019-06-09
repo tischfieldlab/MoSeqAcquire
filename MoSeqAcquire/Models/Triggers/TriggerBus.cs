@@ -12,7 +12,8 @@ namespace MoSeqAcquire.Models.Triggers
     public enum TriggerExecutionMode
     {
         Synchronous,
-        Parallel
+        Parallel,
+        Hybrid
     }
     public class TriggerBus
     {
@@ -55,13 +56,32 @@ namespace MoSeqAcquire.Models.Triggers
                                     })).ToArray();
                     Task.WaitAll(tasks); // wait for all triggers to complete
                 }
+                else if(this.TriggerExecutionMode == TriggerExecutionMode.Hybrid)
+                {
+                    Task task = this.subscribers[typeof(TTrigger)]
+                                       .GroupBy(t => t.Priority)
+                                       .OrderByDescending(g => g.Key)
+                                       .Aggregate(Task.CompletedTask, (prev, next) =>
+                                       {
+                                           return prev.ContinueWith((tsk) =>
+                                           {
+                                               Task[] groupTasks = next.Select(t => Task.Run(() =>
+                                               {
+                                                   t.Execute(trigger);
+                                               })).ToArray();
+                                               Task.WaitAll(groupTasks);
+                                               return Task.CompletedTask;
+                                           });
+                                       });
+                    task.Wait();
+                }
                 else
                 {
                     Task tasks = this.subscribers[typeof(TTrigger)]
                         .OrderByDescending(t => t.Priority)
                         .Aggregate<TriggerAction, Task>(Task.CompletedTask, (prev, next) =>
                         {
-                            return prev.ContinueWith((task) =>
+                            return prev.ContinueWith((tsk) =>
                             {
                                 next.Execute(trigger);
                             });

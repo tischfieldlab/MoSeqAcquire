@@ -8,6 +8,7 @@
         xmlns:ext="clr-namespace:MoSeqAcquire.Views.Extensions"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -87,6 +88,7 @@
                                       materialDesign:HintAssist.IsFloating="True"
                                       Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       Margin="16" />
+                                
                                 <StackPanel Margin="16">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Is this action critical?" Margin="0,0,32,0" />
@@ -111,6 +113,16 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
+                                </StackPanel>
+                                <StackPanel Margin="16">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock Text="Action Priority" Margin="0,0,32,0" VerticalAlignment="Center" />
+                                        <mah:NumericUpDown Value="{Binding Path=Priority, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Path=Priority, Mode=OneWay, StringFormat={}Trigger will be executed with priority {0}}" 
+                                               Margin="0,8" 
+                                               FontSize="10"
+                                               Foreground="{DynamicResource MaterialDesignBodyLight}" />
                                 </StackPanel>
                             </StackPanel>
                         </TabItem>

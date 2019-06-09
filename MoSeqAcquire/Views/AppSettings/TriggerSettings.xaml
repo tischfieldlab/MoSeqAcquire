@@ -11,19 +11,21 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <GroupBox Header="General" Margin="16" Style="{DynamicResource MaterialDesignCardGroupBox}">
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                <DockPanel Margin="0,0,0,0">
                     <TextBlock Text="Trigger Execution Strategy"
+                               DockPanel.Dock="Left"
                                VerticalAlignment="Center"
                                Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                     <ComboBox Width="200" Margin="16,0"
+                              DockPanel.Dock="Left"
                               Style="{StaticResource MaterialDesignComboBox}" 
                               ItemsSource="{extensions:Enumeration {x:Type triggers:TriggerExecutionMode}}" 
                               DisplayMemberPath="Description" 
                               SelectedValuePath="Value" 
                               SelectedValue="{Binding Path=TriggersExecutionMode}" />
                     <TextBlock FontSize="10"
-                               
-                               VerticalAlignment="Bottom"
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Center"
                                Foreground="{DynamicResource MaterialDesignBodyLight}">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -34,11 +36,14 @@
                                     <DataTrigger Binding="{Binding Path=TriggersExecutionMode}" Value="{x:Static triggers:TriggerExecutionMode.Parallel}">
                                         <Setter Property="Text" Value="Triggers will be executed in parallel." />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=TriggersExecutionMode}" Value="{x:Static triggers:TriggerExecutionMode.Hybrid}">
+                                        <Setter Property="Text" Value="Triggers with the same priority will be executed in parallel, priority tiers will be executed synchronously." />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                </StackPanel>
+                </DockPanel>
             </GroupBox>
         </StackPanel>
     </ScrollViewer>
