@@ -29,17 +29,17 @@ namespace MoSeqAcquire.Models.Triggers
             get => (TriggerExecutionMode)Enum.Parse(typeof(TriggerExecutionMode), Properties.Settings.Default.TriggersExecutionMode);
         }
         
-        public void Subscribe(Type Trigger, TriggerAction triggerAction)
+        public void Subscribe(Type trigger, TriggerAction triggerAction)
         {
-            if (!this.subscribers.ContainsKey(Trigger))
+            if (!this.subscribers.ContainsKey(trigger))
             {
-                this.subscribers[Trigger] = new List<TriggerAction>();
+                this.subscribers[trigger] = new List<TriggerAction>();
             }
-            this.subscribers[Trigger].Add(triggerAction);
+            this.subscribers[trigger].Add(triggerAction);
         }
-        public void Unsubscribe(Type Trigger, TriggerAction triggerAction)
+        public void Unsubscribe(Type trigger, TriggerAction triggerAction)
         {
-            this.subscribers[Trigger].Remove(triggerAction);
+            this.subscribers[trigger].Remove(triggerAction);
         }
 
         public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : Trigger
@@ -69,6 +69,7 @@ namespace MoSeqAcquire.Models.Triggers
                                                {
                                                    t.Execute(trigger);
                                                })).ToArray();
+
                                                Task.WaitAll(groupTasks);
                                                return Task.CompletedTask;
                                            });
@@ -89,14 +90,6 @@ namespace MoSeqAcquire.Models.Triggers
                     tasks.Wait();
                 }
             }
-        }
-    }
-
-    public class PriorityComparer : IComparer<TriggerAction>
-    {
-        public int Compare(TriggerAction x, TriggerAction y)
-        {
-            return x.Priority.CompareTo(y.Priority);
         }
     }
 }
