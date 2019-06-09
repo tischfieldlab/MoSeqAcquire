@@ -52,7 +52,11 @@
                                 <Setter.Value>
                                     <ControlTemplate>
                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="8" FontStyle="Italic">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                       FontStyle="Italic"
+                                                       Margin="16"
+                                                       TextWrapping="Wrap" 
+                                                       TextAlignment="Center">
                                                 No metadata items have been added yet. Would you like to 
                                                 <Hyperlink Command="{Binding Path=DataContext.Commands.ShowMetadataDefinitionWindow, RelativeSource={RelativeSource AncestorType=Window}}"
                                                            Style="{StaticResource MaterialDesignBody1Hyperlink}"

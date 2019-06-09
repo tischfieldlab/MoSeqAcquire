@@ -16,7 +16,7 @@
         <conv:BoolToVisibilityInvertConverter x:Key="BoolToVisibilityInvertConverter" />
         <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     </UserControl.Resources>
-    <ScrollViewer Margin="-8,-9,-8,-8">
+    <ScrollViewer Margin="-8,-9,-8,-8" VerticalScrollBarVisibility="Auto">
         <!--  -->
         <ItemsControl ItemsSource="{Binding MediaSources.Items}"
                       dd:DragDrop.IsDragSource="True"
@@ -32,7 +32,11 @@
                                 <Setter.Value>
                                     <ControlTemplate>
                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" 
+                                                       FontStyle="Italic"
+                                                       Margin="8"
+                                                       TextWrapping="Wrap" 
+                                                       TextAlignment="Center">
                                                 No Media Sources have been added yet. Would you like to 
                                                 <Hyperlink Command="{Binding Path=DataContext.Commands.AddMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                                            Style="{StaticResource MaterialDesignBody1Hyperlink}" TextDecorations="Underline">

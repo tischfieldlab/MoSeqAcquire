@@ -37,7 +37,11 @@
                                 <Setter.Value>
                                     <ControlTemplate>
                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
-                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" FontStyle="Italic">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" 
+                                                       FontStyle="Italic"
+                                                       Margin="8"
+                                                       TextWrapping="Wrap" 
+                                                       TextAlignment="Center">
                                                 No recorders have been added yet. Would you like to 
                                                 <Hyperlink Command="{Binding Path=DataContext.Commands.AddRecorder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                                            Style="{StaticResource MaterialDesignBody1Hyperlink}"

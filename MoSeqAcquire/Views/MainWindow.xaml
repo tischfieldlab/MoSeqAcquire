@@ -76,12 +76,12 @@
                             </MenuItem>
                             <MenuItem Header="Recorder" Command="{Binding Path=Commands.AddRecorder}" >
                                 <MenuItem.Icon>
-                                    <materialDesign:PackIcon Kind="RecordRec" />
+                                    <materialDesign:PackIcon Kind="Cassette" />
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" >
                                 <MenuItem.Icon>
-                                    <materialDesign:PackIcon Kind="Pistol" />
+                                    <materialDesign:PackIcon Kind="LightningBolt" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
@@ -91,7 +91,11 @@
                                 <materialDesign:PackIcon Kind="ContentSave" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}" />
+                        <MenuItem Header="Load Protocol" Command="{Binding Path=Commands.LoadProtocol}">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="FolderOpen" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem Header="Recently Used" ItemsSource="{Binding Path=RecentlyUsedProtocols}" >
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem" BasedOn="{StaticResource MaterialDesignMenuItem}">
@@ -107,7 +111,11 @@
                                 </Style>
                             </MenuItem.ItemContainerStyle>
                         </MenuItem>
-                        <MenuItem Header="Unload Protocol" Command="{Binding Path=Commands.UnloadProtocol}" />
+                        <MenuItem Header="Unload Protocol" Command="{Binding Path=Commands.UnloadProtocol}" >
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Refresh" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <Separator />
                         <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLock}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked, Mode=OneWay}" >
                             <MenuItem.Icon>
@@ -147,11 +155,17 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
 
                             <v:MediaSourceView HorizontalAlignment="Stretch" Grid.Column="0" Margin="8" />
-                            <v:RecordingConsoleView Grid.Column="1" DataContext="{Binding Path=Recorder}" />
+                            <GridSplitter Grid.Column="1" 
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Stretch"
+                                          ShowsPreview="True"
+                                          Width="5" />
+                            <v:RecordingConsoleView Grid.Column="2" DataContext="{Binding Path=Recorder}" />
                         </Grid>
                     </TabItem>
                 </dragablz:TabablzControl>
