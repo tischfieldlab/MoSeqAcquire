@@ -25,8 +25,6 @@ namespace MoSeqAcquire.Models.Recording
             this.Specification = new RecorderSpecification(this.GetType());
             this.Settings = (RecorderSettings)this.Specification.SettingsFactory();
             this.Performance = new MediaWriterStats(this.Name);
-
-            
         }
         public event DestinationBaseResponse RequestDestinationBase;
 

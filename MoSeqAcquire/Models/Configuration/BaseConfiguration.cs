@@ -44,7 +44,7 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public void ApplyDefaults()
         {
-            foreach (var pi in this.GetConfigurationProperties())
+            foreach (var pi in this.GetConfigurationProperties().ToList())
             {
                 if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
                 {
@@ -57,18 +57,18 @@ namespace MoSeqAcquire.Models.Configuration
                     if (attr != null)
                     {
                         pi.SetValue(this, attr.Value);
-                        return;
+                        continue;
                     }
                     RangeMethodAttribute rma = pi.GetCustomAttribute<RangeMethodAttribute>();
                     if (rma != null)
                     {
                         pi.SetValue(this, (this.GetType().GetMethod(rma.MethodName).Invoke(this, null) as IDefaultInfo).Default);
-                        return;
+                        continue;
                     }
                     if (pi.PropertyType.IsValueType)
                     {
                         pi.SetValue(this, Activator.CreateInstance(pi.PropertyType));
-                        return;
+                        continue;
                     }
                 }
             }
