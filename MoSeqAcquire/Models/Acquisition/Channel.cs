@@ -66,5 +66,6 @@ namespace MoSeqAcquire.Models.Acquisition
     public class AudioChannelMetadata : ChannelMetadata
     {
         public SampleFormat SampleFormat { get; set; }
+        public int Channels { get; set; }
     }
 }

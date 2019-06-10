@@ -42,14 +42,11 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
-      <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
-    </Reference>
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
     </Reference>
     <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.2.0.1\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
+      <HintPath>..\packages\gong-wpf-dragdrop.2.0.2\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
@@ -66,6 +63,9 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MvvmValidation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=113792d2053ac461, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmValidation.3.1.0\lib\netstandard1.0\MvvmValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -213,8 +213,15 @@
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
     <Compile Include="ViewModels\Core\SizeHelper.cs" />
+    <Compile Include="ViewModels\MediaSources\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\IVisualizationPlugin.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\PolygonWaveFormVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\PolylineWaveFormVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\SampleAggregator.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\SpectrumAnalyzerVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\WaveformVisual.cs" />
     <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
@@ -252,6 +259,19 @@
     </Compile>
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
     <Compile Include="Views\Controls\SubsystemControl.cs" />
+    <Compile Include="Views\Controls\Visualization\IWaveFormRenderer.cs" />
+    <Compile Include="Views\Controls\Visualization\PolygonWaveFormControl.xaml.cs">
+      <DependentUpon>PolygonWaveFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\PolylineWaveFormControl.xaml.cs">
+      <DependentUpon>PolylineWaveFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\SpectrumAnalyser.xaml.cs">
+      <DependentUpon>SpectrumAnalyser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\WaveFormControl.xaml.cs">
+      <DependentUpon>WaveFormControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Converters\MathConverter.cs" />
     <Compile Include="Views\Converters\PackIconImageSourceConverter.cs" />
     <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
@@ -289,9 +309,6 @@
     <Compile Include="ViewModels\Recording\RecorderEditorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderPinViewModel.cs" />
     <Compile Include="ViewModels\ThemeViewModel.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml.cs">
-      <DependentUpon>LineSpectrum.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Controls\ColorStreamViewer.xaml.cs">
       <DependentUpon>ColorStreamViewer.xaml</DependentUpon>
     </Compile>
@@ -341,19 +358,11 @@
     <Compile Include="Models\Acquisition\MediaBus.cs" />
     <Compile Include="Models\Acquisition\MediaSource.cs" />
     <Compile Include="Models\Acquisition\MediaSourceConfig.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\BasicSpectrumProvider.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\GradientCalculator.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\ISpectrumProvider.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\ScalingStrategy.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\SpectrumBase.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\VoicePrint3DSpectrum.cs" />
     <Compile Include="Models\Management\MediaSettingsWriter.cs" />
     <Compile Include="Models\Recording\MediaWriter.cs" />
     <Compile Include="Models\Management\Protocol.cs" />
     <Compile Include="Models\Performance\FrameRateCounter.cs" />
     <Compile Include="Models\Core\ObservableObject.cs" />
-    <Compile Include="ViewModels\MediaSources\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\Commands\BaseCommandLibrary.cs" />
     <Compile Include="ViewModels\Commands\StartRecordingCommand.cs" />
     <Compile Include="ViewModels\Commands\EditRecorderCommand.cs" />
@@ -366,7 +375,6 @@
     <Compile Include="ViewModels\MediaSources\ChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceViewModel.cs" />
     <Compile Include="ViewModels\MoSeqAcquireViewModel.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum.cs" />
     <Compile Include="Views\MediaSourceViews\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
@@ -441,10 +449,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Controls\ColorStreamViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -456,6 +460,22 @@
     <Page Include="Views\Controls\FileChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Visualization\PolygonWaveFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\PolylineWaveFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\SpectrumAnalyser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\WaveFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MediaSourceViews\MediaSourceConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>

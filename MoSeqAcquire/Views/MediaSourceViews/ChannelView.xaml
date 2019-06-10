@@ -35,7 +35,7 @@
             <Grid>
                 <!--<controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" Margin="10" />
                 <Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" Stretch="Fill"  />-->
-                <Image Source="{Binding Path=VoicePrintSpectrum}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"  />
+                <ContentPresenter Content="{Binding Visualization}" />
             </Grid>
         </DataTemplate>
 

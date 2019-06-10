@@ -35,11 +35,16 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
         public override void Start()
         {
             var vChanMeta = this.videoPin.Channel.Metadata as VideoChannelMetadata;
+            var aChanMeta = this.audioPin.Channel.Metadata as AudioChannelMetadata;
             var conf = this.Settings as MPEGVideoWriterSettings;
 
             this.writer = new VideoFileWriter();
-            this.writer.Open(this.FilePath, vChanMeta.Width, vChanMeta.Height, new Accord.Math.Rational(30), conf.VideoCodec, conf.VideoBitrate);
-            //conf.AudioCodec, conf.AudioBitrate, 16000, 1);
+            this.writer.Open(this.FilePath, 
+                             vChanMeta.Width, vChanMeta.Height, 
+                             new Accord.Math.Rational(30), 
+                             conf.VideoCodec, conf.VideoBitrate,
+                             conf.AudioCodec, conf.AudioBitrate,
+                             (int)aChanMeta.TargetFramesPerSecond, aChanMeta.Channels);
 
             if (conf.WriteTimestamps)
             {
@@ -73,7 +78,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             {
                 lock (this.lockobject)
                 {
-                    //this.writer.WriteAudioFrame((byte[])frame.FrameData);
+                    this.writer.WriteAudioFrame((byte[])frame.FrameData);
                 }
             }
         }
