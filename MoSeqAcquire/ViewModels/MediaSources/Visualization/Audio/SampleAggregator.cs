@@ -3,7 +3,7 @@ using System.Diagnostics;
 using NAudio.Dsp;
 using NAudio.Wave;
 
-namespace MoSeqAcquire.ViewModels.MediaSources.Visualization
+namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 {
     public class SampleAggregator : ISampleProvider
     {

@@ -35,7 +35,7 @@
             <Grid>
                 <!--<controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" Margin="10" />
                 <Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" Stretch="Fill"  />-->
-                <ContentPresenter Content="{Binding Visualization}" />
+                <ContentPresenter Content="{Binding Path=SelectedView.Visualization}" />
             </Grid>
         </DataTemplate>
 
@@ -53,6 +53,23 @@
             <ContentPresenter Content="{Binding}" Width="{Binding Path=DisplaySize.Width}" Height="{Binding Path=DisplaySize.Height}">
                 <ContentPresenter.ContextMenu>
                     <ContextMenu DataContext="{Binding Path=PlacementTarget.Content, RelativeSource={RelativeSource Self}}" >
+                        <MenuItem Header="View" ItemsSource="{Binding Path=AvailableViews}" >
+                            <MenuItem.ItemContainerStyle>
+                                <Style TargetType="MenuItem" BasedOn="{StaticResource MaterialDesignMenuItem}">
+                                    <Setter Property="HeaderTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="IsCheckable" Value="true" />
+                                    <Setter Property="IsChecked" Value="{Binding Path=IsSelected}" />
+                                    <Setter Property="Command" Value="{Binding Path=DataContext.SetChannelViewCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                                    <Setter Property="CommandParameter" Value="{Binding}" />
+                                </Style>
+                            </MenuItem.ItemContainerStyle>
+                        </MenuItem>
                         <MenuItem Header="Show Crosshairs" IsCheckable="True" IsChecked="{Binding Path=ShowCrosshairs}" />
                     </ContextMenu>
                 </ContentPresenter.ContextMenu>

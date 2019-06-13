@@ -2,9 +2,9 @@
 using System;
 using System.Linq;
 
-namespace MoSeqAcquire.ViewModels.MediaSources.Visualization
+namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 {
-    class SpectrumAnalyzerVisualization : IVisualizationPlugin
+    class SpectrumAnalyzerVisualization : IAudioVisualizationPlugin
     {
         private readonly SpectrumAnalyser spectrumAnalyser = new SpectrumAnalyser();
 

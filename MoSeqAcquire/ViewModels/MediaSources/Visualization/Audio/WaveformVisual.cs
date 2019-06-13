@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
-namespace MoSeqAcquire.ViewModels.MediaSources.Visualization
+namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 {
     class WaveFormVisual : FrameworkElement, IWaveFormRenderer
     {

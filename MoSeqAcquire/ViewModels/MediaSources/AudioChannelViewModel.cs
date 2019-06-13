@@ -9,26 +9,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.ViewModels.MediaSources.Visualization;
+using MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio;
 using NAudio.Wave;
 
 namespace MoSeqAcquire.ViewModels.MediaSources
 {
     public class AudioChannelViewModel : ChannelViewModel
-    {       
-        IVisualizationPlugin visualizationPlugin;
+    {
 
         public AudioChannelViewModel(Channel channel) : base(channel)
         {
-            this.visualizationPlugin = new PolygonWaveFormVisualization();//new SpectrumAnalyzerVisualization();
             
-        }
+            this.AvailableViews.Add(new SelectableVisualizationPluginViewModel(new SpectrumAnalyzerVisualization()));
+            this.AvailableViews.Add(new SelectableVisualizationPluginViewModel(new PolylineWaveFormVisualization()));
+            this.AvailableViews.Add(new SelectableVisualizationPluginViewModel(new PolygonWaveFormVisualization()));
+            this.SetChannelViewCommand.Execute(this.AvailableViews.First());
 
-        public IVisualizationPlugin VisualizationPlugin
-        {
-            get => this.visualizationPlugin;
-            set => this.SetField(ref this.visualizationPlugin, value);
         }
-        public object Visualization { get => this.VisualizationPlugin.Content; }
 
         private BufferedWaveProvider provider;
         private SampleAggregator sampleProvider;
@@ -62,12 +59,12 @@ namespace MoSeqAcquire.ViewModels.MediaSources
 
         private void SampleProvider_MaximumCalculated(object sender, MaxSampleEventArgs e)
         {
-            this.VisualizationPlugin.OnMaxCalculated(e.MinSample, e.MaxSample);
+            (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin)?.OnMaxCalculated(e.MinSample, e.MaxSample);
         }
 
         private void SampleProvider_FftCalculated(object sender, FftEventArgs e)
         {
-            this.VisualizationPlugin.OnFftCalculated(e.Result);
+            (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin)?.OnFftCalculated(e.Result);
         }
     }
 

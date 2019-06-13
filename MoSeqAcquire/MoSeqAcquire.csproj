@@ -216,12 +216,13 @@
     <Compile Include="ViewModels\MediaSources\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\IAudioVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\IVisualizationPlugin.cs" />
-    <Compile Include="ViewModels\MediaSources\Visualization\PolygonWaveFormVisualization.cs" />
-    <Compile Include="ViewModels\MediaSources\Visualization\PolylineWaveFormVisualization.cs" />
-    <Compile Include="ViewModels\MediaSources\Visualization\SampleAggregator.cs" />
-    <Compile Include="ViewModels\MediaSources\Visualization\SpectrumAnalyzerVisualization.cs" />
-    <Compile Include="ViewModels\MediaSources\Visualization\WaveformVisual.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolygonWaveFormVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolylineWaveFormVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregator.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SpectrumAnalyzerVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\WaveformVisual.cs" />
     <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
@@ -626,7 +627,10 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModels\MediaSources\Augmentation\" />
+    <Folder Include="ViewModels\MediaSources\Visualization\Video\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

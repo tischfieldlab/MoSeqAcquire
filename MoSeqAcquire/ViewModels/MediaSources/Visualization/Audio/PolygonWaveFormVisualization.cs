@@ -1,8 +1,8 @@
 ﻿using MoSeqAcquire.Views.MediaSources.Visualization;
 
-namespace MoSeqAcquire.ViewModels.MediaSources.Visualization
+namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 {
-    class PolygonWaveFormVisualization : IVisualizationPlugin
+    class PolygonWaveFormVisualization : IAudioVisualizationPlugin
     {
         private readonly PolygonWaveFormControl polygonWaveFormControl = new PolygonWaveFormControl();
 
