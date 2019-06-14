@@ -21,13 +21,17 @@ namespace MoSeqAcquire.ViewModels.MediaSources
     {
         protected Channel channel;
         protected SizeHelper sizeHelper;
-        protected SelectableVisualizationPluginViewModel selectedView;
+
+        private readonly ObservableCollection<SelectableVisualizationPluginViewModel> _availableViews;
+        private SelectableVisualizationPluginViewModel _selectedView;
 
 
         protected ChannelViewModel(Channel channel)
         {
             this.channel = channel;
-            this.AvailableViews = new ObservableCollection<SelectableVisualizationPluginViewModel>();
+            this._availableViews = new ObservableCollection<SelectableVisualizationPluginViewModel>();
+            this.AvailableViews = new ReadOnlyObservableCollection<SelectableVisualizationPluginViewModel>(this._availableViews);
+
             this.BindChannel();
             this.Performance = new TotalFrameCounter();
             this.Performance.Start();
@@ -55,11 +59,16 @@ namespace MoSeqAcquire.ViewModels.MediaSources
 
         public SizeHelper DisplaySize { get => this.sizeHelper; }
 
-        public ObservableCollection<SelectableVisualizationPluginViewModel> AvailableViews { get; private set; }
+        public ReadOnlyObservableCollection<SelectableVisualizationPluginViewModel> AvailableViews { get; private set; }
         public SelectableVisualizationPluginViewModel SelectedView
         {
-            get => this.selectedView;
-            set => this.SetField(ref this.selectedView, value);
+            get => this._selectedView;
+            set => this.SetField(ref this._selectedView, value);
+        }
+        protected IVisualizationPlugin SelectedPlugin => this.SelectedView?.VisualizationPlugin;
+        protected void RegisterViewPlugin(IVisualizationPlugin plugin)
+        {
+            this._availableViews.Add(new SelectableVisualizationPluginViewModel(plugin));
         }
 
 
@@ -90,6 +99,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             throw new InvalidOperationException("Unable to determine correct implementation for channel!");
         }
     }
+
 
     public class SelectableVisualizationPluginViewModel : BaseViewModel
     {

@@ -217,12 +217,17 @@
     <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\IAudioVisualizationPlugin.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregator - Copy.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\IVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolygonWaveFormVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolylineWaveFormVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregator.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\SpectrumAnalyzerVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\WaveformVisual.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\CrosshairOverlay.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\IVisualizationOverlay.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Video\ColorVideoVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Video\IVideoVisualizationPlugin.cs" />
     <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
@@ -260,17 +265,20 @@
     </Compile>
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
     <Compile Include="Views\Controls\SubsystemControl.cs" />
-    <Compile Include="Views\Controls\Visualization\IWaveFormRenderer.cs" />
-    <Compile Include="Views\Controls\Visualization\PolygonWaveFormControl.xaml.cs">
+    <Compile Include="Views\Controls\Visualization\Audio\IWaveFormRenderer.cs" />
+    <Compile Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml.cs">
+      <DependentUpon>VideoStreamControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Audio\PolygonWaveFormControl.xaml.cs">
       <DependentUpon>PolygonWaveFormControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\Visualization\PolylineWaveFormControl.xaml.cs">
+    <Compile Include="Views\Controls\Visualization\Audio\PolylineWaveFormControl.xaml.cs">
       <DependentUpon>PolylineWaveFormControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\Visualization\SpectrumAnalyser.xaml.cs">
+    <Compile Include="Views\Controls\Visualization\Audio\SpectrumAnalyser.xaml.cs">
       <DependentUpon>SpectrumAnalyser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\Visualization\WaveFormControl.xaml.cs">
+    <Compile Include="Views\Controls\Visualization\Audio\WaveFormControl.xaml.cs">
       <DependentUpon>WaveFormControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Converters\MathConverter.cs" />
@@ -310,9 +318,6 @@
     <Compile Include="ViewModels\Recording\RecorderEditorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderPinViewModel.cs" />
     <Compile Include="ViewModels\ThemeViewModel.cs" />
-    <Compile Include="Views\Controls\ColorStreamViewer.xaml.cs">
-      <DependentUpon>ColorStreamViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Controls\FileChooser.xaml.cs">
       <DependentUpon>FileChooser.xaml</DependentUpon>
     </Compile>
@@ -450,10 +455,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\ColorStreamViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Controls\ConfirmDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -462,19 +463,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\Visualization\PolygonWaveFormControl.xaml">
+    <Page Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Controls\Visualization\PolylineWaveFormControl.xaml">
+    <Page Include="Views\Controls\Visualization\Audio\PolygonWaveFormControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Controls\Visualization\SpectrumAnalyser.xaml">
+    <Page Include="Views\Controls\Visualization\Audio\PolylineWaveFormControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Controls\Visualization\WaveFormControl.xaml">
+    <Page Include="Views\Controls\Visualization\Audio\SpectrumAnalyser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Audio\WaveFormControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -629,7 +634,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\MediaSources\Augmentation\" />
-    <Folder Include="ViewModels\MediaSources\Visualization\Video\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

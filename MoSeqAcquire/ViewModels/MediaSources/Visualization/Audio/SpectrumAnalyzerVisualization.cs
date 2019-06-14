@@ -21,5 +21,9 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
         {
             spectrumAnalyser.Update(result);
         }
+        public void ProcessSample(SampleData data)
+        {
+            spectrumAnalyser.Update(data.Fft);
+        }
     }
 }

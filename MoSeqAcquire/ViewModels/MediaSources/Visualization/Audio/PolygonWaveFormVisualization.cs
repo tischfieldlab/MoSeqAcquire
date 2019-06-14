@@ -19,5 +19,10 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
         {
             // nothing to do
         }
+
+        public void ProcessSample(SampleData data)
+        {
+            polygonWaveFormControl.AddValue(data.MinSample, data.MaxSample);
+        }
     }
 }

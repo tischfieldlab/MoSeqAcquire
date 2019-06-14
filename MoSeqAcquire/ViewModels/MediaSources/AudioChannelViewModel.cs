@@ -20,9 +20,9 @@ namespace MoSeqAcquire.ViewModels.MediaSources
         public AudioChannelViewModel(Channel channel) : base(channel)
         {
             
-            this.AvailableViews.Add(new SelectableVisualizationPluginViewModel(new SpectrumAnalyzerVisualization()));
-            this.AvailableViews.Add(new SelectableVisualizationPluginViewModel(new PolylineWaveFormVisualization()));
-            this.AvailableViews.Add(new SelectableVisualizationPluginViewModel(new PolygonWaveFormVisualization()));
+            this.RegisterViewPlugin(new SpectrumAnalyzerVisualization());
+            this.RegisterViewPlugin(new PolylineWaveFormVisualization());
+            this.RegisterViewPlugin(new PolygonWaveFormVisualization());
             this.SetChannelViewCommand.Execute(this.AvailableViews.First());
 
         }
@@ -47,15 +47,30 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             
             MediaBus.Instance.Subscribe(bc => bc.Channel == this.channel, new ActionBlock<ChannelFrame>(frame => 
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    this.provider.AddSamples((byte[])frame.FrameData, 0, frame.Metadata.TotalBytes);
-                    this.sampleProvider.Read(new float[frame.Metadata.TotalBytes / 4], 0, frame.Metadata.TotalBytes / 4);
-                    this.Performance.Increment();
-                }));
-            }));
-
+                this.provider.AddSamples((byte[])frame.FrameData, 0, frame.Metadata.TotalBytes);
+                this.sampleProvider.Read(new float[frame.Metadata.TotalBytes / 4], 0, frame.Metadata.TotalBytes / 4);
+                this.Performance.Increment();
+            }, new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() }));
         }
+        /*public override void BindChannel()
+        {
+            var meta = this.channel.Metadata as AudioChannelMetadata;
+
+            var sampAgg = new SampleAggregatorDataFlow();
+            
+            var transform = new TransformBlock<ChannelFrame, IEnumerable<SampleData>>((Func<ChannelFrame, IEnumerable<SampleData>>) sampAgg.ProduceSample);
+            var update = new ActionBlock<IEnumerable<SampleData>>(sd_items =>
+                {
+                    
+                    (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin).ProcessSample(sd_items.First());
+                    this.Performance.Increment();
+                },
+                new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() });
+            transform.LinkTo(update);
+
+            MediaBus.Instance.Subscribe(bc => bc.Channel == this.channel, transform);
+            
+        }*/
 
         private void SampleProvider_MaximumCalculated(object sender, MaxSampleEventArgs e)
         {
