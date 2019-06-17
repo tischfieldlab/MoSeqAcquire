@@ -47,7 +47,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Category" Binding="{Binding Path=Category}" />
                 <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
-                <DataGridTextColumn Header="Frame Rate" Binding="{Binding Path=Performance.FrameRate, StringFormat=\{0:F3\}}" />
+                <DataGridTextColumn Header="Frame Rate" Binding="{Binding Path=Performance.FrameRate, StringFormat=\{0:F2\}}" />
                 <DataGridTextColumn Header="Total Frames" Binding="{Binding Path=Performance.TotalFrames}" />
             </DataGrid.Columns>
         </DataGrid>

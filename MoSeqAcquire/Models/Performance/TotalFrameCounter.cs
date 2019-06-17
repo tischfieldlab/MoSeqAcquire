@@ -6,43 +6,39 @@ using System.Threading.Tasks;
 using System.Timers;
 using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Performance;
+using MoSeqAcquire.Models.Utility;
 
 namespace MoSeqAcquire.Models.Recording
 {
     public class TotalFrameCounter : ObservableObject, IFrameRateProvider, ITotalFrameCountProvider
     {
-        private DateTime __lastTime;
-        private readonly Timer __timer;
-        private long __totalCount;
-        private long __countSinceLast;
+        private DateTime _lastTime;
+        private long _totalCount;
+        private long _countSinceLast;
         private static readonly object lockobject = new object();
 
-        public TotalFrameCounter(double Interval=1000)
+        public TotalFrameCounter()
         {
-            this.__timer = new Timer()
-            {
-                Interval = Interval,
-                AutoReset = true
-            };
-            this.__timer.Elapsed += this.Compute_framerate;
+            this._lastTime = PreciseDatetime.Now;
         }
         public void Start()
         {
-            this.__timer.Enabled = true;
+            OracleTimer.Elapsed += this.Compute_framerate;
         }
         public void Stop()
         {
-            this.__timer.Enabled = false;
+            OracleTimer.Elapsed -= this.Compute_framerate;
         }
 
-        private void Compute_framerate(object sender, ElapsedEventArgs e)
+        private void Compute_framerate(object sender, EventArgs e)
         {
             lock (lockobject)
             {
-                this.FrameRate = this.__countSinceLast / (e.SignalTime - this.__lastTime).TotalSeconds;
-                this.__totalCount += this.__countSinceLast;
-                this.__countSinceLast = 0;
-                this.__lastTime = e.SignalTime;
+                var now = PreciseDatetime.Now;
+                this.FrameRate = this._countSinceLast / (now - this._lastTime).TotalSeconds;
+                this._totalCount += this._countSinceLast;
+                this._countSinceLast = 0;
+                this._lastTime = now;
                 this.NotifyPropertyChanged(null);
             }
         }
@@ -51,10 +47,10 @@ namespace MoSeqAcquire.Models.Recording
         {
             lock (lockobject)
             {
-                this.__countSinceLast++;
+                this._countSinceLast++;
             }
         }
         public double FrameRate { get; protected set; }
-        public long TotalFrames { get => this.__totalCount; }
+        public long TotalFrames { get => this._totalCount; }
     }
 }

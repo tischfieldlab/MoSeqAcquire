@@ -44,7 +44,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             });
             this.InitTask = Task.Run(() =>
             {
-                while (!this.MediaSource.Initalize(mediaSource.DeviceId))
+                while (!this.MediaSource.Initialize(mediaSource.DeviceId))
                 {
                     Thread.Sleep(100);
                 }
