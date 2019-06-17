@@ -32,7 +32,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             }
             return items;
         }
-        public override bool Initalize(string DeviceId)
+        public override bool Initialize(string DeviceId)
         {
             this.DeviceId = DeviceId;
             var devices = new AudioDeviceCollection(AudioDeviceCategory.Capture);

@@ -45,27 +45,4 @@ namespace MoSeqAcquire.Models.Acquisition
             this.Performance.Increment();
         }
     }
-
-    public class ChannelMetadata
-    {
-        public double TargetFramesPerSecond { get; set; }
-    }
-
-    public class VideoChannelMetadata : ChannelMetadata
-    {
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int BytesPerPixel { get; set; }
-        public PixelFormat PixelFormat { get; set; }
-    }
-
-    public enum SampleFormat
-    {
-
-    }
-    public class AudioChannelMetadata : ChannelMetadata
-    {
-        public SampleFormat SampleFormat { get; set; }
-        public int Channels { get; set; }
-    }
 }

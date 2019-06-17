@@ -14,7 +14,7 @@ namespace MoSeqAcquire.Models.Acquisition
         public List<Channel> Channels;
 
 
-        public MediaSource()
+        protected MediaSource()
         {
             this.Specification = new MediaSourceSpecification(this.GetType());
             this.Channels = new List<Channel>();
@@ -26,7 +26,7 @@ namespace MoSeqAcquire.Models.Acquisition
 
         public bool IsInitialized { get; protected set; }
         public abstract List<Tuple<string, string>> ListAvailableDevices();
-        public abstract bool Initalize(string DeviceId);
+        public abstract bool Initialize(string deviceId);
         public virtual void Start()
         {
             MediaBus.Instance.Publish(this);

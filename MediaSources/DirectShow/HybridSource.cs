@@ -66,7 +66,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
             return clusters;
         }
-        public override bool Initalize(string DeviceId)
+        public override bool Initialize(string DeviceId)
         {
             this.DeviceId = DeviceId;
 

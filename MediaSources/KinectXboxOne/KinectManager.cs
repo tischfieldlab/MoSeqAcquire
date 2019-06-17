@@ -44,7 +44,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
         /// </summary>
         /// <param name="DeviceId">The string representing the ID of the device</param>
         /// <returns>True if the deivce is initialized, false if it cannot be.</returns>
-        public override bool Initalize(string DeviceId)
+        public override bool Initialize(string DeviceId)
         {
             this.DeviceId = DeviceId;
             var deviceFound = false;

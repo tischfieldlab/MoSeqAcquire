@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectXboxOne", "MediaSourc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextDataWriter", "Recorders\TextDataWriter\TextDataWriter.csproj", "{6916E216-A0FB-454F-851A-55223C87B081}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPatterns", "MediaSources\TestPatterns\TestPatterns.csproj", "{D62102B3-B7B7-4388-960E-56677A6E7A36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,14 @@ Global
 		{6916E216-A0FB-454F-851A-55223C87B081}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6916E216-A0FB-454F-851A-55223C87B081}.Release|x64.ActiveCfg = Release|Any CPU
 		{6916E216-A0FB-454F-851A-55223C87B081}.Release|x64.Build.0 = Release|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Debug|x64.Build.0 = Debug|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Release|x64.ActiveCfg = Release|Any CPU
+		{D62102B3-B7B7-4388-960E-56677A6E7A36}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +160,7 @@ Global
 		{F695B199-3061-4C08-80E2-535C0BE78F23} = {E15FF6A4-1E79-42F2-A66D-C965854C4FE5}
 		{BC9D6E89-50B2-4690-8B6A-28A73415F9A4} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
 		{6916E216-A0FB-454F-851A-55223C87B081} = {E262988C-6FB7-41C9-BE90-46AF7748EF3A}
+		{D62102B3-B7B7-4388-960E-56677A6E7A36} = {848150FF-2DD4-4C88-91D3-817B7FC8547C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6786BB0-2164-48DF-9EDB-D0D34E984B4E}

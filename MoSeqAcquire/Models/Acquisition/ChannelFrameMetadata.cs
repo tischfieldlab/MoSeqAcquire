@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
+    public class ChannelMetadata
+    {
+        public double TargetFramesPerSecond { get; set; }
+    }
+
+
     public class ChannelFrameMetadata
     {
         public int FrameId { get; set; }

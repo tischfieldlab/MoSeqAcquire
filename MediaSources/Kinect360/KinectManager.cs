@@ -36,7 +36,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             return items;
         }
 
-        public override bool Initalize(string DeviceId)
+        public override bool Initialize(string DeviceId)
         {
             this.DeviceId = DeviceId;
             var deviceFound = false;

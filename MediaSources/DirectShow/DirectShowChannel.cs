@@ -23,6 +23,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.DataType = typeof(byte);
             this.Enabled = true;
         }
+        public override bool Enabled { get; set; }
         public IVideoProvider Device { get; protected set; }
         public override ChannelMetadata Metadata
         {
@@ -38,9 +39,14 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             }
         }
 
-        public override bool Enabled { get; set; }
+        
+
+
+
         private byte[] _copyBuffer;
         private int currentFrameId;
+        private Rectangle rect;
+        private BitmapData bmpData;
         private void Device_NewFrame(object sender, Accord.Video.NewFrameEventArgs e)
         {
             if (!this.Enabled)
@@ -48,7 +54,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
             if (e.Frame != null)
             {
-                var frame = e.Frame;
                 var meta = new VideoChannelFrameMetadata()
                 {
                     FrameId = this.currentFrameId++,
@@ -59,19 +64,19 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
                     PixelFormat = e.Frame.PixelFormat.ToMediaPixelFormat(),
                     AbsoluteTime = PreciseDatetime.Now
                 };
-                meta.TotalBytes = meta.Width * meta.Height * meta.BytesPerPixel;
 
-
-                Rectangle rect = new Rectangle(0, 0, e.Frame.Width, e.Frame.Height);
-                BitmapData bmpData = e.Frame.LockBits(rect, ImageLockMode.ReadOnly, e.Frame.PixelFormat);
-
-                // Declare an array to hold the bytes of the bitmap.
-                int bytes = Math.Abs(bmpData.Stride) * e.Frame.Height;
-                if (this._copyBuffer == null || this._copyBuffer.Length != bytes)
+                if (this.rect.Width != e.Frame.Width || this.rect.Height != e.Frame.Height)
                 {
-                    this._copyBuffer = new byte[bytes];
+                    this.rect = new Rectangle(0, 0, e.Frame.Width, e.Frame.Height);
                 }
-                Marshal.Copy(bmpData.Scan0, this._copyBuffer, 0, bytes);
+                
+                // Declare an array to hold the bytes of the bitmap.
+                if (this._copyBuffer == null || this._copyBuffer.Length != meta.TotalBytes)
+                {
+                    this._copyBuffer = new byte[meta.TotalBytes];
+                }
+                bmpData = e.Frame.LockBits(rect, ImageLockMode.ReadOnly, e.Frame.PixelFormat);
+                Marshal.Copy(bmpData.Scan0, this._copyBuffer, 0, meta.TotalBytes);
 
                 this.PostFrame(new ChannelFrame(this._copyBuffer, meta));
             }

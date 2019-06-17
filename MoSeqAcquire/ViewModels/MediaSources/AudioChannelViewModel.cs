@@ -32,7 +32,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
         public override void BindChannel()
         {
             var meta = this.channel.Metadata as AudioChannelMetadata;
-            var format = WaveFormat.CreateIeeeFloatWaveFormat((int)meta.TargetFramesPerSecond, meta.Channels);
+            var format = WaveFormat.CreateIeeeFloatWaveFormat((int)meta.SampleRate, meta.Channels);
             this.provider = new BufferedWaveProvider(format)
             {
                 DiscardOnBufferOverflow = true
