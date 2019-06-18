@@ -24,7 +24,6 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
             this.Name = "Depth Channel";
             this.DeviceName = "Microsoft Kinect XBOX One";
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(short);
 
             this.depthFrameReader = this.Kinect.Sensor.DepthFrameSource.OpenReader();
             this.depthFrameReader.FrameArrived += DepthFrameReader_FrameArrivedHandler;
@@ -35,7 +34,8 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
             get
             {
                 return new VideoChannelMetadata()
-                { 
+                {
+                    DataType = typeof(short),
                     Width = depthFrameReader.DepthFrameSource.FrameDescription.Width,
                     Height = depthFrameReader.DepthFrameSource.FrameDescription.Height,
                     TargetFramesPerSecond = 30,

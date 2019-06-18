@@ -14,13 +14,14 @@ namespace TestPatterns
 {
     class ImageTestPatternChannel : Channel
     {
-        public ImageTestPatternChannel()
+        public ImageTestPatternChannel(TestPatternSource source)
         {
+            this.Device = source;
             this.Name = "Video Test";
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(byte);
             this.Enabled = true;
 
+            this.PrepareImage();
            
             this.__timer = new MultimediaTimer()
             {
@@ -30,11 +31,22 @@ namespace TestPatterns
             this.__timer.Elapsed += (s, e) => this.ProduceFrame();
             this.__timer.Start();
         }
+        public TestPatternSource Device { get; protected set; }
         public override ChannelMetadata Metadata => new VideoChannelMetadata()
         {
+            DataType = typeof(byte),
             TargetFramesPerSecond = 30,
-            
+            Width = this.bitmap.PixelWidth,
+            Height = this.bitmap.PixelHeight,
+            PixelFormat = this.bitmap.Format,
+            BytesPerPixel = this.bitmap.Format.BitsPerPixel / 8
         };
+
+        private void PrepareImage()
+        {
+            this.bitmap = new BitmapImage(new Uri("pack://application:,,,/TestPatterns;component/Patterns/PM5544_with_non-PAL_signals.png"));
+            this.bitmap.Freeze();
+        }
 
         private BitmapImage bitmap;
         private MultimediaTimer __timer;
@@ -45,12 +57,6 @@ namespace TestPatterns
         {
             if (!this.Enabled)
                 return;
-
-            if (this.bitmap == null)
-            {
-                this.bitmap = new BitmapImage(new Uri( "pack://application:,,,/TestPatterns;component/Patterns/PM5544_with_non-PAL_signals.png"));
-                this.bitmap.Freeze();
-            }
 
 
             var meta = new VideoChannelFrameMetadata()
@@ -70,7 +76,6 @@ namespace TestPatterns
                 bitmap.CopyPixels(this._copyBuffer, (meta.Width * meta.BytesPerPixel), 0);
             }
             
-
             this.PostFrame(new ChannelFrame(this._copyBuffer, meta));
         }
     }

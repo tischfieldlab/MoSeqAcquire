@@ -52,44 +52,49 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
             maxValue = minValue = 0;
         }
 
-        private SampleData Add(float value)
+        private SampleData? Compute(float value)
         {
             fftBuffer[fftPos].X = (float)(value * FastFourierTransform.HammingWindow(fftPos, fftLength));
             fftBuffer[fftPos].Y = 0;
             fftPos++;
+
+            maxValue = Math.Max(maxValue, value);
+            minValue = Math.Min(minValue, value);
+
             if (fftPos >= fftBuffer.Length)
             {
                 fftPos = 0;
                 // 1024 = 2^10
                 FastFourierTransform.FFT(true, m, fftBuffer);
+
+                var sample = new SampleData()
+                {
+                    MinSample = minValue,
+                    MaxSample = maxValue,
+                    Fft = (Complex[])fftBuffer.Clone()
+                };
+                Reset();
+                return sample;
             }
 
-            maxValue = Math.Max(maxValue, value);
-            minValue = Math.Min(minValue, value);
-
-            var sample = new SampleData()
-            {
-                MinSample = minValue,
-                MaxSample = maxValue,
-                Fft = fftBuffer
-            };
-            Reset();
-            return sample;
+            return null;
         }
 
         public IEnumerable<SampleData> ProduceSample(ChannelFrame frame)
         {
             var meta = frame.Metadata as AudioChannelFrameMetadata;
-            var samples = new List<SampleData>();
-            for (int n = 0; n < frame.FrameData.Length; n += 1)
+            for (int n = 0; n < frame.FrameData.Length; n += meta.Channels)
             {
-                samples.Add(Add(Convert.ToSingle(((byte[])frame.FrameData)[n])));
+                var result = Compute(((float[]) frame.FrameData)[n]);
+                if (result.HasValue)
+                {
+                    yield return result.Value;
+                }
             }
-            return samples;
         }
     }
 
-    public class SampleData
+    public struct SampleData
     {
         public float MaxSample { get; set; }
         public float MinSample { get; set; }

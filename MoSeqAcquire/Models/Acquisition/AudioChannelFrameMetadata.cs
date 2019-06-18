@@ -8,7 +8,11 @@ namespace MoSeqAcquire.Models.Acquisition
 {
     public enum SampleFormat
     {
-
+        PCM8,
+        PCM16,
+        PCM32,
+        IeeeFloat32,
+        IeeeFloat64
     }
 
     public class AudioChannelMetadata : ChannelMetadata
@@ -24,5 +28,6 @@ namespace MoSeqAcquire.Models.Acquisition
         public int Channels { get; set; }
         public int SampleRate { get; set; }
         public int BitsPerSample { get; set; }
+        public int SampleCount { get; set; }
     }
 }

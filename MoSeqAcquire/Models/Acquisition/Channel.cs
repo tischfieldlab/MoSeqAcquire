@@ -35,7 +35,7 @@ namespace MoSeqAcquire.Models.Acquisition
         public string FullName => this.DeviceName + " - " + this.Name;
         public virtual bool Enabled { get; set; }
         public BufferBlock<ChannelFrame> Buffer { get; protected set; }
-        public Type DataType { get; protected set; }
+        //public Type DataType { get; protected set; }
         public TotalFrameCounter Performance { get; protected set; }
         public abstract ChannelMetadata Metadata { get; }
 

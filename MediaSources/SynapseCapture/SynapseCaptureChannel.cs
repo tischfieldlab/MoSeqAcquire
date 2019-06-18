@@ -18,7 +18,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.Name = "Synapse UDP Channel";
             this.DeviceName = Source.Name;
             this.MediaType = MediaType.Data;
-            this.DataType = typeof(float);
 
             this.Device.Device.DataRecieved += Device_DataRecieved;
         }

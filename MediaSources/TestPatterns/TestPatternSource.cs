@@ -28,8 +28,9 @@ namespace TestPatterns
 
         public override bool Initialize(string deviceId)
         {
-            this.RegisterChannel(new ImageTestPatternChannel());
-            this.RegisterChannel(new AudioTestPatternChannel());
+            this.DeviceId = deviceId;
+            this.RegisterChannel(new ImageTestPatternChannel(this));
+            this.RegisterChannel(new AudioTestPatternChannel(this));
             this.IsInitialized = true;
             return true;
         }

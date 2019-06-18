@@ -29,9 +29,12 @@ namespace MoSeqAcquire.ViewModels.MediaSources
 
         private BufferedWaveProvider provider;
         private SampleAggregator sampleProvider;
-        public override void BindChannel()
+        /*public override void BindChannel()
         {
             var meta = this.channel.Metadata as AudioChannelMetadata;
+
+            //if (meta.SampleFormat == SampleFormat.)
+
             var format = WaveFormat.CreateIeeeFloatWaveFormat((int)meta.SampleRate, meta.Channels);
             this.provider = new BufferedWaveProvider(format)
             {
@@ -51,26 +54,26 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                 this.sampleProvider.Read(new float[frame.Metadata.TotalBytes / 4], 0, frame.Metadata.TotalBytes / 4);
                 this.Performance.Increment();
             }, new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() }));
-        }
-        /*public override void BindChannel()
+        }*/
+        public override void BindChannel()
         {
             var meta = this.channel.Metadata as AudioChannelMetadata;
 
             var sampAgg = new SampleAggregatorDataFlow();
             
-            var transform = new TransformBlock<ChannelFrame, IEnumerable<SampleData>>((Func<ChannelFrame, IEnumerable<SampleData>>) sampAgg.ProduceSample);
-            var update = new ActionBlock<IEnumerable<SampleData>>(sd_items =>
+            var transform = new TransformManyBlock<ChannelFrame, SampleData>((Func<ChannelFrame, IEnumerable<SampleData>>) sampAgg.ProduceSample);
+            var update = new ActionBlock<SampleData>(sample =>
                 {
                     
-                    (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin).ProcessSample(sd_items.First());
+                    (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin).ProcessSample(sample);
                     this.Performance.Increment();
                 },
-                new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() });
+                new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext(), EnsureOrdered = true });
             transform.LinkTo(update);
 
             MediaBus.Instance.Subscribe(bc => bc.Channel == this.channel, transform);
             
-        }*/
+        }
 
         private void SampleProvider_MaximumCalculated(object sender, MaxSampleEventArgs e)
         {

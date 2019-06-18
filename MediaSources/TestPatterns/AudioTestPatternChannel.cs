@@ -19,33 +19,63 @@ namespace TestPatterns
 
 
 
-        public AudioTestPatternChannel()
+        public AudioTestPatternChannel(TestPatternSource source)
         {
+            this.Device = source;
             this.Name = "Audio Test";
             this.MediaType = MediaType.Audio;
-            this.DataType = typeof(float);
             this.Enabled = true;
 
+            this.Device.Settings.PropertyChanged += Settings_PropertyChanged;
 
-            this.signalGenerator = new SignalGenerator(44100, 1);
-
-            this.__timer = new MultimediaTimer()
+            this._timer = new MultimediaTimer()
             {
-                Interval = 1000 / 30,
+                Interval = 10,
                 Resolution = 0
             };
-            this.__timer.Elapsed += (s, e) => this.ProduceFrame();
-            this.__timer.Start();
+            this._timer.Elapsed += (s, e) => this.ProduceFrame();
+
+            this.PrepareSignalGenerator();
+            this._timer.Start();
         }
+
+        //private readonly List<string> _audioSettings = new List<string>() { "SampleRate", "NumChannels", "SignalType", "Gain" };
+        private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == null || this.Device.Settings.GetPropertyCategory(e.PropertyName).Equals("Audio"))
+            {
+                this.PrepareSignalGenerator();
+            }
+        }
+
+        public TestPatternSource Device { get; protected set; }
         public override ChannelMetadata Metadata => new AudioChannelMetadata()
         {
-            TargetFramesPerSecond = 30,
-            
+            TargetFramesPerSecond = this._timer.Interval,
+            SampleRate = this.signalGenerator.WaveFormat.SampleRate,
+            Channels = this.signalGenerator.WaveFormat.Channels,
+            DataType = typeof(float),
+            SampleFormat = SampleFormat.IeeeFloat32
         };
 
-        private int numSamples = 1000;
-        private MultimediaTimer __timer;
-        private int currentFrameId;
+        private void PrepareSignalGenerator()
+        {
+            var config = this.Device.Settings as TestPatternConfig;
+            this.signalGenerator = new SignalGenerator(config.SampleRate, config.NumChannels)
+            {
+                Type = config.SignalType,
+                Gain = config.Gain,
+                Frequency = config.FrequencyStart,
+                FrequencyEnd = config.FrequencyEnd,
+                SweepLengthSecs = config.SweepDuration,
+
+            };
+            this._numSamples = (this.signalGenerator.WaveFormat.ConvertLatencyToByteSize(this._timer.Interval) * 8) / this.signalGenerator.WaveFormat.BitsPerSample;
+        }
+
+        private int _numSamples;
+        private readonly MultimediaTimer _timer;
+        private int _currentFrameId;
         private float[] _copyBuffer;
         private void ProduceFrame()
         {
@@ -54,17 +84,20 @@ namespace TestPatterns
 
             var meta = new AudioChannelFrameMetadata()
             {
-                FrameId = this.currentFrameId++,
+                FrameId = this._currentFrameId++,
                 AbsoluteTime = PreciseDatetime.Now,
-                TotalBytes = this.numSamples * 4,
+                TotalBytes = this._numSamples * 4,
+                Channels = this.signalGenerator.WaveFormat.Channels,
+                SampleRate = this.signalGenerator.WaveFormat.SampleRate,
+                SampleCount = this._numSamples
             };
 
             // Declare an array to hold the bytes
-            if (this._copyBuffer == null || this._copyBuffer.Length != this.numSamples)
+            if (this._copyBuffer == null || this._copyBuffer.Length != this._numSamples)
             {
-                this._copyBuffer = new float[meta.TotalBytes];
+                this._copyBuffer = new float[this._numSamples];
             }
-            this.signalGenerator.Read(this._copyBuffer, 0, this.numSamples);
+            var numRead = this.signalGenerator.Read(this._copyBuffer, 0, this._numSamples);
 
             this.PostFrame(new ChannelFrame(this._copyBuffer, meta));
         }

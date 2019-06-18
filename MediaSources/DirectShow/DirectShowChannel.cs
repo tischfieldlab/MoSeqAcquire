@@ -20,7 +20,6 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.DeviceName = Source.Name;
             this.Device.VideoDevice.NewFrame += this.Device_NewFrame;
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(byte);
             this.Enabled = true;
         }
         public override bool Enabled { get; set; }
@@ -31,9 +30,10 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             {
                 return new VideoChannelMetadata()
                 {
+                    DataType = typeof(byte),
+                    TargetFramesPerSecond = this.Device.VideoDevice.VideoResolution.MaximumFrameRate,
                     Width = this.Device.VideoDevice.VideoResolution.FrameSize.Width,
                     Height = this.Device.VideoDevice.VideoResolution.FrameSize.Height,
-                    TargetFramesPerSecond = this.Device.VideoDevice.VideoResolution.MaximumFrameRate,
                     BytesPerPixel = this.Device.VideoDevice.VideoResolution.BitCount / 8,
                 };
             }
