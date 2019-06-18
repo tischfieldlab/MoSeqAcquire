@@ -159,7 +159,16 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.Root.Triggers.ResetStatuses();
             Task.Run(() =>
             {
-                this.recordingManager.Start();
+                try
+                {
+                    this.recordingManager.Start();
+                }
+                catch (Exception e)
+                {
+                    //TODO: Should probably raise a message to the user that the recording was aborted due to the exception! 
+                    Serilog.Log.Logger.Error(e, "Error encountered during recording start. Aborting....");
+                    this.recordingManager.Abort();
+                }
             });
         }
         public void StopRecording()
