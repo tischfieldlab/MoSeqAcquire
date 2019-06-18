@@ -82,6 +82,8 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             }
         });
 
+        public ICommand ResetViewSizeCommand => new ActionCommand(p => this.sizeHelper.Reset());
+
 
         public static ChannelViewModel FromChannel(Channel channel)
         {

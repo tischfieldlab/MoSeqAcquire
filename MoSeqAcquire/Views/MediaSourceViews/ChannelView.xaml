@@ -73,7 +73,11 @@
                                 </Style>
                             </MenuItem.ItemContainerStyle>
                         </MenuItem>
-                        <MenuItem Header="Show Crosshairs" IsCheckable="True" IsChecked="{Binding Path=ShowCrosshairs}" />
+                        <MenuItem Header="Overlays">
+                            <MenuItem Header="Show Crosshairs" IsCheckable="True" IsChecked="{Binding Path=ShowCrosshairs}" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Reset Size" Command="{Binding Path=ResetViewSizeCommand}" />
                     </ContextMenu>
                 </ContentPresenter.ContextMenu>
             </ContentPresenter>
