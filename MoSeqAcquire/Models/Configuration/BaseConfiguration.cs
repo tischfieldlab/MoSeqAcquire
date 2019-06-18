@@ -23,8 +23,29 @@ namespace MoSeqAcquire.Models.Configuration
                 .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
                 .Where(pi => {
                     var ha = pi.GetCustomAttribute<HiddenAttribute>();
-                    return (ha == null) || (ha != null && ha.IsHidden == false);
+                    return ha == null || ha.IsHidden == false;
                 });
+        }
+
+        /*protected IEnumerable<PropertyInfo> GetCategoryConfigurationProperties(string category)
+        {
+            return this.GetConfigurationProperties()
+                       .Where(pi =>
+                       {
+                           CategoryAttribute attr = pi.GetCustomAttribute<CategoryAttribute>();
+                           return attr != null && attr.Category.Equals(category);
+                       });
+        }*/
+
+        public string GetPropertyCategory(string propertyName)
+        {
+            return this.GetConfigurationProperties()
+                .Where(pi => pi.Name.Equals(propertyName))
+                .Select(pi =>
+                {
+                    CategoryAttribute attr = pi.GetCustomAttribute<CategoryAttribute>();
+                    return attr?.Category;
+                }).FirstOrDefault();
         }
         public List<Type> GetKnownTypes()
         {

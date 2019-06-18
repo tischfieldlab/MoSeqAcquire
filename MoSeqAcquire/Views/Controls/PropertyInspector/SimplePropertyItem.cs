@@ -176,6 +176,11 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
                 {
                     return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Step;
                 }
+
+                if (this.propertyInfo.PropertyType == typeof(double))
+                    return 0.1;
+
+
                 return null;
             }
         }
