@@ -272,8 +272,8 @@
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
     <Compile Include="Views\Controls\SubsystemControl.cs" />
     <Compile Include="Views\Controls\Visualization\Audio\IWaveFormRenderer.cs" />
-    <Compile Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyser.xaml.cs">
-      <DependentUpon>D3SpectrumAnalyser.xaml</DependentUpon>
+    <Compile Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml.cs">
+      <DependentUpon>D3SpectrumAnalyzer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml.cs">
       <DependentUpon>VideoStreamControl.xaml</DependentUpon>
@@ -284,8 +284,8 @@
     <Compile Include="Views\Controls\Visualization\Audio\PolylineWaveFormControl.xaml.cs">
       <DependentUpon>PolylineWaveFormControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\Visualization\Audio\SpectrumAnalyser.xaml.cs">
-      <DependentUpon>SpectrumAnalyser.xaml</DependentUpon>
+    <Compile Include="Views\Controls\Visualization\Audio\SpectrumAnalyzer.xaml.cs">
+      <DependentUpon>SpectrumAnalyzer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Visualization\Audio\WaveFormControl.xaml.cs">
       <DependentUpon>WaveFormControl.xaml</DependentUpon>
@@ -472,7 +472,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyser.xaml">
+    <Page Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -488,7 +488,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Controls\Visualization\Audio\SpectrumAnalyser.xaml">
+    <Page Include="Views\Controls\Visualization\Audio\SpectrumAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

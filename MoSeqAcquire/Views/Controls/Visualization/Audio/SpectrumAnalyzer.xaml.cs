@@ -8,19 +8,19 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
     /// <summary>
     /// Interaction logic for SpectrumAnalyser.xaml
     /// </summary>
-    public partial class SpectrumAnalyser : UserControl
+    public partial class SpectrumAnalyzer : UserControl
     {
         private double xScale = 200;
         private int bins = 512; // guess a 1024 size FFT, bins is half FFT size
 
-        public SpectrumAnalyser()
+        public SpectrumAnalyzer()
         {
             InitializeComponent();
             CalculateXScale();
-            SizeChanged += SpectrumAnalyser_SizeChanged;
+            SizeChanged += SpectrumAnalyzer_SizeChanged;
         }
 
-        void SpectrumAnalyser_SizeChanged(object sender, SizeChangedEventArgs e)
+        void SpectrumAnalyzer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             CalculateXScale();
         }

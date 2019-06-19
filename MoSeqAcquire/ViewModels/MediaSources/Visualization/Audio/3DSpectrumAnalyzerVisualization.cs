@@ -6,11 +6,11 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 {
     class D3SpectrumAnalyzerVisualization : IAudioVisualizationPlugin
     {
-        private readonly D3SpectrumAnalyser spectrumAnalyser = new D3SpectrumAnalyser();
+        private readonly D3SpectrumAnalyzer spectrumAnalyzer = new D3SpectrumAnalyzer();
 
-        public string Name => "Spectrum Analyser";
+        public string Name => "3D Spectrum Analyzer";
 
-        public object Content => spectrumAnalyser;
+        public object Content => spectrumAnalyzer;
 
         public void OnMaxCalculated(float min, float max)
         {
@@ -19,11 +19,11 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 
         public void OnFftCalculated(NAudio.Dsp.Complex[] result)
         {
-            spectrumAnalyser.Update(result);
+            spectrumAnalyzer.Update(result);
         }
         public void ProcessSample(SampleData data)
         {
-            spectrumAnalyser.Update(data.Fft);
+            spectrumAnalyzer.Update(data.Fft);
         }
     }
 }
