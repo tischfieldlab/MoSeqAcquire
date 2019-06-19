@@ -22,7 +22,7 @@ namespace TestPatterns
         {
             return new List<Tuple<string, string>>()
             {
-                new Tuple<string, string>("Test Image", "Test Patterns")
+                new Tuple<string, string>("Test Patterns", "Test Patterns")
             };
         }
 
