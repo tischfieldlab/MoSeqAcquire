@@ -21,7 +21,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
         {
             
             this.RegisterViewPlugin(new SpectrumAnalyzerVisualization());
-            this.RegisterViewPlugin(new PolylineWaveFormVisualization());
+            this.RegisterViewPlugin(new D3SpectrumAnalyzerVisualization());
             this.RegisterViewPlugin(new PolygonWaveFormVisualization());
             this.SetChannelViewCommand.Execute(this.AvailableViews.First());
 

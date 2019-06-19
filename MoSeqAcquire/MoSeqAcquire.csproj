@@ -70,6 +70,9 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SciColorMaps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ar1st0crat.SciColorMaps.1.0.2\lib\portable40-net40+sl5+win8+wpa81\SciColorMaps.dll</HintPath>
+    </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.2.8.0\lib\net46\Serilog.dll</HintPath>
     </Reference>
@@ -220,6 +223,7 @@
     <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\IAudioVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregator - Copy.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\3DSpectrumAnalyzerVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\IVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolygonWaveFormVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolylineWaveFormVisualization.cs" />
@@ -268,6 +272,9 @@
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
     <Compile Include="Views\Controls\SubsystemControl.cs" />
     <Compile Include="Views\Controls\Visualization\Audio\IWaveFormRenderer.cs" />
+    <Compile Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyser.xaml.cs">
+      <DependentUpon>D3SpectrumAnalyser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml.cs">
       <DependentUpon>VideoStreamControl.xaml</DependentUpon>
     </Compile>
@@ -464,6 +471,10 @@
     <Page Include="Views\Controls\FileChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml">
       <Generator>MSBuild:Compile</Generator>
