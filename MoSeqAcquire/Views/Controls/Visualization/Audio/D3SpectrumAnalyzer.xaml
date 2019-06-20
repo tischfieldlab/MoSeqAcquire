@@ -6,7 +6,8 @@
         <Canvas Name="FrequencyLabels" Panel.ZIndex="999">
             <Canvas.Resources>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    <Setter Property="Background" Value="Black" />
                 </Style>
             </Canvas.Resources>
         </Canvas>
