@@ -13,7 +13,7 @@ namespace MoSeqAcquire.Models.Acquisition
         {
             this.Source = Source;
             this.Channel = Channel;
-            var opts = new DataflowBlockOptions() { };
+            var opts = new DataflowBlockOptions() { EnsureOrdered = true };
             this.Feed = new BroadcastBlock<ChannelFrame>(item => item, opts);
             Channel.Buffer.LinkTo(this.Feed, new DataflowLinkOptions() { PropagateCompletion = true });
         }
