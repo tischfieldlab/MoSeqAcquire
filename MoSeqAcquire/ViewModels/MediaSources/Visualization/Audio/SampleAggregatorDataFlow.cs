@@ -9,24 +9,15 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 {
     public class SampleAggregatorDataFlow
     {
-        // volume
-        //public event EventHandler<MaxSampleEventArgs> MaximumCalculated;
-        private float maxValue;
-        private float minValue;
-        public int NotificationCount { get; set; }
-        int count;
-
         // FFT
-        //public event EventHandler<FftEventArgs> FftCalculated;
-        public bool PerformFFT { get; set; }
         private readonly Complex[] fftBuffer;
-        private readonly FftEventArgs fftArgs;
         private int fftPos;
         private readonly int fftLength;
         private readonly int m;
-        //private readonly ISampleProvider source;
 
-        private readonly int channels;
+        private float maxValue;
+        private float minValue;
+
 
         public SampleAggregatorDataFlow(int fftLength = 1024)
         {
@@ -34,10 +25,9 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
             {
                 throw new ArgumentException("FFT Length must be a power of two");
             }
-            m = (int)Math.Log(fftLength, 2.0);
+            this.m = (int)Math.Log(fftLength, 2.0);
             this.fftLength = fftLength;
-            fftBuffer = new Complex[fftLength];
-            fftArgs = new FftEventArgs(fftBuffer);
+            this.fftBuffer = new Complex[fftLength];
         }
 
         static bool IsPowerOfTwo(int x)
@@ -48,7 +38,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio
 
         public void Reset()
         {
-            count = 0;
+            //count = 0;
             maxValue = minValue = 0;
         }
 

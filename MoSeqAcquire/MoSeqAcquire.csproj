@@ -222,7 +222,7 @@
     <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\IAudioVisualizationPlugin.cs" />
-    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregator - Copy.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregatorDataFlow.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\3DSpectrumAnalyzerVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\IVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolygonWaveFormVisualization.cs" />
