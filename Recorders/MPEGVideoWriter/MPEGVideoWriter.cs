@@ -34,17 +34,37 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 
         public override void Start()
         {
-            var vChanMeta = this.videoPin.Channel.Metadata as VideoChannelMetadata;
-            var aChanMeta = this.audioPin.Channel.Metadata as AudioChannelMetadata;
+            
             var conf = this.Settings as MPEGVideoWriterSettings;
 
             this.writer = new VideoFileWriter();
-            this.writer.Open(this.FilePath, 
-                             vChanMeta.Width, vChanMeta.Height, 
-                             new Accord.Math.Rational(30), 
-                             conf.VideoCodec, conf.VideoBitrate,
-                             conf.AudioCodec, conf.AudioBitrate,
-                             (int)aChanMeta.TargetFramesPerSecond, aChanMeta.Channels);
+
+            if (this.videoPin.HasChannel && this.audioPin.HasChannel)
+            {
+                var vChanMeta = this.videoPin.Channel.Metadata as VideoChannelMetadata;
+                var aChanMeta = this.audioPin.Channel.Metadata as AudioChannelMetadata;
+
+                this.writer.Open(this.FilePath,
+                                 vChanMeta.Width, vChanMeta.Height,
+                                 new Accord.Math.Rational(30),
+                                 conf.VideoCodec, conf.VideoBitrate,
+                                 conf.AudioCodec, conf.AudioBitrate,
+                                 (int)aChanMeta.TargetFramesPerSecond, aChanMeta.Channels);
+            }
+            else if (this.videoPin.HasChannel && this.audioPin.IsEmpty)
+            {
+                var vChanMeta = this.videoPin.Channel.Metadata as VideoChannelMetadata;
+
+                this.writer.Open(this.FilePath, 
+                                 vChanMeta.Width, vChanMeta.Height, 
+                                 new Accord.Math.Rational(30), 
+                                 conf.VideoCodec, conf.VideoBitrate);
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    "MPEG Video Writer only supports video-only or video/audio recording, not audio only!");
+            }
 
             if (conf.WriteTimestamps)
             {
@@ -74,7 +94,7 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
 
         protected void GetAudioActionBlock(ChannelFrame frame)
         {
-            if (this.IsRecording)
+            if (this.IsRecording && this.audioPin.HasChannel)
             {
                 lock (this.lockobject)
                 {
