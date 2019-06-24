@@ -46,13 +46,14 @@ namespace AudioWriter
         public override void Stop()
         {
             base.Stop();
+            this._writer.Flush();
+            this._writer.Close();
+            this._writer.Dispose();
         }
 
         protected void ActionBlock(ChannelFrame frame)
         {
             if (!this.IsRecording) { return; }
-
-            //this._backBuffer.Write(frame);
 
             this._writer.WriteSamples(frame.FrameData as float[], 0, frame.FrameData.Length);
 
