@@ -194,10 +194,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
             if(this.IsCritical)
             {
                 this.Root.Recorder.AbortRecording();
-                /*MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.TriggerStateMessage,
-                                "Recording Aborted!",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Exclamation);*/
             }
         }
 
