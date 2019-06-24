@@ -199,6 +199,7 @@
     <Compile Include="ViewModels\Commands\RemoveMetadataItemCommand.cs" />
     <Compile Include="ViewModels\Commands\EditMetadataItemCommand.cs" />
     <Compile Include="ViewModels\Commands\ShowMetadataDefinitionWindowCommand.cs" />
+    <Compile Include="ViewModels\Commands\ShowRecordingErrorDialog.cs" />
     <Compile Include="ViewModels\Commands\UnloadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenMediaSourceConfigCommand.cs" />
     <Compile Include="ViewModels\Commands\ToggleChannelEnabledCommand.cs" />
@@ -402,6 +403,9 @@
     <Compile Include="Views\RecorderViews\RecorderProgress.xaml.cs">
       <DependentUpon>RecorderProgress.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RecorderViews\RecordingError.xaml.cs">
+      <DependentUpon>RecordingError.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
@@ -557,6 +561,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RecorderViews\RecorderProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecorderViews\RecordingError.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

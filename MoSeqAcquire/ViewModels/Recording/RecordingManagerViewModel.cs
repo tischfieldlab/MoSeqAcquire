@@ -18,6 +18,9 @@ using System.Windows;
 using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.ViewModels.MediaSources;
+using System.Threading;
+using MaterialDesignThemes.Wpf;
+using MoSeqAcquire.Views.RecorderViews;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -159,17 +162,16 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.Root.Triggers.ResetStatuses();
             Task.Run(() =>
             {
-                try
+                this.recordingManager.Start();
+            }).ContinueWith(t =>
+            {
+                if (t.Exception != null)
                 {
-                    this.recordingManager.Start();
-                }
-                catch (Exception e)
-                {
-                    //TODO: Should probably raise a message to the user that the recording was aborted due to the exception! 
-                    Serilog.Log.Logger.Error(e, "Error encountered during recording start. Aborting....");
+                    Serilog.Log.Logger.Error(t.Exception, "Error encountered during recording start. Aborting....");
                     this.recordingManager.Abort();
+                    this.rootViewModel.Commands.ShowRecordingErrorDialog.Execute(new RecordingErrorData(t.Exception));
                 }
-            });
+            }, CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.FromCurrentSynchronizationContext());
         }
         public void StopRecording()
         {
@@ -192,5 +194,15 @@ namespace MoSeqAcquire.ViewModels.Recording
             //});
         }
         #endregion
+    }
+
+    public class RecordingErrorData
+    {
+         
+        public RecordingErrorData(Exception e)
+        {
+            this.Exception = e;
+        }
+        public Exception Exception { get; set; }
     }
 }
