@@ -225,12 +225,17 @@
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\IAudioVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregatorDataFlow.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\3DSpectrumAnalyzerVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Data\LineGraphVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Data\BarGraphVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Data\IDataVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\IVisualizationPlugin.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolygonWaveFormVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolylineWaveFormVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregator.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\SpectrumAnalyzerVisualization.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Audio\WaveformVisual.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\RuleOfThirdsOverlay.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\BullseyeOverlay.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Overlay\CrosshairOverlay.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Overlay\IVisualizationOverlay.cs" />
     <Compile Include="ViewModels\MediaSources\Visualization\Video\ColorVideoVisualization.cs" />
@@ -275,6 +280,21 @@
     <Compile Include="Views\Controls\Visualization\Audio\IWaveFormRenderer.cs" />
     <Compile Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml.cs">
       <DependentUpon>D3SpectrumAnalyzer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Data\LineChart.xaml.cs">
+      <DependentUpon>LineChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Data\BarChart.xaml.cs">
+      <DependentUpon>BarChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Overlay\RuleOfThirdsOverlayControl.xaml.cs">
+      <DependentUpon>RuleOfThirdsOverlayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Overlay\BullseyeOverlayControl.xaml.cs">
+      <DependentUpon>BullseyeOverlayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Overlay\CrosshairOverlayControl.xaml.cs">
+      <DependentUpon>CrosshairOverlayControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml.cs">
       <DependentUpon>VideoStreamControl.xaml</DependentUpon>
@@ -479,6 +499,26 @@
     <Page Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Data\LineChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Data\BarChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Overlay\RuleOfThirdsOverlayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Overlay\BullseyeOverlayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Overlay\CrosshairOverlayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml">
       <Generator>MSBuild:Compile</Generator>

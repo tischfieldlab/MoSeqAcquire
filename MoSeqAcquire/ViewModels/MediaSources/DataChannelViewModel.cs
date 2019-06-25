@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.ViewModels.MediaSources.Visualization.Data;
 
 namespace MoSeqAcquire.ViewModels.MediaSources
 {
@@ -15,9 +16,26 @@ namespace MoSeqAcquire.ViewModels.MediaSources
     {
         public DataChannelViewModel(Channel channel) : base(channel)
         {
+            this.RegisterViewPlugin(new BarGraphVisualization());
+            this.RegisterViewPlugin(new LineGraphVisualization());
+            this.SetChannelViewCommand.Execute(this.AvailableViews.First());
         }
 
-        protected ushort[] blank_array = new ushort[100 * 100];
+        public override void BindChannel()
+        {
+            MediaBus.Instance.Subscribe(
+                bc => bc.Channel == this.channel,
+                new ActionBlock<ChannelFrame>(frame =>
+                    {
+                        var meta = frame.Metadata as DataChannelFrameMetadata;
+                        (this.SelectedView.VisualizationPlugin as IDataVisualizationPlugin).OnNewFrame(frame);
+                        this.Performance.Increment();
+                    },
+                    new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() }
+                ));
+        }
+
+        /*protected ushort[] blank_array = new ushort[100 * 100];
         public override void BindChannel()
         {
             MediaBus.Instance.Subscribe(
@@ -94,7 +112,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             /*var meta = frame.Metadata as VideoChannelFrameMetadata;
             if (this.Stream.PixelHeight != meta.Height) return false;
             if (this.Stream.PixelWidth != meta.Width) return false;
-            if (this.Stream.Format != meta.PixelFormat) return false;*/
+            if (this.Stream.Format != meta.PixelFormat) return false;*//*
                         return true;
         }
         private WriteableBitmap _stream;
@@ -106,5 +124,6 @@ namespace MoSeqAcquire.ViewModels.MediaSources
             get => this.showCrosshairs;
             set => this.SetField(ref this.showCrosshairs, value);
         }
+        */
     }
 }

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
 
-namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Video
+namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Data
 {
-    public interface IVideoVisualizationPlugin : IVisualizationPlugin
+    public interface IDataVisualizationPlugin : IVisualizationPlugin
     {
         void OnNewFrame(ChannelFrame data);
     }

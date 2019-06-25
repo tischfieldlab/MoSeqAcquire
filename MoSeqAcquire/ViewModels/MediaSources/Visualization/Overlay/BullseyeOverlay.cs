@@ -7,10 +7,10 @@ using MoSeqAcquire.Views.Controls.Visualization.Overlay;
 
 namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Overlay
 {
-    public class CrosshairOverlay : BaseViewModel, IVisualizationOverlay
+    public class BullseyeOverlay : BaseViewModel, IVisualizationOverlay
     {
-        public string Name => "Crosshair Overlay";
-        public object Content => new CrosshairOverlayControl();
+        public string Name => "Bullseye Overlay";
+        public object Content => new BullseyeOverlayControl();
 
         protected bool isEnabled;
         public bool IsEnabled

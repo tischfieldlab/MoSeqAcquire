@@ -14,6 +14,7 @@ using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.ViewModels.Commands;
 using MoSeqAcquire.ViewModels.Core;
 using MoSeqAcquire.ViewModels.MediaSources.Visualization;
+using MoSeqAcquire.ViewModels.MediaSources.Visualization.Overlay;
 
 namespace MoSeqAcquire.ViewModels.MediaSources
 {
@@ -25,12 +26,16 @@ namespace MoSeqAcquire.ViewModels.MediaSources
         private readonly ObservableCollection<SelectableVisualizationPluginViewModel> _availableViews;
         private SelectableVisualizationPluginViewModel _selectedView;
 
+        private readonly ObservableCollection<IVisualizationOverlay> _availableOverlays;
 
         protected ChannelViewModel(Channel channel)
         {
             this.channel = channel;
             this._availableViews = new ObservableCollection<SelectableVisualizationPluginViewModel>();
             this.AvailableViews = new ReadOnlyObservableCollection<SelectableVisualizationPluginViewModel>(this._availableViews);
+
+            this._availableOverlays = new ObservableCollection<IVisualizationOverlay>();
+            this.AvailableOverlays = new ReadOnlyObservableCollection<IVisualizationOverlay>(this._availableOverlays);
 
             this.BindChannel();
             this.Performance = new TotalFrameCounter();
@@ -58,6 +63,14 @@ namespace MoSeqAcquire.ViewModels.MediaSources
         public TotalFrameCounter Performance { get; protected set; }
 
         public SizeHelper DisplaySize { get => this.sizeHelper; }
+
+        public ReadOnlyObservableCollection<IVisualizationOverlay> AvailableOverlays { get; private set; }
+
+        public void RegisterOverlayPlugin(IVisualizationOverlay plugin)
+        {
+            this._availableOverlays.Add(plugin);
+        }
+
 
         public ReadOnlyObservableCollection<SelectableVisualizationPluginViewModel> AvailableViews { get; private set; }
         public SelectableVisualizationPluginViewModel SelectedView

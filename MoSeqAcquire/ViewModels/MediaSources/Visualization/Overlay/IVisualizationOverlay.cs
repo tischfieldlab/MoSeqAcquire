@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.ViewModels.MediaSources.Visualization.Overlay
 {
-    interface IVisualizationOverlay
+    public interface IVisualizationOverlay
     {
         string Name { get; }
-        bool Enabled { get; set; }
+        bool IsEnabled { get; set; }
+        object Content { get; }
     }
 }
