@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using NAudio.Dsp;
 
 namespace MoSeqAcquire.Views.MediaSources.Visualization
@@ -13,8 +17,13 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
         private double xScale = 200;
         private int bins = 512; // guess a 1024 size FFT, bins is half FFT size
 
-        public SpectrumAnalyzer()
+        private readonly int _fftSize;
+        private readonly int _sampleRate;
+
+        public SpectrumAnalyzer(int sampleRate = 44100, int fftSize = 1024)
         {
+            this._fftSize = fftSize;
+            this._sampleRate = sampleRate;
             InitializeComponent();
             CalculateXScale();
             SizeChanged += SpectrumAnalyzer_SizeChanged;
@@ -25,9 +34,40 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
             CalculateXScale();
         }
 
+        private List<TextBlock> freqLabels = new List<TextBlock>();
+        private void GenerateFrequencyLabels()
+        {
+            for (int f = 0; f < bins; f += bins / 10)
+            {
+                if (f == 0)
+                    continue; //Skip Zero Hz
+
+                
+                var freq = Math.Round(f * (this._sampleRate / this._fftSize / 2.0)).ToString() + " Hz";
+                TextBlock tb = this.freqLabels.Where(t => t.Text.Equals(freq)).FirstOrDefault();
+                if(tb == null)
+                {
+                    tb = new TextBlock()
+                    {
+                        Text = freq,
+                        FontSize = 10,
+                    };
+                    tb.RenderTransform = new RotateTransform(90);
+                    this.freqLabels.Add(tb);
+                    this.MainCanvas.Children.Add(tb);
+                }
+
+                //Canvas.SetBottom(tb, ((float)f / (float)this._fftSize) * this.ActualHeight - (tb.DesiredSize.Height / 2));
+                Canvas.SetLeft(tb, CalculateXPos(f / binsPerPoint));
+                Canvas.SetBottom(tb, 0 + tb.ActualWidth - 10);
+                
+            }
+        }
+
         private void CalculateXScale()
         {
             xScale = ActualWidth / (bins / binsPerPoint);
+            GenerateFrequencyLabels();
         }
 
         private const int binsPerPoint = 2; // reduce the number of points we plot for a less jagged line?
@@ -75,13 +115,13 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
         private void AddResult(int index, double power)
         {
             Point p = new Point(CalculateXPos(index), power);
-            if (index >= polyline1.Points.Count)
+            if (index >= SpectrumPolyline.Points.Count)
             {
-                polyline1.Points.Add(p);
+                SpectrumPolyline.Points.Add(p);
             }
             else
             {
-                polyline1.Points[index] = p;
+                SpectrumPolyline.Points[index] = p;
             }
         }
 

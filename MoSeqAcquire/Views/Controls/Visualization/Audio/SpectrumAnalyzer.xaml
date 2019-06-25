@@ -2,7 +2,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     >
-    <Canvas Background="Black">
-        <Polyline x:Name="polyline1" Stroke="Yellow" StrokeThickness="1"/>
+    <Canvas Background="Black" Name="MainCanvas">
+        <Canvas.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                <Setter Property="Background" Value="Black" />
+                <Setter Property="TextDecorations" Value="Underline" />
+            </Style>
+        </Canvas.Resources>
+        <Polyline x:Name="SpectrumPolyline" Stroke="Yellow" StrokeThickness="1"/>
     </Canvas>
 </UserControl>
