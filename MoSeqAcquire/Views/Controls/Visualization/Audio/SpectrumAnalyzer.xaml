@@ -8,6 +8,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
                 <Setter Property="Background" Value="Black" />
                 <Setter Property="TextDecorations" Value="Underline" />
+                <Setter Property="FontSize" Value="8" />
             </Style>
         </Canvas.Resources>
         <Polyline x:Name="SpectrumPolyline" Stroke="Yellow" StrokeThickness="1"/>

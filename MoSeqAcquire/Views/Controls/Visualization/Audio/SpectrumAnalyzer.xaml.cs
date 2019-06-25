@@ -41,26 +41,37 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
             {
                 if (f == 0)
                     continue; //Skip Zero Hz
-
-                
-                var freq = Math.Round(f * (this._sampleRate / this._fftSize / 2.0)).ToString() + " Hz";
-                TextBlock tb = this.freqLabels.Where(t => t.Text.Equals(freq)).FirstOrDefault();
+               
+                var freq = Math.Round(f * (this._sampleRate / this._fftSize / 2.0));
+                TextBlock tb = this.freqLabels.FirstOrDefault(t => t.Tag.Equals(freq));
                 if(tb == null)
                 {
                     tb = new TextBlock()
                     {
-                        Text = freq,
-                        FontSize = 10,
+                        Tag = freq,
+                        Text = this.FreqToString(freq),
                     };
                     tb.RenderTransform = new RotateTransform(90);
                     this.freqLabels.Add(tb);
                     this.MainCanvas.Children.Add(tb);
                 }
-
+                tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 //Canvas.SetBottom(tb, ((float)f / (float)this._fftSize) * this.ActualHeight - (tb.DesiredSize.Height / 2));
                 Canvas.SetLeft(tb, CalculateXPos(f / binsPerPoint));
                 Canvas.SetBottom(tb, 0 + tb.ActualWidth - 10);
                 
+            }
+        }
+
+        private string FreqToString(double freq)
+        {
+            if (freq > 1000)
+            {
+                return $"{(freq / 1000):F1} kHz";
+            }
+            else
+            {
+                return $"{freq:F0} Hz";
             }
         }
 
