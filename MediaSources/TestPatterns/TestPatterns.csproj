@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioTestPatternChannel.cs" />
+    <Compile Include="DataTestPatternChannel.cs" />
     <Compile Include="ImageTestPatternChannel.cs" />
     <Compile Include="TestPatternConfig.cs" />
     <Compile Include="TestPatternSource.cs" />

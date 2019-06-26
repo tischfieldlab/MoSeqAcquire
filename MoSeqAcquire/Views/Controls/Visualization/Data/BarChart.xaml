@@ -8,6 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Canvas Background="Black" Name="MainCanvas">
         <Canvas.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+                <Setter Property="FontSize" Value="8" />
+            </Style>
             <Style TargetType="Rectangle">
                 <Setter Property="Fill" Value="{DynamicResource PrimaryHueMidBrush}" />
             </Style>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,39 +33,55 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
             this.CalculateXScale();
         }
 
-        private List<TextBlock> freqLabels = new List<TextBlock>();
+        private List<TextBlock> _labels = new List<TextBlock>();
         private void GenerateLabels()
         {
-            var absMax = Math.Ceiling(Math.Max(Math.Abs(this.minValueSeen), Math.Abs(this.maxValueSeen)));
-            for (double f = -absMax; f < absMax; f += absMax / 10)
+            var step = this.CalcFreqLabelInterval(5, this.maxValueSeen);
+            for (double f = 0; f <= this.maxValueSeen; f += step)
             {
-                if (f == 0)
-                    continue; //Skip Zero Hz
-
-                //var val = Math.Round(f * (this._sampleRate / this._fftSize / 2.0));
-                TextBlock tb = this.freqLabels.FirstOrDefault(t => t.Tag.Equals(f));
-                if (tb == null)
-                {
-                    tb = new TextBlock()
-                    {
-                        Tag = f,
-                        Text = f.ToString("E2"),
-                    };
-                    //tb.RenderTransform = new RotateTransform(90);
-                    this.freqLabels.Add(tb);
-                    this.MainCanvas.Children.Add(tb);
-                }
-                tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                //Canvas.SetBottom(tb, ((float)f / (float)this._fftSize) * this.ActualHeight - (tb.DesiredSize.Height / 2));
-                Canvas.SetLeft(tb, 0);
-                Canvas.SetBottom(tb, (this.ActualHeight / 2) - (f * yScale));
-
+                this.RenderYLabel(f);
+                if (f != 0)
+                    this.RenderYLabel(-f);
             }
+        }
+        private void RenderYLabel(double value)
+        {
+            TextBlock tb = this._labels.FirstOrDefault(t => t.Tag.Equals(value));
+            if (tb == null)
+            {
+                tb = new TextBlock()
+                {
+                    Tag = value,
+                    Text = value.ToString("F1"),
+                };
+                //tb.RenderTransform = new RotateTransform(90);
+                this._labels.Add(tb);
+                this.MainCanvas.Children.Add(tb);
+            }
+            tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //Canvas.SetBottom(tb, ((float)f / (float)this._fftSize) * this.ActualHeight - (tb.DesiredSize.Height / 2));
+            Canvas.SetLeft(tb, 0);
+            Canvas.SetBottom(tb, (this.ActualHeight / 2) + (value * yScale));
+        }
+        private void ResetLabels()
+        {
+            foreach(var l in this._labels)
+            {
+                this.MainCanvas.Children.Remove(l);
+            }
+            this._labels.Clear();
+        }
+        private double CalcFreqLabelInterval(int tickCount, double range)
+        {
+            double unroundedTickSize = range / (tickCount - 1);
+            double x = Math.Ceiling(Math.Log10(unroundedTickSize) - 1);
+            double pow10x = Math.Pow(10, x);
+            double roundedTickRange = Math.Ceiling(unroundedTickSize / pow10x) * pow10x;
+            return roundedTickRange;
         }
 
         private int bins;
         private double xScale;
-        private float minValueSeen;
         private float maxValueSeen;
         private double yScale;
         private List<Rectangle> _bars = new List<Rectangle>();
@@ -115,17 +132,35 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
 
         }
 
+        private ConcurrentCircularBuffer<float> _rangeBuffer = new ConcurrentCircularBuffer<float>(300);
+
         public void CalculateYScale(float[] data)
         {
+            float max = float.MinValue;
             foreach (var t in data)
             {
-                this.minValueSeen = Math.Min(this.minValueSeen, t);
-                this.maxValueSeen = Math.Max(this.maxValueSeen, t);
+                max = Math.Max(max, Math.Abs(t));
             }
 
-            this.yScale = this.ActualHeight / (Math.Max(Math.Abs(this.minValueSeen), Math.Abs(this.maxValueSeen)) * 2);
+            this._rangeBuffer.Put(max);
+
+            var prevMax = this.maxValueSeen;
+            this.maxValueSeen = float.MinValue;
+            foreach(var m in this._rangeBuffer.Read())
+            {
+                this.maxValueSeen = Math.Max(m, this.maxValueSeen);
+            }
+
+            if(prevMax != this.maxValueSeen)
+            {
+                this.ResetLabels();
+            }
+
+
+            this.yScale = this.ActualHeight / (this.maxValueSeen * 2);
             GenerateLabels();
         }
+        
 
         public void CalculateXScale()
         {

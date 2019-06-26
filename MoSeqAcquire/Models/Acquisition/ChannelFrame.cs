@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
-    public class ChannelFrame
+    public struct ChannelFrame
     {
         public ChannelFrame(Array Data) : this(Data, new ChannelFrameMetadata())
         {
@@ -17,8 +17,8 @@ namespace MoSeqAcquire.Models.Acquisition
             this.FrameData = Data;
             this.Metadata = Metadata;
         }
-        public Array FrameData { get; protected set; }
+        public Array FrameData { get; private set; }
         public Type DataType { get => this.FrameData.GetType().GetElementType(); }
-        public ChannelFrameMetadata Metadata { get; protected set; } 
+        public ChannelFrameMetadata Metadata { get; private set; } 
     }
 }

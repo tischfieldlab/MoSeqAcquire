@@ -31,6 +31,7 @@ namespace TestPatterns
             this.DeviceId = deviceId;
             this.RegisterChannel(new ImageTestPatternChannel(this));
             this.RegisterChannel(new AudioTestPatternChannel(this));
+            this.RegisterChannel(new DataTestPatternChannel(this));
             this.IsInitialized = true;
             return true;
         }

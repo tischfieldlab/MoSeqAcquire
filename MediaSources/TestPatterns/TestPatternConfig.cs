@@ -86,5 +86,27 @@ namespace TestPatterns
             set => this.SetField(ref this._sweepDuration, value);
         }
         private double _sweepDuration;
+
+
+        [DisplayName("Data Mode")]
+        [DefaultValue(TestDataMode.Constant)]
+        [Category("Data")]
+        public TestDataMode DataMode
+        {
+            get => this._dataMode;
+            set => this.SetField(ref this._dataMode, value);
+        }
+        private TestDataMode _dataMode;
+
+        [DisplayName("Sample Size")]
+        [DefaultValue(16)]
+        [Range(1, 512)]
+        [Category("Audio")]
+        public int SampleSize
+        {
+            get => this._sampleSize;
+            set => this.SetField(ref this._sampleSize, value);
+        }
+        private int _sampleSize;
     }
 }
