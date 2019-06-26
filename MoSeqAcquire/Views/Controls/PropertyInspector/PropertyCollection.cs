@@ -70,6 +70,7 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
 
             this.View = CollectionViewSource.GetDefaultView(this);
             this.View.Filter = this.FilterItems;
+            this.View.GroupDescriptions.Add(new PropertyGroupDescription(nameof(PropertyItem.Category)));
         }
         protected virtual bool FilterItems(object item)
         {

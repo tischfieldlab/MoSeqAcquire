@@ -62,6 +62,22 @@
             <TextBox Text="{Binding Path=FilterString, UpdateSourceTrigger=PropertyChanged}" Padding="24,0,0,0" Name="SearchTextBox" HorizontalAlignment="Stretch" />
         </Grid>
         <ListView Name="ItemsGrid" ItemsSource="{Binding Path=View}" DockPanel.Dock="Bottom" VerticalAlignment="Stretch">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Background="{StaticResource MaterialDesignBackground}">
+                                <materialDesign:PackIcon Kind="Category"
+                                                             Margin="8,0,0,0"
+                                                             Width="16" Height="16" 
+                                                             VerticalAlignment="Center" />
+                                <TextBlock Padding="8" Text="{Binding Path=Name}" Style="{StaticResource MaterialDesignBody2TextBlock}"  />
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                    
+                </GroupStyle>
+            </ListView.GroupStyle>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
