@@ -14,6 +14,7 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
     {
         private int _updateCount;
 
+        private readonly int _bins;
         private readonly int _fftSize;
         private readonly int _sampleRate;
         private readonly WriteableBitmap _bitmap;
@@ -21,9 +22,11 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
         public D3SpectrumAnalyzer(int sampleRate=44100, int fftSize=1024)
         {
             this._fftSize = fftSize;
+            this._bins = this._fftSize / 2;
             this._sampleRate = sampleRate;
+
             InitializeComponent();
-            this._bitmap = new WriteableBitmap(500, (fftSize / 2), 96, 96, PixelFormats.Gray16, null);
+            this._bitmap = new WriteableBitmap(500, this._bins, 96, 96, PixelFormats.Gray16, null);
             this.spectrum.Source = this._bitmap;
             
             this.SizeChanged += D3SpectrumAnalyzer_SizeChanged;
@@ -36,35 +39,52 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
 
         private void GenerateFrequencyLabels()
         {
+            var maxFreq = (int)this._sampleRate / 2;
+            var step = (int)this.CalcFreqLabelInterval(10, maxFreq);
+
             this.FrequencyLabels.Children.Clear();
-            for (int f = 0; f < this._fftSize; f += 100)
+            for (int f = 0; f <= maxFreq; f += step)
             {
                 if (f == 0)
                     continue; //Skip Zero Hz
 
-                var freq = Math.Round(f * (this._sampleRate / this._fftSize / 2.0));
+                //var freq = Math.Round((double)f * (this._sampleRate / this._fftSize / 2.0));
                 var tb = new TextBlock()
                 {
-                    Text = this.FreqToString(freq),
+                    Text = this.FreqToString(f),
                     FontSize = 10,
                 };
                 tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 
-                Canvas.SetBottom(tb, ((float)f / (float)this._fftSize) * this.ActualHeight - (tb.DesiredSize.Height / 2));
+                Canvas.SetBottom(tb, this.FreqToYPos(f)- (tb.DesiredSize.Height / 2));
                 //Canvas.SetLeft(tb, 10);
                 this.FrequencyLabels.Children.Add(tb);
             }
+        }
+        private double CalcFreqLabelInterval(int tickCount, double range)
+        {
+            double unroundedTickSize = range / (tickCount - 1);
+            double x = Math.Ceiling(Math.Log10(unroundedTickSize) - 1);
+            double pow10x = Math.Pow(10, x);
+            double roundedTickRange = Math.Ceiling(unroundedTickSize / pow10x) * pow10x;
+            return roundedTickRange;
         }
         private string FreqToString(double freq)
         {
             if (freq > 1000)
             {
-                return $"{(freq / 1000):F1} kHz";
+                return $"{(freq / 1000):F0} kHz";
             }
             else
             {
                 return $"{freq:F0} Hz";
             }
+        }
+        private double FreqToYPos(double freq)
+        {
+            var bin = Math.Round(freq / (this._sampleRate / this._fftSize));
+            var pct = bin / this._bins;
+            return pct * this.ActualHeight;
         }
 
         private int currX = -1;
@@ -85,7 +105,7 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
             {
                 int pBackBuffer;
 
-                for (int row = 0; row < fftResults.Length / 2; row++)
+                for (int row = 0; row < this._bins; row++)
                 {
                     // Find the address of the pixel to draw.
                     pBackBuffer = (int)this._bitmap.BackBuffer;

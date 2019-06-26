@@ -37,12 +37,14 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
         private List<TextBlock> freqLabels = new List<TextBlock>();
         private void GenerateFrequencyLabels()
         {
-            for (int f = 0; f < bins; f += bins / 10)
+            var maxFreq = (int)this._sampleRate / 2;
+            var step = (int)this.CalcFreqLabelInterval(10, maxFreq);
+            for (int f = 0; f < bins; f += (bins / (maxFreq / step)))
             {
                 if (f == 0)
                     continue; //Skip Zero Hz
                
-                var freq = Math.Round(f * (this._sampleRate / this._fftSize / 2.0));
+                var freq = f * (this._sampleRate / this._fftSize);
                 TextBlock tb = this.freqLabels.FirstOrDefault(t => t.Tag.Equals(freq));
                 if(tb == null)
                 {
@@ -61,6 +63,15 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
                 Canvas.SetBottom(tb, 0 + tb.ActualWidth - 10);
                 
             }
+        }
+
+        private double CalcFreqLabelInterval(int tickCount, double range)
+        {
+            double unroundedTickSize = range / (tickCount - 1);
+            double x = Math.Ceiling(Math.Log10(unroundedTickSize) - 1);
+            double pow10x = Math.Pow(10, x);
+            double roundedTickRange = Math.Ceiling(unroundedTickSize / pow10x) * pow10x;
+            return roundedTickRange;
         }
 
         private string FreqToString(double freq)
