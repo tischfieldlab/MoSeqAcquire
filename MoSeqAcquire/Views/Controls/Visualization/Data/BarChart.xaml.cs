@@ -24,7 +24,7 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
         public BarChart()
         {
             InitializeComponent();
-            this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            this.Measure(this._infinateSize);
             this.SizeChanged += BarChart_SizeChanged;
         }
 
@@ -34,13 +34,14 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
         }
 
         private List<TextBlock> _labels = new List<TextBlock>();
+        private readonly Size _infinateSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
         private void GenerateLabels()
         {
             var step = this.CalcFreqLabelInterval(5, this.maxValueSeen);
             for (double f = 0; f <= this.maxValueSeen; f += step)
             {
                 this.RenderYLabel(f);
-                if (f != 0)
+                if (f != 0 /*&& this._lastNegativeSeen > 0*/)
                     this.RenderYLabel(-f);
             }
         }
@@ -57,9 +58,9 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
                 this._labels.Add(tb);
                 this.MainCanvas.Children.Add(tb);
             }
-            tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            tb.Measure(this._infinateSize);
             Canvas.SetLeft(tb, 0);
-            Canvas.SetBottom(tb, (this.ActualHeight / 2) + (value * yScale));
+            Canvas.SetBottom(tb, this.ValueToYPos(value).Item2);
         }
         private void ResetLabels()
         {
@@ -85,7 +86,8 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
         private List<Rectangle> _bars = new List<Rectangle>();
         public void Update(float[] data)
         {
-            
+            if (this.ActualHeight == 0 && this.ActualWidth == 0)
+                return;            
 
             if (data.Length != bins)
             {
@@ -95,18 +97,10 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
 
             this.CalculateYScale(data);
 
-            if (this.ActualHeight == 0 && this.ActualWidth == 0)
-                return;
 
-            if(this._bars.Count > data.Length)
-            {
-                this._bars.Skip(data.Length)
-                          .ToList()
-                          .ForEach(b => {
-                            this._bars.Remove(b);
-                            this.MainCanvas.Children.Remove(b);
-                          });
-            }
+
+            if (this._bars.Count > data.Length)
+                this.ResetBars();
 
             for (int i = 0; i < data.Length; i++)
             {
@@ -118,36 +112,71 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
 
                 try
                 {
-                    this._bars[i].Height = Math.Abs(data[i] * yScale);
+                    var pos = this.ValueToYPos(data[i]);
+                    this._bars[i].Height = pos.Item1;
                     this._bars[i].Width = this.xScale;
-                    Canvas.SetLeft(this._bars[i], this.xScale * i);
-
-                    if (data[i] < 0)
-                    {
-                        Canvas.SetTop(this._bars[i], this.ActualHeight / 2);
-                    }
-                    else
-                    {
-                        Canvas.SetTop(this._bars[i], this.ActualHeight / 2 - this._bars[i].Height);
-                    }
+                    Canvas.SetLeft(this._bars[i], this.BinToXPos(i));
+                    Canvas.SetTop(this._bars[i], pos.Item2);
                 }
                 catch(ArgumentException)
                 {
                     //nothing to do!
                 }
-
             }
-
         }
 
-        private ConcurrentCircularBuffer<float> _rangeBuffer = new ConcurrentCircularBuffer<float>(100);
+        private void ResetBars()
+        {
+            this._bars
+                .ToList()
+                .ForEach(b => {
+                    this._bars.Remove(b);
+                    this.MainCanvas.Children.Remove(b);
+                });
+        }
 
+        private double BinToXPos(int bin)
+        {
+            return this.xScale * bin;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>Height, and position Top</returns>
+        private (double, double) ValueToYPos(double value)
+        {
+            double height = Math.Abs(value * yScale);
+            if (value < 0)
+            {
+                return (height,  this.ActualHeight / 2);
+            }
+            else
+            {
+                return (height, this.ActualHeight / 2 - height);
+            }
+        }
+
+        private readonly ConcurrentCircularBuffer<float> _rangeBuffer = new ConcurrentCircularBuffer<float>(100);
+        private int _lastNegativeSeen = 0;
         public void CalculateYScale(float[] data)
         {
             float max = float.MinValue;
+            var lastLastNegSeen = this._lastNegativeSeen;
             foreach (var t in data)
             {
                 max = Math.Max(max, Math.Abs(t));
+                if (t < 0)
+                {
+                    this._lastNegativeSeen = 100;
+                }
+                else
+                {
+                    if (this._lastNegativeSeen > 0)
+                        this._lastNegativeSeen--;
+                }
             }
 
             this._rangeBuffer.Put(max);
@@ -159,11 +188,10 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
                 this.maxValueSeen = Math.Max(m, this.maxValueSeen);
             }
 
-            if(prevMax != this.maxValueSeen)
+            if(prevMax != this.maxValueSeen || lastLastNegSeen != this._lastNegativeSeen)
             {
                 this.ResetLabels();
             }
-
 
             this.yScale = this.ActualHeight / (this.maxValueSeen * 2);
             GenerateLabels();
