@@ -54,12 +54,10 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
                     Tag = value,
                     Text = value.ToString("F1"),
                 };
-                //tb.RenderTransform = new RotateTransform(90);
                 this._labels.Add(tb);
                 this.MainCanvas.Children.Add(tb);
             }
             tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            //Canvas.SetBottom(tb, ((float)f / (float)this._fftSize) * this.ActualHeight - (tb.DesiredSize.Height / 2));
             Canvas.SetLeft(tb, 0);
             Canvas.SetBottom(tb, (this.ActualHeight / 2) + (value * yScale));
         }
@@ -100,6 +98,16 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
             if (this.ActualHeight == 0 && this.ActualWidth == 0)
                 return;
 
+            if(this._bars.Count > data.Length)
+            {
+                this._bars.Skip(data.Length)
+                          .ToList()
+                          .ForEach(b => {
+                            this._bars.Remove(b);
+                            this.MainCanvas.Children.Remove(b);
+                          });
+            }
+
             for (int i = 0; i < data.Length; i++)
             {
                 if (this._bars.Count <= i)
@@ -132,7 +140,7 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
 
         }
 
-        private ConcurrentCircularBuffer<float> _rangeBuffer = new ConcurrentCircularBuffer<float>(300);
+        private ConcurrentCircularBuffer<float> _rangeBuffer = new ConcurrentCircularBuffer<float>(100);
 
         public void CalculateYScale(float[] data)
         {

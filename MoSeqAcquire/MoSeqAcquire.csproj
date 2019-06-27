@@ -187,6 +187,41 @@
     <Compile Include="Models\Management\ProtocolRecorderCollection.cs" />
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\BetaDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\BetaPrimeDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\CauchyDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ChiDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ChiSquareDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ContinuousUniformDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ErlangDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ExponentialDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\FisherSnedecorDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\FisherTippettDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\GammaDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\LaplaceDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\LognormalDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\NormalDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ParetoDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\PowerDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\RayleighDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\StudentsTDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\TriangularDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\WeibullDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\BernoulliDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\BinomialDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\DiscreteUniformDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\GeometricDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\PoissonDistribution.cs" />
+    <Compile Include="Models\Utility\Random\Distribution.cs" />
+    <Compile Include="Models\Utility\Random\Generator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\ALFGenerator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\MT19937Generator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\StandardGenerator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\XorShift128Generator.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.de.Designer.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.Designer.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.es.Designer.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.fr.Designer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\AppSettings\ApplicationSettingsViewModel.cs" />
     <Compile Include="ViewModels\AppSettings\BaseComponentSettingsViewModel.cs" />
@@ -676,6 +711,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.de.resx" />
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.es.resx" />
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.fr.resx" />
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

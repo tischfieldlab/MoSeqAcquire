@@ -101,12 +101,22 @@ namespace TestPatterns
         [DisplayName("Sample Size")]
         [DefaultValue(16)]
         [Range(1, 512)]
-        [Category("Audio")]
+        [Category("Data")]
         public int SampleSize
         {
             get => this._sampleSize;
             set => this.SetField(ref this._sampleSize, value);
         }
         private int _sampleSize;
+
+        [DisplayName("Sample Distribution")]
+        [DefaultValue(DataDistribution.ContinuousUniform)]
+        [Category("Data")]
+        public DataDistribution Distribution
+        {
+            get => this._distribution;
+            set => this.SetField(ref this._distribution, value);
+        }
+        private DataDistribution _distribution;
     }
 }

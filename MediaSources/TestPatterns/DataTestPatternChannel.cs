@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Utility;
+using MoSeqAcquire.Models.Utility.Random;
 
 namespace TestPatterns
 {
@@ -26,7 +27,6 @@ namespace TestPatterns
             this.MediaType = MediaType.Data;
             this.Enabled = true;
 
-            this._random = new Random(42);
             this._config = source.Settings as TestPatternConfig;
            
             this.__timer = new MultimediaTimer()
@@ -38,7 +38,6 @@ namespace TestPatterns
             this.__timer.Start();
         }
         public TestPatternSource Device { get; protected set; }
-        public TestDataMode Mode { get; set; }
         public override ChannelMetadata Metadata => new ChannelMetadata()
         {
             DataType = typeof(float),
@@ -48,7 +47,7 @@ namespace TestPatterns
         
         private MultimediaTimer __timer;
         private int _currentFrameId;
-        private Random _random;
+        private Distribution _random;
         private TestPatternConfig _config;
         private void ProduceFrame()
         {
@@ -66,24 +65,57 @@ namespace TestPatterns
             switch (this._config.DataMode)
             {
                 case TestDataMode.Constant:
-                    for (int i=0; i < this._config.SampleSize; i++)
+                    for (int i=0; i < samples.Length; i++)
                     {
                         samples[i] = i;
                     }
                     break;
 
                 case TestDataMode.Random:
-                    for (int i = 0; i < this._config.SampleSize; i++)
+                    for (int i = 0; i < samples.Length; i++)
                     {
-                        samples[i] = (float)this._random.NextDouble();
+                        samples[i] = (float)this.NextSample();
                     }
                     break;
-
             }
             
             this.PostFrame(new ChannelFrame(samples, meta));
         }
+        private double NextSample()
+        {
+            if(this._random == null || !this._random.GetType().Name.Replace("Distribution", "").Equals(this._config.Distribution.ToString()))
+            {
+                string dname = $"MoSeqAcquire.Models.Utility.Random.{this._config.Distribution}Distribution, MoSeqAcquire";
+                this._random = (Distribution)Activator.CreateInstance(Type.GetType(dname));
+            }
+            return this._random.NextDouble();
+        }
     }
 
-    
+    public enum DataDistribution
+    {
+        Weibull,
+        Beta,
+        BetaPrime,
+        Cauchy,
+        Chi,
+        ChiSquare,
+        ContinuousUniform,
+        Erlang,
+        Exponential,
+        FisherSnedecor,
+        FisherTippett,
+        Gamma,
+        Laplace,
+        Lognormal,
+        Normal,
+        Pareto,
+        Power,
+        Rayleigh,
+        StudentsT,
+        Triangular
+
+    }
+
+
 }
