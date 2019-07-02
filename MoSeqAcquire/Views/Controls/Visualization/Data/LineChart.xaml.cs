@@ -18,48 +18,49 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
     /// <summary>
     /// Interaction logic for LineChart.xaml
     /// </summary>
-    public partial class LineChart : UserControl
+    public partial class LineChart : BaseChart
     {
-        public LineChart()
+        public LineChart() : base()
         {
             InitializeComponent();
-            this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            this.TargetCanvas = this.MainCanvas;
+            this.Measure(_infinateSize);
             this.SizeChanged += BarChart_SizeChanged;
         }
 
         private void BarChart_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.CalculateXScale();
             this.Baseline.X1 = 0;
             this.Baseline.X2 = this.ActualWidth;
             this.Baseline.Y1 = this.ActualHeight / 2;
             this.Baseline.Y2 = this.ActualHeight / 2;
         }
 
-        private int bins;
-        private double xScale;
-        private float minValueSeen;
-        private float maxValueSeen;
-        private double yScale;
+        ///private int bins;
+        //private double xScale;
+        //private float minValueSeen;
+        //private float maxValueSeen;
+        //private double yScale;
         public void Update(float[] data)
         {
-            
-
-            if (data.Length != bins)
-            {
-                bins = data.Length;
-                this.CalculateXScale();
-            }
-
-            this.CalculateYScale(data);
-
             if (this.ActualHeight == 0 && this.ActualWidth == 0)
                 return;
 
+            this.XAxis.UpdateExtents(data);
+            this.YAxis.UpdateExtents(data);
+
+
+            
+
             for (int i = 0; i < data.Length; i++)
             {
-                Point p = new Point((this.xScale * i) + (this.xScale / 2), 
-                                    (this.ActualHeight / 2) - (data[i] * yScale));
+                var xpos = this.XAxis.GetDataPosition(i);
+                var ypos = this.YAxis.GetDataPosition(data[i]);
+                //Point p = new Point((this.xScale * i) + (this.xScale / 2), 
+                //                    (this.ActualHeight / 2) - (data[i] * yScale));
+
+                Point p = new Point(xpos.Item2, ypos.Item2);
 
                 if (SpectrumPolyline.Points.Count <= i)
                 {
@@ -73,7 +74,7 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
             }
 
         }
-
+        /*
         public void CalculateYScale(float[] data)
         {
             foreach (var t in data)
@@ -88,6 +89,6 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
         public void CalculateXScale()
         {
             this.xScale = this.ActualWidth / this.bins;
-        }
+        }*/
     }
 }

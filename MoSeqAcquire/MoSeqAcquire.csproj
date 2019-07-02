@@ -317,6 +317,7 @@
     <Compile Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml.cs">
       <DependentUpon>D3SpectrumAnalyzer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\Visualization\Data\BaseChart.cs" />
     <Compile Include="Views\Controls\Visualization\Data\LineChart.xaml.cs">
       <DependentUpon>LineChart.xaml</DependentUpon>
     </Compile>

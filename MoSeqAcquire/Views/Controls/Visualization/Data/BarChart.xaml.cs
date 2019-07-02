@@ -19,85 +19,25 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
     /// <summary>
     /// Interaction logic for BarChart.xaml
     /// </summary>
-    public partial class BarChart : UserControl
+    public partial class BarChart : BaseChart
     {
-        public BarChart()
+        public BarChart() : base()
         {
             InitializeComponent();
-            this.Measure(this._infinateSize);
-            this.SizeChanged += BarChart_SizeChanged;
+            this.TargetCanvas = this.MainCanvas;
+            this.Measure(_infinateSize);
         }
 
-        private void BarChart_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.CalculateXScale();
-        }
 
-        private List<TextBlock> _labels = new List<TextBlock>();
-        private readonly Size _infinateSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
-        private void GenerateLabels()
-        {
-            var step = this.CalcFreqLabelInterval(5, this.maxValueSeen);
-            for (double f = 0; f <= this.maxValueSeen; f += step)
-            {
-                this.RenderYLabel(f);
-                if (f != 0 /*&& this._lastNegativeSeen > 0*/)
-                    this.RenderYLabel(-f);
-            }
-        }
-        private void RenderYLabel(double value)
-        {
-            TextBlock tb = this._labels.FirstOrDefault(t => t.Tag.Equals(value));
-            if (tb == null)
-            {
-                tb = new TextBlock()
-                {
-                    Tag = value,
-                    Text = value.ToString("F1"),
-                };
-                this._labels.Add(tb);
-                this.MainCanvas.Children.Add(tb);
-            }
-            tb.Measure(this._infinateSize);
-            Canvas.SetLeft(tb, 0);
-            Canvas.SetBottom(tb, this.ValueToYPos(value).Item2);
-        }
-        private void ResetLabels()
-        {
-            foreach(var l in this._labels)
-            {
-                this.MainCanvas.Children.Remove(l);
-            }
-            this._labels.Clear();
-        }
-        private double CalcFreqLabelInterval(int tickCount, double range)
-        {
-            double unroundedTickSize = range / (tickCount - 1);
-            double x = Math.Ceiling(Math.Log10(unroundedTickSize) - 1);
-            double pow10x = Math.Pow(10, x);
-            double roundedTickRange = Math.Ceiling(unroundedTickSize / pow10x) * pow10x;
-            return roundedTickRange;
-        }
 
-        private int bins;
-        private double xScale;
-        private float maxValueSeen;
-        private double yScale;
         private List<Rectangle> _bars = new List<Rectangle>();
         public void Update(float[] data)
         {
             if (this.ActualHeight == 0 && this.ActualWidth == 0)
                 return;            
 
-            if (data.Length != bins)
-            {
-                bins = data.Length;
-                this.CalculateXScale();
-            }
-
-            this.CalculateYScale(data);
-
-
+            this.XAxis.UpdateExtents(data);
+            this.YAxis.UpdateExtents(data);
 
             if (this._bars.Count > data.Length)
                 this.ResetBars();
@@ -112,11 +52,12 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
 
                 try
                 {
-                    var pos = this.ValueToYPos(data[i]);
-                    this._bars[i].Height = pos.Item1;
-                    this._bars[i].Width = this.xScale;
-                    Canvas.SetLeft(this._bars[i], this.BinToXPos(i));
-                    Canvas.SetTop(this._bars[i], pos.Item2);
+                    var ypos = this.YAxis.GetDataPosition(data[i]);
+                    var xpos = this.XAxis.GetDataPosition(i);
+                    this._bars[i].Height = ypos.Item1;
+                    this._bars[i].Width = xpos.Item1;
+                    Canvas.SetLeft(this._bars[i], xpos.Item2);
+                    Canvas.SetTop(this._bars[i], data[i] < 0 ? ypos.Item2 - ypos.Item1 : ypos.Item2);
                 }
                 catch(ArgumentException)
                 {
@@ -133,74 +74,6 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
                     this._bars.Remove(b);
                     this.MainCanvas.Children.Remove(b);
                 });
-        }
-
-        private double BinToXPos(int bin)
-        {
-            return this.xScale * bin;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns>Height, and position Top</returns>
-        private (double, double) ValueToYPos(double value)
-        {
-            double height = Math.Abs(value * yScale);
-            if (value < 0)
-            {
-                return (height,  this.ActualHeight / 2);
-            }
-            else
-            {
-                return (height, this.ActualHeight / 2 - height);
-            }
-        }
-
-        private readonly ConcurrentCircularBuffer<float> _rangeBuffer = new ConcurrentCircularBuffer<float>(100);
-        private int _lastNegativeSeen = 0;
-        public void CalculateYScale(float[] data)
-        {
-            float max = float.MinValue;
-            var lastLastNegSeen = this._lastNegativeSeen;
-            foreach (var t in data)
-            {
-                max = Math.Max(max, Math.Abs(t));
-                if (t < 0)
-                {
-                    this._lastNegativeSeen = 100;
-                }
-                else
-                {
-                    if (this._lastNegativeSeen > 0)
-                        this._lastNegativeSeen--;
-                }
-            }
-
-            this._rangeBuffer.Put(max);
-
-            var prevMax = this.maxValueSeen;
-            this.maxValueSeen = float.MinValue;
-            foreach(var m in this._rangeBuffer.Read())
-            {
-                this.maxValueSeen = Math.Max(m, this.maxValueSeen);
-            }
-
-            if(prevMax != this.maxValueSeen || lastLastNegSeen != this._lastNegativeSeen)
-            {
-                this.ResetLabels();
-            }
-
-            this.yScale = this.ActualHeight / (this.maxValueSeen * 2);
-            GenerateLabels();
-        }
-        
-
-        public void CalculateXScale()
-        {
-            this.xScale = this.ActualWidth / this.bins;
         }
     }
 }
