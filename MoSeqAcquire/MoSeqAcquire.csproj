@@ -317,7 +317,10 @@
     <Compile Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml.cs">
       <DependentUpon>D3SpectrumAnalyzer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\Visualization\Data\BaseChart.cs" />
+    <Compile Include="Views\Controls\Visualization\Core\BaseAxis.cs" />
+    <Compile Include="Views\Controls\Visualization\Core\BaseChart.cs" />
+    <Compile Include="Views\Controls\Visualization\Core\XAxis.cs" />
+    <Compile Include="Views\Controls\Visualization\Core\YAxis.cs" />
     <Compile Include="Views\Controls\Visualization\Data\LineChart.xaml.cs">
       <DependentUpon>LineChart.xaml</DependentUpon>
     </Compile>

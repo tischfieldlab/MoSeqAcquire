@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MoSeqAcquire.Views.Controls.Visualization.Core;
 
 namespace MoSeqAcquire.Views.Controls.Visualization.Data
 {
@@ -26,22 +27,17 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
 
             this.TargetCanvas = this.MainCanvas;
             this.Measure(_infinateSize);
-            this.SizeChanged += BarChart_SizeChanged;
+            this.YAxis.LabelsGenerated += Axis_LabelsGenerated;
+            this.XAxis.LabelsGenerated += Axis_LabelsGenerated;
         }
 
-        private void BarChart_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Axis_LabelsGenerated(object sender, EventArgs e)
         {
             this.Baseline.X1 = 0;
             this.Baseline.X2 = this.ActualWidth;
-            this.Baseline.Y1 = this.ActualHeight / 2;
-            this.Baseline.Y2 = this.ActualHeight / 2;
+            this.Baseline.Y1 = this.Baseline.Y2 = this.YAxis.GetDataPosition(0).Item2;
         }
 
-        ///private int bins;
-        //private double xScale;
-        //private float minValueSeen;
-        //private float maxValueSeen;
-        //private double yScale;
         public void Update(float[] data)
         {
             if (this.ActualHeight == 0 && this.ActualWidth == 0)
@@ -51,14 +47,10 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
             this.YAxis.UpdateExtents(data);
 
 
-            
-
             for (int i = 0; i < data.Length; i++)
             {
                 var xpos = this.XAxis.GetDataPosition(i);
                 var ypos = this.YAxis.GetDataPosition(data[i]);
-                //Point p = new Point((this.xScale * i) + (this.xScale / 2), 
-                //                    (this.ActualHeight / 2) - (data[i] * yScale));
 
                 Point p = new Point(xpos.Item2, ypos.Item2);
 
@@ -70,25 +62,7 @@ namespace MoSeqAcquire.Views.Controls.Visualization.Data
                 {
                     SpectrumPolyline.Points[i] = p;
                 }
-
             }
-
         }
-        /*
-        public void CalculateYScale(float[] data)
-        {
-            foreach (var t in data)
-            {
-                this.minValueSeen = Math.Min(this.minValueSeen, t);
-                this.maxValueSeen = Math.Max(this.maxValueSeen, t);
-            }
-
-            this.yScale = this.ActualHeight / (Math.Max(Math.Abs(this.minValueSeen), Math.Abs(this.maxValueSeen)) * 2);
-        }
-
-        public void CalculateXScale()
-        {
-            this.xScale = this.ActualWidth / this.bins;
-        }*/
     }
 }
