@@ -41,26 +41,26 @@
                 <StackPanel DockPanel.Dock="Left">
                     <WrapPanel>
                         <materialDesign:PackIcon Kind="Cogs" Width="36" Height="36" Margin="0,0,16,0" />
-                        <TextBlock Text="Configure Trigger" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"/>
+                        <TextBlock Text="Configure Trigger" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
                     </WrapPanel>
                     <WrapPanel Margin="52,0,0,0">
                         <TextBlock Text="When " 
                                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
-                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                         
                         <TextBlock Text="{Binding Path=TriggerType.Name}" 
                                    TextDecorations="Underline"
                                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
-                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                         
                         <TextBlock Text=" Execute " 
                                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
-                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                         
                         <TextBlock Text="{Binding Path=ActionType.Name}" 
                                    TextDecorations="Underline"
                                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" 
-                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                     </WrapPanel>
                 </StackPanel>
             </DockPanel>

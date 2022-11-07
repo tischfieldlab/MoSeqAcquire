@@ -29,7 +29,7 @@ namespace MoSeqAcquire.Views.SystemInfo
                 this.IsAlert = (FreeMem <= Properties.Settings.Default.DiskUsageWarningThreshold);
             
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 this.StatusText = "N/A";
             }
