@@ -11,6 +11,11 @@ namespace MoSeqAcquire.Models.Configuration
 {
     public abstract class BaseConfiguration : ObservableObject, IConfigSnapshotProvider
     {
+        public BaseConfiguration()
+        {
+            this.ApplyDefaults();
+        }
+
         protected IEnumerable<PropertyInfo> GetConfigurationProperties()
         {
             return this.GetType()
@@ -18,8 +23,29 @@ namespace MoSeqAcquire.Models.Configuration
                 .Where(pi => pi.CanWrite || typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
                 .Where(pi => {
                     var ha = pi.GetCustomAttribute<HiddenAttribute>();
-                    return (ha == null) || (ha != null && ha.IsHidden == false);
+                    return ha == null || ha.IsHidden == false;
                 });
+        }
+
+        /*protected IEnumerable<PropertyInfo> GetCategoryConfigurationProperties(string category)
+        {
+            return this.GetConfigurationProperties()
+                       .Where(pi =>
+                       {
+                           CategoryAttribute attr = pi.GetCustomAttribute<CategoryAttribute>();
+                           return attr != null && attr.Category.Equals(category);
+                       });
+        }*/
+
+        public string GetPropertyCategory(string propertyName)
+        {
+            return this.GetConfigurationProperties()
+                .Where(pi => pi.Name.Equals(propertyName))
+                .Select(pi =>
+                {
+                    CategoryAttribute attr = pi.GetCustomAttribute<CategoryAttribute>();
+                    return attr?.Category;
+                }).FirstOrDefault();
         }
         public List<Type> GetKnownTypes()
         {
@@ -39,7 +65,7 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public void ApplyDefaults()
         {
-            foreach (var pi in this.GetConfigurationProperties())
+            foreach (var pi in this.GetConfigurationProperties().ToList())
             {
                 if (typeof(ComplexProperty).IsAssignableFrom(pi.PropertyType))
                 {
@@ -52,18 +78,18 @@ namespace MoSeqAcquire.Models.Configuration
                     if (attr != null)
                     {
                         pi.SetValue(this, attr.Value);
-                        return;
+                        continue;
                     }
                     RangeMethodAttribute rma = pi.GetCustomAttribute<RangeMethodAttribute>();
                     if (rma != null)
                     {
                         pi.SetValue(this, (this.GetType().GetMethod(rma.MethodName).Invoke(this, null) as IDefaultInfo).Default);
-                        return;
+                        continue;
                     }
                     if (pi.PropertyType.IsValueType)
                     {
                         pi.SetValue(this, Activator.CreateInstance(pi.PropertyType));
-                        return;
+                        continue;
                     }
                 }
             }

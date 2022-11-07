@@ -14,16 +14,17 @@
              d:DesignHeight="200" d:DesignWidth="250">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <DataTemplate DataType="{x:Type mediaSources:VideoChannelViewModel}">
+        <!--<DataTemplate DataType="{x:Type mediaSources:VideoChannelViewModel}">
             <Grid Background="DarkGray">
                 <Image Source="{Binding Path=Stream}" Stretch="Fill"  />
                 <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.5" X2="0.5" Y1="0.0" Y2="1.0" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.0" X2="1.0" Y1="0.5" Y2="0.5" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
             </Grid>
-        </DataTemplate>
+        </DataTemplate>--><!--DataType="{x:Type mediaSources:VideoChannelViewModel}"-->
+        
 
-        <DataTemplate DataType="{x:Type mediaSources:DataChannelViewModel}">
+        <!--<DataTemplate DataType="{x:Type mediaSources:DataChannelViewModel}">
             <Grid Background="DarkGray">
                 <Image Source="{Binding Path=Stream}" Stretch="Fill"  />
                 <Line Stretch="Uniform" Stroke="Red" StrokeThickness="2" X1="0.5" X2="0.5" Y1="0.0" Y2="1.0" Visibility="{Binding Path=ShowCrosshairs, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -32,12 +33,10 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type mediaSources:AudioChannelViewModel}">
-            <StackPanel>
-                <controls:AudioSpectrumVis SpectrumProvider="{Binding Path=SpectrumProvider}" ShowLineSpectrum="True" Width="200" Height="100" Margin="10" />
-                <Image Source="{Binding Path=LineSpectrum}" SnapsToDevicePixels="True" Stretch="Fill"  />
-                <Image Source="{Binding Path=VoicePrintSpectrum}" Stretch="Fill"  />
-            </StackPanel>
-        </DataTemplate>
+            <Grid>
+                <ContentPresenter Content="{Binding Path=SelectedView.Visualization}" />
+            </Grid>
+        </DataTemplate>-->
 
     </UserControl.Resources>
     <md:Card Margin="5">
@@ -51,9 +50,65 @@
             </DockPanel>
 
             <ContentPresenter Content="{Binding}" Width="{Binding Path=DisplaySize.Width}" Height="{Binding Path=DisplaySize.Height}">
+                <ContentPresenter.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <ContentPresenter Content="{Binding Path=SelectedView.Visualization}" />
+                            <ItemsControl ItemsSource="{Binding Path=AvailableOverlays}" Margin="-1">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Grid />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentPresenter Visibility="{Binding Path=IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                                          Content="{Binding Path=Content}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </DataTemplate>
+                </ContentPresenter.ContentTemplate>
                 <ContentPresenter.ContextMenu>
                     <ContextMenu DataContext="{Binding Path=PlacementTarget.Content, RelativeSource={RelativeSource Self}}" >
-                        <MenuItem Header="Show Crosshairs" IsCheckable="True" IsChecked="{Binding Path=ShowCrosshairs}" />
+                        <MenuItem Header="View" ItemsSource="{Binding Path=AvailableViews}" >
+                            <MenuItem.ItemContainerStyle>
+                                <Style TargetType="MenuItem" BasedOn="{StaticResource MaterialDesignMenuItem}">
+                                    <Setter Property="HeaderTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="IsCheckable" Value="true" />
+                                    <Setter Property="IsChecked" Value="{Binding Path=IsSelected}" />
+                                    <Setter Property="Command" Value="{Binding Path=DataContext.SetChannelViewCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                                    <Setter Property="CommandParameter" Value="{Binding}" />
+                                </Style>
+                            </MenuItem.ItemContainerStyle>
+                        </MenuItem>
+                        <MenuItem Header="Overlays" ItemsSource="{Binding Path=AvailableOverlays}">
+                            <MenuItem.ItemContainerStyle>
+                                <Style TargetType="MenuItem" BasedOn="{StaticResource MaterialDesignMenuItem}">
+                                    <Setter Property="HeaderTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="IsCheckable" Value="true" />
+                                    <Setter Property="IsChecked" Value="{Binding Path=IsEnabled}" />
+                                    <!--<Setter Property="Command" Value="{Binding Path=DataContext.SetChannelViewCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                                    <Setter Property="CommandParameter" Value="{Binding}" />-->
+                                </Style>
+                            </MenuItem.ItemContainerStyle>
+                            <!--<MenuItem Header="Show Crosshairs" IsCheckable="True" IsChecked="{Binding Path=ShowCrosshairs}" />-->
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Reset Size" Command="{Binding Path=ResetViewSizeCommand}" />
                     </ContextMenu>
                 </ContentPresenter.ContextMenu>
             </ContentPresenter>

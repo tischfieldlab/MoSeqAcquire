@@ -33,13 +33,13 @@ namespace MoSeqAcquire.Models.Recording.MPEGVideoWriter
             get => this.videoCodec;
             set => this.SetField(ref this.videoCodec, value);
         }
-        [DefaultValue(4e6)]
+        [DefaultValue(4000000)]
         public int VideoBitrate
         {
             get => this.videoBitrate;
             set => this.SetField(ref this.videoBitrate, value);
         }
-
+        [DefaultValue(AudioCodec.AAC)]
         public AudioCodec AudioCodec
         {
             get => this.audioCodec;

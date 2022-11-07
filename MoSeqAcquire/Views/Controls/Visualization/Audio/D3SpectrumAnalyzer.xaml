@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="MoSeqAcquire.Views.MediaSources.Visualization.D3SpectrumAnalyzer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    >
+    <Grid>
+        <Canvas Name="FrequencyLabels" Panel.ZIndex="999">
+            <Canvas.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+                    <Setter Property="FontSize" Value="8" />
+                </Style>
+            </Canvas.Resources>
+        </Canvas>
+        <Image Name="spectrum" Stretch="Fill">
+            <Image.LayoutTransform>
+                <ScaleTransform ScaleY="-1" />
+            </Image.LayoutTransform>
+        </Image>
+    </Grid>
+</UserControl>

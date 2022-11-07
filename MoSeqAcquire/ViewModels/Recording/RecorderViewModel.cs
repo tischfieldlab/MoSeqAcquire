@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,12 +13,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    public class RecorderViewModel : BaseViewModel
+    public class RecorderViewModel : BaseViewModel, INotifyDataErrorInfo
     {
         protected MediaWriter writer;
 
         protected ObservableCollection<RecorderPinViewModel> recorderPins;
-        protected ObservableCollection<SelectableChannelViewModel> availableChannels;
         protected ObservableCollection<RecorderProduct> recorderProducts;
 
         public RecorderViewModel(Type RecorderType)
@@ -50,11 +50,6 @@ namespace MoSeqAcquire.ViewModels.Recording
             get;
             protected set;
         }
-        public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels
-        {
-            get;
-            protected set;
-        }
         public ReadOnlyObservableCollection<RecorderProduct> Products
         {
             get;
@@ -79,6 +74,7 @@ namespace MoSeqAcquire.ViewModels.Recording
                                .GetService<RecordingManagerViewModel>()
                                .GetNextDefaultRecorderName();
             }
+
             this.availableChannels = new ObservableCollection<SelectableChannelViewModel>();
             this.AvailableChannels = new ReadOnlyObservableCollection<SelectableChannelViewModel>(this.availableChannels);
 
@@ -97,10 +93,11 @@ namespace MoSeqAcquire.ViewModels.Recording
 
             foreach (var wp in this.writer.Pins.Values)
             {
-                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp, this.availableChannels);
+                RecorderPinViewModel pin = RecorderPinViewModel.Factory(wp);
                 if (pin != null)
                 {
                     pin.PropertyChanged += (s,e) => this.updateRecorderProducts();
+                    pin.ErrorsChanged += (s, e) => { this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null)); };
                     this.recorderPins.Add(pin);
                 }
             }
@@ -119,8 +116,28 @@ namespace MoSeqAcquire.ViewModels.Recording
                 }).ForEach(rp => this.recorderProducts.Add(rp));
             this.NotifyPropertyChanged(null);
         }
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public string Error
+        {
+            get => string.Join(" ", this.GetErrors(null).Cast<string>());
+        }
+        public bool HasErrors
+        {
+            get => !string.IsNullOrEmpty(this.Error);
+        }
+        public string this[string columnName]
+        {
+            get { return this.GetErrors(columnName).Cast<string>().FirstOrDefault(); }
+        }
 
-        
+        public IEnumerable GetErrors(string propertyName)
+        {
+            var errors = new List<string>();
+            errors.AddRange(this.RecorderPins.SelectMany(mwp => mwp.GetErrors(propertyName).Cast<string>()));
+            return errors;
+        }
+
+
         public ProtocolRecorder GetRecorderDefinition()
         {
             return this.writer.GetProtocolRecorder();

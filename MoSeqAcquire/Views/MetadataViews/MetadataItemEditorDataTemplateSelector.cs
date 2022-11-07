@@ -16,18 +16,13 @@ namespace MoSeqAcquire.Views.Metadata
                 MetadataItemDefinition pi = item as MetadataItemDefinition;
                 Type pit = pi.ValueType;
 
-                PropertyChangedEventHandler lambda = null;
-                lambda = (o, args) =>
+                void lambda(object o, PropertyChangedEventArgs args)
                 {
-                    if (args.PropertyName == nameof(pi.ValueType)
-                     || args.PropertyName == nameof(pi.Constraint))
-                    {
-                        pi.PropertyChanged -= lambda;
-                        var cp = (ContentPresenter)container;
-                        cp.ContentTemplateSelector = null;
-                        cp.ContentTemplateSelector = this;
-                    }
-                };
+                    pi.PropertyChanged -= lambda;
+                    var cp = (ContentPresenter)container;
+                    cp.ContentTemplateSelector = null;
+                    cp.ContentTemplateSelector = this;
+                }
                 pi.PropertyChanged += lambda;
 
 
@@ -35,21 +30,21 @@ namespace MoSeqAcquire.Views.Metadata
                 {
                     return elemnt.FindResource(elemnt.Name+"CheckboxEditor") as DataTemplate;
                 }
-                else if (pit.IsEnum)
-                {
-                    return elemnt.FindResource(elemnt.Name + "EnumComboBoxEditor") as DataTemplate;
-                }
-                else if (pi.Constraint == ConstraintMode.Choices)
+                else if (pi.GetValidator<ChoicesRule>() is ChoicesRule cr && cr.IsActive)
                 {
                     return elemnt.FindResource(elemnt.Name + "CollectionComboBoxEditor") as DataTemplate;
                 }
                 else if (pit.Equals(typeof(int)) || pit.Equals(typeof(float)) || pit.Equals(typeof(double)))
                 {
-                    if (pi.Constraint == ConstraintMode.Range)
+                    /*if (!elemnt.Name.Equals("DefaultValue") && pi.GetValidator<RangeRule>() is RangeRule rr && rr.IsActive)
                     {
                         return elemnt.FindResource(elemnt.Name + "RangeEditor") as DataTemplate;
-                    }
+                    }*/
                     return elemnt.FindResource(elemnt.Name + "NumericEditor") as DataTemplate;
+                }
+                else if (pit.Equals(typeof(DateTime)))
+                {
+                    return elemnt.FindResource(elemnt.Name + "DateTimeEditor") as DataTemplate;
                 }
                 else
                 {

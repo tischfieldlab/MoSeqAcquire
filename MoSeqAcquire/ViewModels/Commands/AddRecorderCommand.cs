@@ -23,8 +23,10 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            var dialog = new RecorderEditor();
-            dialog.DataContext = new RecorderEditorViewModel(this.ViewModel, null);
+            var dialog = new RecorderEditor
+            {
+                DataContext = new RecorderEditorViewModel(this.ViewModel, null)
+            };
             dialog.ShowDialog();
         }
     }

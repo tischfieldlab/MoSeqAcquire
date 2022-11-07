@@ -17,6 +17,9 @@ namespace MoSeqAcquire.ViewModels.Core
         protected double width;
         protected double height;
 
+        protected double initWidth;
+        protected double initHeight;
+
 
         public SizeHelper(double minWidth, double maxWidth, double minHeight, double maxHeight, double width, double height)
         {
@@ -24,8 +27,9 @@ namespace MoSeqAcquire.ViewModels.Core
             this.maxWidth = maxWidth;
             this.minHeight = minHeight;
             this.maxHeight = maxHeight;
-            this.width = width;
-            this.height = height;
+
+            this.width = this.initWidth = width;
+            this.height = this.initHeight = height;
         }
 
         #region Property Accessors
@@ -93,6 +97,13 @@ namespace MoSeqAcquire.ViewModels.Core
             }
         }
         #endregion Property Accessors
+
+        public void Reset()
+        {
+            this.width = this.initWidth;
+            this.height = this.initHeight;
+            this.Coerce();
+        }
 
         protected void Coerce()
         {

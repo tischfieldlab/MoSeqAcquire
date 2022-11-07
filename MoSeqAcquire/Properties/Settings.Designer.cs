@@ -37,30 +37,6 @@ namespace MoSeqAcquire.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("red")]
-        public string ThemePrimaryColor {
-            get {
-                return ((string)(this["ThemePrimaryColor"]));
-            }
-            set {
-                this["ThemePrimaryColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("yellow")]
-        public string ThemeAccentColor {
-            get {
-                return ((string)(this["ThemeAccentColor"]));
-            }
-            set {
-                this["ThemeAccentColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>MediaSources</string>
@@ -71,32 +47,32 @@ namespace MoSeqAcquire.Properties {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["PluginPaths"]));
             }
+            set {
+                this["PluginPaths"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public double DiskUsageWarningThreshold {
             get {
                 return ((double)(this["DiskUsageWarningThreshold"]));
             }
+            set {
+                this["DiskUsageWarningThreshold"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
         public double CPUUsageWarningThreshold {
             get {
                 return ((double)(this["CPUUsageWarningThreshold"]));
             }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
-        public double RamUsageWarningThreshold {
-            get {
-                return ((double)(this["RamUsageWarningThreshold"]));
+            set {
+                this["CPUUsageWarningThreshold"] = value;
             }
         }
         
@@ -113,12 +89,87 @@ namespace MoSeqAcquire.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int MaxRecentProtocolsToRemember {
             get {
                 return ((int)(this["MaxRecentProtocolsToRemember"]));
+            }
+            set {
+                this["MaxRecentProtocolsToRemember"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("green")]
+        public string ThemePrimaryColor {
+            get {
+                return ((string)(this["ThemePrimaryColor"]));
+            }
+            set {
+                this["ThemePrimaryColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("blue")]
+        public string ThemeAccentColor {
+            get {
+                return ((string)(this["ThemeAccentColor"]));
+            }
+            set {
+                this["ThemeAccentColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Synchronous")]
+        public string TriggersExecutionMode {
+            get {
+                return ((string)(this["TriggersExecutionMode"]));
+            }
+            set {
+                this["TriggersExecutionMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public double RamUsageWarningThreshold {
+            get {
+                return ((double)(this["RamUsageWarningThreshold"]));
+            }
+            set {
+                this["RamUsageWarningThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SystemIdentity {
+            get {
+                return ((string)(this["SystemIdentity"]));
+            }
+            set {
+                this["SystemIdentity"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("JSON")]
+        public string RecordingSummaryOutputFormat {
+            get {
+                return ((string)(this["RecordingSummaryOutputFormat"]));
+            }
+            set {
+                this["RecordingSummaryOutputFormat"] = value;
             }
         }
     }

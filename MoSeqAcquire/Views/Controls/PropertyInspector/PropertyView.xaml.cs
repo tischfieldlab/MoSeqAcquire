@@ -16,6 +16,7 @@ namespace MoSeqAcquire.Views.Controls
         public PropertyView()
         {
             InitializeComponent();
+            this.InnerContainer.DataContext = new PropertyCollection(null);
         }
         public object SelectedObject
         {
@@ -25,7 +26,7 @@ namespace MoSeqAcquire.Views.Controls
         private static void selectedObjectChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var propView = d as PropertyView;
-            propView.ItemsGrid.ItemsSource = new PropertyCollection(e.NewValue);
+            propView.InnerContainer.DataContext = new PropertyCollection(e.NewValue);
 
             foreach (var col in (propView.ItemsGrid.View as GridView).Columns)
             {

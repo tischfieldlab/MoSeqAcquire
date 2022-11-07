@@ -65,7 +65,36 @@
                 </StackPanel>
             </DockPanel>
         </materialDesign:ColorZone>
-
-        <ctrl:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="1" Grid.Row="1" />
+        <ContentControl Grid.Row="1" Content="{Binding}">
+            <ContentControl.Resources>
+                <DataTemplate  x:Key="TriggerConfigWithDesigner">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ContentPresenter Content="{Binding Path=DesignerImplementation}" Grid.Column="0" />
+                        <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
+                        <ctrl:PropertyView SelectedObject="{Binding Path=Settings}" Grid.Column="2" />
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate x:Key="TriggerConfigWithoutDesigner">
+                    <ctrl:PropertyView SelectedObject="{Binding Path=Settings}"  />
+                </DataTemplate>
+            </ContentControl.Resources>
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=HasDesignerImplementation}" Value="true">
+                            <Setter Property="ContentTemplate" Value="{StaticResource TriggerConfigWithDesigner}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=HasDesignerImplementation}" Value="false">
+                            <Setter Property="ContentTemplate" Value="{StaticResource TriggerConfigWithoutDesigner}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
     </Grid>
 </Window>

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using MoSeqAcquire.Models.Metadata;
 using System.Collections;
 using System.Collections.Specialized;
+using MoSeqAcquire.Models.Metadata.DataTypes;
 
 namespace MoSeqAcquire.ViewModels.Metadata
 {
@@ -28,19 +29,14 @@ namespace MoSeqAcquire.ViewModels.Metadata
         protected MetadataDefinitionCollection currentCollection;
         protected MetadataItemDefinition currentItem;
 
-        public MetadataViewModel()
+        public MetadataViewModel(MoSeqAcquireViewModel RootViewModel)
         {
-            this.AvailableTypes = new ObservableCollection<AvailableTypeViewModel>()
-            {
-                new AvailableTypeViewModel(typeof(bool)),
-                new AvailableTypeViewModel(typeof(int)),
-                new AvailableTypeViewModel(typeof(double)),
-                new AvailableTypeViewModel(typeof(string))
-            };
+            this.Root = RootViewModel;
+            this.AvailableTypes = new ObservableCollection<AvailableTypeViewModel>(BaseDataType.AvailableTypes().Select(t => new AvailableTypeViewModel(t)));
             this.currentCollection = new MetadataDefinitionCollection();
             this.CurrentState = MetadataViewState.Grid;
         }
-
+        public MoSeqAcquireViewModel Root { get; protected set; }
         public ObservableCollection<AvailableTypeViewModel> AvailableTypes { get; protected set; }
 
         public MetadataViewState CurrentState

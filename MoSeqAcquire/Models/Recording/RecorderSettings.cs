@@ -22,12 +22,13 @@ namespace MoSeqAcquire.Models.Recording
     }
     public abstract class RecorderSettings : BaseConfiguration
     {
+        public RecorderSettings() : base() { }
     }
     public class GeneralRecordingSettings : BaseConfiguration, INotifyDataErrorInfo, IDataErrorInfo
     {
         private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }
         protected ValidationHelper Validator { get; private set; }
-        public GeneralRecordingSettings()
+        public GeneralRecordingSettings() : base()
         {
             Validator = new ValidationHelper();
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);
@@ -63,13 +64,9 @@ namespace MoSeqAcquire.Models.Recording
 
                 return RuleResult.Valid();
             });
-            Validator.AddRule(nameof(this.RecordingMode),
-                              nameof(this.RecordingTime),
+            Validator.AddRule(nameof(this.RecordingTime),
                               () =>
                               {
-                                  if (this.recordingMode.Equals(RecordingMode.Indeterminate))
-                                      return RuleResult.Valid();
-
                                   if (this.recordingMode.Equals(RecordingMode.TimeCount) &&
                                       this.recordingTime.TotalSeconds <= 0)
                                       return RuleResult.Invalid("Recording Time must be greater than zero.");

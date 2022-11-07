@@ -49,12 +49,13 @@ namespace MoSeqAcquire.Models.Recording
         public event EventHandler RecordingFinished;    //fires once recording has finished
         public event EventHandler RecordingAborted;     //fires 
 
+
         public RecordingManager()
         {
             this.triggerBus = App.Current.Services.GetService<TriggerBus>();
             this.writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
-            this.RecordingMetadata = new MetadataViewModel();
+            this.RecordingMetadata = Metadata;
         }
 
         public void AddRecorder(MediaWriter Writer)
@@ -238,7 +239,7 @@ namespace MoSeqAcquire.Models.Recording
             }
 
             summary.Metadata = this.RecordingMetadata.Items.GetSnapshot();
-            string dest = Path.Combine(this.ReplyToDestinationRequest(), "info.xml");
+            string dest = Path.Combine(this.ReplyToDestinationRequest(), "info");
             RecordingInfoWriter.Write(dest, summary);
         }
 

@@ -49,6 +49,10 @@ namespace MoSeqAcquire.Models.Recording
     }
     public class AfterRecordingFinishedTrigger : TriggerEvent
     {
+        public AfterRecordingFinishedTrigger()
+        {
+            this.Name = "After Recording Finished";
+        }
         public bool Aborted { get; set; }
 
         public override void Start()

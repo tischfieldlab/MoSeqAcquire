@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
@@ -19,7 +20,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         public string Name
         {
-            get => this.triggerType.AssemblyQualifiedName;
+            get => (Activator.CreateInstance(this.triggerType) as Trigger).Name;
         }
     }
 }

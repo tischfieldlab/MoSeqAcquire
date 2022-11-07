@@ -28,7 +28,7 @@ namespace MoSeqAcquire.Models.Utility
         ES_AWAYMODE_REQUIRED = 0x00000040
     }
 
-    internal class NativeMethods
+    internal partial class NativeMethods
     {
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);

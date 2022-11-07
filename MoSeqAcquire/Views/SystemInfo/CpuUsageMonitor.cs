@@ -15,10 +15,12 @@ namespace MoSeqAcquire.Views.SystemInfo
             this.Title = "Free CPU";
             this.Icon = MaterialDesignThemes.Wpf.PackIconKind.Chip;
 
-            this.counter = new PerformanceCounter();
-            this.counter.CategoryName = "Processor";
-            this.counter.CounterName = "% Processor Time";
-            this.counter.InstanceName = "_Total";
+            this.counter = new PerformanceCounter
+            {
+                CategoryName = "Processor",
+                CounterName = "% Processor Time",
+                InstanceName = "_Total"
+            };
             this.counter.NextValue();
         }
         public override void Update()
@@ -27,7 +29,7 @@ namespace MoSeqAcquire.Views.SystemInfo
             this.StatusText = (100 - this.PercentUsage).ToString("F1") + "% Free";
 
             //Alert if there is less free CPU time  than user configured threshold
-            this.IsAlert = this.PercentUsage <= Properties.Settings.Default.CPUUsageWarningThreshold;
+            this.IsAlert = this.PercentUsage > (Properties.Settings.Default.CPUUsageWarningThreshold * 100);
         }
     }
 }

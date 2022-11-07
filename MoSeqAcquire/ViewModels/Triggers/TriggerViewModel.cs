@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Models.Utility;
+using Trigger = MoSeqAcquire.Models.Triggers.Trigger;
 using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
 using Microsoft.Extensions.DependencyInjection;
 using MoSeqAcquire.ViewModels.Recording;
@@ -34,23 +37,36 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected TriggerState triggerState;
         protected string triggerStateMessage;
 
-
-        public TriggerViewModel()
+        public TriggerViewModel(MoSeqAcquireViewModel RootViewModel, Type TriggerActionType)
         {
-            this.triggerBus = App.Current.Services.GetService<TriggerBus>();
+            this.rootViewModel = RootViewModel;
+            this.actionType = TriggerActionType;
+            this.Initialize();
+        }
+        public TriggerViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolTrigger ProtocolTrigger)
+        {
+            this.rootViewModel = RootViewModel;
+            this.Name = ProtocolTrigger.Name;
+            this.actionType = ProtocolTrigger.GetActionType();
+            this.TriggerType = ProtocolTrigger.GetEventType();
+            
+            this.Initialize();
 
+            //need to be setup after initialization
+            this.IsCritical = ProtocolTrigger.Critical;
+            this.Settings.ApplySnapshot(ProtocolTrigger.Config);
 
-            this.PropertyChanged += TriggerViewModel_PropertyChanged;
-            this.triggerState = TriggerState.None;
         }
 
-        private void TriggerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected void Initialize()
         {
-            if (e.PropertyName.Equals("ActionType"))
+            if (this.Name == null)
             {
-                this.trigger = (TriggerAction)Activator.CreateInstance(this.actionType);
+                this.Name = this.rootViewModel.Triggers.GetNextDefaultTriggerName();
             }
+            this.trigger = (TriggerAction)Activator.CreateInstance(this.actionType);
             this.RegisterTrigger();
+            this.PropertyChanged += (s, e) => { this.RegisterTrigger(); };
         }
 
         public string Name
@@ -66,18 +82,62 @@ namespace MoSeqAcquire.ViewModels.Triggers
         public Type ActionType
         {
             get => this.actionType;
-            set => this.SetField(ref this.actionType, value);
         }
+
+        public string TriggerActionName
+        {
+            get => this.trigger.Specification.DisplayName;
+        }
+
+        public string TriggerEventName
+        {
+            get
+            {
+                if (this.triggerType != null)
+                {
+                    return (Activator.CreateInstance(this.triggerType) as Trigger).Name;
+                }
+                return "None selected";
+            }
+        }
+
         public bool IsCritical
         {
-            get => this.trigger != null ? this.trigger.IsCritical : false;
+            get => this.trigger.IsCritical;
             set
             {
                 this.trigger.IsCritical = value;
-                this.NotifyPropertyChanged();
+                this.NotifyPropertyChanged(nameof(this.IsCritical));
             }
         }
-        public TriggerConfig Settings { get => this.trigger.Config; }
+        public int Priority
+        {
+            get => this.trigger.Priority;
+            set
+            {
+                this.trigger.Priority = value;
+                this.NotifyPropertyChanged(nameof(this.Priority));
+            }
+        }
+        public BaseConfiguration Settings { get => this.trigger.Settings; }
+        public TriggerActionSpecification Specification
+        {
+            get => this.trigger.Specification as TriggerActionSpecification;
+        }
+
+        public bool HasDesignerImplementation
+        {
+            get => this.Specification.HasDesignerImplementation;
+        }
+        public UserControl DesignerImplementation
+        {
+            get
+            {
+                if (this.Specification.HasDesignerImplementation)
+                    return (UserControl)Activator.CreateInstance(this.Specification.DesignerImplementation);
+                return null;
+            }
+        }
         public TriggerState TriggerState
         {
             get => this.triggerState;
@@ -117,20 +177,23 @@ namespace MoSeqAcquire.ViewModels.Triggers
             }
         }
 
-        private void Trigger_TriggerExecutionFinished(object sender, TriggerLifetimeEventArgs e)
+        private void Trigger_TriggerExecutionFinished(object sender, TriggerFinishedEventArgs e)
         {
+            this.TriggerStateMessage = e.Output;
             this.TriggerState = TriggerState.Completed;
         }
 
         private void Trigger_TriggerExecutionStarted(object sender, TriggerLifetimeEventArgs e)
         {
+            this.TriggerStateMessage = string.Empty;
             this.TriggerState = TriggerState.Running;
         }
         private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
         {
-            this.TriggerStateMessage = e.Exception.GetAllMessages();
+            this.TriggerStateMessage = e.Output;
+            //this.TriggerStateMessage = e.Exception.GetAllMessages();
             this.TriggerState = TriggerState.Faulted;
-            if((sender as TriggerAction).IsCritical)
+            if(this.IsCritical)
             {
                 App.Current.Services.GetService<RecordingManagerViewModel>().AbortRecording();
                 MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.TriggerStateMessage,
@@ -146,6 +209,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             {
                 Name = this.Name,
                 Critical = this.IsCritical,
+                Priority = this.Priority,
                 Event = this.TriggerType.AssemblyQualifiedName,
                 Action = this.ActionType.AssemblyQualifiedName,
                 Config = this.Settings.GetSnapshot()

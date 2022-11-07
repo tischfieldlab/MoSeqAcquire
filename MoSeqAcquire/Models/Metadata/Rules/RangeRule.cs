@@ -1,57 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
+using System.Xml;
+using MoSeqAcquire.Models.Metadata.DataTypes;
+using MoSeqAcquire.Models.Metadata.Rules;
+using MvvmValidation;
 
-namespace MoSeqAcquire.Models.Metadata.Rules
+namespace MoSeqAcquire.Models.Metadata
 {
-    public class RangeRule : ValidationRule
+    public class RangeRule : BaseRule
     {
-        private int _min;
-        private int _max;
+        protected object minValue;
+        protected object maxValue;
 
-        public RangeRule()
+        public RangeRule(BaseDataType dataType) : base("Range")
         {
+            this.DataType = dataType;
         }
 
-        public int Min
+        public BaseDataType DataType
         {
-            get { return _min; }
-            set { _min = value; }
+            get;
+            protected set;
+        }
+        public object MinValue
+        {
+            get => this.minValue;
+            set => this.SetField(ref this.minValue, this.DataType.CoerceValue(value));
+        }
+        public object MaxValue
+        {
+            get => this.maxValue;
+            set => this.SetField(ref this.maxValue, this.DataType.CoerceValue(value));
         }
 
-        public int Max
+        public override void ReadXml(XmlReader reader)
         {
-            get { return _max; }
-            set { _max = value; }
+            reader.ReadStartElement();
+            this.MinValue = this.DataType.Parse(reader.ReadElementContentAsString("Minimum", ""));
+            this.MaxValue = this.DataType.Parse(reader.ReadElementContentAsString("Maximum", ""));
         }
 
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        public override void WriteXml(XmlWriter writer)
         {
-            int age = 0;
+            writer.WriteElementString("Minimum", this.DataType.Serialize(this.minValue));
+            writer.WriteElementString("Maximum", this.DataType.Serialize(this.maxValue));
+        }
+        public override bool Equals(object obj)
+        {
 
-            try
-            {
-                if (((string)value).Length > 0)
-                    age = Int32.Parse((String)value);
-            }
-            catch (Exception e)
-            {
-                return new ValidationResult(false, "Illegal characters or " + e.Message);
-            }
+            if (!(obj is RangeRule rc))
+                return false;
 
-            if ((age < Min) || (age > Max))
-            {
-                return new ValidationResult(false,
-                  "Please enter an age in the range: " + Min + " - " + Max + ".");
-            }
-            else
-            {
-                return ValidationResult.ValidResult;
-            }
+            if (!this.MinValue.Equals(rc.MinValue))
+                return false;
+            if (!this.MaxValue.Equals(rc.MaxValue))
+                return false;
+
+            return true;
+        }
+
+        public override RuleResult Validate(MetadataItemDefinition Item)
+        {
+            return RuleResult.Assert((Item.Value as IComparable).CompareTo((this.MinValue as IComparable)) >= 0
+                                  && (Item.Value as IComparable).CompareTo((this.MaxValue as IComparable)) <= 0,
+                $"Value must be within range [{this.MinValue}, {this.MaxValue}]");
         }
     }
 }

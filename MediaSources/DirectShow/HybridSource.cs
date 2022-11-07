@@ -66,7 +66,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
 
             return clusters;
         }
-        public override bool Initalize(string DeviceId)
+        public override bool Initialize(string DeviceId)
         {
             this.DeviceId = DeviceId;
 
@@ -88,7 +88,8 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             this.VideoDevice = videoDevices.Where(vd => targetDevice.Value.Contains(vd.MonikerString))
                                            .Select(vd => new ExVideoCaptureDevice(vd.MonikerString))
                                            .First();
-            
+            this.VideoDevice.VideoResolution = this.VideoDevice.VideoCapabilities.Last();
+
             this.AudioDevice = audioDevices.Where(ad => targetDevice.Value.Contains(ad.Guid.ToString()))
                                            .Select(ad => new AudioCaptureDevice(ad))
                                            .First();

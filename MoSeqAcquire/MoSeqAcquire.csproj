@@ -111,8 +111,30 @@
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MvvmValidation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=113792d2053ac461, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmValidation.3.1.2\lib\netstandard1.0\MvvmValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SciColorMaps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ar1st0crat.SciColorMaps.1.0.2\lib\portable40-net40+sl5+win8+wpa81\SciColorMaps.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.8.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Console, Version=3.1.1.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Console.3.1.1\lib\net45\Serilog.Sinks.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.4.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.TextWriter, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.TextWriter.2.1.0\lib\net45\Serilog.Sinks.TextWriter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -161,11 +183,22 @@
     <Compile Include="Models\Acquisition\MediaTriggers.cs" />
     <Compile Include="Models\Acquisition\VideoChannelFrameMetadata.cs" />
     <Compile Include="Models\Attributes\HiddenAttribute.cs" />
+    <Compile Include="Models\Attributes\DesignerImplementationAttribute.cs" />
     <Compile Include="Models\Configuration\IPropertyCapabilityProvider.cs" />
     <Compile Include="Models\Core\Component.cs" />
     <Compile Include="Models\Core\ComponentSpecification.cs" />
     <Compile Include="Models\Management\ProtocolTriggerCollection.cs" />
+    <Compile Include="Models\Metadata\DataTypes\BaseDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\BooleanDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\DateTimeDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\DoubleDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\IntDataType.cs" />
+    <Compile Include="Models\Metadata\DataTypes\StringDataType.cs" />
     <Compile Include="Models\Metadata\RecordingMetadataSnapshot.cs" />
+    <Compile Include="Models\Metadata\Rules\ChoicesRule.cs" />
+    <Compile Include="Models\Metadata\Rules\DelegateRule.cs" />
+    <Compile Include="Models\Metadata\Rules\RangeRule.cs" />
+    <Compile Include="Models\Performance\OracleTimer.cs" />
     <Compile Include="Models\Performance\TotalFrameCounter.cs" />
     <Compile Include="Models\Performance\PerformanceMonitorService.cs" />
     <Compile Include="Models\Recording\MediaWriterPin.cs" />
@@ -174,10 +207,13 @@
     <Compile Include="Models\Recording\TimestampCoWriter.cs" />
     <Compile Include="Models\Triggers\TriggerEvent.cs" />
     <Compile Include="Models\Triggers\TriggerAction.cs" />
+    <Compile Include="Models\Triggers\TriggerActionSpecification.cs" />
     <Compile Include="Models\Triggers\TriggerBus.cs" />
     <Compile Include="Models\Triggers\TriggerConfig.cs" />
     <Compile Include="Models\Triggers\TriggerLifetimeEventArgs.cs" />
+    <Compile Include="Models\Utility\ConcurrentCircularBuffer.cs" />
     <Compile Include="Models\Utility\ExceptionExtensions.cs" />
+    <Compile Include="Models\Utility\HighPrecisionTimer.cs" />
     <Compile Include="Models\Utility\PowerManagement.cs" />
     <Compile Include="Models\Utility\PreciseDateTime.cs" />
     <Compile Include="Models\Attributes\AutomaticPropertyAttribute.cs" />
@@ -191,7 +227,7 @@
     <Compile Include="Models\Configuration\IConfigSnapshotProvider.cs" />
     <Compile Include="Models\Configuration\PropertyCapability.cs" />
     <Compile Include="Models\Configuration\PropertyInfoInterfaces.cs" />
-    <Compile Include="Models\DrawingExtensions.cs" />
+    <Compile Include="Models\Utility\DrawingExtensions.cs" />
     <Compile Include="Models\Attributes\AttributeExtensions.cs" />
     <Compile Include="Models\Attributes\KnownTypeAttribute.cs" />
     <Compile Include="Models\Recording\IMediaWriter.cs" />
@@ -208,13 +244,55 @@
     <Compile Include="Models\Management\ProtocolRecorderCollection.cs" />
     <Compile Include="Models\Management\ProtocolSourceCollection.cs" />
     <Compile Include="Models\Performance\Interfaces.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\BetaDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\BetaPrimeDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\CauchyDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ChiDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ChiSquareDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ContinuousUniformDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ErlangDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ExponentialDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\FisherSnedecorDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\FisherTippettDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\GammaDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\LaplaceDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\LognormalDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\NormalDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\ParetoDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\PowerDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\RayleighDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\StudentsTDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\TriangularDistribution.cs" />
+    <Compile Include="Models\Utility\Random\ContinuousRNDs\WeibullDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\BernoulliDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\BinomialDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\DiscreteUniformDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\GeometricDistribution.cs" />
+    <Compile Include="Models\Utility\Random\DiscreteRNDs\PoissonDistribution.cs" />
+    <Compile Include="Models\Utility\Random\Distribution.cs" />
+    <Compile Include="Models\Utility\Random\Generator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\ALFGenerator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\MT19937Generator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\StandardGenerator.cs" />
+    <Compile Include="Models\Utility\Random\PseudoRNGs\XorShift128Generator.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.de.Designer.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.Designer.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.es.Designer.cs" />
+    <Compile Include="Models\Utility\Random\Resources\ExceptionMessages.fr.Designer.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\AppSettings\ApplicationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\BaseComponentSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\RecordingSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\SystemSettingsViewModel.cs" />
+    <Compile Include="ViewModels\AppSettings\TriggerSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Commands\OpenAppSettingsCommand.cs" />
     <Compile Include="ViewModels\Commands\ResetMetadataItemValuesCommand.cs" />
     <Compile Include="ViewModels\Commands\CloseMetadataItemDefinitionEditorCommand.cs" />
     <Compile Include="ViewModels\Commands\AddMetadataItemCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveMetadataItemCommand.cs" />
     <Compile Include="ViewModels\Commands\EditMetadataItemCommand.cs" />
     <Compile Include="ViewModels\Commands\ShowMetadataDefinitionWindowCommand.cs" />
+    <Compile Include="ViewModels\Commands\ShowRecordingErrorDialog.cs" />
     <Compile Include="ViewModels\Commands\UnloadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenMediaSourceConfigCommand.cs" />
     <Compile Include="ViewModels\Commands\ToggleChannelEnabledCommand.cs" />
@@ -234,59 +312,130 @@
     <Compile Include="ViewModels\Commands\LoadProtocolCommand.cs" />
     <Compile Include="ViewModels\Commands\StopRecordingCommand.cs" />
     <Compile Include="ViewModels\Core\SizeHelper.cs" />
+    <Compile Include="ViewModels\MediaSources\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\DataChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceCollectionViewModel.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\IAudioVisualizationPlugin.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregatorDataFlow.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\3DSpectrumAnalyzerVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Data\LineGraphVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Data\BarGraphVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Data\IDataVisualizationPlugin.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\IVisualizationPlugin.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolygonWaveFormVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\PolylineWaveFormVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SampleAggregator.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\SpectrumAnalyzerVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Audio\WaveformVisual.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\RuleOfThirdsOverlay.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\BullseyeOverlay.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\CrosshairOverlay.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Overlay\IVisualizationOverlay.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Video\ColorVideoVisualization.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Video\IVideoVisualizationPlugin.cs" />
     <Compile Include="ViewModels\Metadata\AvailableTypeViewModel.cs" />
-    <Compile Include="Models\Metadata\BaseConstraint.cs" />
     <Compile Include="ViewModels\Performance\PerformanceItemViewModel.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorRecorderAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorPreviewAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorMediaBusAdapter.cs" />
     <Compile Include="ViewModels\Performance\PerformanceMonitorViewModel.cs" />
+    <Compile Include="ViewModels\Recording\AvailableRecordingChannelsProvider.cs" />
     <Compile Include="ViewModels\ProtocolManagerViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderProduct.cs" />
     <Compile Include="ViewModels\Recording\SelectableChannelViewModel.cs" />
     <Compile Include="ViewModels\TaskbarItemInfoViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerEditorViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
+    <Compile Include="Views\AppSettings\ApplicationSettingsWindow.xaml.cs">
+      <DependentUpon>ApplicationSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppSettings\SystemSettings.xaml.cs">
+      <DependentUpon>SystemSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppSettings\RecordingSettings.xaml.cs">
+      <DependentUpon>RecordingSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppSettings\TriggerSettings.xaml.cs">
+      <DependentUpon>TriggerSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Behaviors\GridViewColumnResize.cs" />
     <Compile Include="Views\Behaviors\SetPropertyAction.cs" />
     <Compile Include="Views\Behaviors\TimeSpanTextBoxBehaviour.cs" />
-    <Compile Include="Models\Metadata\ChoicesConstraint.cs" />
     <Compile Include="Views\Controls\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\PathTrimmingTextBlock.cs" />
+    <Compile Include="Views\Controls\SubsystemControl.cs" />
+    <Compile Include="Views\Controls\Visualization\Audio\IWaveFormRenderer.cs" />
+    <Compile Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml.cs">
+      <DependentUpon>D3SpectrumAnalyzer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Core\BaseAxis.cs" />
+    <Compile Include="Views\Controls\Visualization\Core\BaseChart.cs" />
+    <Compile Include="Views\Controls\Visualization\Core\XAxis.cs" />
+    <Compile Include="Views\Controls\Visualization\Core\YAxis.cs" />
+    <Compile Include="Views\Controls\Visualization\Data\LineChart.xaml.cs">
+      <DependentUpon>LineChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Data\BarChart.xaml.cs">
+      <DependentUpon>BarChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Overlay\RuleOfThirdsOverlayControl.xaml.cs">
+      <DependentUpon>RuleOfThirdsOverlayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Overlay\BullseyeOverlayControl.xaml.cs">
+      <DependentUpon>BullseyeOverlayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Overlay\CrosshairOverlayControl.xaml.cs">
+      <DependentUpon>CrosshairOverlayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml.cs">
+      <DependentUpon>VideoStreamControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Audio\PolygonWaveFormControl.xaml.cs">
+      <DependentUpon>PolygonWaveFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Audio\PolylineWaveFormControl.xaml.cs">
+      <DependentUpon>PolylineWaveFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Audio\SpectrumAnalyzer.xaml.cs">
+      <DependentUpon>SpectrumAnalyzer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Visualization\Audio\WaveFormControl.xaml.cs">
+      <DependentUpon>WaveFormControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Converters\MathConverter.cs" />
     <Compile Include="Views\Converters\PackIconImageSourceConverter.cs" />
     <Compile Include="Views\MediaSourceViews\MediaSourceConfigView.xaml.cs">
       <DependentUpon>MediaSourceConfigView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MetadataViews\ChoicesConstraintEditorDataTemplateSelector.cs" />
     <Compile Include="Views\MetadataViews\ItemDefinitionEditor.xaml.cs">
       <DependentUpon>ItemDefinitionEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Metadata\MetadataDefinitionCollection.cs" />
     <Compile Include="Models\Metadata\MetadataItemDefinition.cs" />
-    <Compile Include="Views\MetadataViews\ChoicesConstraintEditorDataTemplateSelector.cs" />
     <Compile Include="Views\MetadataViews\MetadataEditorWindow.xaml.cs">
       <DependentUpon>MetadataEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MetadataViews\MetadataItemValueStringConverter.cs" />
+    <Compile Include="Views\MetadataViews\MetadataList2.xaml.cs">
+      <DependentUpon>MetadataList2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MetadataViews\MetadataList.xaml.cs">
       <DependentUpon>MetadataList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MetadataViews\MetadataItemEditorDataTemplateSelector.cs" />
-    <Compile Include="Views\MetadataViews\MetadataItemDataTemplateSelector.cs" />
     <Compile Include="Views\MetadataViews\MetadataGrid.xaml.cs">
       <DependentUpon>MetadataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Metadata\MetadataViewModel.cs" />
-    <Compile Include="Models\Metadata\RangeConstraint.cs" />
     <Compile Include="Models\Metadata\Rules\BaseRule.cs" />
-    <Compile Include="Models\Metadata\Rules\RangeRule.cs" />
     <Compile Include="Models\Metadata\Rules\RequiredRule.cs" />
     <Compile Include="Views\Controls\PropertyInspector\ComplexPropertyItem.cs" />
     <Compile Include="Views\Controls\PropertyInspector\PropertyCollection.cs" />
@@ -297,12 +446,6 @@
     <Compile Include="ViewModels\Recording\RecorderEditorViewModel.cs" />
     <Compile Include="ViewModels\Recording\RecorderPinViewModel.cs" />
     <Compile Include="ViewModels\ThemeViewModel.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml.cs">
-      <DependentUpon>LineSpectrum.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\ColorStreamViewer.xaml.cs">
-      <DependentUpon>ColorStreamViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Controls\FileChooser.xaml.cs">
       <DependentUpon>FileChooser.xaml</DependentUpon>
     </Compile>
@@ -349,19 +492,11 @@
     <Compile Include="Models\Acquisition\MediaBus.cs" />
     <Compile Include="Models\Acquisition\MediaSource.cs" />
     <Compile Include="Models\Acquisition\MediaSourceConfig.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\BasicSpectrumProvider.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\GradientCalculator.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\ISpectrumProvider.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\LineSpectrum.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\ScalingStrategy.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\SpectrumBase.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum\VoicePrint3DSpectrum.cs" />
     <Compile Include="Models\Management\MediaSettingsWriter.cs" />
     <Compile Include="Models\Recording\MediaWriter.cs" />
     <Compile Include="Models\Management\Protocol.cs" />
     <Compile Include="Models\Performance\FrameRateCounter.cs" />
     <Compile Include="Models\Core\ObservableObject.cs" />
-    <Compile Include="ViewModels\MediaSources\AudioChannelViewModel.cs" />
     <Compile Include="ViewModels\Commands\BaseCommandLibrary.cs" />
     <Compile Include="ViewModels\Commands\StartRecordingCommand.cs" />
     <Compile Include="ViewModels\Commands\EditRecorderCommand.cs" />
@@ -374,7 +509,6 @@
     <Compile Include="ViewModels\MediaSources\ChannelViewModel.cs" />
     <Compile Include="ViewModels\MediaSources\MediaSourceViewModel.cs" />
     <Compile Include="ViewModels\MoSeqAcquireViewModel.cs" />
-    <Compile Include="Views\Controls\AudioSpectrum.cs" />
     <Compile Include="Views\MediaSourceViews\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
@@ -386,6 +520,9 @@
     </Compile>
     <Compile Include="Views\RecorderViews\RecorderProgress.xaml.cs">
       <DependentUpon>RecorderProgress.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecorderViews\RecordingError.xaml.cs">
+      <DependentUpon>RecordingError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
@@ -412,6 +549,9 @@
     </Compile>
     <Compile Include="Views\SystemInfo\SystemMonitorItemViewModel.cs" />
     <Compile Include="Views\SystemInfo\SystemMonitorViewModel.cs" />
+    <Compile Include="Views\TriggerViews\TriggerEditorWindow.xaml.cs">
+      <DependentUpon>TriggerEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TriggerViews\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
     </Compile>
@@ -430,11 +570,19 @@
     <Compile Include="Views\ThemeSettingsDialog.xaml.cs">
       <DependentUpon>ThemeSettingsDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\Controls\AudioSpectrum\LineSpectrum.xaml">
+    <Page Include="Views\AppSettings\ApplicationSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\ColorStreamViewer.xaml">
+    <Page Include="Views\AppSettings\SystemSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AppSettings\RecordingSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AppSettings\TriggerSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -445,6 +593,50 @@
     <Page Include="Views\Controls\FileChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Audio\D3SpectrumAnalyzer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Data\LineChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Data\BarChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Overlay\RuleOfThirdsOverlayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Overlay\BullseyeOverlayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Overlay\CrosshairOverlayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Video\VideoStreamControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Audio\PolygonWaveFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Audio\PolylineWaveFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Audio\SpectrumAnalyzer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Visualization\Audio\WaveFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MediaSourceViews\MediaSourceConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -461,6 +653,10 @@
     <Page Include="Views\MetadataViews\MetadataEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MetadataViews\MetadataList2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MetadataViews\MetadataList.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -506,6 +702,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RecorderViews\RecordingError.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Splash.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -527,6 +727,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PerformanceMonitor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TriggerViews\TriggerEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -569,6 +773,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.de.resx" />
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.es.resx" />
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.fr.resx" />
+    <EmbeddedResource Include="Models\Utility\Random\Resources\ExceptionMessages.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -588,6 +796,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\MediaSources\Augmentation\" />
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>

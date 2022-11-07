@@ -16,6 +16,7 @@ using MoSeqAcquire.ViewModels.Recording;
 using MoSeqAcquire.ViewModels.Triggers;
 using MoSeqAcquire.Views;
 using MoSeqAcquire.Views.Controls;
+using Serilog;
 
 namespace MoSeqAcquire
 {
@@ -25,17 +26,28 @@ namespace MoSeqAcquire
     public partial class App : Application
     {
         protected WaitingWindowManager loading;
+        public ILogger Log;
 
         public App()
         {
+            this.Log = Serilog.Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File("logs\\app.log", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            this.Log.Information("Starting up application");
+
             this.Services = ConfigureServices();
+
             this.Startup += this.StartupHandler;
             this.loading = new WaitingWindowManager(typeof(Splash));
             this.loading.BeginWaiting();
 
-
+            
             foreach (var p in Settings.Default.PluginPaths)
             {
+                this.Log.Information("Registering pluign path {plugin_path}", p);
                 RegisterProbePath(p);
             }
 
@@ -73,6 +85,7 @@ namespace MoSeqAcquire
             }
             catch (Exception ex)
             {
+                this.Log.Error(ex, "Encountered exception at highest level");
                 var m = "";// ex.Message;
                 var exc = ex;
                 while (exc != null)
@@ -80,6 +93,7 @@ namespace MoSeqAcquire
                     m += "\n\n" + exc.Message;
                     exc = exc.InnerException;
                 }
+                
                 MessageBox.Show(m);
                 MessageBox.Show(ex.StackTrace);
             }

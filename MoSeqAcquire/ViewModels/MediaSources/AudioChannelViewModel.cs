@@ -7,119 +7,83 @@ using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CSCore.DSP;
 using MoSeqAcquire.Models.Acquisition;
-using WinformsVisualization.Visualization;
+using MoSeqAcquire.ViewModels.MediaSources.Visualization;
+using MoSeqAcquire.ViewModels.MediaSources.Visualization.Audio;
+using NAudio.Wave;
 
 namespace MoSeqAcquire.ViewModels.MediaSources
 {
     public class AudioChannelViewModel : ChannelViewModel
     {
-        protected FftSize fftSize = FftSize.Fft4096;
-        protected BasicSpectrumProvider spectrumProvider;
-        protected LineSpectrum __lineSpectrum;
-        protected RenderTargetBitmap __lineSpectrumBitmap;
-        protected VoicePrint3DSpectrum __voicePrint3DSpectrum;
-        protected RenderTargetBitmap __voicePrint3DSpectrumBitmap;
-
-        protected long framecount;
 
         public AudioChannelViewModel(Channel channel) : base(channel)
         {
-            //this.VisualHost = new AudioVisualHost();
-            this.spectrumProvider = new BasicSpectrumProvider(1, 16000, fftSize);
-            this.__lineSpectrum = new LineSpectrum(fftSize)
-            {
-                SpectrumProvider = spectrumProvider,
-                UseAverage = true,
-                BarCount = 50,
-                BarSpacing = 2,
-                IsXLogScale = true,
-                ScalingStrategy = ScalingStrategy.Sqrt
-            };
-            this.__voicePrint3DSpectrum = new VoicePrint3DSpectrum(fftSize)
-            {
-                SpectrumProvider = spectrumProvider,
-                UseAverage = false,
-                PointCount = 200,
-                IsXLogScale = true,
-                ScalingStrategy = ScalingStrategy.Sqrt,
-            };
+            
+            this.RegisterViewPlugin(new SpectrumAnalyzerVisualization());
+            this.RegisterViewPlugin(new D3SpectrumAnalyzerVisualization());
+            this.RegisterViewPlugin(new PolygonWaveFormVisualization());
+            this.SetChannelViewCommand.Execute(this.AvailableViews.First());
+
         }
-        public BitmapSource LineSpectrum { get => this.__lineSpectrumBitmap; }
-        public BitmapSource VoicePrintSpectrum { get => this.__voicePrint3DSpectrumBitmap; }
 
-        public BasicSpectrumProvider SpectrumProvider { get => this.spectrumProvider; }
+        private BufferedWaveProvider provider;
+        private SampleAggregator sampleProvider;
+        /*public override void BindChannel()
+        {
+            var meta = this.channel.Metadata as AudioChannelMetadata;
 
-        private float[] __buffer;
+            //if (meta.SampleFormat == SampleFormat.)
+
+            var format = WaveFormat.CreateIeeeFloatWaveFormat((int)meta.SampleRate, meta.Channels);
+            this.provider = new BufferedWaveProvider(format)
+            {
+                DiscardOnBufferOverflow = true
+            };
+            this.sampleProvider = new SampleAggregator(this.provider.ToSampleProvider())
+            {
+                PerformFFT = true,
+                NotificationCount = (int)meta.TargetFramesPerSecond / 100
+            };
+            this.sampleProvider.FftCalculated += SampleProvider_FftCalculated;
+            this.sampleProvider.MaximumCalculated += SampleProvider_MaximumCalculated;
+            
+            MediaBus.Instance.Subscribe(bc => bc.Channel == this.channel, new ActionBlock<ChannelFrame>(frame => 
+            {
+                this.provider.AddSamples((byte[])frame.FrameData, 0, frame.Metadata.TotalBytes);
+                this.sampleProvider.Read(new float[frame.Metadata.TotalBytes / 4], 0, frame.Metadata.TotalBytes / 4);
+                this.Performance.Increment();
+            }, new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() }));
+        }*/
         public override void BindChannel()
         {
-            MediaBus.Instance.Subscribe(
-                bc => bc.Channel == this.channel,
-                new ActionBlock<ChannelFrame>(frame =>
+            var meta = this.channel.Metadata as AudioChannelMetadata;
+
+            var sampAgg = new SampleAggregatorDataFlow();
+            
+            var transform = new TransformManyBlock<ChannelFrame, SampleData>((Func<ChannelFrame, IEnumerable<SampleData>>) sampAgg.ProduceSample);
+            var update = new ActionBlock<SampleData>(sample =>
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
-                    {
-                        var nsamples = frame.FrameData.Length / 2;
-                        if(this.__buffer == null || this.__buffer.Length != nsamples)
-                        {
-                            this.__buffer = new float[nsamples];
-                        }
-                        for (int i=0; i < nsamples; i++)
-                        {
-                            this.__buffer[i] = BitConverter.ToInt16((byte[])frame.FrameData, i*2) / 32768f;
-                        }
-                        spectrumProvider.Add(this.__buffer, nsamples);
+                    
+                    (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin).ProcessSample(sample);
+                    this.Performance.Increment();
+                },
+                new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext(), EnsureOrdered = true });
+            transform.LinkTo(update);
 
-                        this.EnsureBitmaps();
-                        float xpos = (float)this.framecount % this.__voicePrint3DSpectrumBitmap.PixelWidth;
-                        this.__voicePrint3DSpectrum.CreateVoicePrint3D(this.__voicePrint3DSpectrumBitmap, xpos, Colors.Black);
-                        this.__lineSpectrum.UpdateVisual();
-
-                        this.NotifyPropertyChanged("LineSpectrum");
-                        this.NotifyPropertyChanged("VoicePrintSpectrum");
-                        this.framecount++;
-                        this.Performance.Increment();
-                    }));
-                }));
+            MediaBus.Instance.Subscribe(bc => bc.Channel == this.channel, transform);
+            
         }
-        protected void EnsureBitmaps()
+
+        private void SampleProvider_MaximumCalculated(object sender, MaxSampleEventArgs e)
         {
-            if (this.__lineSpectrumBitmap == null)
-            {
-                this.__lineSpectrumBitmap = new RenderTargetBitmap(300, 100, 96, 96, PixelFormats.Pbgra32);
-            }
-            if (this.__voicePrint3DSpectrumBitmap == null)
-            {
-                this.__voicePrint3DSpectrumBitmap = new RenderTargetBitmap(300, 100, 96, 96, PixelFormats.Pbgra32);
-            }
+            (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin)?.OnMaxCalculated(e.MinSample, e.MaxSample);
         }
-        
+
+        private void SampleProvider_FftCalculated(object sender, FftEventArgs e)
+        {
+            (this.SelectedView.VisualizationPlugin as IAudioVisualizationPlugin)?.OnFftCalculated(e.Result);
+        }
     }
 
-    /*public class AudioVisualHost : FrameworkElement
-    {
-        private readonly VisualCollection _children;
-        public AudioVisualHost()
-        {
-            this._children = new VisualCollection(this);
-        }
-        public void AddChild(Visual visual)
-        {
-            this._children.Add(visual);
-        }
-        // Provide a required override for the VisualChildrenCount property.
-        protected override int VisualChildrenCount => _children.Count;
-
-        // Provide a required override for the GetVisualChild method.
-        protected override Visual GetVisualChild(int index)
-        {
-            if (index < 0 || index >= _children.Count)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            return _children[index];
-        }
-    }*/
 }

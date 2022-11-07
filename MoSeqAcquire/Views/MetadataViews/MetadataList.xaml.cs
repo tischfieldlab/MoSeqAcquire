@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using MoSeqAcquire.Views.Controls;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace MoSeqAcquire.Views.Metadata
@@ -7,7 +9,7 @@ namespace MoSeqAcquire.Views.Metadata
     /// <summary>
     /// Interaction logic for PropertyView.xaml
     /// </summary>
-    public partial class MetadataList : UserControl
+    public partial class MetadataList : SubsystemControl
     {
         public MetadataList()
         {
@@ -21,6 +23,10 @@ namespace MoSeqAcquire.Views.Metadata
             if (e.OriginalSource.GetType() == typeof(DataGridCell))
             {
                 cell = e.OriginalSource as DataGridCell;
+            }
+            else if(e.OriginalSource.GetType() == typeof(Hyperlink))
+            {
+                return;
             }
             else
             {
@@ -56,12 +62,10 @@ namespace MoSeqAcquire.Views.Metadata
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(prop); i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild((prop), i) as DependencyObject;
-                if (child == null)
+                if (!(VisualTreeHelper.GetChild((prop), i) is DependencyObject child))
                     continue;
 
-                T castedProp = child as T;
-                if (castedProp != null)
+                if (child is T castedProp)
                     return castedProp;
 
                 castedProp = GetFirstChildByType<T>(child);
@@ -80,8 +84,7 @@ namespace MoSeqAcquire.Views.Metadata
             if (parentObject == null) return null;
 
             //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if (parent != null)
+            if (parentObject is T parent)
                 return parent;
             else
                 return GetParentByType<T>(parentObject);

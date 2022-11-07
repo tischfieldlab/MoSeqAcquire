@@ -11,12 +11,17 @@ namespace MoSeqAcquire.Views.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return this.Convert(value, targetType);
+            return value;
+            //return this.Convert(value, targetType);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return this.Convert(value, targetType);
+            //value = this.Convert(value, targetType);
+            if (string.IsNullOrEmpty(value.ToString()))
+                return null;
+
+            return value;
         }
 
         protected object Convert(object value, Type targetType)

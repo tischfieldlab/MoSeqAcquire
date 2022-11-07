@@ -15,9 +15,11 @@ namespace MoSeqAcquire.Views.SystemInfo
             this.Title = "Free RAM";
             this.Icon = MaterialDesignThemes.Wpf.PackIconKind.Memory;
 
-            this.counter = new PerformanceCounter();
-            this.counter.CategoryName = "Memory";
-            this.counter.CounterName = "Available MBytes";
+            this.counter = new PerformanceCounter
+            {
+                CategoryName = "Memory",
+                CounterName = "Available MBytes"
+            };
             this.counter.NextValue();
         }
         public override void Update()
@@ -25,7 +27,7 @@ namespace MoSeqAcquire.Views.SystemInfo
             this.PercentUsage = this.counter.NextValue() / 1000;
             this.StatusText = this.PercentUsage.ToString("F1") + "GB Free";
 
-            //Alert if there is less free CPU time  than user configured threshold
+            //Alert if there is less free RAM  than user configured threshold
             this.IsAlert = this.PercentUsage <= Properties.Settings.Default.RamUsageWarningThreshold;
         }
     }

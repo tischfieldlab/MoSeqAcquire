@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,26 +10,57 @@ using System.Windows.Data;
 using MoSeqAcquire.Models.Acquisition;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.ViewModels.MediaSources;
+using MvvmValidation;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
-    public abstract class RecorderPinViewModel : BaseViewModel
+    public abstract class RecorderPinViewModel : BaseViewModel, INotifyDataErrorInfo
     {
         protected MediaWriterPin pin;
         protected ObservableCollection<ChannelViewModel> selectedChannels;
 
-        public RecorderPinViewModel(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels)
+        public RecorderPinViewModel(MediaWriterPin Pin)
         {
             this.pin = Pin;
+
             this.selectedChannels = new ObservableCollection<ChannelViewModel>();
             this.SelectedChannels = new ReadOnlyObservableCollection<ChannelViewModel>(this.selectedChannels);
-            this.selectedChannels.CollectionChanged += (s, e) => this.NotifyPropertyChanged();
-            this.AvailableChannels = new CollectionViewSource { Source = AvailableChannels }.View;
-            this.AvailableChannels.Filter = this.FilterAvailableChannels;
+            this.selectedChannels.CollectionChanged += SelectedChannels_CollectionChanged;
+
+            this.AvailableChannels = new AvailableRecordingChannelsProvider();
+            this.AvailableChannels.View.Filter = this.FilterAvailableChannels;
+
+            this.RegisterRules();
+        }
+
+        private void SelectedChannels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            e.NewItems?.Cast<ChannelViewModel>().ForEach(cvm => cvm.PropertyChanged += SelectedChannel_PropertyChanged);
+            e.OldItems?.Cast<ChannelViewModel>().ForEach(cvm => cvm.PropertyChanged -= SelectedChannel_PropertyChanged);
+            this.NotifyPropertyChanged();
+        }
+
+        private void SelectedChannel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.NotifyPropertyChanged();
+        }
+
+        protected void RegisterRules()
+        {
+            NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(this.Validator);
+            this.PropertyChanged += (s, e) => { Validator.ValidateAll(); };
+            Validator.AddRule(() =>
+            {
+                foreach (var sc in this.SelectedChannels) {
+                    if (!sc.Enabled)
+                        return RuleResult.Invalid($"Channel {sc.FullName} is not enabled.");
+                }
+                return RuleResult.Valid();
+            });
         }
         public MediaType MediaType { get => this.pin.MediaType; }
         public string PinName { get => this.pin.Name; }
-        public ICollectionView AvailableChannels { get; protected set; }
+        public AvailableRecordingChannelsProvider AvailableChannels { get; protected set; }
 
         public ReadOnlyObservableCollection<ChannelViewModel> SelectedChannels
         {
@@ -45,16 +77,43 @@ namespace MoSeqAcquire.ViewModels.Recording
             return scvm.Channel.Channel.MediaType == this.MediaType;
         }
 
-        public static RecorderPinViewModel Factory(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels)
+        private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; set; }
+        public IEnumerable GetErrors(string propertyName)
+        {
+            if (propertyName == null)
+            {
+                ValidationResult result = this.Validator.GetResult();
+                if (result.IsValid)
+                    return (IEnumerable)Enumerable.Empty<string>();
+                return (IEnumerable)new string[1]
+                {
+                    result.ToString()
+                };
+            }
+            return NotifyDataErrorInfoAdapter.GetErrors(propertyName);
+        }
+
+        public bool HasErrors
+        {
+            get { return NotifyDataErrorInfoAdapter.HasErrors; }
+        }
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged
+        {
+            add { NotifyDataErrorInfoAdapter.ErrorsChanged += value; }
+            remove { NotifyDataErrorInfoAdapter.ErrorsChanged -= value; }
+        }
+
+        public static RecorderPinViewModel Factory(MediaWriterPin Pin)
         {
             RecorderPinViewModel pinvm = null;
             switch (Pin.Capacity)
             {
                 case ChannelCapacity.Single:
-                    pinvm = new SingleCapacityRecorderPin(Pin, AvailableChannels);
+                    pinvm = new SingleCapacityRecorderPin(Pin);
                     break;
                 case ChannelCapacity.Multiple:
-                    pinvm = new MultipleCapacityRecorderPin(Pin, AvailableChannels);
+                    pinvm = new MultipleCapacityRecorderPin(Pin);
                     break;
             }
             return pinvm;
@@ -64,7 +123,7 @@ namespace MoSeqAcquire.ViewModels.Recording
     {
         private ChannelViewModel selectedChannel;
 
-        public SingleCapacityRecorderPin(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels) : base(Pin, AvailableChannels)
+        public SingleCapacityRecorderPin(MediaWriterPin Pin) : base(Pin)
         {
             this.SelectedChannel = AvailableChannels.Where(scvm => scvm.Channel.Channel.Equals(pin.Channel))
                                                     .Select(scvm => scvm.Channel)
@@ -87,7 +146,7 @@ namespace MoSeqAcquire.ViewModels.Recording
     }
     public class MultipleCapacityRecorderPin : RecorderPinViewModel
     {
-        public MultipleCapacityRecorderPin(MediaWriterPin Pin, ObservableCollection<SelectableChannelViewModel> AvailableChannels) : base(Pin, AvailableChannels)
+        public MultipleCapacityRecorderPin(MediaWriterPin Pin) : base(Pin)
         {
             AvailableChannels.ForEach(scvm => scvm.PropertyChanged += Scvm_PropertyChanged);
         }

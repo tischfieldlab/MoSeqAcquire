@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Views;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
@@ -23,7 +24,12 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.Triggers.AddTrigger();
+            //this.ViewModel.Triggers.AddTrigger();
+            var dialog = new TriggerEditorWindow
+            {
+                DataContext = new TriggerEditorViewModel(this.ViewModel, null)
+            };
+            dialog.ShowDialog();
         }
     }
 }

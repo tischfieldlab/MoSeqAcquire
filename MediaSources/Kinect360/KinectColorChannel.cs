@@ -18,7 +18,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             this.DeviceName = "Microsoft Kinect";
             Kinect.Sensor.ColorFrameReady += Sensor_ColorFrameReady;
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(byte);
         }
 
         public override ChannelMetadata Metadata
@@ -37,6 +36,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     case ColorImageFormat.YuvResolution640x480Fps15:
                         return new VideoChannelMetadata()
                         {
+                            DataType = typeof(byte),
                             Width = 640,
                             Height = 480,
                             TargetFramesPerSecond = 30,
@@ -46,6 +46,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     case ColorImageFormat.InfraredResolution640x480Fps30:
                         return new VideoChannelMetadata()
                         {
+                            DataType = typeof(short),
                             Width = 640,
                             Height = 480,
                             TargetFramesPerSecond = 30,
@@ -55,6 +56,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     case ColorImageFormat.RgbResolution1280x960Fps12:
                         return new VideoChannelMetadata()
                         {
+                            DataType = typeof(byte),
                             Width = 1280,
                             Height = 960,
                             TargetFramesPerSecond = 12,
@@ -65,6 +67,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     default:
                         return new VideoChannelMetadata()
                         {
+                            DataType = typeof(byte),
                             Width = 640,
                             Height = 480,
                             TargetFramesPerSecond = 30,

@@ -21,24 +21,25 @@ namespace MoSeqAcquire.Models.Acquisition
 
     public abstract class Channel
     {
-        public Channel() {
-            var blockoptions = new DataflowBlockOptions()
+        protected Channel() {
+            var blockOptions = new DataflowBlockOptions()
             {
                 EnsureOrdered = true
             };
-            this.Buffer = new BufferBlock<ChannelFrame>(blockoptions);
+            this.Buffer = new BufferBlock<ChannelFrame>(blockOptions);
             this.Performance = new TotalFrameCounter();
             this.Performance.Start();
         }
         public MediaType MediaType { get; protected set; }
         public string Name { get; set; }
         public string DeviceName { get; set; }
-        public string FullName { get => this.DeviceName + " - " + this.Name; }
+        public string FullName => this.DeviceName + " - " + this.Name;
         public virtual bool Enabled { get; set; }
         public BufferBlock<ChannelFrame> Buffer { get; protected set; }
-        public Type DataType { get; protected set; }
+        //public Type DataType { get; protected set; }
         public TotalFrameCounter Performance { get; protected set; }
         public abstract ChannelMetadata Metadata { get; }
+
 
         public delegate void FrameCapturedHandler(object sender, EventArgs e);
         public event FrameCapturedHandler FrameCaptured;
@@ -49,20 +50,5 @@ namespace MoSeqAcquire.Models.Acquisition
             this.FrameCaptured?.Invoke(this, new EventArgs());
             this.Performance.Increment();
         }
-    }
-
-    public class ChannelMetadata
-    {
-
-    }
-
-    public class VideoChannelMetadata : ChannelMetadata
-    {
-        public double TargetFramesPerSecond { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int BytesPerPixel { get; set; }
-        public PixelFormat PixelFormat { get; set; }
-        public int FramesPerSecond { get; set; }
     }
 }

@@ -23,7 +23,6 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
             this.Name = "Color Channel";
             this.DeviceName = "Microsoft Kinect XBOX One";
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(byte);
 
             this.colorFrameReader = this.Kinect.Sensor.ColorFrameSource.OpenReader();
             this.colorFrameReader.FrameArrived += ColorFrameReader_FrameArrivedHandler;
@@ -33,12 +32,12 @@ namespace MoSeqAcquire.Models.Acquisition.KinectXboxOne
         {
             get
             {
-
                 return new VideoChannelMetadata()
                 {
+                    DataType = typeof(byte),
                     Width = colorFrameReader.ColorFrameSource.FrameDescription.Width,
                     Height = colorFrameReader.ColorFrameSource.FrameDescription.Height,
-                    FramesPerSecond = 30,
+                    TargetFramesPerSecond = 30.0,
                     BytesPerPixel = 4,
                     PixelFormat = PixelFormats.Bgra32
                 };

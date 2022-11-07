@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoSeqAcquire.Views.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace MoSeqAcquire.Views.RecorderViews
     /// <summary>
     /// Interaction logic for RecorderItemsView.xaml
     /// </summary>
-    public partial class RecorderItemsView : UserControl
+    public partial class RecorderItemsView : SubsystemControl
     {
         public RecorderItemsView()
         {

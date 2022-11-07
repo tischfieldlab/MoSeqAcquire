@@ -120,9 +120,9 @@ namespace MoSeqAcquire.Models.Recording.BinaryDataWriter
                     Buffer.BlockCopy(frame.FrameData, 0, this.stupidByteBuffer, 0, frame.Metadata.TotalBytes);
                     this.writer.Write(this.stupidByteBuffer);
                 }
-                catch
+                catch(Exception e)
                 {
-                    var x = 1;
+                    Console.Write(e.Message);
                 }
             }
             else

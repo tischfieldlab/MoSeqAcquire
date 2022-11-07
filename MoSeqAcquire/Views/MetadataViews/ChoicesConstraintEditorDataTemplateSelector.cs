@@ -11,15 +11,14 @@ namespace MoSeqAcquire.Views.Metadata
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is ChoicesConstraintChoice)
+            if (item is ChoicesRuleChoice)
             {
-                FrameworkElement elemnt = container as FrameworkElement;
-                ChoicesConstraintChoice ccc = item as ChoicesConstraintChoice;
-                MetadataItemDefinition pi = ccc.Owner; 
+                /*
+                ChoicesRuleChoice ccc = item as ChoicesRuleChoice;
+                //MetadataItemDefinition pi = ccc.Owner; 
                 Type pit = pi.ValueType;
 
-                PropertyChangedEventHandler lambda = null;
-                lambda = (o, args) =>
+                void lambda(object o, PropertyChangedEventArgs args)
                 {
                     if (args.PropertyName == nameof(pi.ValueType))
                     {
@@ -28,21 +27,25 @@ namespace MoSeqAcquire.Views.Metadata
                         cp.ContentTemplateSelector = null;
                         cp.ContentTemplateSelector = this;
                     }
-                };
-                pi.PropertyChanged += lambda;
+                }
+
+                pi.PropertyChanged += lambda;*/
+
+                FrameworkElement elemnt = container as FrameworkElement;
+                Type pit = (item as ChoicesRuleChoice).DataType;
 
 
                 if (pit.Equals(typeof(bool)))
                 {
                     return elemnt.FindResource(elemnt.Name+"CheckboxEditor") as DataTemplate;
                 }
-                else if (pit.IsEnum)
-                {
-                    return elemnt.FindResource(elemnt.Name + "EnumComboBoxEditor") as DataTemplate;
-                }
                 else if (pit.Equals(typeof(int)) || pit.Equals(typeof(float)) || pit.Equals(typeof(double)))
                 {
                     return elemnt.FindResource(elemnt.Name + "NumericEditor") as DataTemplate;
+                }
+                else if (pit.Equals(typeof(DateTime)))
+                {
+                    return elemnt.FindResource(elemnt.Name + "DateTimeEditor") as DataTemplate;
                 }
                 else
                 {

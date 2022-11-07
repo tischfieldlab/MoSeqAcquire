@@ -40,9 +40,15 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
                 {
                     return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IDefaultInfo).Default;
                 }
+                //there is no defined default value after here. 
+                // So lets try to avoid nulls if we can, and find a reasonable default for value types
                 if (this.ValueType.IsValueType)
                 {
                     return Activator.CreateInstance(this.ValueType);
+                }
+                if (this.ValueType.Equals(typeof(String)))
+                {
+                    return string.Empty;
                 }
                 return null;
             }
@@ -170,6 +176,11 @@ namespace MoSeqAcquire.Views.Controls.PropertyInspector
                 {
                     return (this.sourceObject.GetType().GetMethod(rma.MethodName).Invoke(this.sourceObject, null) as IRangeInfo).Step;
                 }
+
+                if (this.propertyInfo.PropertyType == typeof(double))
+                    return 0.1;
+
+
                 return null;
             }
         }

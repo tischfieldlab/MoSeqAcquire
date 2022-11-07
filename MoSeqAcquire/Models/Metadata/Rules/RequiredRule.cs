@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Metadata.Rules
@@ -16,6 +17,9 @@ namespace MoSeqAcquire.Models.Metadata.Rules
 
         public override RuleResult Validate(MetadataItemDefinition Item)
         {
+            if (Item.ValueType.DataType.Equals(typeof(Boolean)))
+                return (bool)Item.Value ? RuleResult.Valid() : RuleResult.Invalid("Value must be true");
+
             if (string.IsNullOrWhiteSpace(Item.Value as string))
                 return RuleResult.Invalid("A value is required.");
 

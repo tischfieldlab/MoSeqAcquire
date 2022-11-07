@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Metadata;
@@ -14,9 +15,18 @@ namespace MoSeqAcquire.Models.Recording
         public RecordingSummary()
         {
             this.Recorders = new List<RecordingDevice>();
+
+            this.SystemIdentifier = $"{System.Environment.UserName}@{System.Environment.MachineName}";
+            this.StartTime = DateTime.UtcNow;
+            this.UUID = Guid.NewGuid();
         }
-        public List<RecordingDevice> Recorders { get; set; }
+        public string SystemIdentifier { get; set; }
+        public DateTime StartTime { get; set; }
+        public Guid UUID { get; set; }
+
         public RecordingMetadataSnapshot Metadata { get; set; }
+        public List<RecordingDevice> Recorders { get; set; }
+        
     }
 
     public class RecordingDevice
@@ -34,6 +44,7 @@ namespace MoSeqAcquire.Models.Recording
     public class RecordingRecord
     {
         public string Filename { get; set; }
+        [XmlArrayItem(ElementName="Channel")]
         public List<string> Channels { get; set; }
     }
 }

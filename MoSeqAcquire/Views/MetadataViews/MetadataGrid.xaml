@@ -27,10 +27,10 @@
         <ListView Grid.Row="1"
               HorizontalContentAlignment="Stretch"
               ItemsSource="{Binding Path=Items}"
-              SelectedItem="{Binding Path=CurrentItem}"
+              SelectionMode="Single"
               materialDesign:DataGridAssist.CellPadding="13 8 8 8"
               materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-            <!--<ListView.Style>
+            <!--SelectedItem="{Binding Path=CurrentItem}"<ListView.Style>
                 <Style TargetType="ListView">
                     <Style.Triggers>
                         <Trigger Property="HasItems" Value="False">
@@ -64,6 +64,9 @@
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                                                 ToolTip="Edit Item Details">
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate />
+                                        </Validation.ErrorTemplate>
                                         <materialDesign:PackIcon Kind="Pencil"  />
                                     </Button>
                                     <Button Height="24" Width="24" Margin="0,0,8,0"
@@ -71,6 +74,9 @@
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                                                 ToolTip="Remove Item">
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate />
+                                        </Validation.ErrorTemplate>
                                         <materialDesign:PackIcon Kind="Delete"  />
                                     </Button>
                                 </StackPanel>
@@ -79,7 +85,7 @@
                     </GridViewColumn>
                     <GridViewColumn Header="Property Name" DisplayMemberBinding="{Binding Path=Name}" />
                     <GridViewColumn Header="Data Type" DisplayMemberBinding="{Binding Path=ValueType.Name}" />
-                    <GridViewColumn Header="Default Value" DisplayMemberBinding="{Binding Path=DefaultValue}" />
+                    <GridViewColumn Header="Default Value" DisplayMemberBinding="{Binding Path=DefaultValue, Converter={StaticResource MetadataItemValueStringConverter}, ConverterParameter=ValueType}" />
                     <GridViewColumn Header="Units" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

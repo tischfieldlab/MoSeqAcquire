@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoSeqAcquire.Models.Metadata.DataTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,16 @@ namespace MoSeqAcquire.ViewModels.Metadata
 {
     public class AvailableTypeViewModel : BaseViewModel
     {
-        protected Type type;
+        protected BaseDataType type;
         protected bool isEnabled;
 
-        public AvailableTypeViewModel(Type type, bool isEnabled = true)
+        public AvailableTypeViewModel(BaseDataType type, bool isEnabled = true)
         {
             this.Type = type;
             this.IsEnabled = isEnabled;
         }
 
-        public Type Type
+        public BaseDataType Type
         {
             get => this.type;
             set => this.SetField(ref type, value);

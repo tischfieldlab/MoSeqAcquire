@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
-using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Utility;
+using MvvmValidation;
 
 namespace MoSeqAcquire.Models.Recording
 {
 
 
-    public abstract class MediaWriter : Component, IMediaWriter
+    public abstract class MediaWriter : MoSeqAcquire.Models.Core.Component, IMediaWriter
     {
         private readonly Dictionary<string, MediaWriterPin> _pins;
         private DateTime _epoch;
@@ -25,6 +27,7 @@ namespace MoSeqAcquire.Models.Recording
             this.Performance = new MediaWriterStats(this.Name);
         }
         public event DestinationBaseResponse RequestDestinationBase;
+
         protected string RequestBaseDestination()
         {
             return this.RequestDestinationBase?.Invoke();
@@ -51,6 +54,8 @@ namespace MoSeqAcquire.Models.Recording
             }
         }
         protected abstract string Ext { get; }
+
+        
 
         public string FormatFilePath(string template)
         {

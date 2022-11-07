@@ -9,6 +9,9 @@
              xmlns:mvrv="clr-namespace:MoSeqAcquire.Views.RecorderViews"
              xmlns:metadata="clr-namespace:MoSeqAcquire.Views.Metadata"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:recording="clr-namespace:MoSeqAcquire.ViewModels.Recording"
+             xmlns:triggers="clr-namespace:MoSeqAcquire.ViewModels.Triggers"
+             xmlns:metadata1="clr-namespace:MoSeqAcquire.ViewModels.Metadata"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -22,6 +25,16 @@
         <conv:ObjectEqualityConverter x:Key="ObjectEqualityConverter" />
         <conv:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" />
         <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
+
+        <DataTemplate DataType="{x:Type recording:RecordingManagerViewModel}">
+            <mvrv:RecorderItemsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type triggers:TriggerManagerViewModel}">
+            <local:TriggerManagerView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type metadata1:MetadataViewModel}">
+            <metadata:MetadataList2 />
+        </DataTemplate>
     </UserControl.Resources>
     <Validation.ErrorTemplate>
         <ControlTemplate />
@@ -36,7 +49,7 @@
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -45,12 +58,27 @@
 
                 <StackPanel Grid.Column="0" Margin="16">
                     <WrapPanel>
-                        <Button Content="Start" Width="100" Command="{Binding Path=Root.Commands.StartRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}"  Margin="8" />
-                        <Button Content="Stop" Width="100" Command="{Binding Path=Root.Commands.StopRecording}" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="8" />
+                        <Button Width="100" Margin="8"
+                                Command="{Binding Path=Root.Commands.StartRecording}" 
+                                Style="{StaticResource MaterialDesignRaisedAccentButton}" >
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="RecordRec" Margin="0,0,8,0" Width="24" Height="24" />
+                                <TextBlock Text="Start" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Width="100" Margin="8"
+                                Command="{Binding Path=Root.Commands.StopRecording}" 
+                                Style="{StaticResource MaterialDesignRaisedAccentButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Stop" Margin="0,0,8,0" Width="24" Height="24" />
+                                <TextBlock Text="Stop" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </WrapPanel>
                     <mvrv:RecorderProgress Margin="0,16,0,0" />
                 </StackPanel>
-                <mvrv:RecorderGeneralSettings Grid.Column="1" Margin="16" />
+                
+                <mvrv:RecorderGeneralSettings Grid.Column="1" Margin="16" HorizontalAlignment="Center" />
 
                 <materialDesign:Snackbar Grid.ColumnSpan="2" Grid.Row="1" 
                                          IsActive="{Binding Path=HasErrors}" 
@@ -66,16 +94,12 @@
             </Grid>
         </materialDesign:Card>
 
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
-        <ScrollViewer Grid.Row="2">
-            <ItemsControl Margin="8" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" >
-                <ItemsControl.ItemsSource>
-                    <CompositeCollection >
-                        <mvrv:RecorderItemsView />
-                        <local:TriggerManagerView DataContext="{Binding Path=Root.Triggers}" />
-                        <metadata:MetadataList />
-                    </CompositeCollection>
-                </ItemsControl.ItemsSource>
+            <ItemsControl ItemsSource="{Binding Path=Root.SubsystemComponents}" 
+                          Margin="8" 
+                          dd:DragDrop.IsDragSource="True" 
+                          dd:DragDrop.IsDropTarget="True" >
             </ItemsControl>
         </ScrollViewer>
     </Grid>

@@ -16,12 +16,41 @@
         <conv:BoolToVisibilityInvertConverter x:Key="BoolToVisibilityInvertConverter" />
         <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     </UserControl.Resources>
-    <ScrollViewer Margin="-8,-9,-8,-8">
+    <ScrollViewer Margin="-8,-9,-8,-8" VerticalScrollBarVisibility="Auto">
         <!--  -->
         <ItemsControl ItemsSource="{Binding MediaSources.Items}"
                       dd:DragDrop.IsDragSource="True"
                       dd:DragDrop.IsDropTarget="True"
+                      dd:DragDrop.DropHandler="{Binding}"
+                      dd:DragDrop.DragHandler="{Binding}"
                       Margin="0,10">
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" 
+                                                       FontStyle="Italic"
+                                                       Margin="8"
+                                                       TextWrapping="Wrap" 
+                                                       TextAlignment="Center">
+                                                No Media Sources have been added yet. Would you like to 
+                                                <Hyperlink Command="{Binding Path=DataContext.Commands.AddMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                           Style="{StaticResource MaterialDesignBody1Hyperlink}" TextDecorations="Underline">
+                                                    add one
+                                                </Hyperlink>?
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Style>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <GroupBox Margin="10,10" Style="{DynamicResource MaterialDesignCardGroupBox}" Header="{Binding}">
@@ -52,6 +81,17 @@
                                             ToolTip="Open Config">
                                         <materialDesign:PackIcon Kind="Settings" />
                                     </Button>
+                                    <materialDesign:PackIcon
+                                          Kind="Camera"
+                                          Height="32"
+                                          Width="32"
+                                          VerticalAlignment="Center" />
+                                    <TextBlock
+                                          Margin="8,0,0,0"
+                                          VerticalAlignment="Center"
+                                          Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                                          Text="{Binding Path=Name}" />
+                                    
                                 </DockPanel>
                             </DataTemplate>
                         </GroupBox.HeaderTemplate>
@@ -69,6 +109,7 @@
                             <ItemsControl ItemsSource="{Binding Channels}"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.DropHandler="{Binding}"
                                           Margin="5">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>

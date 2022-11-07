@@ -17,7 +17,6 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
             this.DeviceName = "Microsoft Kinect";
             Kinect.Sensor.DepthFrameReady += this.Sensor_DepthFrameReady;
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(short);
         }
         public override ChannelMetadata Metadata
         {
@@ -29,6 +28,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     case DepthImageFormat.Resolution80x60Fps30:
                         return new VideoChannelMetadata()
                         {
+                            DataType = typeof(short),
                             Width = 80,
                             Height = 60,
                             TargetFramesPerSecond = 30,
@@ -38,6 +38,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     case DepthImageFormat.Resolution320x240Fps30:
                         return new VideoChannelMetadata()
                         {
+                            DataType = typeof(short),
                             Width = 320,
                             Height = 240,
                             TargetFramesPerSecond = 30,
@@ -48,6 +49,7 @@ namespace MoSeqAcquire.Models.Acquisition.Kinect360
                     default:
                         return new VideoChannelMetadata()
                         {
+                            DataType = typeof(short),
                             Width = 640,
                             Height = 480,
                             TargetFramesPerSecond = 30,
