@@ -22,6 +22,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
 
     public class TriggerViewModel : BaseViewModel
     {
+        protected TriggerBus triggerBus;
         protected MoSeqAcquireViewModel rootViewModel;
         protected string name;
         protected Type triggerType;
@@ -32,8 +33,9 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected string triggerStateMessage;
 
 
-        public TriggerViewModel(MoSeqAcquireViewModel RootViewModel)
+        public TriggerViewModel(MoSeqAcquireViewModel RootViewModel, TriggerBus triggerBus)
         {
+            this.triggerBus = triggerBus;
             this.rootViewModel = RootViewModel;
             this.PropertyChanged += TriggerViewModel_PropertyChanged;
             this.triggerState = TriggerState.None;
@@ -93,7 +95,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 this.trigger.TriggerExecutionFinished -= Trigger_TriggerExecutionFinished;
                 this.trigger.TriggerFaulted -= Trigger_TriggerFaulted;
                 this.TriggerState = TriggerState.None;
-                this.Root.TriggerBus.Unsubscribe(this.triggerType, this.trigger);
+                this.triggerBus.Unsubscribe(this.triggerType, this.trigger);
                 this.isRegistered = false;
             }
         }
@@ -106,7 +108,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
                     this.trigger.TriggerExecutionStarted += Trigger_TriggerExecutionStarted;
                     this.trigger.TriggerExecutionFinished += Trigger_TriggerExecutionFinished;
                     this.trigger.TriggerFaulted += Trigger_TriggerFaulted;
-                    this.Root.TriggerBus.Subscribe(this.triggerType, this.trigger);
+                    this.triggerBus.Subscribe(this.triggerType, this.trigger);
                     this.isRegistered = true;
                     this.TriggerState = TriggerState.Queued;
                 }

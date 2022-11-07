@@ -7,11 +7,58 @@ using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Recording
 {
-    public class BeforeRecordingStartedTrigger : Trigger { }
-    public class AfterRecordingStartedTrigger : Trigger { }
-    public class BeforeRecordingFinishedTrigger : Trigger { }
-    public class AfterRecordingFinishedTrigger : Trigger
+    public class BeforeRecordingStartedTrigger : TriggerEvent {
+
+        public BeforeRecordingStartedTrigger()
+        {
+
+        }
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class AfterRecordingStartedTrigger : TriggerEvent
+    {
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class BeforeRecordingFinishedTrigger : TriggerEvent
+    {
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class AfterRecordingFinishedTrigger : TriggerEvent
     {
         public bool Aborted { get; set; }
+
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

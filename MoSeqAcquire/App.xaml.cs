@@ -6,7 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Properties;
+using MoSeqAcquire.ViewModels;
+using MoSeqAcquire.ViewModels.Commands;
+using MoSeqAcquire.ViewModels.MediaSources;
+using MoSeqAcquire.ViewModels.Recording;
+using MoSeqAcquire.ViewModels.Triggers;
 using MoSeqAcquire.Views;
 using MoSeqAcquire.Views.Controls;
 
@@ -36,6 +43,7 @@ namespace MoSeqAcquire
             //Prevent the computer from entering sleep
             Models.Utility.PowerManagement.StartPreventSleep();
         }
+        public static ServiceProvider ServiceProvider { get; protected set; }
         public static void SetCurrentStatus(String StatusText)
         {
             try
@@ -49,12 +57,10 @@ namespace MoSeqAcquire
         {
             try
             {
-                this.MainWindow = new MainWindow()
-                {
-                    WindowState = WindowState.Maximized,
-                    ShowInTaskbar = true,
-                    ShowActivated = true
-                };
+                
+                App.ServiceProvider = this.ConfigureServices();
+
+                this.MainWindow = App.ServiceProvider.GetRequiredService<MainWindow>();
                 this.MainWindow.Loaded += (s, evt) => { this.loading.EndWaiting(); };
                 this.MainWindow.Show();
             }
@@ -71,6 +77,21 @@ namespace MoSeqAcquire
                 MessageBox.Show(ex.StackTrace);
             }
             //this.MainWindow.Show();
+        }
+
+        protected ServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<MoSeqAcquireViewModel>();
+            services.AddSingleton <TriggerBus>();
+            services.AddSingleton <MediaSourceCollectionViewModel>();
+            services.AddSingleton <RecordingManagerViewModel>();
+            services.AddSingleton <TriggerManagerViewModel>();
+            services.AddSingleton <CommandLibrary>();
+            services.AddSingleton <TaskbarItemInfoViewModel>();
+            services.AddSingleton<MainWindow>();
+            ServiceProvider container = services.BuildServiceProvider();
+            return container;
         }
 
         private static List<String> __privateProbPaths = new List<String>();

@@ -26,15 +26,12 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override async void Execute(object parameter)
         {
-            var view = new ConfirmDialog
+            var confirmVM = new ConfirmDialogViewModel()
             {
-                DataContext = new ConfirmDialogViewModel()
-                {
-                    Title = "Confirm Reset of Values",
-                    Message = "Are you sure you want to reset metadata values to defaults?"
-                }
+                Title = "Confirm Reset of Values",
+                Message = "Are you sure you want to reset metadata values to defaults?"
             };
-            var result = await DialogHost.Show(view, "MainWindowDialogHost");
+            var result = await DialogHost.Show(confirmVM, "MainWindowDialogHost");
 
             if ((bool) result)
             {

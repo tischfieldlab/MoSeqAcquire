@@ -36,12 +36,12 @@ namespace MoSeqAcquire.ViewModels
             ProtocolHelpers.FindComponents(); //preload assemblies here...
 
             App.SetCurrentStatus("Initializing Views....");
-            this.TriggerBus = new TriggerBus();
-            this.MediaSources = new MediaSourceCollectionViewModel();
-            this.Recorder = new RecordingManagerViewModel(this);
-            this.Triggers = new TriggerManagerViewModel(this);
-            this.Commands = new CommandLibrary(this);
-            this.TaskbarItemInfo = new TaskbarItemInfoViewModel(this);
+            //this.TriggerBus = TriggerBus.Instance;
+            //this.MediaSources = new MediaSourceCollectionViewModel();
+            //this.Recorder = new RecordingManagerViewModel(this);
+            //this.Triggers = new TriggerManagerViewModel(this);
+            //this.Commands = new CommandLibrary(this);
+            //this.TaskbarItemInfo = new TaskbarItemInfoViewModel(this);
 
             App.SetCurrentStatus("Loading default protocol....");
             this.Commands.LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
@@ -70,13 +70,13 @@ namespace MoSeqAcquire.ViewModels
             Settings.Default.RecentProtocols.AddRange(this.RecentlyUsedProtocols.ToArray());
             Settings.Default.Save();
         }
-        public TaskbarItemInfoViewModel TaskbarItemInfo { get; protected set; }
-        public CommandLibrary Commands { get; protected set; }
-        public ThemeViewModel Theme { get; protected set; }
-        public TriggerBus TriggerBus { get; protected set; }
-        public MediaSourceCollectionViewModel MediaSources { get; protected set; }
-        public RecordingManagerViewModel Recorder { get; protected set; }
-        public TriggerManagerViewModel Triggers { get; protected set; }
+        //public TaskbarItemInfoViewModel TaskbarItemInfo { get; protected set; }
+        //public CommandLibrary Commands { get; protected set; }
+        //public ThemeViewModel Theme { get; protected set; }
+        //public TriggerBus TriggerBus { get; protected set; }
+        //public MediaSourceCollectionViewModel MediaSources { get; protected set; }
+        //public RecordingManagerViewModel Recorder { get; protected set; }
+        //public TriggerManagerViewModel Triggers { get; protected set; }
         public ObservableCollection<string> RecentlyUsedProtocols { get; protected set; }
 
         public void ForceProtocolLocked()

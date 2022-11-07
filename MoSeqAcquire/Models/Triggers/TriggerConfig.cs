@@ -7,11 +7,16 @@ using MoSeqAcquire.Models.Configuration;
 
 namespace MoSeqAcquire.Models.Triggers
 {
-    public class TriggerConfig : BaseConfiguration
+    public abstract class TriggerConfig : BaseConfiguration
     {
         public TriggerConfig() : base()
         {
             this.ApplyDefaults();
         }
     }
+
+    public abstract class TriggerEventConfig : TriggerConfig { }
+    public abstract class TriggerActionConfig : TriggerConfig { }
+
+
 }

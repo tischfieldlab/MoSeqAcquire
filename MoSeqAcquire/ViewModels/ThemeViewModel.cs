@@ -51,7 +51,9 @@ namespace MoSeqAcquire.ViewModels
             get => this.isDarkMode;
             set
             {
-                this.helper.SetLightDark(value);
+                ITheme theme = this.helper.GetTheme();
+                theme.SetBaseTheme(value ? Theme.Dark : Theme.Light);
+                this.helper.SetTheme(theme);
                 this.SetField(ref this.isDarkMode, value);
             }
         }
@@ -60,7 +62,9 @@ namespace MoSeqAcquire.ViewModels
             get => this.primarySwatch;
             set
             {
-                this.helper.ReplacePrimaryColor(value);
+                ITheme theme = this.helper.GetTheme();
+                theme.SetPrimaryColor(value.PrimaryHues.First().Color);
+                this.helper.SetTheme(theme);
                 this.SetField(ref this.primarySwatch, value);
             }
         }
@@ -69,7 +73,9 @@ namespace MoSeqAcquire.ViewModels
             get => this.accentSwatch;
             set
             {
-                this.helper.ReplaceAccentColor(value);
+                ITheme theme = this.helper.GetTheme();
+                theme.SetPrimaryColor(value.AccentHues.First().Color);
+                this.helper.SetTheme(theme);
                 this.SetField(ref this.accentSwatch, value);
             }
         }

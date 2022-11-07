@@ -11,11 +11,25 @@ namespace MoSeqAcquire.Models.Triggers
     {
         protected Dictionary<Type, SortedSet<TriggerAction>> subscribers;
 
-        public TriggerBus()
+        #region Singleton
+        private static TriggerBus __instance;
+        private TriggerBus()
         {
             this.subscribers = new Dictionary<Type, SortedSet<TriggerAction>>();
         }
-        
+        public static TriggerBus Instance
+        {
+            get
+            {
+                if (__instance == null)
+                {
+                    __instance = new TriggerBus();
+                }
+                return __instance;
+            }
+        }
+        #endregion
+
         public void Subscribe(Type Trigger, TriggerAction triggerAction)
         {
             if (!this.subscribers.ContainsKey(Trigger))
@@ -29,7 +43,7 @@ namespace MoSeqAcquire.Models.Triggers
             this.subscribers[Trigger].Remove(triggerAction);
         }
 
-        public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : Trigger
+        public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : TriggerEvent
         {
             if (this.subscribers.ContainsKey(typeof(TTrigger)))
             {

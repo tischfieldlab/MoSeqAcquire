@@ -47,15 +47,12 @@ namespace MoSeqAcquire.ViewModels.Commands
 
             if (viewModel != null)
             {
-                var view = new ConfirmDialog
+                var confirmVM = new ConfirmDialogViewModel()
                 {
-                    DataContext = new ConfirmDialogViewModel()
-                    {
-                        Title = "Confirm Remove Trigger",
-                        Message = "Are you sure you want to remove this trigger?"
-                    }
+                    Title = "Confirm Remove Trigger",
+                    Message = "Are you sure you want to remove this trigger?"
                 };
-                var result = await DialogHost.Show(view, "MainWindowDialogHost");
+                var result = await DialogHost.Show(confirmVM, "MainWindowDialogHost");
 
                 if ((bool) result)
                 {

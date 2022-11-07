@@ -16,10 +16,10 @@ namespace MoSeqAcquire.Models.Triggers
 
         public bool IsCritical { get; set; }
         public int Priority { get; set; }
-        public TriggerConfig Config { get; protected set; }
-        protected abstract Action<Trigger> Action { get; }
+        public TriggerActionConfig Config { get; protected set; }
+        protected abstract Action<TriggerEvent> Action { get; }
 
-        public void Execute(Trigger Trigger)
+        public void Execute(TriggerEvent Trigger)
         {
             this.TriggerExecutionStarted?.Invoke(this, new TriggerLifetimeEventArgs() { Trigger = Trigger });
             try
@@ -38,7 +38,7 @@ namespace MoSeqAcquire.Models.Triggers
     [Hidden]
     public class ActionTriggerAction : TriggerAction
     {
-        public Action<Trigger> Delegate { get; set; }
-        protected override Action<Trigger> Action => this.Delegate;
+        public Action<TriggerEvent> Delegate { get; set; }
+        protected override Action<TriggerEvent> Action => this.Delegate;
     }
 }

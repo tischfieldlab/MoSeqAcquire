@@ -31,15 +31,12 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             if (parameter != null && parameter is MediaSourceViewModel)
             {
-                var view = new ConfirmDialog
+                var confirmVM = new ConfirmDialogViewModel()
                 {
-                    DataContext = new ConfirmDialogViewModel()
-                    {
-                        Title = "Confirm Remove Source",
-                        Message = "Are you sure you want to remove this media source?"
-                    }
+                    Title = "Confirm Remove Source",
+                    Message = "Are you sure you want to remove this media source?"
                 };
-                var result = await DialogHost.Show(view, "MainWindowDialogHost");
+                var result = await DialogHost.Show(confirmVM, "MainWindowDialogHost");
 
                 if ((bool)result)
                 {

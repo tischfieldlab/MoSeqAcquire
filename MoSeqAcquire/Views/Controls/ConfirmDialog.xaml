@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              >
     <StackPanel Margin="16">
-        <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}"
+        <TextBlock Style="{DynamicResource MaterialDesignHeadline6TextBlock}"
                    Margin="0,0,0,16"
                    Text="{Binding Path=Title}" />
 
@@ -21,9 +21,10 @@
         <StackPanel Margin="0,16,0,0" HorizontalAlignment="Center" Orientation="Horizontal">
 
             <Button Margin="16,0"
-                    Style="{StaticResource MaterialDesignFlatButton}"   
+                    IsEnabled="True"
+                    Style="{DynamicResource MaterialDesignRaisedSecondaryButton}"   
                     IsDefault="True"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Command="materialDesign:DialogHost.CloseDialogCommand"
                     HorizontalAlignment="Center" 
                     Content="YES" >
                 <Button.CommandParameter>
@@ -32,9 +33,9 @@
             </Button>
 
             <Button Margin="16,0"
-                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Style="{DynamicResource MaterialDesignFlatSecondaryButton}"
                     IsCancel="True"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Command="materialDesign:DialogHost.CloseDialogCommand"
                     HorizontalAlignment="Center"
                     Content="NO">
                 <Button.CommandParameter>

@@ -28,15 +28,12 @@ namespace MoSeqAcquire.ViewModels.Commands
             var rvm = this.GetRecorderViewModel(parameter);
             if (rvm != null)
             {
-                var view = new ConfirmDialog
+                var confirmVM = new ConfirmDialogViewModel()
                 {
-                    DataContext = new ConfirmDialogViewModel()
-                    {
-                        Title = "Confirm Remove Recorder",
-                        Message = "Are you sure you want to remove this recorder?"
-                    }
+                    Title = "Confirm Remove Recorder",
+                    Message = "Are you sure you want to remove this recorder?"
                 };
-                var result = await DialogHost.Show(view, "MainWindowDialogHost");
+                var result = await DialogHost.Show(confirmVM, "MainWindowDialogHost");
 
                 if ((bool) result)
                 {

@@ -20,10 +20,13 @@ namespace MoSeqAcquire.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MoSeqAcquireViewModel viewModel)
         {
             InitializeComponent();
-            this.DataContext = new MoSeqAcquireViewModel();
+            this.DataContext = viewModel;
+            this.WindowState = WindowState.Maximized;
+            this.ShowInTaskbar = true;
+            this.ShowActivated = true;
         }
         protected override void OnClosed(EventArgs e)
         {
