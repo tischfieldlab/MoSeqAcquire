@@ -17,11 +17,11 @@ namespace SynapseTriggers
         {
             this.Config = new SetSynapseModeConfig();
         }
-        protected override Action<Trigger> Action
+        protected override Action<TriggerEvent> Action
         {
             get
             {
-                return delegate (Trigger trigger)
+                return delegate (TriggerEvent trigger)
                 {
                     var settings = this.Config as SetSynapseModeConfig;
                     var client = SynapseClient.GetClient();
@@ -32,7 +32,7 @@ namespace SynapseTriggers
         }
     }
 
-    public class SetSynapseModeConfig : BaseSynapseTriggerConfig
+    public class SetSynapseModeConfig : BaseSynapseTriggerActionConfig
     {
         protected SynapseMode mode;
 

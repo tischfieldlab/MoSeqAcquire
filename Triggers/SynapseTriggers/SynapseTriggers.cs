@@ -13,7 +13,7 @@ namespace SynapseTriggers
     {
     }
 
-    public abstract class BaseSynapseTriggerConfig : TriggerConfig
+    public abstract class BaseSynapseTriggerActionConfig : TriggerActionConfig
     {
         public string hostname;
         public int port;
