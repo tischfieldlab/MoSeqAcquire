@@ -91,7 +91,7 @@ namespace MoSeqAcquire.ViewModels.Recording
                 {
                     if (this.selectedRecorderType != null)
                     {
-                        this.RecorderViewModel = new RecorderViewModel(this.rootViewModel, this.selectedRecorderType);
+                        this.RecorderViewModel = new RecorderViewModel(this.selectedRecorderType);
                         this.CurrentStep = 1;
                         this.NotifyPropertyChanged(null);
                     }

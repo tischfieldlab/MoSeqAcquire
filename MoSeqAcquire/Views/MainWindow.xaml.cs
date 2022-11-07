@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.Views
 {
@@ -31,7 +32,8 @@ namespace MoSeqAcquire.Views
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            (this.DataContext as MoSeqAcquireViewModel).UnloadProtocol();
+            var protocolService = App.Current.Services.GetService<ProtocolManagerViewModel>();
+            protocolService.UnloadProtocol();
             Application.Current.Shutdown();
         }
     }

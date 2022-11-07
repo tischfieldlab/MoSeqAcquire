@@ -28,6 +28,7 @@ namespace MoSeqAcquire
 
         public App()
         {
+            this.Services = ConfigureServices();
             this.Startup += this.StartupHandler;
             this.loading = new WaitingWindowManager(typeof(Splash));
             this.loading.BeginWaiting();
@@ -43,7 +44,14 @@ namespace MoSeqAcquire
             //Prevent the computer from entering sleep
             Models.Utility.PowerManagement.StartPreventSleep();
         }
-        public static ServiceProvider ServiceProvider { get; protected set; }
+        /// <summary>
+        /// Gets the current <see cref="App"/> instance in use
+        /// </summary>
+        public new static App Current => (App)Application.Current;
+        /// <summary>
+        /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
+        /// </summary>
+        public IServiceProvider Services { get; }
         public static void SetCurrentStatus(String StatusText)
         {
             try
@@ -57,10 +65,9 @@ namespace MoSeqAcquire
         {
             try
             {
-                
-                App.ServiceProvider = this.ConfigureServices();
-
-                this.MainWindow = App.ServiceProvider.GetRequiredService<MainWindow>();
+                this.MainWindow = App.Current.Services.GetRequiredService<MainWindow>();
+                App.SetCurrentStatus("Loading default protocol....");
+                App.Current.Services.GetRequiredService<CommandLibrary>().LoadProtocol.Execute(ProtocolExtensions.GetDefaultProtocol());
                 this.MainWindow.Loaded += (s, evt) => { this.loading.EndWaiting(); };
                 this.MainWindow.Show();
             }
@@ -82,16 +89,27 @@ namespace MoSeqAcquire
         protected ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
+
+            // utility services
+            services.AddSingleton<TriggerBus>();
+
+            // ViewModels
             services.AddSingleton<MoSeqAcquireViewModel>();
-            services.AddSingleton <TriggerBus>();
-            services.AddSingleton <MediaSourceCollectionViewModel>();
-            services.AddSingleton <RecordingManagerViewModel>();
-            services.AddSingleton <TriggerManagerViewModel>();
-            services.AddSingleton <CommandLibrary>();
-            services.AddSingleton <TaskbarItemInfoViewModel>();
+            services.AddSingleton<ProtocolManagerViewModel>();
+            services.AddSingleton<ThemeViewModel>();
+            services.AddSingleton<MediaSourceCollectionViewModel>();
+            services.AddSingleton<RecordingManagerViewModel>();
+            services.AddSingleton<TriggerManagerViewModel>();
+            services.AddSingleton<TaskbarItemInfoViewModel>();
+            services.AddSingleton<CommandLibrary>();
+
+            // Views
             services.AddSingleton<MainWindow>();
-            ServiceProvider container = services.BuildServiceProvider();
-            return container;
+            services.AddSingleton<TriggerBus>();
+            
+            
+            
+            return services.BuildServiceProvider();
         }
 
         private static List<String> __privateProbPaths = new List<String>();

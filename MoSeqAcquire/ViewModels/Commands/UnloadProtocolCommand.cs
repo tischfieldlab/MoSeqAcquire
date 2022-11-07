@@ -35,7 +35,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
             if ((bool)result)
             {
-                this.ViewModel.UnloadProtocol();
+                this.ViewModel.Protocol.UnloadProtocol();
             }
         }
     }

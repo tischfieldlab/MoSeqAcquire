@@ -8,6 +8,8 @@ using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Models.Utility;
 using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
+using Microsoft.Extensions.DependencyInjection;
+using MoSeqAcquire.ViewModels.Recording;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
@@ -33,10 +35,11 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected string triggerStateMessage;
 
 
-        public TriggerViewModel(MoSeqAcquireViewModel RootViewModel, TriggerBus triggerBus)
+        public TriggerViewModel()
         {
-            this.triggerBus = triggerBus;
-            this.rootViewModel = RootViewModel;
+            this.triggerBus = App.Current.Services.GetService<TriggerBus>();
+
+
             this.PropertyChanged += TriggerViewModel_PropertyChanged;
             this.triggerState = TriggerState.None;
         }
@@ -50,7 +53,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.RegisterTrigger();
         }
 
-        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public string Name
         {
             get => this.name;
@@ -130,7 +132,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.TriggerState = TriggerState.Faulted;
             if((sender as TriggerAction).IsCritical)
             {
-                this.Root.Recorder.AbortRecording();
+                App.Current.Services.GetService<RecordingManagerViewModel>().AbortRecording();
                 MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.TriggerStateMessage,
                                 "Recording Aborted!",
                                 MessageBoxButton.OK,

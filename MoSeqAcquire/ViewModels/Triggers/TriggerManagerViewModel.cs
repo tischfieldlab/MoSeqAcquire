@@ -11,19 +11,16 @@ namespace MoSeqAcquire.ViewModels.Triggers
 {
     public class TriggerManagerViewModel : BaseViewModel
     {
-        protected MoSeqAcquireViewModel rootViewModel;
         protected ObservableCollection<TriggerViewModel> triggers;
         protected ReadOnlyObservableCollection<TriggerViewModel> ro_triggers;
         protected TriggerViewModel selectedTrigger;
 
-        public TriggerManagerViewModel(MoSeqAcquireViewModel RootViewModel)
+        public TriggerManagerViewModel()
         {
-            this.rootViewModel = RootViewModel;
             this.triggers = new ObservableCollection<TriggerViewModel>();
             this.ro_triggers = new ReadOnlyObservableCollection<TriggerViewModel>(this.triggers);
             this.PopulateAvailableTypes();
         }
-        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public ReadOnlyObservableCollection<TriggerViewModel> Triggers { get => this.ro_triggers; }
         public TriggerViewModel SelectedTrigger
         {
@@ -33,13 +30,13 @@ namespace MoSeqAcquire.ViewModels.Triggers
 
         public void AddTrigger()
         {
-            var vm = new TriggerViewModel(this.Root);
+            //var vm = new TriggerViewModel();
             //vm.PropertyChanged += trigger_PropertyChanged;
-            this.triggers.Add(new TriggerViewModel(this.Root));
+            this.triggers.Add(new TriggerViewModel());
         }
         public void AddTrigger(ProtocolTrigger ProtocolTrigger)
         {
-            var vm = new TriggerViewModel(this.Root)
+            var vm = new TriggerViewModel()
             {
                 Name = ProtocolTrigger.Name,
                 ActionType = ProtocolTrigger.GetActionType(),

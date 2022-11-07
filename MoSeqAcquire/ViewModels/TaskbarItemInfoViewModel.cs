@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.ViewModels.Recording;
 
 namespace MoSeqAcquire.ViewModels
 {
@@ -18,19 +19,21 @@ namespace MoSeqAcquire.ViewModels
         protected double progressValue;
         protected Thickness thumbnailClipMargin;
 
+        protected RecordingManagerViewModel recorder;
 
-        public TaskbarItemInfoViewModel(MoSeqAcquireViewModel RootViewModel)
+
+        public TaskbarItemInfoViewModel(RecordingManagerViewModel recorder)
         {
-            this.RootViewModel = RootViewModel;
+            this.recorder = recorder;
 
-            this.RootViewModel.Recorder.PropertyChanged += Recorder_PropertyChanged;
+            this.recorder.PropertyChanged += Recorder_PropertyChanged;
         }
 
         private void Recorder_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == null || e.PropertyName.Equals(nameof(this.RootViewModel.Recorder.State)))
+            if (e.PropertyName == null || e.PropertyName.Equals(nameof(this.recorder.State)))
             {
-                switch (this.RootViewModel.Recorder.State)
+                switch (this.recorder.State)
                 {
                     case RecordingManagerState.Idle:
                         this.ProgressState = TaskbarItemProgressState.None;
@@ -47,15 +50,13 @@ namespace MoSeqAcquire.ViewModels
                 }
             }
 
-            if (e.PropertyName == null || e.PropertyName.Equals(nameof(this.RootViewModel.Recorder.Progress)))
+            if (e.PropertyName == null || e.PropertyName.Equals(nameof(this.recorder.Progress)))
             {
-                this.ProgressValue = this.RootViewModel.Recorder.Progress == null
+                this.ProgressValue = this.recorder.Progress == null
                     ? 0
-                    : (double)this.RootViewModel.Recorder.Progress;
+                    : (double)this.recorder.Progress;
             }
         }
-
-        protected MoSeqAcquireViewModel RootViewModel { get; set; }
 
         public string Description
         {

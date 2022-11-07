@@ -17,7 +17,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override bool CanExecute(object parameter)
         {
-            if (this.ViewModel.IsProtocolLocked)
+            if (this.ViewModel.Protocol.IsProtocolLocked)
                 return false;
 
             return null != this.GetRecorderViewModel(parameter);

@@ -40,10 +40,13 @@ namespace MoSeqAcquire.Models.Acquisition
         public TotalFrameCounter Performance { get; protected set; }
         public abstract ChannelMetadata Metadata { get; }
 
+        public delegate void FrameCapturedHandler(object sender, EventArgs e);
+        public event FrameCapturedHandler FrameCaptured;
+
         protected void PostFrame(ChannelFrame Frame)
         {
             this.Buffer.Post(Frame);
-            TriggerBus.Instance.Trigger(new FrameCapturedTrigger());
+            this.FrameCaptured?.Invoke(this, new EventArgs());
             this.Performance.Increment();
         }
     }

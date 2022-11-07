@@ -69,6 +69,7 @@
     <ProjectReference Include="..\..\MoSeqAcquire\MoSeqAcquire.csproj">
       <Project>{bf8fdfec-1160-4f80-a276-e8d9aed4f064}</Project>
       <Name>MoSeqAcquire</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

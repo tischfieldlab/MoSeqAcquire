@@ -21,7 +21,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.IsProtocolLocked = !this.ViewModel.IsProtocolLocked;
+            this.ViewModel.Protocol.IsProtocolLocked = !this.ViewModel.Protocol.IsProtocolLocked;
         }
     }
 }

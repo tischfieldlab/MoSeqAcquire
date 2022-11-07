@@ -8,33 +8,29 @@ using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Recording;
 using MoSeqAcquire.ViewModels.MediaSources;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
     public class RecorderViewModel : BaseViewModel
     {
-        protected MoSeqAcquireViewModel rootViewModel;
-
         protected MediaWriter writer;
 
         protected ObservableCollection<RecorderPinViewModel> recorderPins;
         protected ObservableCollection<SelectableChannelViewModel> availableChannels;
         protected ObservableCollection<RecorderProduct> recorderProducts;
 
-        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, Type RecorderType)
+        public RecorderViewModel(Type RecorderType)
         {
-            this.rootViewModel = RootViewModel;
             var spec = new RecorderSpecification(RecorderType);
             this.writer = spec.Factory() as MediaWriter;
             this.Initialize();
         }
-        public RecorderViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolRecorder Recorder)
+        public RecorderViewModel(ProtocolRecorder Recorder)
         {
-            this.rootViewModel = RootViewModel;
             this.writer = MediaWriter.FromProtocolRecorder(Recorder);
             this.Initialize();
         }
-        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public string Name
         {
             get => this.writer.Name;
@@ -78,15 +74,20 @@ namespace MoSeqAcquire.ViewModels.Recording
         {
             if (this.Name == null)
             {
-                this.Name = this.rootViewModel.Recorder.GetNextDefaultRecorderName();
+                this.Name = App.Current
+                               .Services
+                               .GetService<RecordingManagerViewModel>()
+                               .GetNextDefaultRecorderName();
             }
             this.availableChannels = new ObservableCollection<SelectableChannelViewModel>();
             this.AvailableChannels = new ReadOnlyObservableCollection<SelectableChannelViewModel>(this.availableChannels);
-            this.Root
-                .MediaSources
-                .Items
-                .SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)))
-                .ForEach(scvm => this.availableChannels.Add(scvm));
+
+            App.Current
+               .Services
+               .GetService<MediaSourceCollectionViewModel>()
+               .Items
+               .SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)))
+               .ForEach(scvm => this.availableChannels.Add(scvm));
 
             this.recorderProducts = new ObservableCollection<RecorderProduct>();
             this.Products = new ReadOnlyObservableCollection<RecorderProduct>(this.recorderProducts);

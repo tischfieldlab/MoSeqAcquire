@@ -11,24 +11,11 @@ namespace MoSeqAcquire.Models.Triggers
     {
         protected Dictionary<Type, SortedSet<TriggerAction>> subscribers;
 
-        #region Singleton
-        private static TriggerBus __instance;
-        private TriggerBus()
+        public TriggerBus()
         {
             this.subscribers = new Dictionary<Type, SortedSet<TriggerAction>>();
         }
-        public static TriggerBus Instance
-        {
-            get
-            {
-                if (__instance == null)
-                {
-                    __instance = new TriggerBus();
-                }
-                return __instance;
-            }
-        }
-        #endregion
+        
 
         public void Subscribe(Type Trigger, TriggerAction triggerAction)
         {
