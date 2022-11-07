@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Media;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
@@ -42,6 +43,7 @@ namespace MoSeqAcquire.Models.Acquisition
         protected void PostFrame(ChannelFrame Frame)
         {
             this.Buffer.Post(Frame);
+            TriggerBus.Instance.Trigger(new FrameCapturedTrigger());
             this.Performance.Increment();
         }
     }

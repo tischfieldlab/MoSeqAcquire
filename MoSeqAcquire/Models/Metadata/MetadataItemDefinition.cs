@@ -246,12 +246,13 @@ namespace MoSeqAcquire.Models.Metadata
             {
                 return Convert.ChangeType(value, type);
             } 
-            catch (Exception e)
+            catch (Exception)
             {
                 try
                 {
                     return TypeDescriptor.GetConverter(value.GetType()).ConvertTo(value, type);
-                }catch(Exception e2)
+                }
+                catch (Exception)
                 {
                     return Activator.CreateInstance(type);
                 }

@@ -21,7 +21,7 @@
                         ToolTip="Add Metadata Item">
                     <materialDesign:PackIcon Kind="Plus" />
                 </Button>
-                <TextBlock Text="Metadata Template Items" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadlineTextBlock}"  />
+                <TextBlock Text="Metadata Template Items" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}"  />
             </DockPanel>
         </materialDesign:ColorZone>
         <ListView Grid.Row="1"

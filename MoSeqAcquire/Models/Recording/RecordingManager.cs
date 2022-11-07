@@ -44,7 +44,6 @@ namespace MoSeqAcquire.Models.Recording
         protected string currentTask;
 
         public event EventHandler BeforeStartRecording; //fires before recording has started 
-
         public event EventHandler RecordingStarted;     //fires once recording has commenced
         public event EventHandler RecordingFinished;    //fires once recording has finished
         public event EventHandler RecordingAborted;     //fires 

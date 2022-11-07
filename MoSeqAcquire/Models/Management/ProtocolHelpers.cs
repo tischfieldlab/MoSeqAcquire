@@ -53,7 +53,7 @@ namespace MoSeqAcquire.Models.Management
         #region TriggerProviders
         public static IEnumerable<Type> FindTriggerTypes()
         {
-            return ExtractPluginsImplementing<Trigger>(new StringCollection());
+            return ExtractPluginsImplementing<TriggerEvent>(new StringCollection());
         }
         public static IEnumerable<ComponentSpecification> FindTriggerActions()
         {
@@ -140,7 +140,7 @@ namespace MoSeqAcquire.Models.Management
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));
                         }
-                        catch(Exception e)
+                        catch (Exception)
                         {
                             Console.WriteLine($" -> Error Loading assembly \"{file.FullName}\"...");
                         }

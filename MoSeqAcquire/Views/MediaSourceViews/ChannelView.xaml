@@ -80,7 +80,7 @@
                             <Style TargetType="md:PackIcon">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Path=IsDragging, ElementName=ResizeThumb}" Value="True">
-                                        <Setter Property="Foreground" Value="{StaticResource SecondaryAccentBrush}" />
+                                        <Setter Property="Foreground" Value="{StaticResource SecondaryHueMidBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

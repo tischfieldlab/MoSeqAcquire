@@ -53,10 +53,10 @@
                             Command="{Binding Path=NextCommand}"
                             ToolTip="{Binding Path=ContinueHelp}">
                         
-                        <materialDesign:PackIcon Kind="{Binding Path=ContinueIcon}" Width="36" Height="36" />
+                        <materialDesign:PackIcon Kind="{Binding ContinueIcon, Mode=OneWay}" Width="36" Height="36" />
                     </Button>
                 </StackPanel>
-                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
             </DockPanel>
         </materialDesign:ColorZone>
         <materialDesign:Transitioner SelectedIndex="{Binding CurrentStep}" Grid.ColumnSpan="2" Grid.Row="1">
@@ -74,7 +74,7 @@
                     <StackPanel Grid.Column="0" Grid.Row="0" Margin="16">
                         <TextBox Text="{Binding Path=Name}" Margin="16" materialDesign:HintAssist.Hint="Recorder Name" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-                        <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Text="Select Channels" Margin="16" />
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Select Channels" Margin="16" />
                         <ItemsControl ItemsSource="{Binding Path=RecorderPins}">
                             <ItemsControl.Resources>
                                 <DataTemplate DataType="{x:Type mvmr:SingleCapacityRecorderPin}">
