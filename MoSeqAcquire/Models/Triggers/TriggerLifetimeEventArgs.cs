@@ -8,7 +8,7 @@ namespace MoSeqAcquire.Models.Triggers
 {
     public class TriggerLifetimeEventArgs : EventArgs
     {
-        public Trigger Trigger;
+        public TriggerEvent Trigger;
     }
 
     public class TriggerFinishedEventArgs : TriggerLifetimeEventArgs

@@ -81,7 +81,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                                         widthstride,
                                         0);
                                 }
-                                catch (Exception e) { }
+                                catch (Exception) { }
                             }
                             else
                             {
@@ -97,7 +97,7 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                                         widthstride,
                                         0);
                                 }
-                                catch (Exception e) { }
+                                catch (Exception) { }
 
                             }
                         }

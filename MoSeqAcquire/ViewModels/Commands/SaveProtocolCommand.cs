@@ -35,10 +35,10 @@ namespace MoSeqAcquire.ViewModels.Commands
             if (path != null && !string.IsNullOrWhiteSpace(path))
             {
                 //expects parameter to be string path to protocol
-                MediaSettingsWriter.WriteProtocol(path, this.ViewModel.GenerateProtocol());
+                MediaSettingsWriter.WriteProtocol(path, this.ViewModel.Protocol.GenerateProtocol());
 
                 //push the path into the recent protocols collection
-                this.ViewModel.PushRecentProtocol(path);
+                this.ViewModel.Protocol.PushRecentProtocol(path);
             }
         }
 

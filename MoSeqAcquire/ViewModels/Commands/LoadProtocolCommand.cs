@@ -39,7 +39,7 @@ namespace MoSeqAcquire.ViewModels.Commands
                     pcol = MediaSettingsWriter.ReadProtocol(path as string);
 
                     //push the path into the recent protocols collection
-                    this.ViewModel.PushRecentProtocol(path);
+                    this.ViewModel.Protocol.PushRecentProtocol(path);
                 }
                 catch (Exception e)
                 {
@@ -57,7 +57,7 @@ namespace MoSeqAcquire.ViewModels.Commands
                 pcol = ProtocolExtensions.GetDefaultProtocol();
                 //return;
             }
-            this.ViewModel.ApplyProtocol(pcol);
+            this.ViewModel.Protocol.ApplyProtocol(pcol);
         }
 
         protected string RequestPath()

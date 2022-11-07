@@ -9,6 +9,7 @@ using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Metadata;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.ViewModels.Metadata;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.Models.Recording
 {
@@ -44,14 +45,14 @@ namespace MoSeqAcquire.Models.Recording
         protected string currentTask;
 
         public event EventHandler BeforeStartRecording; //fires before recording has started 
-
         public event EventHandler RecordingStarted;     //fires once recording has commenced
         public event EventHandler RecordingFinished;    //fires once recording has finished
         public event EventHandler RecordingAborted;     //fires 
 
-        public RecordingManager(TriggerBus triggerBus, MetadataViewModel Metadata)
+
+        public RecordingManager()
         {
-            this.triggerBus = triggerBus;
+            this.triggerBus = App.Current.Services.GetService<TriggerBus>();
             this.writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
             this.RecordingMetadata = Metadata;

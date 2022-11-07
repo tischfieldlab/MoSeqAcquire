@@ -83,7 +83,7 @@
                 <materialDesign:Snackbar Grid.ColumnSpan="2" Grid.Row="1" 
                                          IsActive="{Binding Path=HasErrors}" 
                                          HorizontalAlignment="Stretch" 
-                                         Background="{StaticResource ValidationErrorBrush}" >
+                                         Background="{StaticResource MaterialDesignValidationErrorBrush}" >
                     <materialDesign:SnackbarMessage>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="WarningOctagon" Width="32" Height="32" Margin="-8,-8,8,-8" />

@@ -47,7 +47,7 @@
 
                     <TextBlock VerticalAlignment="Center" 
                                Text="Configure " 
-                               Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                               Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
 
                     <TextBlock VerticalAlignment="Center" 
                                Text="{Binding Path=Name}" 

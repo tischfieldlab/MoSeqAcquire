@@ -7,35 +7,62 @@ using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Recording
 {
-    public class BeforeRecordingStartedTrigger : Trigger
-    {
+    public class BeforeRecordingStartedTrigger : TriggerEvent {
+
         public BeforeRecordingStartedTrigger()
         {
-            this.Name = "Before Recording Started";
-        }
-    }
 
-    public class AfterRecordingStartedTrigger : Trigger
-    {
-        public AfterRecordingStartedTrigger()
-        {
-            this.Name = "After Recording Started";
         }
-    }
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
 
-    public class BeforeRecordingFinishedTrigger : Trigger
-    {
-        public BeforeRecordingFinishedTrigger()
+        public override void Stop()
         {
-            this.Name = "Before Recording Finished";
+            throw new NotImplementedException();
         }
     }
-    public class AfterRecordingFinishedTrigger : Trigger
+    public class AfterRecordingStartedTrigger : TriggerEvent
+    {
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class BeforeRecordingFinishedTrigger : TriggerEvent
+    {
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class AfterRecordingFinishedTrigger : TriggerEvent
     {
         public AfterRecordingFinishedTrigger()
         {
             this.Name = "After Recording Finished";
         }
         public bool Aborted { get; set; }
+
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

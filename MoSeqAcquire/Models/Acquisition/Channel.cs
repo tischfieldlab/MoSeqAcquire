@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Media;
 using MoSeqAcquire.Models.Recording;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Acquisition
 {
@@ -39,9 +40,14 @@ namespace MoSeqAcquire.Models.Acquisition
         public TotalFrameCounter Performance { get; protected set; }
         public abstract ChannelMetadata Metadata { get; }
 
-        protected void PostFrame(ChannelFrame frame)
+
+        public delegate void FrameCapturedHandler(object sender, EventArgs e);
+        public event FrameCapturedHandler FrameCaptured;
+
+        protected void PostFrame(ChannelFrame Frame)
         {
-            this.Buffer.Post(frame);
+            this.Buffer.Post(Frame);
+            this.FrameCaptured?.Invoke(this, new EventArgs());
             this.Performance.Increment();
         }
     }

@@ -19,7 +19,7 @@
     <DockPanel LastChildFill="False">
         <StackPanel DockPanel.Dock="Top">
             <materialDesign:ColorZone Mode="PrimaryDark" Padding="16">
-                <TextBlock Text="Add a new media source" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                <TextBlock Text="Add a new media source" Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
             </materialDesign:ColorZone>
             
             <WrapPanel Margin="10">

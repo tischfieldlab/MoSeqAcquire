@@ -18,6 +18,7 @@ namespace SynapseTriggers
         {
             
         }
+
         protected override Action<Trigger> Action =>  delegate (Trigger trigger)
         {
             var settings = this.Settings as SetSynapseModeConfig;
@@ -33,7 +34,7 @@ namespace SynapseTriggers
         };
     }
 
-    public class SetSynapseModeConfig : BaseSynapseTriggerConfig
+    public class SetSynapseModeConfig : BaseSynapseTriggerActionConfig
     {
         protected SynapseMode mode;
 

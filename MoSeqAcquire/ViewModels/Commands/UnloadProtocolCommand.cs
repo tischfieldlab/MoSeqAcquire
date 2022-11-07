@@ -26,19 +26,16 @@ namespace MoSeqAcquire.ViewModels.Commands
 
         public override async void Execute(object parameter)
         {
-            var view = new ConfirmDialog
+            var confirmVM = new ConfirmDialogViewModel()
             {
-                DataContext = new ConfirmDialogViewModel()
-                {
-                    Title = "Confirm Unload Protocol",
-                    Message = "Are you sure you want to unload the current protocol?"
-                }
+                Title = "Confirm Unload Protocol",
+                Message = "Are you sure you want to unload the current protocol?"
             };
-            var result = await DialogHost.Show(view, "MainWindowDialogHost");
+            var result = await DialogHost.Show(confirmVM, "MainWindowDialogHost");
 
             if ((bool)result)
             {
-                this.ViewModel.UnloadProtocol();
+                this.ViewModel.Protocol.UnloadProtocol();
             }
         }
     }

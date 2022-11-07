@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.Views
 {
@@ -20,15 +21,19 @@ namespace MoSeqAcquire.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MoSeqAcquireViewModel viewModel)
         {
             InitializeComponent();
-            this.DataContext = MoSeqAcquireViewModel.Instance;
+            this.DataContext = viewModel;
+            this.WindowState = WindowState.Maximized;
+            this.ShowInTaskbar = true;
+            this.ShowActivated = true;
         }
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            (this.DataContext as MoSeqAcquireViewModel).UnloadProtocol();
+            var protocolService = App.Current.Services.GetService<ProtocolManagerViewModel>();
+            protocolService.UnloadProtocol();
             Application.Current.Shutdown();
         }
     }

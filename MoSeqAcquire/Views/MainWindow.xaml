@@ -9,6 +9,8 @@
         xmlns:v="clr-namespace:MoSeqAcquire.Views"
         xmlns:conv="clr-namespace:MoSeqAcquire.Views.Converters"
         xmlns:controls="clr-namespace:MoSeqAcquire.Views.Controls"
+        xmlns:vm="clr-namespace:MoSeqAcquire.ViewModels"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -53,7 +55,16 @@
             </TaskbarItemInfo.ThumbButtonInfos>-->
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <materialDesign:DialogHost Identifier="MainWindowDialogHost">
+    <materialDesign:DialogHost Identifier="MainWindowDialogHost" Name="MainWindowDialogHost" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" >
+        <!--<materialDesign:DialogHost.CloseOnClickAway>True</materialDesign:DialogHost.CloseOnClickAway>
+        <materialDesign:DialogHost.CloseOnClickAwayParameter>
+            <system:Boolean>False</system:Boolean>
+        </materialDesign:DialogHost.CloseOnClickAwayParameter>-->
+        <materialDesign:DialogHost.DialogContentTemplate>
+            <DataTemplate DataType="{x:Type vm:ConfirmDialogViewModel}">
+                <controls:ConfirmDialog />
+            </DataTemplate>
+        </materialDesign:DialogHost.DialogContentTemplate>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

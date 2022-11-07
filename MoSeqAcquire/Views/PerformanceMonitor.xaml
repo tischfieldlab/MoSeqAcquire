@@ -34,7 +34,7 @@
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark" Padding="16">
             <DockPanel>
                 
-                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="Performance Monitor" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="Performance Monitor" Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
             </DockPanel>
         </materialDesign:ColorZone>
         <DataGrid Name="ItemsGrid" Grid.Row="1" ItemsSource="{Binding Path=Performances}" IsReadOnly="True" AutoGenerateColumns="False">

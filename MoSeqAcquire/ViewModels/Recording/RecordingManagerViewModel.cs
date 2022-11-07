@@ -21,6 +21,9 @@ using MoSeqAcquire.ViewModels.MediaSources;
 using System.Threading;
 using MaterialDesignThemes.Wpf;
 using MoSeqAcquire.Views.RecorderViews;
+using MoSeqAcquire.ViewModels.Triggers;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -31,18 +34,22 @@ namespace MoSeqAcquire.ViewModels.Recording
         protected RecorderViewModel selectedRecorder;
         protected RecordingManager recordingManager;
 
+        protected ProtocolManagerViewModel protocolManager;
+
         
 
-        public RecordingManagerViewModel(MoSeqAcquireViewModel RootViewModel) : base()
+        public RecordingManagerViewModel(ProtocolManagerViewModel protocolManager) : base()
         {
-            this.rootViewModel = RootViewModel;
+            this.protocolManager = protocolManager;
+            //this.rootViewModel = RootViewModel;
             this.recorders = new ObservableCollection<RecorderViewModel>();
 
-            this.recordingManager = new RecordingManager(this.rootViewModel.TriggerBus, RootViewModel.RecordingMetadata);
-            this.recordingManager.BeforeStartRecording += (s, e) => this.Root.ForceProtocolLocked();
-            this.recordingManager.RecordingFinished += (s, e) => this.Root.UndoForceProtocolLocked();
-            this.recordingManager.RecordingFinished += (s, e) => Application.Current.Dispatcher.Invoke(() => this.RecordingMetadata.Items.ResetValuesToDefaults());
-            this.recordingManager.RecordingAborted += (s, e) => this.Root.UndoForceProtocolLocked();
+            this.recordingManager = new RecordingManager();
+            this.recordingManager.BeforeStartRecording += (s, e) => this.protocolManager.ForceProtocolLocked();
+            this.recordingManager.RecordingFinished += (s, e) => this.protocolManager.UndoForceProtoclLocked();
+            this.recordingManager.RecordingFinished += (s, e) => this.RecordingMetadata.Items.ResetValuesToDefaults();
+            this.recordingManager.RecordingAborted += (s, e) => this.protocolManager.UndoForceProtoclLocked();
+
             this.recordingManager.PropertyChanged += (s, e) =>
             {
                 this.NotifyPropertyChanged(null);
@@ -59,7 +66,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.NotifyPropertyChanged(nameof(this.HasErrors));
         }
 
-        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
+        //public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public GeneralRecordingSettings GeneralSettings
         {
             get => this.recordingManager.GeneralSettings;
@@ -70,6 +77,12 @@ namespace MoSeqAcquire.ViewModels.Recording
         }
 
         #region Recorder CRUD Operations
+        public void AddRecorder(Type RecorderType)
+        {
+            var recorder = new RecorderViewModel(RecorderType);
+            this.AddRecorder(recorder);
+        }
+
         public void AddRecorder(RecorderViewModel Recorder)
         {
             Recorder.ErrorsChanged += this.SubItemErrorsChanged;
@@ -159,7 +172,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         public void StartRecording()
         {
-            this.Root.Triggers.ResetStatuses();
+            App.Current.Services.GetService<TriggerManagerViewModel>().ResetStatuses();
             Task.Run(() =>
             {
                 this.recordingManager.Start();

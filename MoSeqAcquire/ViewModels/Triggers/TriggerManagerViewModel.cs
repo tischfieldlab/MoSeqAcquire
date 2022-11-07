@@ -13,15 +13,13 @@ namespace MoSeqAcquire.ViewModels.Triggers
 {
     public class TriggerManagerViewModel : BaseViewModel
     {
-        protected MoSeqAcquireViewModel rootViewModel;
         protected ObservableCollection<TriggerViewModel> triggers;
         protected ReadOnlyObservableCollection<TriggerViewModel> ro_triggers;
         protected ListCollectionView triggersView;
         protected TriggerViewModel selectedTrigger;
 
-        public TriggerManagerViewModel(MoSeqAcquireViewModel RootViewModel)
+        public TriggerManagerViewModel()
         {
-            this.rootViewModel = RootViewModel;
             this.triggers = new ObservableCollection<TriggerViewModel>();
             this.ro_triggers = new ReadOnlyObservableCollection<TriggerViewModel>(this.triggers);
             this.SetupTriggersView();
@@ -40,7 +38,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.triggersView.LiveGroupingProperties.Add("TriggerEventName");
         }
 
-        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public ReadOnlyObservableCollection<TriggerViewModel> Triggers { get => this.ro_triggers; }
         public ICollectionView TriggersView { get => this.triggersView; }
 

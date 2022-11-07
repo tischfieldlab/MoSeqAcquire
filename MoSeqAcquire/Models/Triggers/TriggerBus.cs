@@ -42,7 +42,7 @@ namespace MoSeqAcquire.Models.Triggers
             this.subscribers[trigger].Remove(triggerAction);
         }
 
-        public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : Trigger
+        public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : TriggerEvent
         {
             if (this.subscribers.ContainsKey(typeof(TTrigger)))
             {

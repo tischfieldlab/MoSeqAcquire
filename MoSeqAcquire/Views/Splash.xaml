@@ -44,7 +44,7 @@
         <Border Opacity="0.9" BorderThickness="3" CornerRadius="5">
         
         <StackPanel VerticalAlignment="Center" Margin="20,0">
-            <TextBlock Text="MoSeq Acquire" Style="{DynamicResource MaterialDesignHeadlineTextBlock}" />
+            <TextBlock Text="MoSeq Acquire" Style="{DynamicResource MaterialDesignHeadline5TextBlock}" />
            
             <WrapPanel HorizontalAlignment="Left" Margin="0,5,0,5">
                 <ProgressBar Width="30" Height="30" IsIndeterminate="True" Style="{DynamicResource MaterialDesignCircularProgressBar}" />

@@ -11,6 +11,8 @@ using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Models.Utility;
 using Trigger = MoSeqAcquire.Models.Triggers.Trigger;
 using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
+using Microsoft.Extensions.DependencyInjection;
+using MoSeqAcquire.ViewModels.Recording;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
@@ -25,6 +27,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
 
     public class TriggerViewModel : BaseViewModel
     {
+        protected TriggerBus triggerBus;
         protected MoSeqAcquireViewModel rootViewModel;
         protected string name;
         protected Type triggerType;
@@ -33,7 +36,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected bool isRegistered;
         protected TriggerState triggerState;
         protected string triggerStateMessage;
-
 
         public TriggerViewModel(MoSeqAcquireViewModel RootViewModel, Type TriggerActionType)
         {
@@ -53,6 +55,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             //need to be setup after initialization
             this.IsCritical = ProtocolTrigger.Critical;
             this.Settings.ApplySnapshot(ProtocolTrigger.Config);
+
         }
 
         protected void Initialize()
@@ -66,7 +69,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.PropertyChanged += (s, e) => { this.RegisterTrigger(); };
         }
 
-        public MoSeqAcquireViewModel Root { get => this.rootViewModel; }
         public string Name
         {
             get => this.name;
@@ -155,7 +157,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 this.trigger.TriggerExecutionFinished -= Trigger_TriggerExecutionFinished;
                 this.trigger.TriggerFaulted -= Trigger_TriggerFaulted;
                 this.TriggerState = TriggerState.None;
-                this.Root.TriggerBus.Unsubscribe(this.triggerType, this.trigger);
+                this.triggerBus.Unsubscribe(this.triggerType, this.trigger);
                 this.isRegistered = false;
             }
         }
@@ -168,7 +170,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
                     this.trigger.TriggerExecutionStarted += Trigger_TriggerExecutionStarted;
                     this.trigger.TriggerExecutionFinished += Trigger_TriggerExecutionFinished;
                     this.trigger.TriggerFaulted += Trigger_TriggerFaulted;
-                    this.Root.TriggerBus.Subscribe(this.triggerType, this.trigger);
+                    this.triggerBus.Subscribe(this.triggerType, this.trigger);
                     this.isRegistered = true;
                     this.TriggerState = TriggerState.Queued;
                 }
@@ -193,7 +195,11 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.TriggerState = TriggerState.Faulted;
             if(this.IsCritical)
             {
-                this.Root.Recorder.AbortRecording();
+                App.Current.Services.GetService<RecordingManagerViewModel>().AbortRecording();
+                MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.TriggerStateMessage,
+                                "Recording Aborted!",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation);
             }
         }
 

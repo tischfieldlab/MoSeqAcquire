@@ -161,6 +161,35 @@ namespace MoSeqAcquire.Models.Metadata
             return this.validators.OfType<T>().FirstOrDefault();
         }
 
+        protected object CoerceValue(object value, Type type)
+        {
+            if (value == null)
+            {
+                if (type == typeof(string))
+                {
+                    return string.Empty;
+                }
+                return Activator.CreateInstance(type);
+            }
+            try
+            {
+                return Convert.ChangeType(value, type);
+            } 
+            catch (Exception)
+            {
+                try
+                {
+                    return TypeDescriptor.GetConverter(value.GetType()).ConvertTo(value, type);
+                }
+                catch (Exception)
+                {
+                    return Activator.CreateInstance(type);
+                }
+            }
+        }
+#endregion
+
+
         #region Value Coerceion
         public void ResetValue()
         {
