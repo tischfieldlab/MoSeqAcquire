@@ -264,7 +264,7 @@
                                                                  ToolTip="Trigger is marked as critical"
                                                                  Margin="8,0,0,0"
                                                                  Width="16" Height="16" 
-                                                                 Foreground="{StaticResource SecondaryAccentBrush}"
+                                                                 Foreground="{StaticResource SecondaryHueMidBrush}"
                                                                  VerticalAlignment="Center">
                                             <materialDesign:PackIcon.Style>
                                                 <Style TargetType="materialDesign:PackIcon">

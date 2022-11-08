@@ -38,7 +38,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
 
         public TriggerViewModel(Type TriggerActionType)
         {
-            App.Current.Services.GetService<MoSeqAcquireViewModel>();
             this.actionType = TriggerActionType;
             this.Initialize();
         }
@@ -62,6 +61,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             {
                 this.Name = App.Current.Services.GetService<TriggerManagerViewModel>().GetNextDefaultTriggerName();
             }
+            this.triggerBus = App.Current.Services.GetService<TriggerBus>();
             this.trigger = (TriggerAction)Activator.CreateInstance(this.actionType);
             this.RegisterTrigger();
             this.PropertyChanged += (s, e) => { this.RegisterTrigger(); };

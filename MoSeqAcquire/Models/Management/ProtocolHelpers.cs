@@ -58,9 +58,10 @@ namespace MoSeqAcquire.Models.Management
         #endregion
 
         #region TriggerProviders
-        public static IEnumerable<Type> FindTriggerTypes()
+        public static IEnumerable<ComponentSpecification> FindTriggerEvents()
         {
-            return ExtractPluginsImplementing<TriggerEvent>(new StringCollection());
+            //return ExtractPluginsImplementing<TriggerEvent>(new StringCollection());
+            return FindComponents().Where(cs => typeof(TriggerEvent).IsAssignableFrom(cs.ComponentType));
         }
         public static IEnumerable<ComponentSpecification> FindTriggerActions()
         {
