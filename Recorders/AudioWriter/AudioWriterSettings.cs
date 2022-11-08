@@ -11,27 +11,10 @@ namespace AudioWriter
 {
     public class AudioWriterSettings : RecorderSettings
     {
-        public WriteToConsole()
+        public AudioWriterSettings()
         {
-            this.Config = new WriteToConsoleConfig();
+            
         }
-        protected override Action<TriggerEvent> Action
-        {
-            get
-            {
-                return delegate (TriggerEvent trigger)
-                {
-                    var settings = this.Config as WriteToConsoleConfig;
-                    Console.WriteLine($"Trigger {trigger.Name} {trigger.GetType().Name}");
-                };
-            }
-        }
-    }
-
-
-    public class WriteToConsoleConfig : TriggerActionConfig
-    {
-        
     }
 
 }

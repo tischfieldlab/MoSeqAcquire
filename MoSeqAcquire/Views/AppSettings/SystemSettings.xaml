@@ -52,7 +52,7 @@
                         <TextBlock Text="CPU Threshold" 
                                    Width="120"
                                    VerticalAlignment="Center"
-                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                         <mah:NumericUpDown Value="{Binding Path=CpuThreshold}" 
                                            Minimum="0" Maximum="1" 
                                            Interval="0.01"
@@ -68,7 +68,7 @@
                         <TextBlock Text="RAM Threshold" 
                                    Width="120"
                                    VerticalAlignment="Center"
-                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                         <mah:NumericUpDown Value="{Binding Path=RamThreshold, Mode=TwoWay}" 
                                            NumericInputMode="All" 
                                            Minimum="0" Maximum="{Binding Path=MaxRam}" 
@@ -85,7 +85,7 @@
                         <TextBlock Text="Disk Threshold" 
                                    Width="120"
                                    VerticalAlignment="Center"
-                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                         <mah:NumericUpDown Value="{Binding Path=DiskThreshold}" 
                                            NumericInputMode="All" 
                                            Minimum="0" Maximum="{Binding Path=MaxDisk}" 

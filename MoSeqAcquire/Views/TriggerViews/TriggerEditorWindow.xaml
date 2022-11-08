@@ -50,7 +50,7 @@
                     </Button>
                 </StackPanel>
                 <materialDesign:PackIcon Kind="Cogs" Width="36" Height="36" Margin="0,0,16,0" />
-                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Path=Header}" Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
             </DockPanel>
         </materialDesign:ColorZone>
         <materialDesign:Transitioner SelectedIndex="{Binding CurrentStep}" Grid.ColumnSpan="2" Grid.Row="1">

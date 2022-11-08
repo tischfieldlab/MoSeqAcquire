@@ -55,7 +55,7 @@ namespace MoSeqAcquire.Models.Recording
             this.triggerBus = App.Current.Services.GetService<TriggerBus>();
             this.writers = new List<MediaWriter>();
             this.GeneralSettings = new GeneralRecordingSettings();
-            this.RecordingMetadata = Metadata;
+            this.RecordingMetadata = new MetadataViewModel();
         }
 
         public void AddRecorder(MediaWriter Writer)

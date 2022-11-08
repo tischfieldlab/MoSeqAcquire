@@ -32,7 +32,7 @@
                             ToolTip="Reset Metadata Values">
                         <materialDesign:PackIcon Kind="Restore"  />
                     </Button>
-                    <TextBlock Text="Metadata" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                    <TextBlock Text="Metadata" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                 </DockPanel>
             </DataTemplate>
         </GroupBox.HeaderTemplate>

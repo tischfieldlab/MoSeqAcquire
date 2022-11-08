@@ -66,7 +66,7 @@
                                           Margin="8,0,0,0"
                                           VerticalAlignment="Center"
                                           Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                                          Text="{Binding MediaSource.Name}" />
+                                          Text="{Binding Path=Name}" />
                                     <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
                                             Command="{Binding Path=DataContext.Commands.RemoveMediaSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                                             CommandParameter="{Binding}"
@@ -89,7 +89,7 @@
                                     <TextBlock
                                           Margin="8,0,0,0"
                                           VerticalAlignment="Center"
-                                          Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                                          Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                                           Text="{Binding Path=Name}" />
                                     
                                 </DockPanel>

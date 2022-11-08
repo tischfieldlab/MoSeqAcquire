@@ -174,7 +174,7 @@ namespace MoSeqAcquire.Models.Metadata
             try
             {
                 return Convert.ChangeType(value, type);
-            } 
+            }
             catch (Exception)
             {
                 try
@@ -187,7 +187,6 @@ namespace MoSeqAcquire.Models.Metadata
                 }
             }
         }
-#endregion
 
 
         #region Value Coerceion

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using MoSeqAcquire.ViewModels.MediaSources;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.ViewModels.Recording
 {
@@ -14,9 +15,9 @@ namespace MoSeqAcquire.ViewModels.Recording
     {
         public AvailableRecordingChannelsProvider()
         {
-            MoSeqAcquireViewModel.Instance.MediaSources.Items.CollectionChanged += Items_CollectionChanged;
-            MoSeqAcquireViewModel.Instance
-                .MediaSources
+            var mediaSources = App.Current.Services.GetService<MediaSourceCollectionViewModel>();
+            mediaSources.Items.CollectionChanged += Items_CollectionChanged;
+            mediaSources
                 .Items
                 .SelectMany(s => s.Channels.Select(c => new SelectableChannelViewModel(c)))
                 .ForEach(scvm => this.Add(scvm));

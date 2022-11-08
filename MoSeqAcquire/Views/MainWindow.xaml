@@ -107,7 +107,7 @@
                                 <materialDesign:PackIcon Kind="FolderOpen" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Recently Used" ItemsSource="{Binding Path=RecentlyUsedProtocols}" >
+                        <MenuItem Header="Recently Used" ItemsSource="{Binding Path=Protocol.RecentlyUsedProtocols}" >
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem" BasedOn="{StaticResource MaterialDesignMenuItem}">
                                     <Setter Property="HeaderTemplate">
@@ -128,7 +128,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLock}" IsCheckable="True" IsChecked="{Binding Path=IsProtocolLocked, Mode=OneWay}" >
+                        <MenuItem Header="Lock Protocol" Command="{Binding Path=Commands.ToggleProtocolLock}" IsCheckable="True" IsChecked="{Binding Path=Protocol.IsProtocolLocked, Mode=OneWay}" >
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="SecurityLock" />
                             </MenuItem.Icon>

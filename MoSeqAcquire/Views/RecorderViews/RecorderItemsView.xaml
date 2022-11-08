@@ -20,11 +20,11 @@
                 <DockPanel>
                     <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="8,0,8,0"
                                         Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                        Command="{Binding Path=Root.Commands.AddRecorder}"
+                                        Command="{Binding Path=DataContext.Commands.AddRecorder, RelativeSource={RelativeSource AncestorType=Window}}"
                                         ToolTip="Add New Recorder">
                         <materialDesign:PackIcon Kind="Plus"  />
                     </Button>
-                    <TextBlock Text="Recorders" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                    <TextBlock Text="Recorders" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                 </DockPanel>
             </DataTemplate>
         </GroupBox.HeaderTemplate>
@@ -73,7 +73,7 @@
                         </Separator>
                         <Expander>
                             <Expander.InputBindings>
-                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Root.Commands.EditRecorder}"/>
+                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.Commands.EditRecorder, RelativeSource={RelativeSource AncestorType=Window}}"/>
                             </Expander.InputBindings>
                             <Expander.Header>
                                 <StackPanel>
@@ -105,7 +105,7 @@
                                     </DockPanel>
                                     <StackPanel Orientation="Horizontal" Margin="36,0,0,0">
                                         <TextBlock Text="{Binding Path=Error}"
-                                                   Foreground="{StaticResource ValidationErrorBrush}">
+                                                   Foreground="{StaticResource MaterialDesignValidationErrorBrush}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Style.Triggers>

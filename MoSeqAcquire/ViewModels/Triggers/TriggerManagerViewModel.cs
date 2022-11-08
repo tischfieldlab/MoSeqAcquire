@@ -55,7 +55,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
 
         public void AddTrigger(ProtocolTrigger ProtocolTrigger)
         {
-            this.AddTrigger(new TriggerViewModel(this.Root, ProtocolTrigger));
+            this.AddTrigger(new TriggerViewModel(ProtocolTrigger));
         }
 
         public string GetNextDefaultTriggerName()

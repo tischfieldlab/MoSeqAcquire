@@ -98,7 +98,7 @@ namespace MoSeqAcquire.ViewModels
             var pcol = new Protocol("basic");
             foreach (var ms in mediaSources.Items)
             {
-                pcol.Sources.Add(ms.MediaSource.GetType(), ms.MediaSource.DeviceId, ms.Config.GetSnapshot());
+                pcol.Sources.Add(ms.GetMediaSourceDefinition());
             }
             foreach (var mw in recorder.Recorders)
             {
@@ -126,7 +126,7 @@ namespace MoSeqAcquire.ViewModels
             this.ForceProtocolLocked();
             
             // remove all media sources
-            mediaSources.Items.ForEach(s => s.MediaSource.Stop());
+            mediaSources.Items.ForEach(s => s.Shutdown());
             mediaSources.Items.Clear();
 
             // clear all recoring items

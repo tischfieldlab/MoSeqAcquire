@@ -139,7 +139,7 @@ namespace MoSeqAcquire.Models.Management
                         {
                             assemblyList.Add(Assembly.LoadFile(file.FullName));
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
                             Log.Warning(e, " -> Error Loading dll file \"{Filename}\"", file.FullName);
                         }

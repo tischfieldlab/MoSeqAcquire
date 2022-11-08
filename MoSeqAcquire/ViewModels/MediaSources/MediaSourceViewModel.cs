@@ -117,5 +117,15 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                 Config = this.Config.GetSnapshot()
             };
         }
+
+        public void DragEnter(IDropInfo dropInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DragLeave(IDropInfo dropInfo)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

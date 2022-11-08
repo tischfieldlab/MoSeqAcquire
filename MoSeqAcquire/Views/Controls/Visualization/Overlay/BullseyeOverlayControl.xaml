@@ -8,35 +8,35 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <!-- Central dot-->
-        <Ellipse Stroke="{StaticResource ValidationErrorBrush}" 
-                 Fill="{StaticResource ValidationErrorBrush}"
+        <Ellipse Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
+                 Fill="{StaticResource MaterialDesignValidationErrorBrush}"
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  StrokeThickness="2" 
                  Width="10" Height="10"  />
 
         <!-- First order fringe -->
-        <Ellipse Stroke="{StaticResource ValidationErrorBrush}" 
+        <Ellipse Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2" 
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  Width="100" Height="100"  />
 
         <!-- Second order fringe -->
-        <Ellipse Stroke="{StaticResource ValidationErrorBrush}" 
+        <Ellipse Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2" 
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  Width="300" Height="300"  />
 
         <!-- Second order fringe -->
-        <Ellipse Stroke="{StaticResource ValidationErrorBrush}" 
+        <Ellipse Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2" 
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  Width="500" Height="500"  />
 
-        <Ellipse Stroke="{StaticResource ValidationErrorBrush}" 
+        <Ellipse Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2" 
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"

@@ -13,6 +13,7 @@ namespace MoSeqAcquire.Models.Acquisition
         public int Height { get; set; }
         public int BytesPerPixel { get; set; }
         public PixelFormat PixelFormat { get; set; }
+        public int FramesPerSecond { get; set; }
     }
 
     public class VideoChannelFrameMetadata : ChannelFrameMetadata

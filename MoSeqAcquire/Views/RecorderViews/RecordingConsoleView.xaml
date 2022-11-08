@@ -12,6 +12,7 @@
              xmlns:recording="clr-namespace:MoSeqAcquire.ViewModels.Recording"
              xmlns:triggers="clr-namespace:MoSeqAcquire.ViewModels.Triggers"
              xmlns:metadata1="clr-namespace:MoSeqAcquire.ViewModels.Metadata"
+             xmlns:command="clr-namespace:MoSeqAcquire.ViewModels.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -59,7 +60,7 @@
                 <StackPanel Grid.Column="0" Margin="16">
                     <WrapPanel>
                         <Button Width="100" Margin="8"
-                                Command="{Binding Path=Root.Commands.StartRecording}" 
+                                Command="{Binding Path=DataContext.Commands.StartRecording, RelativeSource={RelativeSource AncestorType=Window}}" 
                                 Style="{StaticResource MaterialDesignRaisedAccentButton}" >
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="RecordRec" Margin="0,0,8,0" Width="24" Height="24" />
@@ -67,7 +68,7 @@
                             </StackPanel>
                         </Button>
                         <Button Width="100" Margin="8"
-                                Command="{Binding Path=Root.Commands.StopRecording}" 
+                                Command="{Binding Path=DataContext.Commands.StopRecording, RelativeSource={RelativeSource AncestorType=Window}}" 
                                 Style="{StaticResource MaterialDesignRaisedAccentButton}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Stop" Margin="0,0,8,0" Width="24" Height="24" />
@@ -96,7 +97,7 @@
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
-            <ItemsControl ItemsSource="{Binding Path=Root.SubsystemComponents}" 
+            <ItemsControl ItemsSource="{Binding Path=DataContext.SubsystemComponents, RelativeSource={RelativeSource AncestorType=Window}}" 
                           Margin="8" 
                           dd:DragDrop.IsDragSource="True" 
                           dd:DragDrop.IsDropTarget="True" >

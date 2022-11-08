@@ -15,7 +15,7 @@
                     <TextBlock Text="Trigger Execution Strategy"
                                DockPanel.Dock="Left"
                                VerticalAlignment="Center"
-                               Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                               Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
                     <ComboBox Width="200" Margin="16,0"
                               DockPanel.Dock="Left"
                               Style="{StaticResource MaterialDesignComboBox}" 

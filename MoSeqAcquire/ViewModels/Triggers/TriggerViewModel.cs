@@ -9,7 +9,7 @@ using MoSeqAcquire.Models.Configuration;
 using MoSeqAcquire.Models.Management;
 using MoSeqAcquire.Models.Triggers;
 using MoSeqAcquire.Models.Utility;
-using Trigger = MoSeqAcquire.Models.Triggers.Trigger;
+using TriggerEvent = MoSeqAcquire.Models.Triggers.TriggerEvent;
 using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
 using Microsoft.Extensions.DependencyInjection;
 using MoSeqAcquire.ViewModels.Recording;
@@ -28,7 +28,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
     public class TriggerViewModel : BaseViewModel
     {
         protected TriggerBus triggerBus;
-        protected MoSeqAcquireViewModel rootViewModel;
         protected string name;
         protected Type triggerType;
         protected Type actionType;
@@ -37,15 +36,14 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected TriggerState triggerState;
         protected string triggerStateMessage;
 
-        public TriggerViewModel(MoSeqAcquireViewModel RootViewModel, Type TriggerActionType)
+        public TriggerViewModel(Type TriggerActionType)
         {
-            this.rootViewModel = RootViewModel;
+            App.Current.Services.GetService<MoSeqAcquireViewModel>();
             this.actionType = TriggerActionType;
             this.Initialize();
         }
-        public TriggerViewModel(MoSeqAcquireViewModel RootViewModel, ProtocolTrigger ProtocolTrigger)
+        public TriggerViewModel(ProtocolTrigger ProtocolTrigger)
         {
-            this.rootViewModel = RootViewModel;
             this.Name = ProtocolTrigger.Name;
             this.actionType = ProtocolTrigger.GetActionType();
             this.TriggerType = ProtocolTrigger.GetEventType();
@@ -62,7 +60,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             if (this.Name == null)
             {
-                this.Name = this.rootViewModel.Triggers.GetNextDefaultTriggerName();
+                this.Name = App.Current.Services.GetService<TriggerManagerViewModel>().GetNextDefaultTriggerName();
             }
             this.trigger = (TriggerAction)Activator.CreateInstance(this.actionType);
             this.RegisterTrigger();
@@ -95,7 +93,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             {
                 if (this.triggerType != null)
                 {
-                    return (Activator.CreateInstance(this.triggerType) as Trigger).Name;
+                    return (Activator.CreateInstance(this.triggerType) as TriggerEvent).Name;
                 }
                 return "None selected";
             }

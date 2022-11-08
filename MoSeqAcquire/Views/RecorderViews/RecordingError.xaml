@@ -13,11 +13,11 @@
                                      Width="32" Height="32"
                                      VerticalAlignment="Center"
                                      Kind="WarningOutline"
-                                     Foreground="{StaticResource ValidationErrorBrush}" />
+                                     Foreground="{StaticResource MaterialDesignValidationErrorBrush}" />
             <TextBlock Text="An error caused the recording to abort!" 
                        VerticalAlignment="Center" 
-                       Foreground="{StaticResource ValidationErrorBrush}" 
-                       Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                       Foreground="{StaticResource MaterialDesignValidationErrorBrush}" 
+                       Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
         </StackPanel>
         <StackPanel Margin="0,16,0,0">
             <TextBlock Text="Error Details:" Style="{StaticResource MaterialDesignBody2TextBlock}" />

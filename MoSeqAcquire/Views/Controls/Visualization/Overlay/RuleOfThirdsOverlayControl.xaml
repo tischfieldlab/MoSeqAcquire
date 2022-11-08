@@ -9,41 +9,41 @@
     <Canvas>
 
         <Line Name="v1" 
-              Stroke="{StaticResource ValidationErrorBrush}" 
+              Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
               StrokeThickness="2" />
 
         <Line Name="v2"
-              Stroke="{StaticResource ValidationErrorBrush}" 
+              Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
               StrokeThickness="2" />
 
         <Line Name="h1"
-              Stroke="{StaticResource ValidationErrorBrush}" 
+              Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
               StrokeThickness="2" />
 
         <Line Name="h2" 
-              Stroke="{StaticResource ValidationErrorBrush}" 
+              Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
               StrokeThickness="2" />
 
         <Ellipse Name="cTL"
-                 Stroke="{StaticResource ValidationErrorBrush}" 
+                 Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2"
                  Width="10"
                  Height="10" />
 
         <Ellipse Name="cTR"
-                 Stroke="{StaticResource ValidationErrorBrush}" 
+                 Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2"
                  Width="10"
                  Height="10" />
 
         <Ellipse Name="cBL"
-                 Stroke="{StaticResource ValidationErrorBrush}" 
+                 Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2"
                  Width="10"
                  Height="10" />
 
         <Ellipse Name="cBR"
-                 Stroke="{StaticResource ValidationErrorBrush}" 
+                 Stroke="{StaticResource MaterialDesignValidationErrorBrush}" 
                  StrokeThickness="2"
                  Width="10"
                  Height="10" />

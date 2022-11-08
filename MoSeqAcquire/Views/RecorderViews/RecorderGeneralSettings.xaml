@@ -15,7 +15,7 @@
         <conv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
         <conv:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     </UserControl.Resources>
-    <WrapPanel IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}" >
+    <WrapPanel IsEnabled="{Binding Path=DataContext.Protocol.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}, RelativeSource={RelativeSource AncestorType=Window}}" >
         
         <ComboBox Width="200" Height="40" VerticalAlignment="Center" Margin="0,0,20,16"
                                 materialDesign:HintAssist.Hint="Recording Length Strategy" 

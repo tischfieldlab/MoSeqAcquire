@@ -8,6 +8,7 @@ using MoSeqAcquire.Models.Attributes;
 using MoSeqAcquire.Models.Core;
 using Serilog;
 using Serilog.Core;
+using Serilog.Sinks.File;
 
 namespace MoSeqAcquire.Models.Triggers
 {

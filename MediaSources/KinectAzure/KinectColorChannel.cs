@@ -12,7 +12,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
             this.Name = "Color Channel";
             this.DeviceName = Kinect.Name;
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(byte);
+            // this.DataType = typeof(byte);
         }
 
         public override ChannelMetadata Metadata

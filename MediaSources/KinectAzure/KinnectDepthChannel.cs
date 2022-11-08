@@ -13,7 +13,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
             this.Name = "Depth Channel";
             this.DeviceName = Kinect.Name;
             this.MediaType = MediaType.Video;
-            this.DataType = typeof(short);
+            // this.DataType = typeof(short);
         }
 
         public override ChannelMetadata Metadata

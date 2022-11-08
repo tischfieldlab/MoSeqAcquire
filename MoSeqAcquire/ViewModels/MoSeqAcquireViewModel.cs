@@ -35,8 +35,8 @@ namespace MoSeqAcquire.ViewModels
             this.Initialize();
         }
 
-        private static MoSeqAcquireViewModel _instance;
-        public static MoSeqAcquireViewModel Instance => _instance ?? (_instance = new MoSeqAcquireViewModel());
+        //private static MoSeqAcquireViewModel _instance;
+        //public static MoSeqAcquireViewModel Instance => _instance ?? (_instance = new MoSeqAcquireViewModel());
 
         protected void Initialize()
         {
@@ -46,9 +46,16 @@ namespace MoSeqAcquire.ViewModels
             ProtocolHelpers.FindComponents(); //preload assemblies here...
 
             App.SetCurrentStatus("Initializing Views....");
+
+            this.SubsystemComponents = new ObservableCollection<BaseViewModel>()
+            {
+                this.Recorder,
+                this.Triggers,
+                this.RecordingMetadata
+            };
         }
 
-
+        public ObservableCollection<BaseViewModel> SubsystemComponents { get; protected set; }
         public TaskbarItemInfoViewModel TaskbarItemInfo { get; protected set; }
         public CommandLibrary Commands { get => App.Current.Services.GetService<CommandLibrary>(); }
         public ThemeViewModel Theme { get; protected set; }

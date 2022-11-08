@@ -19,7 +19,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Grid>
                             <Grid.Background>
-                                <SolidColorBrush Color="{Binding Source={StaticResource ValidationErrorBrush}, Path=Color}" Opacity="0" />
+                                <SolidColorBrush Color="{Binding Source={StaticResource MaterialDesignValidationErrorBrush}, Path=Color}" Opacity="0" />
                             </Grid.Background>
                             <Grid.Style>
                                 <Style TargetType="Grid">

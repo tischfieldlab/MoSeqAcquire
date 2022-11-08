@@ -20,7 +20,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         public string Name
         {
-            get => (Activator.CreateInstance(this.triggerType) as Trigger).Name;
+            get => (Activator.CreateInstance(this.triggerType) as TriggerEvent).Name;
         }
     }
 }

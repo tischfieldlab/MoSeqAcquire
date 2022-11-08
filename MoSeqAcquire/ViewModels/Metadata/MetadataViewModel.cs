@@ -29,14 +29,13 @@ namespace MoSeqAcquire.ViewModels.Metadata
         protected MetadataDefinitionCollection currentCollection;
         protected MetadataItemDefinition currentItem;
 
-        public MetadataViewModel(MoSeqAcquireViewModel RootViewModel)
+
+        public MetadataViewModel()
         {
-            this.Root = RootViewModel;
             this.AvailableTypes = new ObservableCollection<AvailableTypeViewModel>(BaseDataType.AvailableTypes().Select(t => new AvailableTypeViewModel(t)));
             this.currentCollection = new MetadataDefinitionCollection();
             this.CurrentState = MetadataViewState.Grid;
         }
-        public MoSeqAcquireViewModel Root { get; protected set; }
         public ObservableCollection<AvailableTypeViewModel> AvailableTypes { get; protected set; }
 
         public MetadataViewState CurrentState

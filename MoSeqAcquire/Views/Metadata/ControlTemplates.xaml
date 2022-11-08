@@ -22,7 +22,7 @@
         <TextBlock Text="{Binding Path=Error}">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
+                    <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
                     <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
                     <Setter Property="FontSize" Value="10" />
                     <Setter Property="VerticalAlignment" Value="Center" />

@@ -15,6 +15,7 @@ namespace MoSeqAcquire.ViewModels.Commands
         public BaseCommand(MoSeqAcquireViewModel ViewModel)
         {
             this.viewModel = ViewModel;
+            this.RegisterRoutedCommand();
         }
 
 
@@ -28,9 +29,9 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             Application.Current.MainWindow.InputBindings.Add(new KeyBinding(this, Gesture));
         }
-        protected void RegisterRoutedCommand(ICommand Command)
+        protected void RegisterRoutedCommand()
         {
-            Application.Current.MainWindow.CommandBindings.Add(new CommandBinding(Command,
+            Application.Current.MainWindow.CommandBindings.Add(new CommandBinding(this,
                 (s, e) => {
                     this.Execute(e.Parameter);
                 },

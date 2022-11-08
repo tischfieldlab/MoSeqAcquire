@@ -9,7 +9,7 @@ namespace MoSeqAcquire.Models.Triggers
 {
     public abstract class TriggerEvent : Component
     {
-        public string Name { get; }
+        public string Name { get; protected set; }
 
         public TriggerEventConfig Config { get; protected set; }
 

@@ -56,7 +56,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
                                         <Setter Property="Kind" Value="WarningOutline" />
-                                        <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
+                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -64,7 +64,7 @@
                     </materialDesign:PackIcon>
                     <TextBlock VerticalAlignment="Center" >
                         <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTitleTextBlock}">
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Queued}">
                                         <Setter Property="Text" Value="Trigger is queued" />
@@ -77,7 +77,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
                                         <Setter Property="Text" Value="Trigger has faulted" />
-                                        <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
+                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -130,14 +130,14 @@
                                         ToolTip="Add New Trigger">
                             <materialDesign:PackIcon Kind="Plus"  />
                         </Button>
-                        <TextBlock Text="Triggers" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}"  />
+                        <TextBlock Text="Triggers" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}"  />
                     </DockPanel>
                 </DataTemplate>
             </GroupBox.HeaderTemplate>
 
             <!--SelectedItem="{Binding Path=SelectedTrigger}" -->
             <ItemsControl Name="ItemsGrid" Margin="-9"
-                      IsEnabled="{Binding Path=Root.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}}"
+                      IsEnabled="{Binding Path=DataContext.Protocol.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}, RelativeSource={RelativeSource AncestorType=Window}}"
                       ItemsSource="{Binding Path=TriggersView}" >
                 <ItemsControl.Style>
                     <Style TargetType="ItemsControl">
@@ -240,7 +240,7 @@
                                                     <DataTrigger Binding="{Binding Path=TriggerState}" Value="{x:Static tvm:TriggerState.Faulted}">
                                                         <Setter Property="Kind" Value="WarningOutline" />
                                                         <Setter Property="ToolTip" Value="Trigger faulted during execution" />
-                                                        <Setter Property="Foreground" Value="{StaticResource ValidationErrorBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -258,7 +258,7 @@
                                         <TextBlock Text="{Binding Path=Name}" 
                                                    
                                                    VerticalAlignment="Center"
-                                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
 
                                         <materialDesign:PackIcon Kind="StarRate"
                                                                  ToolTip="Trigger is marked as critical"
@@ -283,7 +283,7 @@
                                                                  Margin="0,0,8,0"
                                                                  Width="24" Height="24" 
                                                                  VerticalAlignment="Center" />
-                                        <TextBlock Text="{Binding Path=TriggerActionName}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                        <TextBlock Text="{Binding Path=TriggerActionName}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
 
                                     </StackPanel>
                                 </WrapPanel>

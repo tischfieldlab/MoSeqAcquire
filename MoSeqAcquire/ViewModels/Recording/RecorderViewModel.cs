@@ -19,6 +19,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         protected ObservableCollection<RecorderPinViewModel> recorderPins;
         protected ObservableCollection<RecorderProduct> recorderProducts;
+        protected ObservableCollection<SelectableChannelViewModel> availableChannels;
 
         public RecorderViewModel(Type RecorderType)
         {
@@ -46,6 +47,11 @@ namespace MoSeqAcquire.ViewModels.Recording
         public MediaWriterStats Performance { get => this.writer.Performance; }
 
         public ReadOnlyObservableCollection<RecorderPinViewModel> RecorderPins
+        {
+            get;
+            protected set;
+        }
+        public ReadOnlyObservableCollection<SelectableChannelViewModel> AvailableChannels
         {
             get;
             protected set;

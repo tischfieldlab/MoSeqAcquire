@@ -51,7 +51,7 @@
 
                     <TextBlock VerticalAlignment="Center" 
                                Text="{Binding Path=Name}" 
-                               Style="{StaticResource MaterialDesignHeadlineTextBlock}" />
+                               Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
                 </StackPanel>
             </DockPanel>
         </materialDesign:ColorZone>
