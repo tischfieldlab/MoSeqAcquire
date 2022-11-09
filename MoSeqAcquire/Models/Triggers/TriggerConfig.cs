@@ -15,8 +15,18 @@ namespace MoSeqAcquire.Models.Triggers
         }
     }
 
-    public abstract class TriggerEventConfig : TriggerConfig { }
-    public abstract class TriggerActionConfig : TriggerConfig { }
+    public class TriggerEventConfig : TriggerConfig
+    {
+        public TriggerEventConfig()
+        {
+        }
+    }
+    public class TriggerActionConfig : TriggerConfig
+    {
+        public TriggerActionConfig()
+        {
+        }
+    }
 
 
 }

@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using NationalInstruments.DAQmx;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace NationalInstruments
 {
+    [DisplayName("Listen TTL Signal")]
     [SettingsImplementation(typeof(ListenTTLSignalConfig))]
     public class ListenTTLSignal : TriggerAction
     {

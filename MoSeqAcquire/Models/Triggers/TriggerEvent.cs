@@ -1,4 +1,5 @@
-﻿using MoSeqAcquire.Models.Core;
+﻿using MoSeqAcquire.Models.Attributes;
+using MoSeqAcquire.Models.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Triggers
 {
+    [SettingsImplementation(typeof(TriggerEventConfig))]
     public abstract class TriggerEvent : Component
     {
-        public string Name { get; protected set; }
+        public TriggerEvent()
+        {
+            this.Specification = new TriggerActionSpecification(this.GetType());
+            this.Settings = this.Specification.SettingsFactory();
+        }
 
         public TriggerEventConfig Config { get; protected set; }
 
@@ -19,5 +25,7 @@ namespace MoSeqAcquire.Models.Triggers
         public abstract void Stop();
 
     }
+
+    
 
 }

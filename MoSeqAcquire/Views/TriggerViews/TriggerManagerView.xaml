@@ -21,14 +21,14 @@
             <StackPanel Orientation="Horizontal">
                 <Button Width="24" Height="24" Margin="8,0,8,0"
                         Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                        Command="{Binding Path=Root.Commands.EditTriggerConfig}"
+                        Command="{Binding Path=DataContext.Commands.EditTriggerConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         CommandParameter="{Binding}"
                         ToolTip="Edit Trigger Configuration">
                     <materialDesign:PackIcon Kind="Settings"  />
                 </Button>
                 <Button Width="24" Height="24" Margin="8,0,8,0"
                         Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                        Command="{Binding Path=Root.Commands.RemoveTrigger}"
+                        Command="{Binding Path=DataContext.Commands.RemoveTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         CommandParameter="{Binding}"
                         ToolTip="Remove Trigger">
                     <materialDesign:PackIcon Kind="Close"  />
@@ -126,7 +126,7 @@
                     <DockPanel>
                         <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
                                         Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                                        Command="{Binding Path=Root.Commands.AddTrigger}"
+                                        Command="{Binding Path=DataContext.Commands.AddTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                         ToolTip="Add New Trigger">
                             <materialDesign:PackIcon Kind="Plus"  />
                         </Button>
@@ -201,14 +201,14 @@
 
                                     <Button Width="24" Height="24" Margin="8,0,8,0"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            Command="{Binding Path=Root.Commands.EditTriggerConfig}"
+                                            Command="{Binding Path=DataContext.Commands.EditTriggerConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                             CommandParameter="{Binding}"
                                             ToolTip="Edit Trigger Configuration">
                                         <materialDesign:PackIcon Kind="Settings"  />
                                     </Button>
                                     <Button Width="24" Height="24" Margin="8,0,8,0"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            Command="{Binding Path=Root.Commands.RemoveTrigger}"
+                                            Command="{Binding Path=DataContext.Commands.RemoveTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                             CommandParameter="{Binding}"
                                             ToolTip="Remove Trigger">
                                         <materialDesign:PackIcon Kind="Close"  />

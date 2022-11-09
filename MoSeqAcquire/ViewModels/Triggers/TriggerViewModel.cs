@@ -209,8 +209,9 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 Critical = this.IsCritical,
                 Priority = this.Priority,
                 Event = this.TriggerType.AssemblyQualifiedName,
+                EventConfig = this.Settings.GetSnapshot(),
                 Action = this.ActionType.AssemblyQualifiedName,
-                Config = this.Settings.GetSnapshot()
+                ActionConfig = this.Settings.GetSnapshot()
             };
         }
     }

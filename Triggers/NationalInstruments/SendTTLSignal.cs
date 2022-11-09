@@ -7,13 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using NationalInstruments.DAQmx;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace NationalInstruments
 {
+    [DisplayName("Send TTL Signal")]
     [SettingsImplementation(typeof(SendTTLSignalConfig))]
     public class SendTTLSignal : TriggerAction
     {
-        public SendTTLSignal()
+        public SendTTLSignal() : base()
         {
             this.Config = new SendTTLSignalConfig();
         }
