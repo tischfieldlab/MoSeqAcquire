@@ -19,7 +19,7 @@ namespace SynapseTriggers
             
         }
 
-        protected override Action<Trigger> Action =>  delegate (Trigger trigger)
+        protected override Action<TriggerEvent> Action =>  delegate (TriggerEvent trigger)
         {
             var settings = this.Settings as SetSynapseModeConfig;
 

@@ -35,7 +35,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             {
                 return Convert.ToDateTime(value).Date;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return DateTime.Now.Date;
             }

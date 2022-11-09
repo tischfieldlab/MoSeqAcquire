@@ -35,7 +35,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             {
                 return Convert.ToInt32(value);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return default(int);
             }

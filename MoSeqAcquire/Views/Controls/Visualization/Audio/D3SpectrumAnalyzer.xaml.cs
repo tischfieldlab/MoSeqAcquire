@@ -103,17 +103,17 @@ namespace MoSeqAcquire.Views.MediaSources.Visualization
             this._bitmap.Lock();
             unsafe
             {
-                int pBackBuffer;
+                IntPtr pBackBuffer;
 
                 for (int row = 0; row < this._bins; row++)
                 {
                     // Find the address of the pixel to draw.
-                    pBackBuffer = (int)this._bitmap.BackBuffer;
+                    pBackBuffer = this._bitmap.BackBuffer;
                     pBackBuffer += row * this._bitmap.BackBufferStride;
                     pBackBuffer += this.currX * this._bitmap.Format.BitsPerPixel / 8;
                     *((ushort*)pBackBuffer) = GetIntensityLog(fftResults[row]);
 
-                    pBackBuffer = (int)this._bitmap.BackBuffer;
+                    pBackBuffer = this._bitmap.BackBuffer;
                     pBackBuffer += row * this._bitmap.BackBufferStride;
                     pBackBuffer += this.nextX * this._bitmap.Format.BitsPerPixel / 8;
                     *((ushort*)pBackBuffer) = 0;

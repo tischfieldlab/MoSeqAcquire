@@ -52,7 +52,6 @@ namespace TestPatterns
         private MultimediaTimer __timer;
         private int currentFrameId;
         private byte[] _copyBuffer;
-        private Rectangle rect;
         private void ProduceFrame()
         {
             if (!this.Enabled)

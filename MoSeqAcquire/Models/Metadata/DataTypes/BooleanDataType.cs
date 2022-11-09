@@ -21,7 +21,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             {
                 return Convert.ToBoolean(value);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

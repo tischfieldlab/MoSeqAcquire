@@ -27,8 +27,8 @@ namespace MoSeqAcquire.ViewModels.MediaSources
 
         }
 
-        private BufferedWaveProvider provider;
-        private SampleAggregator sampleProvider;
+        // private BufferedWaveProvider provider;
+        // private SampleAggregator sampleProvider;
         /*public override void BindChannel()
         {
             var meta = this.channel.Metadata as AudioChannelMetadata;

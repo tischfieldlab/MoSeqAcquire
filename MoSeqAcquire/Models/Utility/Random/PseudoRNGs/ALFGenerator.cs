@@ -179,7 +179,6 @@ namespace MoSeqAcquire.Models.Utility.Random
         /// <param name="seed">
         /// An unsigned number used to calculate a starting value for the pseudo-random number sequence.
         /// </param>
-        [CLSCompliant(false)]
         public ALFGenerator(uint seed)
         {
             this.seed = seed;
@@ -260,7 +259,6 @@ namespace MoSeqAcquire.Models.Utility.Random
         /// A 32-bit unsigned integer greater than or equal to <see cref="UInt32.MinValue"/> and 
         ///   less than or equal to <see cref="UInt32.MaxValue"/>.
         /// </returns>
-        [CLSCompliant(false)]
         public uint NextUInt()
         {
             if (this.i >= this.longLag)

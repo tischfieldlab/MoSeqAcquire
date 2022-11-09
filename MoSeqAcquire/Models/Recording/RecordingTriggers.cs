@@ -7,11 +7,11 @@ using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.Models.Recording
 {
-    public class BeforeRecordingStartedTrigger : TriggerEvent {
-
+    public class BeforeRecordingStartedTrigger : TriggerEvent
+    {
         public BeforeRecordingStartedTrigger()
         {
-
+            this.Name = "Before Recording Started";
         }
         public override void Start()
         {
@@ -25,6 +25,10 @@ namespace MoSeqAcquire.Models.Recording
     }
     public class AfterRecordingStartedTrigger : TriggerEvent
     {
+        public AfterRecordingStartedTrigger()
+        {
+            this.Name = "After Recording Started";
+        }
         public override void Start()
         {
             throw new NotImplementedException();
@@ -37,6 +41,10 @@ namespace MoSeqAcquire.Models.Recording
     }
     public class BeforeRecordingFinishedTrigger : TriggerEvent
     {
+        public BeforeRecordingFinishedTrigger()
+        {
+            this.Name = "Before Recording Finished";
+        }
         public override void Start()
         {
             throw new NotImplementedException();

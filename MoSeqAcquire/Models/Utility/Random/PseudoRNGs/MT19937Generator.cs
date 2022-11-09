@@ -191,7 +191,6 @@ namespace MoSeqAcquire.Models.Utility.Random
         /// <param name="seed">
         /// An unsigned number used to calculate a starting value for the pseudo-random number sequence.
         /// </param>
-        [CLSCompliant(false)]
         public MT19937Generator(uint seed)
         {
             this.mt = new uint[MT19937Generator.N];
@@ -237,7 +236,6 @@ namespace MoSeqAcquire.Models.Utility.Random
         /// <exception cref="ArgumentNullException">
         /// <paramref name="seedArray"/> is NULL (<see langword="Nothing"/> in Visual Basic).
         /// </exception>
-        [CLSCompliant(false)]
         public MT19937Generator(uint[] seedArray)
         {
             if (seedArray == null)
@@ -352,7 +350,6 @@ namespace MoSeqAcquire.Models.Utility.Random
         /// A 32-bit unsigned integer greater than or equal to <see cref="UInt32.MinValue"/> and 
         ///   less than or equal to <see cref="UInt32.MaxValue"/>.
         /// </returns>
-        [CLSCompliant(false)]
         public uint NextUInt()
         {
             if (this.mti >= MT19937Generator.N)

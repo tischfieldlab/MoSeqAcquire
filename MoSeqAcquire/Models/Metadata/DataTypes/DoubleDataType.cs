@@ -33,7 +33,7 @@ namespace MoSeqAcquire.Models.Metadata.DataTypes
             {
                 return Convert.ToDouble(value);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return default(double);
             }
