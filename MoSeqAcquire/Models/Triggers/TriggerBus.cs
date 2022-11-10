@@ -17,11 +17,11 @@ namespace MoSeqAcquire.Models.Triggers
     }
     public class TriggerBus
     {
-        protected Dictionary<Type, List<TriggerAction>> subscribers;
+        protected Dictionary<TriggerEvent, List<TriggerAction>> subscribers;
 
         public TriggerBus()
         {
-            this.subscribers = new Dictionary<Type, List<TriggerAction>>();
+            this.subscribers = new Dictionary<TriggerEvent, List<TriggerAction>>();
         }
 
         public TriggerExecutionMode TriggerExecutionMode
@@ -29,36 +29,34 @@ namespace MoSeqAcquire.Models.Triggers
             get => (TriggerExecutionMode)Enum.Parse(typeof(TriggerExecutionMode), Properties.Settings.Default.TriggersExecutionMode);
         }
         
-        public void Subscribe(Type trigger, TriggerAction triggerAction)
+        public void Subscribe(TriggerEvent triggerEvent, TriggerAction triggerAction)
         {
-            if (!this.subscribers.ContainsKey(trigger))
+            if (!this.subscribers.ContainsKey(triggerEvent))
             {
-                this.subscribers[trigger] = new List<TriggerAction>();
+                this.subscribers[triggerEvent] = new List<TriggerAction>();
             }
-            this.subscribers[trigger].Add(triggerAction);
+            this.subscribers[triggerEvent].Add(triggerAction);
         }
-        public void Unsubscribe(Type trigger, TriggerAction triggerAction)
+        public void Unsubscribe(TriggerEvent triggerEvent, TriggerAction triggerAction)
         {
-            this.subscribers[trigger].Remove(triggerAction);
+            this.subscribers[triggerEvent].Remove(triggerAction);
         }
 
-        public void Trigger<TTrigger>(TTrigger trigger) where TTrigger : TriggerEvent
+        public void Trigger<TTrigger>(TTrigger triggerEvent) where TTrigger : TriggerEvent
         {
-            if (this.subscribers.ContainsKey(typeof(TTrigger)))
+            if (this.subscribers.ContainsKey(triggerEvent))
             {
                 if (this.TriggerExecutionMode == TriggerExecutionMode.Parallel)
                 {
-                    Task[] tasks = this.subscribers[typeof(TTrigger)]
+                    Task[] tasks = this.subscribers[triggerEvent]
                                     .OrderByDescending(t => t.Priority)
-                                    .Select(t => Task.Run(() =>
-                                    {
-                                        t.Execute(trigger);
-                                    })).ToArray();
+                                    .Select(t => Task.Run(() => t.Execute(triggerEvent)))
+                                    .ToArray();
                     Task.WaitAll(tasks); // wait for all triggers to complete
                 }
                 else if(this.TriggerExecutionMode == TriggerExecutionMode.Hybrid)
                 {
-                    Task task = this.subscribers[typeof(TTrigger)]
+                    Task task = this.subscribers[triggerEvent]
                                        .GroupBy(t => t.Priority)
                                        .OrderByDescending(g => g.Key)
                                        .Aggregate(Task.CompletedTask, (prev, next) =>
@@ -67,7 +65,7 @@ namespace MoSeqAcquire.Models.Triggers
                                            {
                                                Task[] groupTasks = next.Select(t => Task.Run(() =>
                                                {
-                                                   t.Execute(trigger);
+                                                   t.Execute(triggerEvent);
                                                })).ToArray();
 
                                                Task.WaitAll(groupTasks);
@@ -78,13 +76,13 @@ namespace MoSeqAcquire.Models.Triggers
                 }
                 else
                 {
-                    Task tasks = this.subscribers[typeof(TTrigger)]
+                    Task tasks = this.subscribers[triggerEvent]
                         .OrderByDescending(t => t.Priority)
                         .Aggregate<TriggerAction, Task>(Task.CompletedTask, (prev, next) =>
                         {
                             return prev.ContinueWith((tsk) =>
                             {
-                                next.Execute(trigger);
+                                next.Execute(triggerEvent);
                             });
                         });
                     tasks.Wait();

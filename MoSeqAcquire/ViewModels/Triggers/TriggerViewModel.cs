@@ -13,17 +13,29 @@ using TriggerEvent = MoSeqAcquire.Models.Triggers.TriggerEvent;
 using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
 using Microsoft.Extensions.DependencyInjection;
 using MoSeqAcquire.ViewModels.Recording;
+using System.Collections.ObjectModel;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
-    public enum TriggerState
+    
+    public class TriggerBindingViewModel : BaseViewModel
     {
-        None,
-        Queued,
-        Running,
-        Completed,
-        Faulted
+        protected TriggerEventViewModel triggerEvent;
+        protected ObservableCollection<TriggerActionViewModel> triggerActions;
+
+        public TriggerBindingViewModel()
+        {
+            this.triggerActions = new ObservableCollection<TriggerActionViewModel>();
+        }
+
+        public TriggerEventViewModel Event { get => this.triggerEvent; }
+        public ObservableCollection<TriggerActionViewModel> Actions { get => this.triggerActions; }
+
+
+
     }
+
+    
 
     public class TriggerViewModel : BaseViewModel
     {
@@ -31,9 +43,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected string name;
         protected Type triggerType;
         protected Type actionType;
-        protected TriggerAction trigger;
+        protected TriggerEvent triggerEvent;
+        protected TriggerAction triggerAction;
         protected bool isRegistered;
-        protected TriggerState triggerState;
+        protected TriggerActionState triggerState;
         protected string triggerStateMessage;
 
         public TriggerViewModel(Type TriggerActionType)
@@ -54,7 +67,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.Settings.ApplySnapshot(ProtocolTrigger.Config);
 
         }
-
+        /*
         protected void Initialize()
         {
             if (this.Name == null)
@@ -65,141 +78,12 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.trigger = (TriggerAction)Activator.CreateInstance(this.actionType);
             this.RegisterTrigger();
             this.PropertyChanged += (s, e) => { this.RegisterTrigger(); };
-        }
+        }*/
 
-        public string Name
-        {
-            get => this.name;
-            set => this.SetField(ref this.name, value);
-        }
-        public Type TriggerType
-        {
-            get => this.triggerType;
-            set => this.SetField(ref this.triggerType, value, this.DeregisterTrigger);
-        }
-        public Type ActionType
-        {
-            get => this.actionType;
-        }
 
-        public string TriggerActionName
-        {
-            get => this.trigger.Specification.DisplayName;
-        }
+        
 
-        public string TriggerEventName
-        {
-            get
-            {
-                if (this.triggerType != null)
-                {
-                    return (Activator.CreateInstance(this.triggerType) as TriggerEvent).Name;
-                }
-                return "None selected";
-            }
-        }
-
-        public bool IsCritical
-        {
-            get => this.trigger.IsCritical;
-            set
-            {
-                this.trigger.IsCritical = value;
-                this.NotifyPropertyChanged(nameof(this.IsCritical));
-            }
-        }
-        public int Priority
-        {
-            get => this.trigger.Priority;
-            set
-            {
-                this.trigger.Priority = value;
-                this.NotifyPropertyChanged(nameof(this.Priority));
-            }
-        }
-        public BaseConfiguration Settings { get => this.trigger.Settings; }
-        public TriggerActionSpecification Specification
-        {
-            get => this.trigger.Specification as TriggerActionSpecification;
-        }
-
-        public bool HasDesignerImplementation
-        {
-            get => this.Specification.HasDesignerImplementation;
-        }
-        public UserControl DesignerImplementation
-        {
-            get
-            {
-                if (this.Specification.HasDesignerImplementation)
-                    return (UserControl)Activator.CreateInstance(this.Specification.DesignerImplementation);
-                return null;
-            }
-        }
-        public TriggerState TriggerState
-        {
-            get => this.triggerState;
-            set => this.SetField(ref this.triggerState, value);
-        }
-        public string TriggerStateMessage
-        {
-            get => this.triggerStateMessage;
-            set => this.SetField(ref this.triggerStateMessage, value);
-        }
-
-        public void DeregisterTrigger()
-        {
-            if (this.isRegistered)
-            {
-                this.trigger.TriggerExecutionStarted -= Trigger_TriggerExecutionStarted;
-                this.trigger.TriggerExecutionFinished -= Trigger_TriggerExecutionFinished;
-                this.trigger.TriggerFaulted -= Trigger_TriggerFaulted;
-                this.TriggerState = TriggerState.None;
-                this.triggerBus.Unsubscribe(this.triggerType, this.trigger);
-                this.isRegistered = false;
-            }
-        }
-        protected void RegisterTrigger()
-        {
-            if (!this.isRegistered)
-            {
-                if (this.triggerType != null && this.actionType != null)
-                {
-                    this.trigger.TriggerExecutionStarted += Trigger_TriggerExecutionStarted;
-                    this.trigger.TriggerExecutionFinished += Trigger_TriggerExecutionFinished;
-                    this.trigger.TriggerFaulted += Trigger_TriggerFaulted;
-                    this.triggerBus.Subscribe(this.triggerType, this.trigger);
-                    this.isRegistered = true;
-                    this.TriggerState = TriggerState.Queued;
-                }
-            }
-        }
-
-        private void Trigger_TriggerExecutionFinished(object sender, TriggerFinishedEventArgs e)
-        {
-            this.TriggerStateMessage = e.Output;
-            this.TriggerState = TriggerState.Completed;
-        }
-
-        private void Trigger_TriggerExecutionStarted(object sender, TriggerLifetimeEventArgs e)
-        {
-            this.TriggerStateMessage = string.Empty;
-            this.TriggerState = TriggerState.Running;
-        }
-        private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
-        {
-            this.TriggerStateMessage = e.Output;
-            //this.TriggerStateMessage = e.Exception.GetAllMessages();
-            this.TriggerState = TriggerState.Faulted;
-            if(this.IsCritical)
-            {
-                App.Current.Services.GetService<RecordingManagerViewModel>().AbortRecording();
-                MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.TriggerStateMessage,
-                                "Recording Aborted!",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Exclamation);
-            }
-        }
+        
 
         public ProtocolTrigger GetTriggerDefinition()
         {

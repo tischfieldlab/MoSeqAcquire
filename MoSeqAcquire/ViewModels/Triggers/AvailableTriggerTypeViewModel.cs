@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoSeqAcquire.Models.Core;
 using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
     public class AvailableTriggerTypeViewModel : BaseViewModel
     {
-        protected Type triggerType;
-        public AvailableTriggerTypeViewModel(Type TriggerType)
+        protected ComponentSpecification eventSpec;
+
+        public AvailableTriggerTypeViewModel(Type TriggerEventType)
         {
-            this.triggerType = TriggerType;
+            this.eventSpec = new ComponentSpecification(TriggerEventType);
         }
-        public Type TriggerType
+        public Type EventType
         {
-            get => this.triggerType;
+            get => this.eventSpec.ComponentType;
         }
         public string Name
         {
-            get => (Activator.CreateInstance(this.triggerType) as TriggerEvent).Name;
+            get => this.eventSpec.DisplayName;
         }
     }
 }

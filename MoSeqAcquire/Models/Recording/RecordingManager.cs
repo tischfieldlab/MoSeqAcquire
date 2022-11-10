@@ -44,10 +44,11 @@ namespace MoSeqAcquire.Models.Recording
         protected RecordingManagerState state;
         protected string currentTask;
 
-        public event EventHandler BeforeStartRecording; //fires before recording has started 
-        public event EventHandler RecordingStarted;     //fires once recording has commenced
-        public event EventHandler RecordingFinished;    //fires once recording has finished
-        public event EventHandler RecordingAborted;     //fires 
+        public event EventHandler BeforeStartRecording; // fires before recording has started 
+        public event EventHandler RecordingStarted;     // fires once recording has commenced
+        public event EventHandler BeforeRecordingEnd;   // fires before recording is about to end (finish or abort)
+        public event EventHandler RecordingFinished;    // fires once recording has finished
+        public event EventHandler RecordingAborted;     // fires once recording has been aborted
 
 
         public RecordingManager()
@@ -98,6 +99,7 @@ namespace MoSeqAcquire.Models.Recording
             get => this.currentTask;
             protected set => this.SetField(ref this.currentTask, value);
         }
+        public bool IsAbortRequested { get => this.abortRequested; }
         public TimeSpan Duration { get => this.terminator == null ? TimeSpan.Zero : this.terminator.Duration; }
         public double? Progress { get => this.terminator?.Progress; }
         public TimeSpan? TimeRemaining { get => this.terminator?.TimeRemaining; }
@@ -176,6 +178,7 @@ namespace MoSeqAcquire.Models.Recording
 
             // run before complete triggers
             this.CurrentTask = RecordingManagerTasks.RunningBeforeCompleteTriggers;
+            this.BeforeRecordingEnd?.Invoke(this, new EventArgs());
             this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
 
             //Stop the individual recorders
@@ -205,6 +208,12 @@ namespace MoSeqAcquire.Models.Recording
             {
                 return; //abort was already requested!
             }
+
+            // run before complete triggers
+            this.CurrentTask = RecordingManagerTasks.RunningBeforeCompleteTriggers;
+            this.BeforeRecordingEnd?.Invoke(this, new EventArgs());
+            this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
+
             this.abortRequested = true;
             this.State = RecordingManagerState.Completing;
             this.CurrentTask = RecordingManagerTasks.AbortingRecording;

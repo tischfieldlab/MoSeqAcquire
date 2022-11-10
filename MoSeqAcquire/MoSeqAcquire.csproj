@@ -173,7 +173,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-	<Reference Include="netstandard" />
+    <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -209,6 +209,7 @@
     <Compile Include="Models\Recording\RecordingSummary.cs" />
     <Compile Include="Models\Recording\RecordingTriggers.cs" />
     <Compile Include="Models\Recording\TimestampCoWriter.cs" />
+    <Compile Include="Models\Triggers\TriggerActionViewModel.cs" />
     <Compile Include="Models\Triggers\TriggerEvent.cs" />
     <Compile Include="Models\Triggers\TriggerAction.cs" />
     <Compile Include="Models\Triggers\TriggerActionSpecification.cs" />
@@ -352,6 +353,7 @@
     <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerEditorViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerEventViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />

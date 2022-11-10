@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.Models.Triggers
 {
@@ -18,6 +19,11 @@ namespace MoSeqAcquire.Models.Triggers
         }
 
         public TriggerEventConfig Config { get; protected set; }
+
+        public void Fire()
+        {
+            App.Current.Services.GetService<TriggerBus>().Trigger(this);
+        }
 
 
         public abstract void Start();
