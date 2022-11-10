@@ -209,7 +209,7 @@
     <Compile Include="Models\Recording\RecordingSummary.cs" />
     <Compile Include="Models\Recording\RecordingTriggers.cs" />
     <Compile Include="Models\Recording\TimestampCoWriter.cs" />
-    <Compile Include="Models\Triggers\TriggerActionViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerActionViewModel.cs" />
     <Compile Include="Models\Triggers\TriggerEvent.cs" />
     <Compile Include="Models\Triggers\TriggerAction.cs" />
     <Compile Include="Models\Triggers\TriggerActionSpecification.cs" />

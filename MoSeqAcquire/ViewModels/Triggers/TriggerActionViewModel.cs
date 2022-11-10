@@ -73,7 +73,7 @@ namespace MoSeqAcquire.Models.Triggers
                 return null;
             }
         }
-        public TriggerActionState TriggerState
+        public TriggerActionState State
         {
             get => this.triggerState;
             set => this.SetField(ref this.triggerState, value);
@@ -92,7 +92,7 @@ namespace MoSeqAcquire.Models.Triggers
                 this.triggerAction.TriggerExecutionStarted -= Trigger_TriggerExecutionStarted;
                 this.triggerAction.TriggerExecutionFinished -= Trigger_TriggerExecutionFinished;
                 this.triggerAction.TriggerFaulted -= Trigger_TriggerFaulted;
-                this.TriggerState = TriggerActionState.None;
+                this.State = TriggerActionState.None;
                 this.triggerBus.Unsubscribe(triggerEvent, this.triggerAction);
                 this.isRegistered = false;
             }
@@ -108,7 +108,7 @@ namespace MoSeqAcquire.Models.Triggers
                     this.triggerAction.TriggerFaulted += Trigger_TriggerFaulted;
                     this.triggerBus.Subscribe(triggerEvent, this.triggerAction);
                     this.isRegistered = true;
-                    this.TriggerState = TriggerActionState.Queued;
+                    this.State = TriggerActionState.Queued;
                 }
             }
         }
@@ -116,19 +116,19 @@ namespace MoSeqAcquire.Models.Triggers
         private void Trigger_TriggerExecutionFinished(object sender, TriggerFinishedEventArgs e)
         {
             this.TriggerStateMessage = e.Output;
-            this.TriggerState = TriggerActionState.Completed;
+            this.State = TriggerActionState.Completed;
         }
 
         private void Trigger_TriggerExecutionStarted(object sender, TriggerLifetimeEventArgs e)
         {
             this.TriggerStateMessage = string.Empty;
-            this.TriggerState = TriggerActionState.Running;
+            this.State = TriggerActionState.Running;
         }
         private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
         {
             this.TriggerStateMessage = e.Output;
             //this.TriggerStateMessage = e.Exception.GetAllMessages();
-            this.TriggerState = TriggerActionState.Faulted;
+            this.State = TriggerActionState.Faulted;
             if (this.IsCritical)
             {
                 App.Current.Services.GetService<RecordingManagerViewModel>().AbortRecording();
