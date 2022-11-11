@@ -36,7 +36,7 @@ namespace MoSeqAcquire.Models.Management
             }
             else if (typeof(TriggerAction).IsAssignableFrom(componentType))
             {
-                return new TriggerActionSpecification(componentType);
+                return new TriggerItemSpecification(componentType);
             }
             else
             {

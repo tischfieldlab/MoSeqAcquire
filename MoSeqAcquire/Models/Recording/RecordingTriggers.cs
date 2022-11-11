@@ -6,11 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Triggers;
 using Microsoft.Extensions.DependencyInjection;
+using MoSeqAcquire.ViewModels.Recording;
 
 namespace MoSeqAcquire.Models.Recording
 {
     public abstract class RecordingTriggerEvent : TriggerEvent
     {
+        protected RecordingManager GetRecordingManager()
+        {
+            return App.Current.Services.GetService<RecordingManagerViewModel>().RecordingManager;
+        }
         protected virtual void FireTrigger(object sender, EventArgs e)
         {
             this.Fire();
@@ -21,14 +26,12 @@ namespace MoSeqAcquire.Models.Recording
     {
         public override void Start()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.BeforeStartRecording += this.FireTrigger;
+            this.GetRecordingManager().BeforeStartRecording += this.FireTrigger;
         }
 
         public override void Stop()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.BeforeStartRecording -= this.FireTrigger;
+            this.GetRecordingManager().BeforeStartRecording -= this.FireTrigger;
         }
     }
     [DisplayName("After Recording Started")]
@@ -36,14 +39,12 @@ namespace MoSeqAcquire.Models.Recording
     {
         public override void Start()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.RecordingStarted += this.FireTrigger;
+            this.GetRecordingManager().RecordingStarted += this.FireTrigger;
         }
 
         public override void Stop()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.RecordingStarted -= this.FireTrigger;
+            this.GetRecordingManager().RecordingStarted -= this.FireTrigger;
         }
     }
     [DisplayName("Before Recording Finished")]
@@ -51,14 +52,12 @@ namespace MoSeqAcquire.Models.Recording
     {
         public override void Start()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.BeforeRecordingEnd += this.FireTrigger;
+            this.GetRecordingManager().BeforeRecordingEnd += this.FireTrigger;
         }
 
         public override void Stop()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.BeforeRecordingEnd -= this.FireTrigger;
+            this.GetRecordingManager().BeforeRecordingEnd -= this.FireTrigger;
         }
     }
     [DisplayName("After Recording Finished")]
@@ -73,14 +72,12 @@ namespace MoSeqAcquire.Models.Recording
 
         public override void Start()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.BeforeStartRecording += this.FireTrigger;
+            this.GetRecordingManager().BeforeStartRecording += this.FireTrigger;
         }
 
         public override void Stop()
         {
-            var recorder = App.Current.Services.GetService<RecordingManager>();
-            recorder.BeforeStartRecording -= this.FireTrigger;
+            this.GetRecordingManager().BeforeStartRecording -= this.FireTrigger;
         }
 
         protected override void FireTrigger(object sender, EventArgs e)

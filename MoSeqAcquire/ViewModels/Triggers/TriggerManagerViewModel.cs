@@ -13,15 +13,15 @@ namespace MoSeqAcquire.ViewModels.Triggers
 {
     public class TriggerManagerViewModel : BaseViewModel
     {
-        protected ObservableCollection<TriggerViewModel> triggers;
-        protected ReadOnlyObservableCollection<TriggerViewModel> ro_triggers;
+        protected ObservableCollection<TriggerBindingViewModel> triggers;
+        protected ReadOnlyObservableCollection<TriggerBindingViewModel> ro_triggers;
         protected ListCollectionView triggersView;
-        protected TriggerViewModel selectedTrigger;
+        protected TriggerBindingViewModel selectedTrigger;
 
         public TriggerManagerViewModel()
         {
-            this.triggers = new ObservableCollection<TriggerViewModel>();
-            this.ro_triggers = new ReadOnlyObservableCollection<TriggerViewModel>(this.triggers);
+            this.triggers = new ObservableCollection<TriggerBindingViewModel>();
+            this.ro_triggers = new ReadOnlyObservableCollection<TriggerBindingViewModel>(this.triggers);
             this.SetupTriggersView();
         }
 
@@ -33,15 +33,32 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.triggersView.IsLiveSorting = true;
             this.triggersView.LiveSortingProperties.Add("Priority");
 
-            this.triggersView.GroupDescriptions.Add(new PropertyGroupDescription("TriggerEventName"));
+            this.triggersView.GroupDescriptions.Add(new PropertyGroupDescription("Event"));
             this.triggersView.IsLiveGrouping = true;
-            this.triggersView.LiveGroupingProperties.Add("TriggerEventName");
+            this.triggersView.LiveGroupingProperties.Add("Event");
         }
 
-        public ReadOnlyObservableCollection<TriggerViewModel> Triggers { get => this.ro_triggers; }
+        public ReadOnlyObservableCollection<TriggerBindingViewModel> Triggers { get => this.ro_triggers; }
         public ICollectionView TriggersView { get => this.triggersView; }
 
-        public TriggerViewModel SelectedTrigger
+
+        public bool HasTriggerEvent(TriggerEventViewModel triggerEventViewModel)
+        {
+            return this.Triggers.Any((tbvm) => tbvm.Event == triggerEventViewModel);
+        }
+        public void AddTriggerEvent(TriggerEventViewModel triggerEventViewModel)
+        {
+            //Trigger.PropertyChanged += Trigger_PropertyChanged; //TODO
+            this.triggers.Add(new TriggerBindingViewModel(triggerEventViewModel));
+
+        }
+        public void AddTrigger(ProtocolTriggerEvent ProtocolTriggerEvent)
+        {
+            this.AddTriggerEvent(new TriggerEventViewModel(ProtocolTriggerEvent));
+        }
+
+
+        /*public TriggerBindingViewModel SelectedTrigger
         {
             get => this.selectedTrigger;
             set => this.SetField(ref this.selectedTrigger, value);
@@ -75,7 +92,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             return realname;
         }
 
-        public void RemoveTrigger(TriggerViewModel Trigger)
+        public void RemoveTrigger(TriggerBindingViewModel Trigger)
         {
             Trigger.DeregisterTrigger();
             Trigger.PropertyChanged -= this.Trigger_PropertyChanged;
@@ -94,6 +111,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             if (e.PropertyName == null || e.PropertyName.Equals("Priority") || e.PropertyName.Equals("TriggerEventName"))
                 this.triggersView.Refresh();
-        }
+        }*/
     }
 }

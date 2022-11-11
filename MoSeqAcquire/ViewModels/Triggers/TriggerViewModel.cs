@@ -23,8 +23,9 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected TriggerEventViewModel triggerEvent;
         protected ObservableCollection<TriggerActionViewModel> triggerActions;
 
-        public TriggerBindingViewModel()
+        public TriggerBindingViewModel(TriggerEventViewModel triggerEventViewModel)
         {
+            this.triggerEvent = triggerEventViewModel;
             this.triggerActions = new ObservableCollection<TriggerActionViewModel>();
         }
 
@@ -32,12 +33,19 @@ namespace MoSeqAcquire.ViewModels.Triggers
         public ObservableCollection<TriggerActionViewModel> Actions { get => this.triggerActions; }
 
 
-
+        public ProtocolTrigger GetDefinition()
+        {
+            return new ProtocolTrigger()
+            {
+                Event = this.triggerEvent.GetDefinition(),
+                Actions = new Collection<ProtocolTriggerAction>(this.triggerActions.Select((tavm) => tavm.GetDefinition()).ToList()),
+            };
+        }
     }
 
     
 
-    public class TriggerViewModel : BaseViewModel
+    /*public class TriggerViewModel : BaseViewModel
     {
         protected TriggerBus triggerBus;
         protected string name;
@@ -85,7 +93,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
 
         
 
-        public ProtocolTrigger GetTriggerDefinition()
+        /*public ProtocolTrigger GetTriggerDefinition()
         {
             return new ProtocolTrigger()
             {
@@ -97,6 +105,6 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 Action = this.ActionType.AssemblyQualifiedName,
                 ActionConfig = this.Settings.GetSnapshot()
             };
-        }
-    }
+        }*/
+   /* }*/
 }

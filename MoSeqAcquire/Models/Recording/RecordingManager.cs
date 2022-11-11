@@ -151,7 +151,7 @@ namespace MoSeqAcquire.Models.Recording
             this.GeneralSettings.Basename = "session_" + DateTime.UtcNow.ToString("yyyyMMddHHmmss");
 
             this.CurrentTask = RecordingManagerTasks.RunningBeforeStartTriggers;
-            this.triggerBus.Trigger(new BeforeRecordingStartedTrigger());
+            // this.triggerBus.Trigger(new BeforeRecordingStartedTrigger());
 
             if (this.abortRequested) return;
 
@@ -167,7 +167,7 @@ namespace MoSeqAcquire.Models.Recording
 
             this.State = RecordingManagerState.Recording;
             this.CurrentTask = RecordingManagerTasks.RunningAfterStartTriggers; 
-            this.triggerBus.Trigger(new AfterRecordingStartedTrigger());
+            // this.triggerBus.Trigger(new AfterRecordingStartedTrigger());
             this.RecordingStarted?.Invoke(this, new EventArgs());
             this.CurrentTask = RecordingManagerTasks.ActivelyRecording;
         }
@@ -179,7 +179,7 @@ namespace MoSeqAcquire.Models.Recording
             // run before complete triggers
             this.CurrentTask = RecordingManagerTasks.RunningBeforeCompleteTriggers;
             this.BeforeRecordingEnd?.Invoke(this, new EventArgs());
-            this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
+            // this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
 
             //Stop the individual recorders
             this.State = RecordingManagerState.Completing;
@@ -195,7 +195,7 @@ namespace MoSeqAcquire.Models.Recording
             // run after complete triggers
             this.CurrentTask = RecordingManagerTasks.RunningAfterCompleteTriggers;
             
-            this.triggerBus.Trigger(new AfterRecordingFinishedTrigger());
+            // this.triggerBus.Trigger(new AfterRecordingFinishedTrigger());
             this.RecordingFinished?.Invoke(this, new EventArgs());
 
             //set state to idle
@@ -212,7 +212,7 @@ namespace MoSeqAcquire.Models.Recording
             // run before complete triggers
             this.CurrentTask = RecordingManagerTasks.RunningBeforeCompleteTriggers;
             this.BeforeRecordingEnd?.Invoke(this, new EventArgs());
-            this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
+            // this.triggerBus.Trigger(new BeforeRecordingFinishedTrigger());
 
             this.abortRequested = true;
             this.State = RecordingManagerState.Completing;
@@ -232,7 +232,7 @@ namespace MoSeqAcquire.Models.Recording
             }
 
             this.CurrentTask = RecordingManagerTasks.RunningAfterCompleteTriggers;
-            this.triggerBus.Trigger(new AfterRecordingFinishedTrigger() { Aborted = true });
+            // this.triggerBus.Trigger(new AfterRecordingFinishedTrigger() { Aborted = true });
             this.RecordingAborted?.Invoke(this, new EventArgs());
 
             this.State = RecordingManagerState.Idle;

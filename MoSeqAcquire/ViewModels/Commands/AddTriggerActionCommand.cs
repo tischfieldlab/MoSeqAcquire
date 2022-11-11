@@ -9,9 +9,9 @@ using MoSeqAcquire.Views;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class AddTriggerCommand : BaseCommand
+    public class AddTriggerActionCommand : BaseCommand
     {
-        public AddTriggerCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        public AddTriggerActionCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
         }
 
@@ -25,9 +25,9 @@ namespace MoSeqAcquire.ViewModels.Commands
         public override void Execute(object parameter)
         {
             //this.ViewModel.Triggers.AddTrigger();
-            var dialog = new TriggerEditorWindow
+            var dialog = new TriggerActionEditorWindow
             {
-                DataContext = new TriggerEditorViewModel(this.ViewModel, null)
+                DataContext = new TriggerActionEditorViewModel(this.ViewModel, null)
             };
             dialog.ShowDialog();
         }

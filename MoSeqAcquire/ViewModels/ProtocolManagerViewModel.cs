@@ -106,7 +106,7 @@ namespace MoSeqAcquire.ViewModels
             }
             foreach (var tvm in triggers.Triggers)
             {
-                pcol.Triggers.Add(tvm.GetTriggerDefinition());
+                pcol.Triggers.Add(tvm.GetDefinition());
             }
 
             pcol.Metadata = recorder.RecordingMetadata.Items;
@@ -134,7 +134,7 @@ namespace MoSeqAcquire.ViewModels
             recorder.RecordingMetadata.Items.Clear();
 
             // remove all triggers
-            triggers.RemoveTriggers();
+            // triggers.RemoveTriggers(); // TODO
 
             // unlock protocol
             this.isProtocolLocked = false;
@@ -179,7 +179,7 @@ namespace MoSeqAcquire.ViewModels
                     {
                         foreach (var trigger in protocol.Triggers)
                         {
-                            triggers.AddTrigger(trigger);
+                            //triggers.AddTrigger(trigger); // TODO
                         }
                     }
 

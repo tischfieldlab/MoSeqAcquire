@@ -18,7 +18,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         Title="{Binding Path=MainWindowTitle}" Height="400" Width="1000">
     <Window.Resources>
         <ResourceDictionary>
@@ -90,7 +90,7 @@
                                     <materialDesign:PackIcon Kind="Cassette" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTrigger}" >
+                            <MenuItem Header="Trigger" Command="{Binding Path=Commands.AddTriggerEvent}" >
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="LightningBolt" />
                                 </MenuItem.Icon>

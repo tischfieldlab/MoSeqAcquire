@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using MaterialDesignThemes.Wpf;
 using MoSeqAcquire.Views.Controls;
+using MoSeqAcquire.Models.Triggers;
 
 namespace MoSeqAcquire.ViewModels.Commands
 {
-    public class RemoveTriggerCommand : BaseCommand
+    public class RemoveTriggerActionCommand : BaseCommand
     {
-        public RemoveTriggerCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
+        public RemoveTriggerActionCommand(MoSeqAcquireViewModel ViewModel) : base(ViewModel)
         {
         }
 
@@ -21,29 +22,29 @@ namespace MoSeqAcquire.ViewModels.Commands
             if (this.ViewModel.Protocol.IsProtocolLocked)
                 return false;
 
-            if (parameter != null && parameter is TriggerViewModel)
+            if (parameter != null && parameter is TriggerActionViewModel)
             {
                 return true;
             }
 
-            if (this.ViewModel.Triggers.SelectedTrigger != null)
-            {
-                return true;
-            }
+            //if (this.ViewModel.Triggers.SelectedTrigger != null)
+            //{
+            //    return true;
+            //} // TODO
             return false;
         }
 
         public override async void Execute(object parameter)
         {
-            TriggerViewModel viewModel = null;
-            if (parameter != null && parameter is TriggerViewModel)
+            TriggerActionViewModel viewModel = null;
+            if (parameter != null && parameter is TriggerActionViewModel)
             {
-                viewModel = parameter as TriggerViewModel;
+                viewModel = parameter as TriggerActionViewModel;
             }
-            else if (this.ViewModel.Triggers.SelectedTrigger != null)
-            {
-                viewModel = this.ViewModel.Triggers.SelectedTrigger;
-            }
+            //else if (this.ViewModel.Triggers.SelectedTrigger != null)
+            //{
+            //    viewModel = this.ViewModel.Triggers.SelectedTrigger;
+            //} // TODO
 
             if (viewModel != null)
             {
@@ -56,7 +57,7 @@ namespace MoSeqAcquire.ViewModels.Commands
 
                 if ((bool) result)
                 {
-                    this.ViewModel.Triggers.RemoveTrigger(viewModel);
+                    // this.ViewModel.Triggers.RemoveTrigger(viewModel); // TODO
                 }
             }
         }

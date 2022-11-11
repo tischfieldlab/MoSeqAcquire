@@ -7,28 +7,29 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.ViewModels.Triggers;
 using MoSeqAcquire.ViewModels.Commands;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
-    public class TriggerEditorViewModel : BaseViewModel
+    public class TriggerActionEditorViewModel : BaseViewModel
     {
         protected bool isNewTrigger;
         protected int currentStep;
         protected MoSeqAcquireViewModel rootViewModel;
-        protected TriggerViewModel triggerViewModel;
+        protected TriggerActionViewModel triggerActionViewModel;
         protected Type selectedTriggerActionType;
 
         public event EventHandler CancelRequested;
         public event EventHandler Completed;
 
-        public TriggerEditorViewModel(MoSeqAcquireViewModel rootViewModel, TriggerViewModel triggerViewModel = null)
+        public TriggerActionEditorViewModel(MoSeqAcquireViewModel rootViewModel, TriggerActionViewModel triggerActionViewModel = null)
         {
             this.rootViewModel = rootViewModel;
             this.PopulateAvailableTypes();
-            if (triggerViewModel != null)
+            if (triggerActionViewModel != null)
             {
-                this.TriggerViewModel = triggerViewModel;
+                this.TriggerActionViewModel = triggerActionViewModel;
                 this.CurrentStep = 1;
                 this.IsNewTrigger = false;
             }
@@ -40,7 +41,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         public string Header
         {
-            get => this.TriggerViewModel is null ? "Select New Trigger Action Type" : "Configure " + this.TriggerViewModel.Specification.DisplayName;
+            get => this.TriggerActionViewModel is null ? "Select New Trigger Action Type" : "Configure " + this.TriggerActionViewModel.Specification.DisplayName;
         }
         public PackIconKind ContinueIcon
         {
@@ -72,18 +73,14 @@ namespace MoSeqAcquire.ViewModels.Triggers
             get => this.selectedTriggerActionType;
             set => this.SetField(ref this.selectedTriggerActionType, value);
         }
-        public TriggerViewModel TriggerViewModel
+        public TriggerActionViewModel TriggerActionViewModel
         {
-            get => this.triggerViewModel;
-            set => this.SetField(ref this.triggerViewModel, value);
+            get => this.triggerActionViewModel;
+            set => this.SetField(ref this.triggerActionViewModel, value);
         }
-        public ReadOnlyObservableCollection<AvailableTriggerTypeViewModel> AvailableTriggerTypes { get; protected set; }
         public ReadOnlyObservableCollection<AvailableActionTypeViewModel> AvailableActionTypes { get; protected set; }
         protected void PopulateAvailableTypes()
         {
-            var oc1 = new ObservableCollection<AvailableTriggerTypeViewModel>(ProtocolHelpers.FindTriggerEvents().Select(t => new AvailableTriggerTypeViewModel(t.ComponentType)));
-            this.AvailableTriggerTypes = new ReadOnlyObservableCollection<AvailableTriggerTypeViewModel>(oc1);
-
             var oc2 = new ObservableCollection<AvailableActionTypeViewModel>(ProtocolHelpers.FindTriggerActions().Select(t => new AvailableActionTypeViewModel(t.ComponentType)));
             this.AvailableActionTypes = new ReadOnlyObservableCollection<AvailableActionTypeViewModel>(oc2);
         }
@@ -96,19 +93,18 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 {
                     if (this.selectedTriggerActionType != null)
                     {
-                        this.TriggerViewModel = new TriggerViewModel(this.selectedTriggerActionType);
-                        this.TriggerViewModel.TriggerType = this.AvailableTriggerTypes.FirstOrDefault().TriggerType;
+                        this.TriggerActionViewModel = new TriggerActionViewModel(this.selectedTriggerActionType);
                         this.CurrentStep = 1;
                         this.NotifyPropertyChanged(null);
                     }
                 }
                 else if (this.CurrentStep == 1)
                 {
-                    if (!this.rootViewModel.Triggers.Triggers.Contains(this.TriggerViewModel))
-                    {
-                        //only add if was not in the collection already
-                        this.rootViewModel.Triggers.AddTrigger(this.TriggerViewModel);
-                    }
+                    //if (!this.rootViewModel.Triggers.Triggers.Contains(this.TriggerViewModel))
+                    //{
+                    //    //only add if was not in the collection already
+                    //    this.rootViewModel.Triggers.AddTrigger(this.TriggerActionViewModel);
+                    //}
                     this.Completed?.Invoke(this, new EventArgs());
                 }
             },

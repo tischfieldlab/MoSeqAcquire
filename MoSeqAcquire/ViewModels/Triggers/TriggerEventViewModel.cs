@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace MoSeqAcquire.ViewModels.Triggers
 {
@@ -45,9 +47,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
         protected void Initialize()
         {
+            this.triggerEvent = (TriggerEvent)Activator.CreateInstance(this.eventType);
             if (this.Name == null)
             {
-                this.Name = App.Current.Services.GetService<TriggerManagerViewModel>().GetNextDefaultTriggerName();
+                this.Name = this.Specification.DisplayName;
             }
             this.Register();
             this.PropertyChanged += (s, e) => { this.Register(); };
@@ -63,6 +66,24 @@ namespace MoSeqAcquire.ViewModels.Triggers
             set => this.SetField(ref this.eventType, value);
         }
         public BaseConfiguration Settings { get => this.triggerEvent.Settings; }
+        public TriggerItemSpecification Specification
+        {
+            get => this.triggerEvent.Specification as TriggerItemSpecification;
+        }
+
+        public bool HasDesignerImplementation
+        {
+            get => this.Specification.HasDesignerImplementation;
+        }
+        public UserControl DesignerImplementation
+        {
+            get
+            {
+                if (this.Specification.HasDesignerImplementation)
+                    return (UserControl)Activator.CreateInstance(this.Specification.DesignerImplementation);
+                return null;
+            }
+        }
         public TriggerEventState State
         {
             get => this.state;
@@ -77,9 +98,9 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             if (this.isRegistered)
             {
-                this.triggerAction.TriggerExecutionStarted -= Trigger_TriggerExecutionStarted;
-                this.triggerAction.TriggerExecutionFinished -= Trigger_TriggerExecutionFinished;
-                this.triggerAction.TriggerFaulted -= Trigger_TriggerFaulted;
+                this.triggerEvent.ExecutionStarted -= Trigger_TriggerExecutionStarted;
+                this.triggerEvent.ExecutionFinished -= Trigger_TriggerExecutionFinished;
+                this.triggerEvent.ExecutionFaulted -= Trigger_TriggerFaulted;
                 this.State = TriggerEventState.Inactive;
                 this.triggerEvent.Stop();
                 this.isRegistered = false;
@@ -91,14 +112,48 @@ namespace MoSeqAcquire.ViewModels.Triggers
             {
                 if (triggerEvent != null)
                 {
-                    this.triggerAction.TriggerExecutionStarted += Trigger_TriggerExecutionStarted;
-                    this.triggerAction.TriggerExecutionFinished += Trigger_TriggerExecutionFinished;
-                    this.triggerAction.TriggerFaulted += Trigger_TriggerFaulted;
+                    this.triggerEvent.ExecutionStarted += Trigger_TriggerExecutionStarted;
+                    this.triggerEvent.ExecutionFinished += Trigger_TriggerExecutionFinished;
+                    this.triggerEvent.ExecutionFaulted += Trigger_TriggerFaulted;
                     this.triggerEvent.Start();
                     this.isRegistered = true;
                     this.State = TriggerEventState.Active;
                 }
             }
+        }
+        private void Trigger_TriggerExecutionFinished(object sender, TriggerFinishedEventArgs e)
+        {
+            this.StateMessage = e.Output;
+            this.State = TriggerEventState.Inactive;
+        }
+
+        private void Trigger_TriggerExecutionStarted(object sender, TriggerLifetimeEventArgs e)
+        {
+            this.StateMessage = string.Empty;
+            this.State = TriggerEventState.Active;
+        }
+        private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
+        {
+            this.StateMessage = e.Output;
+            // this.TriggerStateMessage = e.Exception.GetAllMessages();
+            this.State = TriggerEventState.Faulted;
+
+            // App.Current.Services.GetService<RecordingManagerViewModel>().AbortRecording();
+            MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.StateMessage,
+                            "Recording Aborted!",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation);
+        }
+
+
+        public ProtocolTriggerEvent GetDefinition()
+        {
+            return new ProtocolTriggerEvent()
+            {
+                Name = this.Name,
+                Event = this.eventType.AssemblyQualifiedName,
+                Config = this.Settings.GetSnapshot(),
+            };
         }
     }
 }

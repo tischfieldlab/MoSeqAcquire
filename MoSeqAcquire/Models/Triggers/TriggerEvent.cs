@@ -12,9 +12,14 @@ namespace MoSeqAcquire.Models.Triggers
     [SettingsImplementation(typeof(TriggerEventConfig))]
     public abstract class TriggerEvent : Component
     {
+        public event EventHandler<TriggerLifetimeEventArgs> ExecutionStarted;
+        public event EventHandler<TriggerFinishedEventArgs> ExecutionFinished;
+        public event EventHandler<TriggerFaultedEventArgs> ExecutionFaulted;
+
+
         public TriggerEvent()
         {
-            this.Specification = new TriggerActionSpecification(this.GetType());
+            this.Specification = new TriggerItemSpecification(this.GetType());
             this.Settings = this.Specification.SettingsFactory();
         }
 

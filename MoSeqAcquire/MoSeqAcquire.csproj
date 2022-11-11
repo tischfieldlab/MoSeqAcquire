@@ -209,10 +209,13 @@
     <Compile Include="Models\Recording\RecordingSummary.cs" />
     <Compile Include="Models\Recording\RecordingTriggers.cs" />
     <Compile Include="Models\Recording\TimestampCoWriter.cs" />
+    <Compile Include="ViewModels\Commands\AddTriggerActionCommand.cs" />
+    <Compile Include="ViewModels\Commands\EditTriggerActionConfigCommand.cs" />
+    <Compile Include="ViewModels\Commands\RemoveTriggerActionCommand.cs" />
     <Compile Include="ViewModels\Triggers\TriggerActionViewModel.cs" />
     <Compile Include="Models\Triggers\TriggerEvent.cs" />
     <Compile Include="Models\Triggers\TriggerAction.cs" />
-    <Compile Include="Models\Triggers\TriggerActionSpecification.cs" />
+    <Compile Include="Models\Triggers\TriggerItemSpecification.cs" />
     <Compile Include="Models\Triggers\TriggerBus.cs" />
     <Compile Include="Models\Triggers\TriggerConfig.cs" />
     <Compile Include="Models\Triggers\TriggerLifetimeEventArgs.cs" />
@@ -306,9 +309,9 @@
     <Compile Include="ViewModels\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Core\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\ActionCommand.cs" />
-    <Compile Include="ViewModels\Commands\RemoveTriggerCommand.cs" />
-    <Compile Include="ViewModels\Commands\AddTriggerCommand.cs" />
-    <Compile Include="ViewModels\Commands\EditTriggerConfigCommand.cs" />
+    <Compile Include="ViewModels\Commands\RemoveTriggerEventCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddTriggerEventCommand.cs" />
+    <Compile Include="ViewModels\Commands\EditTriggerEventConfigCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenThemeDialogCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveMediaSourceCommand.cs" />
     <Compile Include="ViewModels\Commands\AddMediaSourceCommand.cs" />
@@ -352,7 +355,8 @@
     <Compile Include="ViewModels\TaskbarItemInfoViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableActionTypeViewModel.cs" />
     <Compile Include="ViewModels\Triggers\AvailableTriggerTypeViewModel.cs" />
-    <Compile Include="ViewModels\Triggers\TriggerEditorViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerActionEditorViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerEventEditorViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerEventViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
@@ -555,8 +559,11 @@
     </Compile>
     <Compile Include="Views\SystemInfo\SystemMonitorItemViewModel.cs" />
     <Compile Include="Views\SystemInfo\SystemMonitorViewModel.cs" />
-    <Compile Include="Views\TriggerViews\TriggerEditorWindow.xaml.cs">
-      <DependentUpon>TriggerEditorWindow.xaml</DependentUpon>
+    <Compile Include="Views\TriggerViews\TriggerActionEditorWindow.xaml.cs">
+      <DependentUpon>TriggerActionEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TriggerViews\TriggerEventEditorWindow.xaml.cs">
+      <DependentUpon>TriggerEventEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TriggerViews\TriggerConfigView.xaml.cs">
       <DependentUpon>TriggerConfigView.xaml</DependentUpon>
@@ -736,7 +743,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TriggerViews\TriggerEditorWindow.xaml">
+    <Page Include="Views\TriggerViews\TriggerActionEditorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TriggerViews\TriggerEventEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

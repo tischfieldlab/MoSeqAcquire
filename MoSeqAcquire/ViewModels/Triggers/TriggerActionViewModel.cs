@@ -9,8 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using MoSeqAcquire.Models.Management;
+using MoSeqAcquire.Models.Triggers;
+using TriggerAction = MoSeqAcquire.Models.Triggers.TriggerAction;
 
-namespace MoSeqAcquire.Models.Triggers
+namespace MoSeqAcquire.ViewModels.Triggers
 {
     public enum TriggerActionState
     {
@@ -30,7 +33,33 @@ namespace MoSeqAcquire.Models.Triggers
         protected TriggerActionState triggerState;
         protected string triggerStateMessage;
 
+        public TriggerActionViewModel(Type TriggerEventType)
+        {
+            this.actionType = TriggerEventType;
+            this.Initialize();
+        }
+        public TriggerActionViewModel(ProtocolTriggerEvent ProtocolTriggerEvent)
+        {
+            this.Name = ProtocolTriggerEvent.Name;
+            this.actionType = ProtocolTriggerEvent.GetEventType();
 
+            this.Initialize();
+
+            //need to be setup after initialization
+            this.Settings.ApplySnapshot(ProtocolTriggerEvent.Config);
+
+        }
+        protected void Initialize()
+        {
+            this.triggerAction = (TriggerAction)Activator.CreateInstance(this.actionType);
+            if (this.Name == null)
+            {
+                this.Name = this.Specification.DisplayName;
+            }
+            this.triggerBus = App.Current.Services.GetService<TriggerBus>();
+            //this.Register();
+            //this.PropertyChanged += (s, e) => { this.RegisterTrigger(); };
+        }
         public string Name
         {
             get => this.name;
@@ -55,9 +84,9 @@ namespace MoSeqAcquire.Models.Triggers
             }
         }
         public BaseConfiguration Settings { get => this.triggerAction.Settings; }
-        public TriggerActionSpecification Specification
+        public TriggerItemSpecification Specification
         {
-            get => this.triggerAction.Specification as TriggerActionSpecification;
+            get => this.triggerAction.Specification as TriggerItemSpecification;
         }
 
         public bool HasDesignerImplementation
@@ -85,27 +114,27 @@ namespace MoSeqAcquire.Models.Triggers
         }
 
 
-        public void DeregisterTrigger(TriggerEvent triggerEvent)
+        public void Deregister(TriggerEvent triggerEvent)
         {
             if (this.isRegistered)
             {
-                this.triggerAction.TriggerExecutionStarted -= Trigger_TriggerExecutionStarted;
-                this.triggerAction.TriggerExecutionFinished -= Trigger_TriggerExecutionFinished;
-                this.triggerAction.TriggerFaulted -= Trigger_TriggerFaulted;
+                this.triggerAction.ExecutionStarted -= Trigger_TriggerExecutionStarted;
+                this.triggerAction.ExecutionFinished -= Trigger_TriggerExecutionFinished;
+                this.triggerAction.ExecutionFaulted -= Trigger_TriggerFaulted;
                 this.State = TriggerActionState.None;
                 this.triggerBus.Unsubscribe(triggerEvent, this.triggerAction);
                 this.isRegistered = false;
             }
         }
-        protected void RegisterTrigger(TriggerEvent triggerEvent)
+        protected void Register(TriggerEvent triggerEvent)
         {
             if (!this.isRegistered)
             {
                 if (triggerEvent != null && this.actionType != null)
                 {
-                    this.triggerAction.TriggerExecutionStarted += Trigger_TriggerExecutionStarted;
-                    this.triggerAction.TriggerExecutionFinished += Trigger_TriggerExecutionFinished;
-                    this.triggerAction.TriggerFaulted += Trigger_TriggerFaulted;
+                    this.triggerAction.ExecutionStarted += Trigger_TriggerExecutionStarted;
+                    this.triggerAction.ExecutionFinished += Trigger_TriggerExecutionFinished;
+                    this.triggerAction.ExecutionFaulted += Trigger_TriggerFaulted;
                     this.triggerBus.Subscribe(triggerEvent, this.triggerAction);
                     this.isRegistered = true;
                     this.State = TriggerActionState.Queued;
@@ -139,5 +168,17 @@ namespace MoSeqAcquire.Models.Triggers
             }
         }
 
+
+        public ProtocolTriggerAction GetDefinition()
+        {
+            return new ProtocolTriggerAction()
+            {
+                Name = this.Name,
+                Action = this.actionType.AssemblyQualifiedName,
+                Critical = this.IsCritical,
+                Priority = this.Priority,
+                Config = this.Settings.GetSnapshot(),
+            };
+        }
     }
 }

@@ -23,9 +23,12 @@ namespace MoSeqAcquire.ViewModels.Commands
             this.RegisterCommand<EditRecorderCommand>();
             this.RegisterCommand<RemoveRecorderCommand>();
 
-            this.RegisterCommand<AddTriggerCommand>();
-            this.RegisterCommand<EditTriggerConfigCommand>();
-            this.RegisterCommand<RemoveTriggerCommand>();
+            this.RegisterCommand<AddTriggerEventCommand>();
+            this.RegisterCommand<AddTriggerActionCommand>();
+            this.RegisterCommand<EditTriggerEventConfigCommand>();
+            this.RegisterCommand<EditTriggerActionConfigCommand>();
+            this.RegisterCommand<RemoveTriggerEventCommand>();
+            this.RegisterCommand<RemoveTriggerActionCommand>();
 
             this.RegisterCommand<StartRecordingCommand>();
             this.RegisterCommand<StopRecordingCommand>();
@@ -57,9 +60,12 @@ namespace MoSeqAcquire.ViewModels.Commands
         public EditRecorderCommand EditRecorder { get => this.GetCommand<EditRecorderCommand>(); }
         public RemoveRecorderCommand RemoveRecorder { get => this.GetCommand<RemoveRecorderCommand>(); }
 
-        public AddTriggerCommand AddTrigger { get => this.GetCommand<AddTriggerCommand>(); }
-        public EditTriggerConfigCommand EditTriggerConfig { get => this.GetCommand<EditTriggerConfigCommand>(); }
-        public RemoveTriggerCommand RemoveTrigger { get => this.GetCommand<RemoveTriggerCommand>(); }
+        public AddTriggerEventCommand AddTriggerEvent { get => this.GetCommand<AddTriggerEventCommand>(); }
+        public AddTriggerActionCommand AddTriggerAction { get => this.GetCommand<AddTriggerActionCommand>(); }
+        public EditTriggerEventConfigCommand EditTriggerEventConfig { get => this.GetCommand<EditTriggerEventConfigCommand>(); }
+        public EditTriggerActionConfigCommand EditTriggerActionConfig { get => this.GetCommand<EditTriggerActionConfigCommand>(); }
+        public RemoveTriggerEventCommand RemoveTriggerEvent { get => this.GetCommand<RemoveTriggerEventCommand>(); }
+        public RemoveTriggerActionCommand RemoveTriggerAction { get => this.GetCommand<RemoveTriggerActionCommand>(); }
 
         public StartRecordingCommand StartRecording { get => this.GetCommand<StartRecordingCommand>(); }
         public StopRecordingCommand StopRecording { get => this.GetCommand<StopRecordingCommand>(); }

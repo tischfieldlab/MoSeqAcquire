@@ -5,11 +5,11 @@ using MoSeqAcquire.ViewModels.Triggers;
 namespace MoSeqAcquire.Views
 {
     /// <summary>
-    /// Interaction logic for RecorderEditor.xaml
+    /// Interaction logic for TriggerActionEditorWindow.xaml
     /// </summary>
-    public partial class TriggerEditorWindow : Window
+    public partial class TriggerActionEditorWindow : Window
     {
-        public TriggerEditorWindow()
+        public TriggerActionEditorWindow()
         {
             InitializeComponent();
             this.DataContextChanged += TriggerEditor_DataContextChanged;
@@ -19,13 +19,13 @@ namespace MoSeqAcquire.Views
         {
             if(e.OldValue != null)
             {
-                (e.OldValue as TriggerEditorViewModel).CancelRequested -= Vm_CancelRequested;
-                (e.OldValue as TriggerEditorViewModel).Completed -= Vm_Completed;
+                (e.OldValue as TriggerActionEditorViewModel).CancelRequested -= Vm_CancelRequested;
+                (e.OldValue as TriggerActionEditorViewModel).Completed -= Vm_Completed;
             }
             if(e.NewValue != null)
             {
-                (e.NewValue as TriggerEditorViewModel).CancelRequested += Vm_CancelRequested;
-                (e.NewValue as TriggerEditorViewModel).Completed += Vm_Completed;
+                (e.NewValue as TriggerActionEditorViewModel).CancelRequested += Vm_CancelRequested;
+                (e.NewValue as TriggerActionEditorViewModel).Completed += Vm_Completed;
             }
         }
 

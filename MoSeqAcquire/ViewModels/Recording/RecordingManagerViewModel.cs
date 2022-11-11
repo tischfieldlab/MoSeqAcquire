@@ -58,6 +58,7 @@ namespace MoSeqAcquire.ViewModels.Recording
             this.GeneralSettings.ErrorsChanged += SubItemErrorsChanged;
             this.RecordingMetadata.Items.ErrorsChanged += SubItemErrorsChanged;
         }
+        public RecordingManager RecordingManager { get => this.recordingManager; }
 
         private void SubItemErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
@@ -172,7 +173,7 @@ namespace MoSeqAcquire.ViewModels.Recording
 
         public void StartRecording()
         {
-            App.Current.Services.GetService<TriggerManagerViewModel>().ResetStatuses();
+            // App.Current.Services.GetService<TriggerManagerViewModel>().ResetStatuses(); // TODO
             Task.Run(() =>
             {
                 this.recordingManager.Start();

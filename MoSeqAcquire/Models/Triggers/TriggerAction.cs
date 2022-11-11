@@ -14,13 +14,13 @@ namespace MoSeqAcquire.Models.Triggers
 {
     public abstract class TriggerAction : Component
     {
-        public event EventHandler<TriggerLifetimeEventArgs> TriggerExecutionStarted;
-        public event EventHandler<TriggerFinishedEventArgs> TriggerExecutionFinished;
-        public event EventHandler<TriggerFaultedEventArgs> TriggerFaulted;
+        public event EventHandler<TriggerLifetimeEventArgs> ExecutionStarted;
+        public event EventHandler<TriggerFinishedEventArgs> ExecutionFinished;
+        public event EventHandler<TriggerFaultedEventArgs> ExecutionFaulted;
 
         public TriggerAction() : base()
         {
-            this.Specification = new TriggerActionSpecification(this.GetType());
+            this.Specification = new TriggerItemSpecification(this.GetType());
             this.Settings = this.Specification.SettingsFactory();
 
             this.Output = new StringWriter();
@@ -43,16 +43,16 @@ namespace MoSeqAcquire.Models.Triggers
         {
             this.Output.GetStringBuilder().Clear();
             this.Log.Information("Starting Execution of {TriggerAction} for Trigger {Event}", this, Trigger);
-            this.TriggerExecutionStarted?.Invoke(this, new TriggerLifetimeEventArgs() { Trigger = Trigger });
+            this.ExecutionStarted?.Invoke(this, new TriggerLifetimeEventArgs() { Trigger = Trigger });
             try
             {
                 this.Action.Invoke(Trigger);
-                this.TriggerExecutionFinished?.Invoke(this, new TriggerFinishedEventArgs() {Trigger = Trigger, Output = this.Output.ToString() });
+                this.ExecutionFinished?.Invoke(this, new TriggerFinishedEventArgs() {Trigger = Trigger, Output = this.Output.ToString() });
             }
             catch (Exception e)
             {
                 this.Log.Error(e, "Error during trigger action execution");
-                this.TriggerFaulted?.Invoke(this, new TriggerFaultedEventArgs()
+                this.ExecutionFaulted?.Invoke(this, new TriggerFaultedEventArgs()
                 {
                     Trigger = Trigger,
                     Exception = e,

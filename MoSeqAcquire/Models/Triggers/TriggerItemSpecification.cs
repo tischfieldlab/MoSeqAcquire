@@ -8,9 +8,9 @@ using MoSeqAcquire.Models.Core;
 
 namespace MoSeqAcquire.Models.Triggers
 {
-    public class TriggerActionSpecification : ComponentSpecification
+    public class TriggerItemSpecification : ComponentSpecification
     {
-        public TriggerActionSpecification(Type Type) : base(Type)
+        public TriggerItemSpecification(Type Type) : base(Type)
         {
         }
 

@@ -57,9 +57,9 @@
     </UserControl.Resources>
     <DockPanel Name="InnerContainer">
         <Grid DockPanel.Dock="Top">
-            <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Margin="8,0,0,0"
+            <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Margin="8,5,0,5"
                 Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
-            <TextBox Text="{Binding Path=FilterString, UpdateSourceTrigger=PropertyChanged}" Padding="24,0,0,0" Name="SearchTextBox" HorizontalAlignment="Stretch" />
+            <TextBox Text="{Binding Path=FilterString, UpdateSourceTrigger=PropertyChanged}" Padding="36,10,0,10" Name="SearchTextBox" HorizontalAlignment="Stretch" />
         </Grid>
         <ListView Name="ItemsGrid" ItemsSource="{Binding Path=View}" DockPanel.Dock="Bottom" VerticalAlignment="Stretch">
             <ListView.GroupStyle>
