@@ -6,17 +6,35 @@ using System.Threading.Tasks;
 
 namespace MoSeqAcquire.Models.Triggers
 {
-    public class TriggerLifetimeEventArgs : EventArgs
+    public class TriggerActionLifetimeEventArgs : EventArgs
     {
         public TriggerEvent Trigger;
     }
 
-    public class TriggerFinishedEventArgs : TriggerLifetimeEventArgs
+    public class TriggerActionFinishedEventArgs : TriggerActionLifetimeEventArgs
     {
         public string Output;
     }
 
-    public class TriggerFaultedEventArgs : TriggerFinishedEventArgs
+    public class TriggerActionFaultedEventArgs : TriggerActionFinishedEventArgs
+    {
+        public Exception Exception;
+    }
+
+
+
+
+    public class TriggerEventLifetimeEventArgs : EventArgs
+    {
+        
+    }
+
+    public class TriggerEventFinishedEventArgs : TriggerEventLifetimeEventArgs
+    {
+        public string Output;
+    }
+
+    public class TriggerEventFaultedEventArgs : TriggerEventFinishedEventArgs
     {
         public Exception Exception;
     }

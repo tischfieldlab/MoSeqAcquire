@@ -212,6 +212,7 @@
     <Compile Include="ViewModels\Commands\AddTriggerActionCommand.cs" />
     <Compile Include="ViewModels\Commands\EditTriggerActionConfigCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveTriggerActionCommand.cs" />
+    <Compile Include="ViewModels\MediaSources\Visualization\Video\FalseColorVideoVisualization.cs" />
     <Compile Include="ViewModels\Triggers\TriggerActionViewModel.cs" />
     <Compile Include="Models\Triggers\TriggerEvent.cs" />
     <Compile Include="Models\Triggers\TriggerAction.cs" />

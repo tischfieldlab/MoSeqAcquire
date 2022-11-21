@@ -37,12 +37,5 @@ namespace MoSeqAcquire.ViewModels.MediaSources
                 new ExecutionDataflowBlockOptions() { TaskScheduler = TaskScheduler.FromCurrentSynchronizationContext() }
             ));
         }
-
-        protected bool showCrosshairs;
-        public bool ShowCrosshairs
-        {
-            get => this.showCrosshairs;
-            set => this.SetField(ref this.showCrosshairs, value);
-        }
     }
 }

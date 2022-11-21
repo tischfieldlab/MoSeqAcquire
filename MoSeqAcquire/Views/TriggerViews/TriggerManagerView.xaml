@@ -138,7 +138,7 @@
             <!--SelectedItem="{Binding Path=SelectedTrigger}" -->
             <ItemsControl Name="ItemsGrid" Margin="-9"
                       IsEnabled="{Binding Path=DataContext.Protocol.IsProtocolLocked, Converter={StaticResource BooleanInvertConverter}, RelativeSource={RelativeSource AncestorType=Window}}"
-                      ItemsSource="{Binding Path=TriggersView}" >
+                      ItemsSource="{Binding Path=Triggers}" >
                 <ItemsControl.Style>
                     <Style TargetType="ItemsControl">
                         <Style.Triggers>
@@ -167,152 +167,179 @@
                         </Style.Triggers>
                     </Style>
                 </ItemsControl.Style>
-                <ItemsControl.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <DockPanel Background="{StaticResource MaterialDesignPaper}">
-                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                        <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
-                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            Command="{Binding Path=DataContext.Commands.AddTriggerAction, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                            ToolTip="Add New Trigger Action for this Event">
-                                            <materialDesign:PackIcon Kind="ToyBrickPlus"  />
-                                        </Button>
-                                        <Button Width="24" Height="24" Margin="8,0,8,0"
-                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            Command="{Binding Path=DataContext.Commands.EditTriggerEventConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                            CommandParameter="{Binding Path=Name}"
-                                            ToolTip="Edit Trigger Event Configuration">
-                                            <materialDesign:PackIcon Kind="Settings"  />
-                                        </Button>
-                                        <Button Width="24" Height="24" Margin="8,0,8,0"
-                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            Command="{Binding Path=DataContext.Commands.RemoveTriggerEvent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                            CommandParameter="{Binding  Path=Name}"
-                                            ToolTip="Remove Trigger Event">
-                                            <materialDesign:PackIcon Kind="Close"  />
-                                        </Button>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" >
-                                        <materialDesign:PackIcon Kind="LightningBolt"
-                                                             Margin="8,0,0,0"
-                                                             Width="16" Height="16" 
-                                                             VerticalAlignment="Center" />
-                                        <TextBlock Padding="8" Text="{Binding Path=Name.Name}" Style="{StaticResource MaterialDesignBody2TextBlock}"  />
-                                    </StackPanel>
-                                    
-                                </DockPanel>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ItemsControl.GroupStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="8,0,16,0">
-                            <Separator Height="1">
-                                <Separator.Style>
-                                    <Style TargetType="Separator" BasedOn="{StaticResource MaterialDesignLightSeparator}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Separator.Style>
-                            </Separator>
-                            <DockPanel Margin="0,8">
+                        <StackPanel>
+                            <DockPanel Margin="-1,0,0,0" Background="{StaticResource MaterialDesignPaper}">
                                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-
+                                    <Button DockPanel.Dock="Right"  Width="24" Height="24" Margin="8,0,8,0"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                            Command="{Binding Path=DataContext.Commands.AddTriggerAction, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="Add New Trigger Action for this Event">
+                                        <materialDesign:PackIcon Kind="ToyBrickPlus"  />
+                                    </Button>
                                     <Button Width="24" Height="24" Margin="8,0,8,0"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            Command="{Binding Path=DataContext.Commands.EditTriggerConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Edit Trigger Configuration">
+                                            Command="{Binding Path=DataContext.Commands.EditTriggerEventConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding Path=Event}"
+                                            ToolTip="Edit Trigger Event Configuration">
                                         <materialDesign:PackIcon Kind="Settings"  />
                                     </Button>
                                     <Button Width="24" Height="24" Margin="8,0,8,0"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                                            Command="{Binding Path=DataContext.Commands.RemoveTrigger, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Remove Trigger">
+                                            Command="{Binding Path=DataContext.Commands.RemoveTriggerEvent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding Path=Event}"
+                                            ToolTip="Remove Trigger Event">
                                         <materialDesign:PackIcon Kind="Close"  />
                                     </Button>
                                 </StackPanel>
-                                <Button DockPanel.Dock="Left" Style="{StaticResource MaterialDesignFlatButton}"
-                                        VerticalAlignment="Center" Margin="8,0,16,0"
-                                        Name="TriggerStatusButton"
-                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
-                                    <Button.CommandParameter>
-                                        <ContentPresenter ContentTemplate="{StaticResource TriggerActionStatusDialogTemplate}" />
-                                    </Button.CommandParameter>
+                                <StackPanel Orientation="Horizontal" >
+                                    <materialDesign:PackIcon Kind="LightningBolt"
+                                                             Margin="8,0,0,0"
+                                                             Width="16" Height="16" 
+                                                             VerticalAlignment="Center" />
+                                    <TextBlock Padding="8" Text="{Binding Path=Event.Name}" Style="{StaticResource MaterialDesignBody2TextBlock}"  />
                                     <materialDesign:PackIcon Width="24" Height="24" >
                                         <materialDesign:PackIcon.Style>
                                             <Style TargetType="materialDesign:PackIcon">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Queued}">
+                                                    <DataTrigger Binding="{Binding Path=Event.State}" Value="{x:Static tvm:TriggerEventState.Inactive}">
                                                         <Setter Property="Kind" Value="Timer" />
-                                                        <Setter Property="ToolTip" Value="Trigger is queued" />
+                                                        <Setter Property="ToolTip" Value="Trigger event is inactive" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Running}">
+                                                    <DataTrigger Binding="{Binding Path=Event.State}" Value="{x:Static tvm:TriggerEventState.Active}">
                                                         <Setter Property="Kind" Value="RunFast" />
-                                                        <Setter Property="ToolTip" Value="Trigger is currently running" />
+                                                        <Setter Property="ToolTip" Value="Trigger event is currently running" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Completed}">
-                                                        <Setter Property="Kind" Value="Check" />
-                                                        <Setter Property="ToolTip" Value="Trigger has completed successfuly" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Faulted}">
+                                                    <DataTrigger Binding="{Binding Path=Event.State}" Value="{x:Static tvm:TriggerEventState.Faulted}">
                                                         <Setter Property="Kind" Value="WarningOutline" />
-                                                        <Setter Property="ToolTip" Value="Trigger faulted during execution" />
+                                                        <Setter Property="ToolTip" Value="Trigger event faulted during execution" />
                                                         <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </materialDesign:PackIcon.Style>
                                     </materialDesign:PackIcon>
-                                </Button>
-                                <WrapPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Path=Priority, StringFormat={}P{0}}"
-                                               VerticalAlignment="Center"
-                                               Margin="0,0,16,0"
-                                               FontWeight="Bold"
-                                               Foreground="{DynamicResource MaterialDesignBodyLight}" />
-                                    
-                                    <StackPanel Orientation="Horizontal" Width="150">
-                                        <TextBlock Text="{Binding Path=Name}" 
-                                                   
-                                                   VerticalAlignment="Center"
-                                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
+                                </StackPanel>
+                            </DockPanel>
+                            <ItemsControl ItemsSource="{Binding Path=Actions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="8,0,8,0">
+                                            <Separator Height="1">
+                                                <Separator.Style>
+                                                    <Style TargetType="Separator" BasedOn="{StaticResource MaterialDesignLightSeparator}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Separator.Style>
+                                            </Separator>
+                                            <DockPanel Margin="0,8">
+                                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
 
-                                        <materialDesign:PackIcon Kind="StarRate"
+                                                    <Button Width="24" Height="24" Margin="8,0,8,0"
+                                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                            Command="{Binding Path=DataContext.Commands.EditTriggerActionConfig, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding}"
+                                                            ToolTip="Edit Trigger Configuration">
+                                                        <materialDesign:PackIcon Kind="Settings"  />
+                                                    </Button>
+                                                    <Button Width="24" Height="24" Margin="8,0,8,0"
+                                                            Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                                                            Command="{Binding Path=DataContext.Commands.RemoveTriggerAction, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding}"
+                                                            ToolTip="Remove Trigger">
+                                                        <materialDesign:PackIcon Kind="Close"  />
+                                                    </Button>
+                                                </StackPanel>
+                                                <Button DockPanel.Dock="Left" Style="{StaticResource MaterialDesignFlatButton}"
+                                                        VerticalAlignment="Center" Margin="8,0,16,0"
+                                                        Name="TriggerStatusButton"
+                                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
+                                                    <Button.CommandParameter>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TriggerActionStatusDialogTemplate}" />
+                                                    </Button.CommandParameter>
+                                                    <materialDesign:PackIcon Width="24" Height="24" >
+                                                        <materialDesign:PackIcon.Style>
+                                                            <Style TargetType="materialDesign:PackIcon">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Queued}">
+                                                                        <Setter Property="Kind" Value="Timer" />
+                                                                        <Setter Property="ToolTip" Value="Trigger is queued" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Running}">
+                                                                        <Setter Property="Kind" Value="RunFast" />
+                                                                        <Setter Property="ToolTip" Value="Trigger is currently running" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Completed}">
+                                                                        <Setter Property="Kind" Value="Check" />
+                                                                        <Setter Property="ToolTip" Value="Trigger has completed successfuly" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Faulted}">
+                                                                        <Setter Property="Kind" Value="WarningOutline" />
+                                                                        <Setter Property="ToolTip" Value="Trigger faulted during execution" />
+                                                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </materialDesign:PackIcon.Style>
+                                                    </materialDesign:PackIcon>
+                                                </Button>
+                                                <WrapPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                                    <StackPanel Margin="0,0,16,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Path=Priority, StringFormat={}P{0}}"
+                                                                   VerticalAlignment="Center"
+                                                                   
+                                                                   FontWeight="Bold"
+                                                                   Foreground="{DynamicResource MaterialDesignBodyLight}">
+                                                            <TextBlock.ToolTip>
+                                                                <ToolTip Content="{Binding Path=Priority, StringFormat=Priority: {0}}"
+                                                                         ContentStringFormat="{}Priority: {0}" />
+                                                            </TextBlock.ToolTip>
+                                                        </TextBlock>
+                                                        <materialDesign:PackIcon Kind="StarRate"
                                                                  ToolTip="Trigger is marked as critical"
-                                                                 Margin="8,0,0,0"
+
                                                                  Width="16" Height="16" 
                                                                  Foreground="{StaticResource SecondaryHueMidBrush}"
                                                                  VerticalAlignment="Center">
-                                            <materialDesign:PackIcon.Style>
-                                                <Style TargetType="materialDesign:PackIcon">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Path=IsCritical}" Value="True">
-                                                            <Setter Property="Visibility" Value="Visible" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </materialDesign:PackIcon.Style>
-                                        </materialDesign:PackIcon>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Cogs" 
-                                                                 Margin="0,0,8,0"
-                                                                 Width="24" Height="24" 
-                                                                 VerticalAlignment="Center" />
-                                        <TextBlock Text="{Binding Path=TriggerActionName}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
-
-                                    </StackPanel>
-                                </WrapPanel>
-                            </DockPanel>
+                                                            <materialDesign:PackIcon.Style>
+                                                                <Style TargetType="materialDesign:PackIcon">
+                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Path=IsCritical}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Visible" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </materialDesign:PackIcon.Style>
+                                                        </materialDesign:PackIcon>
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Path=Name}" 
+                                                                       VerticalAlignment="Center"
+                                                                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                                                       Foreground="{DynamicResource MaterialDesignBody}" />
+                                                            
+                                                            <TextBlock Text="{Binding Path=Specification.FriendlyTypeName}"
+                                                                       VerticalAlignment="Center" 
+                                                                       Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                                       Foreground="{DynamicResource MaterialDesignBodyLight}" />
+                                                        </StackPanel>
+                                                        
+                                                    </StackPanel>
+                                                    
+                                                </WrapPanel>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

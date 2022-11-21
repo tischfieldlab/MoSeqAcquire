@@ -61,7 +61,7 @@
                 Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
             <TextBox Text="{Binding Path=FilterString, UpdateSourceTrigger=PropertyChanged}" Padding="36,10,0,10" Name="SearchTextBox" HorizontalAlignment="Stretch" />
         </Grid>
-        <ListView Name="ItemsGrid" ItemsSource="{Binding Path=View}" DockPanel.Dock="Bottom" VerticalAlignment="Stretch">
+        <ListView Name="ItemsGrid" ItemsSource="{Binding Path=View}" VerticalAlignment="Stretch">
             <ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
@@ -75,7 +75,7 @@
                             </StackPanel>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
-                    
+
                 </GroupStyle>
             </ListView.GroupStyle>
             <ListView.ItemContainerStyle>
@@ -94,6 +94,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        
     </DockPanel>
 </UserControl>

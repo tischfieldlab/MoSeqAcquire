@@ -15,17 +15,13 @@ namespace NationalInstruments
     [SettingsImplementation(typeof(SendTTLSignalConfig))]
     public class SendTTLSignal : TriggerAction
     {
-        public SendTTLSignal() : base()
-        {
-            this.Config = new SendTTLSignalConfig();
-        }
         protected override Action<TriggerEvent> Action
         {
             get
             {
                 return delegate (TriggerEvent trigger)
                 {
-                    var settings = this.Config as SendTTLSignalConfig;
+                    var settings = this.Settings as SendTTLSignalConfig;
                     //var settings = this.Config as WriteToConsoleConfig;
                     //Console.WriteLine($"Trigger {trigger.Name} {trigger.GetType().Name}");
                     //DaqSystem.Local.LoadDevice(settings.DeviceName).
@@ -55,12 +51,20 @@ namespace NationalInstruments
     {
 
         protected string deviceName;
+        protected double pulseWidth;
 
         [ChoicesMethod("DiscoverDevices")]
         public string DeviceName
         {
             get => this.deviceName;
             set => this.SetField(ref this.deviceName, value);
+        }
+
+        [DefaultValue(1.0)]
+        public double PulseWidth
+        {
+            get => this.pulseWidth;
+            set => this.SetField(ref this.pulseWidth, value);
         }
 
 

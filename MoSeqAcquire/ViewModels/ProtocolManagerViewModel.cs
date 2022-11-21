@@ -179,7 +179,7 @@ namespace MoSeqAcquire.ViewModels
                     {
                         foreach (var trigger in protocol.Triggers)
                         {
-                            //triggers.AddTrigger(trigger); // TODO
+                            triggers.AddTrigger(trigger);
                         }
                     }
 

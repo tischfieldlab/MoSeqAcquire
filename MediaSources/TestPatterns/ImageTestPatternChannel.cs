@@ -14,18 +14,20 @@ namespace TestPatterns
 {
     class ImageTestPatternChannel : Channel
     {
+        protected int fps;
         public ImageTestPatternChannel(TestPatternSource source)
         {
             this.Device = source;
             this.Name = "Video Test";
             this.MediaType = MediaType.Video;
             this.Enabled = true;
+            this.fps = (this.Device.Settings as TestPatternConfig).FrameRate;
 
             this.PrepareImage();
            
             this.__timer = new MultimediaTimer()
             {
-                Interval = 1000 / 30,
+                Interval = 1000 / this.fps,
                 Resolution = 0
             };
             this.__timer.Elapsed += (s, e) => this.ProduceFrame();
@@ -35,7 +37,7 @@ namespace TestPatterns
         public override ChannelMetadata Metadata => new VideoChannelMetadata()
         {
             DataType = typeof(byte),
-            TargetFramesPerSecond = 30,
+            TargetFramesPerSecond = this.fps,
             Width = this.bitmap.PixelWidth,
             Height = this.bitmap.PixelHeight,
             PixelFormat = this.bitmap.Format,
@@ -56,6 +58,16 @@ namespace TestPatterns
         {
             if (!this.Enabled)
                 return;
+
+            var config = this.Device.Settings as TestPatternConfig;
+
+            if (config.FrameRate != this.fps)
+            {
+                this.fps = config.FrameRate;
+                this.__timer.Stop();
+                this.__timer.Interval = 1000 / this.fps;
+                this.__timer.Start();
+            }
 
 
             var meta = new VideoChannelFrameMetadata()

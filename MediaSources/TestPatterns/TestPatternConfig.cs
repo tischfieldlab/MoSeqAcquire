@@ -12,6 +12,16 @@ namespace TestPatterns
 {
     class TestPatternConfig : MediaSourceConfig
     {
+        [DisplayName("Frame Rate")]
+        [DefaultValue(30)]
+        [Category("Video")]
+        public int FrameRate
+        {
+            get => this._frameRate;
+            set => this.SetField(ref this._frameRate, value);
+        }
+        private int _frameRate;
+
         [DisplayName("Sample Rate")]
         [DefaultValue(44100)]
         [Category("Audio")]

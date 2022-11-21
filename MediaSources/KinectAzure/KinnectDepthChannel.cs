@@ -85,19 +85,16 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
         private ushort[] _pixelData;
         internal override void RecieveFrame(Capture capture)
         {
-            if (capture != null && this.Enabled)
+            if (capture != null && capture.Depth != null && this.Enabled)
             {
                 var meta = new VideoChannelFrameMetadata()
                 {
-                    
                     //FrameId = capture.Depth.DeviceTimestamp,
                     AbsoluteTime = PreciseDatetime.Now,
                     Width = capture.Depth.WidthPixels,
                     Height = capture.Depth.HeightPixels,
                     BytesPerPixel = ImageFormatToBytesPerPixel(capture.Depth.Format),
-                    PixelFormat = ImageFormatToPixelFormat(capture.Depth.Format),
-                    TotalBytes = (int)capture.Depth.Size,
-                    
+                    PixelFormat = ImageFormatToPixelFormat(capture.Depth.Format),                    
                 };
                 var numPixels = meta.Width * meta.Height;
 
@@ -107,10 +104,11 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
                 }
 
                 // Transform the depth image to the colour capera perspective.
-                var _transformation = this.Kinect.Calibration.CreateTransformation();
-                var depthFrame = _transformation.DepthImageToColorCamera(capture.Depth);
+                //var _transformation = this.Kinect.Calibration.CreateTransformation();
+                //var depthFrame = _transformation.DepthImageToColorCamera(capture.Depth);
 
-                depthFrame.GetPixels<ushort>().ToArray().CopyTo(this._pixelData, 0);
+                //depthFrame.GetPixels<ushort>().ToArray().CopyTo(this._pixelData, 0);
+                capture.Depth.GetPixels<ushort>().ToArray().CopyTo(this._pixelData, 0);
 
 
                 this.PostFrame(new ChannelFrame(this._pixelData, meta));

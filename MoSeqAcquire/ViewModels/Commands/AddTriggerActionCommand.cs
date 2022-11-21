@@ -19,17 +19,35 @@ namespace MoSeqAcquire.ViewModels.Commands
         {
             if (this.ViewModel.Protocol.IsProtocolLocked)
                 return false;
+
+            if (this.GetTriggerBindingViewModel(parameter) == null)
+                return false;
+
             return true;
         }
 
         public override void Execute(object parameter)
         {
-            //this.ViewModel.Triggers.AddTrigger();
+            var tbvm = this.GetTriggerBindingViewModel(parameter);
             var dialog = new TriggerActionEditorWindow
             {
-                DataContext = new TriggerActionEditorViewModel(this.ViewModel, null)
+                DataContext = new TriggerActionEditorViewModel(this.ViewModel, tbvm, null)
             };
             dialog.ShowDialog();
+        }
+
+        protected TriggerBindingViewModel GetTriggerBindingViewModel(object parameter)
+        {
+            TriggerBindingViewModel viewModel = null;
+            if (parameter is TriggerBindingViewModel)
+            {
+                viewModel = parameter as TriggerBindingViewModel;
+            }
+            //else if (this.ViewModel.Triggers.SelectedTrigger != null)
+            //{
+            //    viewModel = this.ViewModel.Triggers.SelectedTrigger;
+            //} // TODO
+            return viewModel;
         }
     }
 }

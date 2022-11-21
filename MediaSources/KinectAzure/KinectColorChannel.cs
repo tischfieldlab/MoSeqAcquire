@@ -64,7 +64,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
         private byte[] _pixelData;
         internal override void RecieveFrame(Capture capture)
         {
-            if (capture != null && this.Enabled)
+            if (capture != null && capture.Color != null && this.Enabled)
             {
                 var meta = new VideoChannelFrameMetadata()
                 {
@@ -74,7 +74,6 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
                     Height = capture.Color.HeightPixels,
                     BytesPerPixel = ImageFormatToBytesPerPixel(capture.Color.Format),
                     PixelFormat = ImageFormatToPixelFormat(capture.Color.Format),
-                    TotalBytes = (int)capture.Color.Size,
                 };
 
                 var numPixels = meta.Width * meta.Height;
@@ -83,7 +82,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
                     this._pixelData = new byte[meta.TotalBytes];
                 }
 
-                capture.Color.GetPixels<BGRA>().ToArray().CopyTo(this._pixelData, 0);
+                capture.Color.Memory.CopyTo(this._pixelData);
 
                 this.PostFrame(new ChannelFrame(_pixelData, meta));
             }

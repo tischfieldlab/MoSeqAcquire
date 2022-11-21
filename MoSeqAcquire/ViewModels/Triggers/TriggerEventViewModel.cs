@@ -31,27 +31,21 @@ namespace MoSeqAcquire.ViewModels.Triggers
 
         public TriggerEventViewModel(Type TriggerEventType)
         {
-            this.eventType = TriggerEventType;
+            this.EventType = TriggerEventType;
+            this.triggerEvent = (TriggerEvent)Activator.CreateInstance(this.eventType);
+            this.Name = this.Specification.DisplayName;
             this.Initialize();
         }
         public TriggerEventViewModel(ProtocolTriggerEvent ProtocolTriggerEvent)
         {
-            this.Name = ProtocolTriggerEvent.Name;
             this.EventType = ProtocolTriggerEvent.GetEventType();
-
-            this.Initialize();
-
-            //need to be setup after initialization
+            this.triggerEvent = (TriggerEvent)Activator.CreateInstance(this.eventType);
+            this.Name = ProtocolTriggerEvent.Name;
             this.Settings.ApplySnapshot(ProtocolTriggerEvent.Config);
-
+            this.Initialize();
         }
         protected void Initialize()
         {
-            this.triggerEvent = (TriggerEvent)Activator.CreateInstance(this.eventType);
-            if (this.Name == null)
-            {
-                this.Name = this.Specification.DisplayName;
-            }
             this.Register();
             this.PropertyChanged += (s, e) => { this.Register(); };
         }
@@ -65,6 +59,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             get => this.eventType;
             set => this.SetField(ref this.eventType, value);
         }
+        public TriggerEvent TriggerEvent { get => this.triggerEvent; }
         public BaseConfiguration Settings { get => this.triggerEvent.Settings; }
         public TriggerItemSpecification Specification
         {
@@ -117,22 +112,21 @@ namespace MoSeqAcquire.ViewModels.Triggers
                     this.triggerEvent.ExecutionFaulted += Trigger_TriggerFaulted;
                     this.triggerEvent.Start();
                     this.isRegistered = true;
-                    this.State = TriggerEventState.Active;
                 }
             }
         }
-        private void Trigger_TriggerExecutionFinished(object sender, TriggerFinishedEventArgs e)
+        private void Trigger_TriggerExecutionFinished(object sender, TriggerEventFinishedEventArgs e)
         {
             this.StateMessage = e.Output;
             this.State = TriggerEventState.Inactive;
         }
 
-        private void Trigger_TriggerExecutionStarted(object sender, TriggerLifetimeEventArgs e)
+        private void Trigger_TriggerExecutionStarted(object sender, TriggerEventLifetimeEventArgs e)
         {
             this.StateMessage = string.Empty;
             this.State = TriggerEventState.Active;
         }
-        private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
+        private void Trigger_TriggerFaulted(object sender, TriggerEventFaultedEventArgs e)
         {
             this.StateMessage = e.Output;
             // this.TriggerStateMessage = e.Exception.GetAllMessages();

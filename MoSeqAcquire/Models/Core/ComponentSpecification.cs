@@ -16,6 +16,7 @@ namespace MoSeqAcquire.Models.Core
         }
         public Type ComponentType { get; protected set; }
         public string TypeName { get => this.ComponentType.AssemblyQualifiedName; }
+        public string FriendlyTypeName { get => this.ComponentType.FullName; }
         public bool IsHidden
         {
             get

@@ -23,10 +23,21 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected TriggerEventViewModel triggerEvent;
         protected ObservableCollection<TriggerActionViewModel> triggerActions;
 
-        public TriggerBindingViewModel(TriggerEventViewModel triggerEventViewModel)
+        protected TriggerBindingViewModel()
+        {
+            this.triggerActions = new ObservableCollection<TriggerActionViewModel>();
+        }
+        public TriggerBindingViewModel(TriggerEventViewModel triggerEventViewModel) : this()
         {
             this.triggerEvent = triggerEventViewModel;
-            this.triggerActions = new ObservableCollection<TriggerActionViewModel>();
+        }
+        public TriggerBindingViewModel(ProtocolTrigger protocolTrigger) : this()
+        {
+            this.triggerEvent = new TriggerEventViewModel(protocolTrigger.Event);
+            foreach (var action in protocolTrigger.Actions)
+            {
+                this.triggerActions.Add(new TriggerActionViewModel(action, this));
+            }
         }
 
         public TriggerEventViewModel Event { get => this.triggerEvent; }

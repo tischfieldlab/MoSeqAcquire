@@ -36,7 +36,7 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public object Default
         {
-            get => (int)this.Capability.Default;
+            get => this.Capability.Default;
         }
 
         public bool Validate(object Value)
@@ -71,15 +71,15 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public object Min
         {
-            get => (this.Capability as IRangeInfo).Min;
+            get => (this.Capability as IRangeInfo)?.Min;
         }
         public object Max
         {
-            get => (this.Capability as IRangeInfo).Max;
+            get => (this.Capability as IRangeInfo)?.Max;
         }
         public object Step
         {
-            get => (this.Capability as IRangeInfo).Step;
+            get => (this.Capability as IRangeInfo)?.Step;
         }
         #endregion
 
@@ -90,15 +90,15 @@ namespace MoSeqAcquire.Models.Configuration
         }
         public IEnumerable<object> Choices
         {
-            get => (this.Capability as IChoicesProvider).Choices;
+            get => (this.Capability as IChoicesProvider)?.Choices;
         }
         public string DisplayPath
         {
-            get => (this.Capability as IChoicesProvider).DisplayPath;
+            get => (this.Capability as IChoicesProvider)?.DisplayPath;
         }
         public string ValuePath
         {
-            get => (this.Capability as IChoicesProvider).ValuePath;
+            get => (this.Capability as IChoicesProvider)?.ValuePath;
         }
         #endregion
 

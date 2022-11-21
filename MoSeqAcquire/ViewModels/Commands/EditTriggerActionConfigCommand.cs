@@ -31,9 +31,10 @@ namespace MoSeqAcquire.ViewModels.Commands
             var vm = this.GetTriggerActionViewModel(parameter);
             if (vm != null)
             {
+                var tbvm = this.ViewModel.Triggers.FindBindingForAction(vm);
                 var dialog = new TriggerActionEditorWindow
                 {
-                    DataContext = new TriggerActionEditorViewModel(this.ViewModel, vm)
+                    DataContext = new TriggerActionEditorViewModel(this.ViewModel, tbvm, vm)
                 };
                 dialog.ShowDialog();
             }

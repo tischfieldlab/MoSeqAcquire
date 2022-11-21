@@ -17,15 +17,11 @@ namespace MoSeqAcquire.Models.Triggers
 
     public class TriggerEventConfig : TriggerConfig
     {
-        public TriggerEventConfig()
-        {
-        }
+
     }
     public class TriggerActionConfig : TriggerConfig
     {
-        public TriggerActionConfig()
-        {
-        }
+
     }
 
 

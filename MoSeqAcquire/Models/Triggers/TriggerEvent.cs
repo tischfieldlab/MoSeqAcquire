@@ -9,12 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MoSeqAcquire.Models.Triggers
 {
-    [SettingsImplementation(typeof(TriggerEventConfig))]
     public abstract class TriggerEvent : Component
     {
-        public event EventHandler<TriggerLifetimeEventArgs> ExecutionStarted;
-        public event EventHandler<TriggerFinishedEventArgs> ExecutionFinished;
-        public event EventHandler<TriggerFaultedEventArgs> ExecutionFaulted;
+        public event EventHandler<TriggerEventLifetimeEventArgs> ExecutionStarted;
+        public event EventHandler<TriggerEventFinishedEventArgs> ExecutionFinished;
+        public event EventHandler<TriggerEventFaultedEventArgs> ExecutionFaulted;
 
 
         public TriggerEvent()
@@ -23,11 +22,26 @@ namespace MoSeqAcquire.Models.Triggers
             this.Settings = this.Specification.SettingsFactory();
         }
 
-        public TriggerEventConfig Config { get; protected set; }
-
         public void Fire()
         {
             App.Current.Services.GetService<TriggerBus>().Trigger(this);
+        }
+
+        protected void OnExecutionStarted()
+        {
+            this.ExecutionStarted?.Invoke(this, new TriggerEventLifetimeEventArgs());
+        }
+        protected void OnExecutionFinished(string output = "")
+        {
+            this.ExecutionFinished?.Invoke(this, new TriggerEventFinishedEventArgs() { Output = output });
+        }
+        protected void OnExecutionFaulted(Exception exception, string output = "")
+        {
+            this.ExecutionStarted?.Invoke(this, new TriggerEventFaultedEventArgs()
+            {
+                Output = output,
+                Exception = exception,
+            });
         }
 
 
@@ -36,7 +50,4 @@ namespace MoSeqAcquire.Models.Triggers
         public abstract void Stop();
 
     }
-
-    
-
 }

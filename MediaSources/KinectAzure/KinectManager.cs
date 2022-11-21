@@ -87,7 +87,7 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
         {
             if (this.IsInitialized) return;
 
-            this.DeviceConfiguration = new DeviceConfiguration();
+            this.DeviceConfiguration = this.GetDeviceConfiguration();
             this.Sensor.StartCameras(this.DeviceConfiguration);
             this.Calibration = this.Sensor.GetCalibration();
             this.DepthChannel.Enabled = true;
@@ -124,6 +124,23 @@ namespace MoSeqAcquire.Models.Acquisition.KinectAzure
         private KinectDepthChannel DepthChannel { get; set; }
         internal Calibration Calibration { get; set; }
         internal DeviceConfiguration DeviceConfiguration { get; private set; }
+
+        protected DeviceConfiguration GetDeviceConfiguration()
+        {
+            KinectConfig cfg = this.Settings as KinectConfig;
+            return new DeviceConfiguration()
+            {
+                CameraFPS = cfg.CameraFPS,
+                ColorFormat = cfg.ColorFormat,
+                ColorResolution = cfg.ColorResolution,
+                DepthDelayOffColor = TimeSpan.FromMilliseconds(cfg.DepthDelayOffColor),
+                DepthMode = cfg.DepthMode,
+                DisableStreamingIndicator = cfg.DisableStreamingIndicator,
+                SuboridinateDelayOffMaster = TimeSpan.FromMilliseconds(cfg.SuboridinateDelayOffMaster),
+                SynchronizedImagesOnly = cfg.SynchronizedImagesOnly,
+                WiredSyncMode = cfg.WiredSyncMode,
+            };
+        }
 
         private void CameraCapture()
         {

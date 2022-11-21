@@ -80,14 +80,6 @@
                                      materialDesign:HintAssist.Hint="Trigger Name" 
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-                                <ComboBox ItemsSource="{Binding Path=DataContext.AvailableTriggerTypes, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                      SelectedValue="{Binding Path=TriggerType}"
-                                      SelectedValuePath="TriggerType"
-                                      DisplayMemberPath="Name" 
-                                      materialDesign:HintAssist.Hint="Triggering Event" 
-                                      materialDesign:HintAssist.IsFloating="True"
-                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      Margin="16" />
                                 
                                 <StackPanel Margin="16">
                                     <StackPanel Orientation="Horizontal" >

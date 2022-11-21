@@ -22,10 +22,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             this.triggers = new ObservableCollection<TriggerBindingViewModel>();
             this.ro_triggers = new ReadOnlyObservableCollection<TriggerBindingViewModel>(this.triggers);
-            this.SetupTriggersView();
+            //this.SetupTriggersView();
         }
 
-        protected void SetupTriggersView()
+        /*protected void SetupTriggersView()
         {
             this.triggersView = (ListCollectionView)CollectionViewSource.GetDefaultView(this.triggers);
 
@@ -36,10 +36,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.triggersView.GroupDescriptions.Add(new PropertyGroupDescription("Event"));
             this.triggersView.IsLiveGrouping = true;
             this.triggersView.LiveGroupingProperties.Add("Event");
-        }
+        }*/
 
         public ReadOnlyObservableCollection<TriggerBindingViewModel> Triggers { get => this.ro_triggers; }
-        public ICollectionView TriggersView { get => this.triggersView; }
+        //public ICollectionView TriggersView { get => this.triggersView; }
 
 
         public bool HasTriggerEvent(TriggerEventViewModel triggerEventViewModel)
@@ -47,14 +47,23 @@ namespace MoSeqAcquire.ViewModels.Triggers
             return this.Triggers.Any((tbvm) => tbvm.Event == triggerEventViewModel);
         }
         public void AddTriggerEvent(TriggerEventViewModel triggerEventViewModel)
+        {   
+            this.AddTrigger(new TriggerBindingViewModel(triggerEventViewModel));
+        }
+        public void AddTrigger(ProtocolTrigger protocolTrigger)
+        {
+            this.AddTrigger(new TriggerBindingViewModel(protocolTrigger));
+        }
+        public void AddTrigger(TriggerBindingViewModel triggerBindingViewModel)
         {
             //Trigger.PropertyChanged += Trigger_PropertyChanged; //TODO
-            this.triggers.Add(new TriggerBindingViewModel(triggerEventViewModel));
-
+            this.triggers.Add(triggerBindingViewModel);
         }
-        public void AddTrigger(ProtocolTriggerEvent ProtocolTriggerEvent)
+
+
+        public TriggerBindingViewModel FindBindingForAction(TriggerActionViewModel triggerActionViewModel)
         {
-            this.AddTriggerEvent(new TriggerEventViewModel(ProtocolTriggerEvent));
+            return this.triggers.First((tbvm) => tbvm.Actions.Contains(triggerActionViewModel));
         }
 
 

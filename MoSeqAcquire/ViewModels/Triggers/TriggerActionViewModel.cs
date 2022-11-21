@@ -25,6 +25,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
     }
     public class TriggerActionViewModel : BaseViewModel
     {
+        protected TriggerBindingViewModel binding;
         protected TriggerBus triggerBus;
         protected string name;
         protected Type actionType;
@@ -33,20 +34,24 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected TriggerActionState triggerState;
         protected string triggerStateMessage;
 
-        public TriggerActionViewModel(Type TriggerEventType)
+        public TriggerActionViewModel(Type TriggerEventType, TriggerBindingViewModel binding)
         {
+            this.binding = binding;
             this.actionType = TriggerEventType;
             this.Initialize();
         }
-        public TriggerActionViewModel(ProtocolTriggerEvent ProtocolTriggerEvent)
+        public TriggerActionViewModel(ProtocolTriggerAction protocolTriggerAction, TriggerBindingViewModel binding)
         {
-            this.Name = ProtocolTriggerEvent.Name;
-            this.actionType = ProtocolTriggerEvent.GetEventType();
+            this.binding = binding;
+            this.Name = protocolTriggerAction.Name;
+            this.actionType = protocolTriggerAction.GetActionType();
 
             this.Initialize();
 
             //need to be setup after initialization
-            this.Settings.ApplySnapshot(ProtocolTriggerEvent.Config);
+            this.IsCritical = protocolTriggerAction.Critical;
+            this.Priority = protocolTriggerAction.Priority;
+            this.Settings.ApplySnapshot(protocolTriggerAction.Config);
 
         }
         protected void Initialize()
@@ -57,8 +62,8 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 this.Name = this.Specification.DisplayName;
             }
             this.triggerBus = App.Current.Services.GetService<TriggerBus>();
-            //this.Register();
-            //this.PropertyChanged += (s, e) => { this.RegisterTrigger(); };
+            this.Register(this.binding.Event.TriggerEvent);
+            this.PropertyChanged += (s, e) => { this.Register(this.binding.Event.TriggerEvent); };
         }
         public string Name
         {
@@ -142,18 +147,18 @@ namespace MoSeqAcquire.ViewModels.Triggers
             }
         }
 
-        private void Trigger_TriggerExecutionFinished(object sender, TriggerFinishedEventArgs e)
+        private void Trigger_TriggerExecutionFinished(object sender, TriggerActionFinishedEventArgs e)
         {
             this.TriggerStateMessage = e.Output;
             this.State = TriggerActionState.Completed;
         }
 
-        private void Trigger_TriggerExecutionStarted(object sender, TriggerLifetimeEventArgs e)
+        private void Trigger_TriggerExecutionStarted(object sender, TriggerActionLifetimeEventArgs e)
         {
             this.TriggerStateMessage = string.Empty;
             this.State = TriggerActionState.Running;
         }
-        private void Trigger_TriggerFaulted(object sender, TriggerFaultedEventArgs e)
+        private void Trigger_TriggerFaulted(object sender, TriggerActionFaultedEventArgs e)
         {
             this.TriggerStateMessage = e.Output;
             //this.TriggerStateMessage = e.Exception.GetAllMessages();

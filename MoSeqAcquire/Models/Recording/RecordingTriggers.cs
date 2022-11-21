@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using MoSeqAcquire.Models.Triggers;
 using Microsoft.Extensions.DependencyInjection;
 using MoSeqAcquire.ViewModels.Recording;
+using MoSeqAcquire.Models.Attributes;
 
 namespace MoSeqAcquire.Models.Recording
 {
+    [SettingsImplementation(typeof(TriggerEventConfig))]
     public abstract class RecordingTriggerEvent : TriggerEvent
     {
         protected RecordingManager GetRecordingManager()
@@ -84,6 +86,24 @@ namespace MoSeqAcquire.Models.Recording
         {
             this.Aborted = (sender as RecordingManager).IsAbortRequested;
             this.Fire();
+        }
+    }
+
+
+    [DisplayName("Start Recording")]
+    [SettingsImplementation(typeof(TriggerActionConfig))]
+    public class StartRecordingTriggerAction : TriggerAction
+    {
+        protected override Action<TriggerEvent> Action
+        {
+            get
+            {
+                return delegate (TriggerEvent trigger)
+                {
+                    var recMan = App.Current.Services.GetService<RecordingManagerViewModel>().RecordingManager;
+                    recMan.Start();
+                };
+            }
         }
     }
 }

@@ -14,9 +14,9 @@ namespace MoSeqAcquire.Models.Triggers
 {
     public abstract class TriggerAction : Component
     {
-        public event EventHandler<TriggerLifetimeEventArgs> ExecutionStarted;
-        public event EventHandler<TriggerFinishedEventArgs> ExecutionFinished;
-        public event EventHandler<TriggerFaultedEventArgs> ExecutionFaulted;
+        public event EventHandler<TriggerActionLifetimeEventArgs> ExecutionStarted;
+        public event EventHandler<TriggerActionFinishedEventArgs> ExecutionFinished;
+        public event EventHandler<TriggerActionFaultedEventArgs> ExecutionFaulted;
 
         public TriggerAction() : base()
         {
@@ -36,23 +36,22 @@ namespace MoSeqAcquire.Models.Triggers
         public int Priority { get; set; }
         protected ILogger Log { get; private set; }
         protected StringWriter Output { get; private set; }
-        public TriggerActionConfig Config { get; protected set; }
         protected abstract Action<TriggerEvent> Action { get; }
 
         public void Execute(TriggerEvent Trigger)
         {
             this.Output.GetStringBuilder().Clear();
             this.Log.Information("Starting Execution of {TriggerAction} for Trigger {Event}", this, Trigger);
-            this.ExecutionStarted?.Invoke(this, new TriggerLifetimeEventArgs() { Trigger = Trigger });
+            this.ExecutionStarted?.Invoke(this, new TriggerActionLifetimeEventArgs() { Trigger = Trigger });
             try
             {
                 this.Action.Invoke(Trigger);
-                this.ExecutionFinished?.Invoke(this, new TriggerFinishedEventArgs() {Trigger = Trigger, Output = this.Output.ToString() });
+                this.ExecutionFinished?.Invoke(this, new TriggerActionFinishedEventArgs() {Trigger = Trigger, Output = this.Output.ToString() });
             }
             catch (Exception e)
             {
                 this.Log.Error(e, "Error during trigger action execution");
-                this.ExecutionFaulted?.Invoke(this, new TriggerFaultedEventArgs()
+                this.ExecutionFaulted?.Invoke(this, new TriggerActionFaultedEventArgs()
                 {
                     Trigger = Trigger,
                     Exception = e,

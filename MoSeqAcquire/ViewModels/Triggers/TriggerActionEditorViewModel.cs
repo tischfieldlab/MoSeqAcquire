@@ -17,15 +17,17 @@ namespace MoSeqAcquire.ViewModels.Triggers
         protected bool isNewTrigger;
         protected int currentStep;
         protected MoSeqAcquireViewModel rootViewModel;
+        protected TriggerBindingViewModel triggerBindingViewModel;
         protected TriggerActionViewModel triggerActionViewModel;
         protected Type selectedTriggerActionType;
 
         public event EventHandler CancelRequested;
         public event EventHandler Completed;
 
-        public TriggerActionEditorViewModel(MoSeqAcquireViewModel rootViewModel, TriggerActionViewModel triggerActionViewModel = null)
+        public TriggerActionEditorViewModel(MoSeqAcquireViewModel rootViewModel, TriggerBindingViewModel triggerBindingViewModel, TriggerActionViewModel triggerActionViewModel = null)
         {
             this.rootViewModel = rootViewModel;
+            this.triggerBindingViewModel = triggerBindingViewModel;
             this.PopulateAvailableTypes();
             if (triggerActionViewModel != null)
             {
@@ -93,18 +95,18 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 {
                     if (this.selectedTriggerActionType != null)
                     {
-                        this.TriggerActionViewModel = new TriggerActionViewModel(this.selectedTriggerActionType);
+                        this.TriggerActionViewModel = new TriggerActionViewModel(this.selectedTriggerActionType, this.triggerBindingViewModel);
                         this.CurrentStep = 1;
                         this.NotifyPropertyChanged(null);
                     }
                 }
                 else if (this.CurrentStep == 1)
                 {
-                    //if (!this.rootViewModel.Triggers.Triggers.Contains(this.TriggerViewModel))
-                    //{
-                    //    //only add if was not in the collection already
-                    //    this.rootViewModel.Triggers.AddTrigger(this.TriggerActionViewModel);
-                    //}
+                    if (!this.triggerBindingViewModel.Actions.Contains(this.TriggerActionViewModel))
+                    {
+                        //only add if was not in the collection already
+                        this.triggerBindingViewModel.Actions.Add(this.TriggerActionViewModel);
+                    }
                     this.Completed?.Invoke(this, new EventArgs());
                 }
             },

@@ -8,50 +8,92 @@ using System.Threading.Tasks;
 using NationalInstruments.DAQmx;
 using System.Diagnostics;
 using System.ComponentModel;
+using MoSeqAcquire;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading;
 
 namespace NationalInstruments
 {
     [DisplayName("Listen TTL Signal")]
     [SettingsImplementation(typeof(ListenTTLSignalConfig))]
-    public class ListenTTLSignal : TriggerAction
+    public class ListenTTLSignal : TriggerEvent
     {
-        public ListenTTLSignal()
-        {
-            this.Config = new ListenTTLSignalConfig();
-        }
-        protected override Action<TriggerEvent> Action
-        {
-            get
-            {
-                return delegate (TriggerEvent trigger)
-                {
-                    var settings = this.Config as ListenTTLSignalConfig;
-                    //var settings = this.Config as WriteToConsoleConfig;
-                    //Console.WriteLine($"Trigger {trigger.Name} {trigger.GetType().Name}");
-                    //DaqSystem.Local.LoadDevice(settings.DeviceName).
+        protected System.Threading.Tasks.Task backgroundListenTask;
+        protected CancellationTokenSource backgroundListenTaskCancellationTokenSource;
 
-                    using (DAQmx.Task digitalWriteTask = new DAQmx.Task())
+        protected void ListenForTTL(CancellationToken cancellationToken)
+        {
+            var settings = this.Settings as ListenTTLSignalConfig;
+            var triggerBus = App.Current.Services.GetService<TriggerBus>();
+            //var settings = this.Config as WriteToConsoleConfig;
+            //Console.WriteLine($"Trigger {trigger.Name} {trigger.GetType().Name}");
+            //DaqSystem.Local.LoadDevice(settings.DeviceName).
+            try
+            {
+                using (DAQmx.Task readTask = new DAQmx.Task())
+                {
+                    readTask.DIChannels.CreateChannel(settings.DeviceName, "", ChannelLineGrouping.OneChannelForEachLine);
+
+                    // Create the reader
+                    var digitalReader = new DigitalSingleChannelReader(readTask.Stream);
+
+                    // Start the task
+                    readTask.Start();
+
+                    bool lastState = digitalReader.ReadSingleSampleSingleLine();
+                    bool initState = lastState;
+                    while (!cancellationToken.IsCancellationRequested)
                     {
-                        digitalWriteTask.DOChannels.CreateChannel(settings.DeviceName, "", ChannelLineGrouping.OneChannelForEachLine);
-                        DigitalSingleChannelWriter writer = new DigitalSingleChannelWriter(digitalWriteTask.Stream);
-                        writer.WriteSingleSampleSingleLine(true, true);
-                        var timer = Stopwatch.StartNew();
-                        while (timer.IsRunning)
+                        bool currState = digitalReader.ReadSingleSampleSingleLine();
+                        if (currState != initState && currState != lastState)
                         {
-                            if(timer.ElapsedMilliseconds >= 10)
-                            {
-                                timer.Stop();
-                            }
+                            this.Fire();
                         }
-                        writer.WriteSingleSampleSingleLine(true, false);
+                        lastState = currState;
                     }
-                };
+                    readTask.Stop();
+                }
+
             }
+            catch (Exception e)
+            {
+                this.Cleanup();
+                this.OnExecutionFaulted(e, e.Message);
+            }
+        }
+
+        public override void Start()
+        {
+            this.backgroundListenTaskCancellationTokenSource = new CancellationTokenSource();
+            CancellationToken ct = backgroundListenTaskCancellationTokenSource.Token;
+            this.backgroundListenTask = System.Threading.Tasks.Task.Run(() => this.ListenForTTL(ct), ct);
+            this.backgroundListenTask
+                .ContinueWith((antecedant) => this.Cleanup())
+                .ContinueWith((antecedant) => this.OnExecutionFinished(""), TaskContinuationOptions.OnlyOnRanToCompletion);
+            this.OnExecutionStarted();
+        }
+
+        public override void Stop()
+        {
+            if (this.backgroundListenTaskCancellationTokenSource != null)
+            {
+                this.backgroundListenTaskCancellationTokenSource.Cancel();
+            }
+        }
+
+        protected void Cleanup()
+        {
+            this.backgroundListenTaskCancellationTokenSource.Cancel();
+            this.backgroundListenTaskCancellationTokenSource.Dispose();
+            this.backgroundListenTaskCancellationTokenSource = null;
+            this.backgroundListenTask.Wait();
+            this.backgroundListenTask.Dispose();
+            this.backgroundListenTask = null;
         }
     }
 
 
-    public class ListenTTLSignalConfig : TriggerActionConfig
+    public class ListenTTLSignalConfig : TriggerEventConfig
     {
 
         protected string deviceName;
@@ -63,16 +105,10 @@ namespace NationalInstruments
             set => this.SetField(ref this.deviceName, value);
         }
 
-        public string PulseWidth
-        {
-            get => this.deviceName;
-            set => this.SetField(ref this.deviceName, value);
-        }
-
 
         public static string[] DiscoverDevices()
         {
-            return DaqSystem.Local.GetPhysicalChannels(PhysicalChannelTypes.DOLine, PhysicalChannelAccess.External);
+            return DaqSystem.Local.GetPhysicalChannels(PhysicalChannelTypes.DILine, PhysicalChannelAccess.External);
             //return DaqSystem.Local.Devices;
         }
     }
