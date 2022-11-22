@@ -14,20 +14,35 @@
     <UserControl.Resources>
         <conv:GenericConverter x:Key="GenericConverter" />
         <DataTemplate x:Key="CheckboxEditor">
-            <CheckBox IsChecked="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+            <CheckBox IsChecked="{Binding Path=Value}"
+                      HorizontalAlignment="Stretch" />
         </DataTemplate>
         <DataTemplate x:Key="TextBoxEditor">
-            <TextBox Text="{Binding Path=Value}" HorizontalAlignment="Stretch" />
+            <TextBox Text="{Binding Path=Value}"
+                     HorizontalAlignment="Stretch" />
         </DataTemplate>
         <DataTemplate x:Key="EnumComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{mve:Enumeration {Binding Path=ValueType}}" DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=Value}" Background="{DynamicResource MaterialDesignPaper}" />
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}"
+                      ItemsSource="{mve:Enumeration {Binding Path=ValueType}}"
+                      DisplayMemberPath="Description"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding Path=Value}"
+                      Background="{DynamicResource MaterialDesignPaper}" />
         </DataTemplate>
         <DataTemplate x:Key="CollectionComboBoxEditor">
-            <ComboBox Style="{StaticResource MaterialDesignComboBox}" ItemsSource="{Binding Path=Choices}" SelectedValue="{Binding Path=Value}" DisplayMemberPath="{Binding Path=ChoicesDisplayPath}" SelectedValuePath="{Binding Path=ChoicesValuePath}"  Background="{DynamicResource MaterialDesignPaper}" />
+            <ComboBox Style="{StaticResource MaterialDesignComboBox}"
+                      ItemsSource="{Binding Path=Choices}"
+                      SelectedValue="{Binding Path=Value}"
+                      DisplayMemberPath="{Binding Path=ChoicesDisplayPath}"
+                      SelectedValuePath="{Binding Path=ChoicesValuePath}"
+                      Background="{DynamicResource MaterialDesignPaper}" />
         </DataTemplate>
         <DataTemplate x:Key="RangeEditor">
             <DockPanel>
                 <TextBox DockPanel.Dock="Right"
+                         MinWidth="50"
+                         Margin="24,0,0,0"
+                         HorizontalContentAlignment="Right"
                          Text="{Binding Path=Value, Mode=OneWay, Converter={StaticResource GenericConverter}}" 
                          IsReadOnly="True" />
                 <Slider Orientation="Horizontal" TickPlacement="BottomRight"
@@ -42,7 +57,9 @@
             <mac:NumericUpDown Value="{Binding Path=Value, Mode=TwoWay, Converter={StaticResource GenericConverter}}" />
         </DataTemplate>
         <DataTemplate x:Key="AutoCheckboxTemplate">
-            <CheckBox IsChecked="{Binding Path=IsAutomatic}" IsEnabled="{Binding Path=SupportsAutomatic}" HorizontalAlignment="Center" />
+            <CheckBox IsChecked="{Binding Path=IsAutomatic}"
+                      IsEnabled="{Binding Path=SupportsAutomatic}"
+                      HorizontalAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="ResetButtonTemplate">
             <Button Width="24" Height="24" HorizontalAlignment="Center"
@@ -57,11 +74,34 @@
     </UserControl.Resources>
     <DockPanel Name="InnerContainer">
         <Grid DockPanel.Dock="Top">
-            <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Margin="8,5,0,5"
-                Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
-            <TextBox Text="{Binding Path=FilterString, UpdateSourceTrigger=PropertyChanged}" Padding="36,10,0,10" Name="SearchTextBox" HorizontalAlignment="Stretch" />
+            <materialDesign:PackIcon Kind="Magnify" 
+                                     Width="24"
+                                     Height="24"
+                                     Margin="8,5,0,5"
+                                     Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
+
+            <TextBox Text="{Binding Path=FilterString, UpdateSourceTrigger=PropertyChanged}"
+                     Padding="36,0,0,0"
+                     VerticalContentAlignment="Center"
+                     Name="SearchTextBox"
+                     HorizontalAlignment="Stretch"
+                     materialDesign:HintAssist.Hint="Search"
+                     />
+            <!-- 
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                TextFieldAssist.HasLeadingIcon="True"
+                materialDesign:TextFieldAssist.LeadingIcon="Magnify"
+                materialDesign:TextFieldAssist.LeadingIconSize="24"
+            -->
         </Grid>
         <ListView Name="ItemsGrid" ItemsSource="{Binding Path=View}" VerticalAlignment="Stretch">
+            <ListView.Resources>
+                <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" 
+                        BasedOn="{StaticResource {x:Static GridView.GridViewScrollViewerStyleKey}}" 
+                        TargetType="ScrollViewer">
+                    <Setter Property="CanContentScroll" Value="False"/>
+                </Style>
+            </ListView.Resources>
             <ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
