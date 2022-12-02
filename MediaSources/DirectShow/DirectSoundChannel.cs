@@ -41,7 +41,7 @@ namespace MoSeqAcquire.Models.Acquisition.DirectShow
             }
         }
 
-        private int currentFrameId;
+        private long currentFrameId;
         private void Device_NewFrame(object sender, Accord.Audio.NewFrameEventArgs e)
         {
             if (!this.Enabled)

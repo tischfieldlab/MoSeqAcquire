@@ -15,7 +15,7 @@ namespace MoSeqAcquire.Models.Acquisition
 
     public class ChannelFrameMetadata
     {
-        public int FrameId { get; set; }
+        public long FrameId { get; set; }
         public DateTime AbsoluteTime { get; set; }
         public virtual int TotalBytes { get; set; }
     }

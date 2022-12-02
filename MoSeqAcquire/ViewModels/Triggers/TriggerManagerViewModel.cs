@@ -37,9 +37,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.triggersView.IsLiveGrouping = true;
             this.triggersView.LiveGroupingProperties.Add("Event");
         }*/
+        //public ICollectionView TriggersView { get => this.triggersView; }
 
         public ReadOnlyObservableCollection<TriggerBindingViewModel> Triggers { get => this.ro_triggers; }
-        //public ICollectionView TriggersView { get => this.triggersView; }
+        
 
 
         public bool HasTriggerEvent(TriggerEventViewModel triggerEventViewModel)
@@ -65,54 +66,39 @@ namespace MoSeqAcquire.ViewModels.Triggers
         {
             return this.triggers.First((tbvm) => tbvm.Actions.Contains(triggerActionViewModel));
         }
+        public TriggerBindingViewModel FindBindingForEvent(TriggerEventViewModel triggerEventViewModel)
+        {
+            return this.triggers.First((tbvm) => tbvm.Event == triggerEventViewModel);
+        }
 
 
         /*public TriggerBindingViewModel SelectedTrigger
         {
             get => this.selectedTrigger;
             set => this.SetField(ref this.selectedTrigger, value);
-        }
+        }*/
 
-        public void AddTrigger(TriggerViewModel Trigger)
-        {
-            Trigger.PropertyChanged += Trigger_PropertyChanged;
-            this.triggers.Add(Trigger);
-        }
-
-        public void AddTrigger(ProtocolTrigger ProtocolTrigger)
-        {
-            this.AddTrigger(new TriggerViewModel(ProtocolTrigger));
-        }
-
-        public string GetNextDefaultTriggerName()
-        {
-            string namebase = "Trigger";
-            string realname = "";
-            int count = 1;
-            while (count < int.MaxValue)
-            {
-                realname = namebase + "_" + count.ToString();
-                if (this.triggers.Count(rvm => rvm.Name.Equals(realname)) == 0)
-                {
-                    break;
-                }
-                count++;
-            }
-            return realname;
-        }
 
         public void RemoveTrigger(TriggerBindingViewModel Trigger)
         {
-            Trigger.DeregisterTrigger();
-            Trigger.PropertyChanged -= this.Trigger_PropertyChanged;
+            Trigger.Actions.ForEach((tavm) => tavm.Deregister());
+            Trigger.Actions.Clear();
+            Trigger.Event.Deregister();
             this.triggers.Remove(Trigger);
+        }
+        public void RemoveTriggerAction(TriggerActionViewModel triggerActionViewModel)
+        {
+            triggerActionViewModel.Deregister();
+            triggerActionViewModel.Binding.Actions.Remove(triggerActionViewModel);
         }
         public void RemoveTriggers()
         {
-            this.triggers.ForEach(tvm => tvm.DeregisterTrigger());
-            this.triggers.Clear();
+            foreach(var trigger in this.triggers.ToList())
+            {
+                this.RemoveTrigger(trigger);
+            }
         }
-        public void ResetStatuses()
+        /*public void ResetStatuses()
         {
             this.triggers.ForEach(tvm => tvm.TriggerState = TriggerState.Queued);
         }

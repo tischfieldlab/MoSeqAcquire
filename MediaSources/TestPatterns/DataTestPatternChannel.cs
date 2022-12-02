@@ -46,7 +46,7 @@ namespace TestPatterns
 
         
         private MultimediaTimer __timer;
-        private int _currentFrameId;
+        private long _currentFrameId;
         private Distribution _random;
         private TestPatternConfig _config;
         private void ProduceFrame()
@@ -114,8 +114,5 @@ namespace TestPatterns
         Rayleigh,
         StudentsT,
         Triangular
-
     }
-
-
 }

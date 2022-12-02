@@ -89,7 +89,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
             get => this.stateMessage;
             set => this.SetField(ref this.stateMessage, value);
         }
-        public void Deregister(TriggerEvent triggerEvent)
+        public void Deregister()
         {
             if (this.isRegistered)
             {

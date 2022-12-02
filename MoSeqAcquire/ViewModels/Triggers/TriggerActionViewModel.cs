@@ -62,8 +62,8 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 this.Name = this.Specification.DisplayName;
             }
             this.triggerBus = App.Current.Services.GetService<TriggerBus>();
-            this.Register(this.binding.Event.TriggerEvent);
-            this.PropertyChanged += (s, e) => { this.Register(this.binding.Event.TriggerEvent); };
+            this.Register();
+            this.PropertyChanged += (s, e) => { this.Register(); };
         }
         public string Name
         {
@@ -107,6 +107,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 return null;
             }
         }
+        public TriggerBindingViewModel Binding { get => this.binding; }
         public TriggerActionState State
         {
             get => this.triggerState;
@@ -119,7 +120,7 @@ namespace MoSeqAcquire.ViewModels.Triggers
         }
 
 
-        public void Deregister(TriggerEvent triggerEvent)
+        public void Deregister()
         {
             if (this.isRegistered)
             {
@@ -127,20 +128,20 @@ namespace MoSeqAcquire.ViewModels.Triggers
                 this.triggerAction.ExecutionFinished -= Trigger_TriggerExecutionFinished;
                 this.triggerAction.ExecutionFaulted -= Trigger_TriggerFaulted;
                 this.State = TriggerActionState.None;
-                this.triggerBus.Unsubscribe(triggerEvent, this.triggerAction);
+                this.triggerBus.Unsubscribe(this.binding.Event.TriggerEvent, this.triggerAction);
                 this.isRegistered = false;
             }
         }
-        protected void Register(TriggerEvent triggerEvent)
+        protected void Register()
         {
             if (!this.isRegistered)
             {
-                if (triggerEvent != null && this.actionType != null)
+                if (this.binding.Event.TriggerEvent != null && this.actionType != null)
                 {
                     this.triggerAction.ExecutionStarted += Trigger_TriggerExecutionStarted;
                     this.triggerAction.ExecutionFinished += Trigger_TriggerExecutionFinished;
                     this.triggerAction.ExecutionFaulted += Trigger_TriggerFaulted;
-                    this.triggerBus.Subscribe(triggerEvent, this.triggerAction);
+                    this.triggerBus.Subscribe(this.binding.Event.TriggerEvent, this.triggerAction);
                     this.isRegistered = true;
                     this.State = TriggerActionState.Queued;
                 }

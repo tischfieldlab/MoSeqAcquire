@@ -49,14 +49,15 @@ namespace MoSeqAcquire.ViewModels.Commands
             {
                 var confirmVM = new ConfirmDialogViewModel()
                 {
-                    Title = "Confirm Remove Trigger",
-                    Message = "Are you sure you want to remove this trigger event?"
+                    Title = "Confirm Remove Trigger Event",
+                    Message = "Are you sure you want to remove this trigger event? This will also remove all associated Actions!"
                 };
                 var result = await DialogHost.Show(confirmVM, "MainWindowDialogHost");
 
                 if ((bool) result)
                 {
-                    // this.ViewModel.Triggers.RemoveTrigger(viewModel); //TODO
+                    var binding = this.ViewModel.Triggers.FindBindingForEvent(viewModel);
+                    this.ViewModel.Triggers.RemoveTrigger(binding); //TODO
                 }
             }
         }

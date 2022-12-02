@@ -119,7 +119,7 @@
       <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SciColorMaps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ar1st0crat.SciColorMaps.1.0.2\lib\portable40-net40+sl5+win8+wpa81\SciColorMaps.dll</HintPath>
@@ -360,7 +360,7 @@
     <Compile Include="ViewModels\Triggers\TriggerEventEditorViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerEventViewModel.cs" />
     <Compile Include="ViewModels\Triggers\TriggerManagerViewModel.cs" />
-    <Compile Include="ViewModels\Triggers\TriggerViewModel.cs" />
+    <Compile Include="ViewModels\Triggers\TriggerBindingViewModel.cs" />
     <Compile Include="ViewModels\Core\ValidatingBaseViewModel.cs" />
     <Compile Include="Views\AppSettings\ApplicationSettingsWindow.xaml.cs">
       <DependentUpon>ApplicationSettingsWindow.xaml</DependentUpon>
