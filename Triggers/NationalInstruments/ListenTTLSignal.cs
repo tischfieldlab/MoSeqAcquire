@@ -24,41 +24,29 @@ namespace NationalInstruments
         protected void ListenForTTL(CancellationToken cancellationToken)
         {
             var settings = this.Settings as ListenTTLSignalConfig;
-            var triggerBus = App.Current.Services.GetService<TriggerBus>();
-            //var settings = this.Config as WriteToConsoleConfig;
-            //Console.WriteLine($"Trigger {trigger.Name} {trigger.GetType().Name}");
-            //DaqSystem.Local.LoadDevice(settings.DeviceName).
-            try
+
+            using (DAQmx.Task readTask = new DAQmx.Task())
             {
-                using (DAQmx.Task readTask = new DAQmx.Task())
+                readTask.DIChannels.CreateChannel(settings.DeviceName, "", ChannelLineGrouping.OneChannelForEachLine);
+
+                // Create the reader
+                var digitalReader = new DigitalSingleChannelReader(readTask.Stream);
+
+                // Start the task
+                readTask.Start();
+
+                bool lastState = digitalReader.ReadSingleSampleSingleLine();
+                bool initState = lastState;
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    readTask.DIChannels.CreateChannel(settings.DeviceName, "", ChannelLineGrouping.OneChannelForEachLine);
-
-                    // Create the reader
-                    var digitalReader = new DigitalSingleChannelReader(readTask.Stream);
-
-                    // Start the task
-                    readTask.Start();
-
-                    bool lastState = digitalReader.ReadSingleSampleSingleLine();
-                    bool initState = lastState;
-                    while (!cancellationToken.IsCancellationRequested)
+                    bool currState = digitalReader.ReadSingleSampleSingleLine();
+                    if (currState != initState && currState != lastState)
                     {
-                        bool currState = digitalReader.ReadSingleSampleSingleLine();
-                        if (currState != initState && currState != lastState)
-                        {
-                            this.Fire();
-                        }
-                        lastState = currState;
+                        this.Fire();
                     }
-                    readTask.Stop();
+                    lastState = currState;
                 }
-
-            }
-            catch (Exception e)
-            {
-                this.Cleanup();
-                this.OnExecutionFaulted(e, e.Message);
+                readTask.Stop();
             }
         }
 
@@ -66,10 +54,10 @@ namespace NationalInstruments
         {
             this.backgroundListenTaskCancellationTokenSource = new CancellationTokenSource();
             CancellationToken ct = backgroundListenTaskCancellationTokenSource.Token;
-            this.backgroundListenTask = System.Threading.Tasks.Task.Run(() => this.ListenForTTL(ct), ct);
-            this.backgroundListenTask
+            this.backgroundListenTask = System.Threading.Tasks.Task.Run(() => this.ListenForTTL(ct), ct)
                 .ContinueWith((antecedant) => this.Cleanup())
-                .ContinueWith((antecedant) => this.OnExecutionFinished(""), TaskContinuationOptions.OnlyOnRanToCompletion);
+                .ContinueWith((antecedant) => this.OnExecutionFinished(""), TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith((antecedant) => this.OnExecutionFaulted(antecedant.Exception, antecedant.Exception.Message), TaskContinuationOptions.OnlyOnFaulted);
             this.OnExecutionStarted();
         }
 
@@ -109,7 +97,6 @@ namespace NationalInstruments
         public static string[] DiscoverDevices()
         {
             return DaqSystem.Local.GetPhysicalChannels(PhysicalChannelTypes.DILine, PhysicalChannelAccess.External);
-            //return DaqSystem.Local.Devices;
         }
     }
 }
