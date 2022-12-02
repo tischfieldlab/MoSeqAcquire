@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MoSeqAcquire.Models.Acquisition;
+using MoSeqAcquire.Models.Attributes;
 using NAudio.Wave.SampleProviders;
 
 namespace TestPatterns
@@ -21,6 +24,29 @@ namespace TestPatterns
             set => this.SetField(ref this._frameRate, value);
         }
         private int _frameRate;
+
+        [DisplayName("Frame Source")]
+        [Category("Video")]
+        [ChoicesMethod("FindFrameSources")]
+        [DefaultValue("pm5544_with_non-pal_signals.png")]
+        public string FrameSource
+        {
+            get => this._frameSource;
+            set => this.SetField(ref this._frameSource, value);
+        }
+        private string _frameSource;
+
+        public string[] FindFrameSources()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            string resName = asm.GetName().Name + ".g.resources";
+            using (var stream = asm.GetManifestResourceStream(resName))
+            using (var reader = new System.Resources.ResourceReader(stream))
+            {
+                return reader.Cast<DictionaryEntry>().Select(entry => ((string)entry.Key).Split('/').Last()).ToArray();
+            }
+        }
+
 
         [DisplayName("Sample Rate")]
         [DefaultValue(44100)]

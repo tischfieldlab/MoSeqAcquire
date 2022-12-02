@@ -18,13 +18,15 @@ namespace TestPatterns
         public ImageTestPatternChannel(TestPatternSource source)
         {
             this.Device = source;
+            var config = this.Device.Settings as TestPatternConfig;
+
             this.Name = "Video Test";
             this.MediaType = MediaType.Video;
             this.Enabled = true;
-            this.fps = (this.Device.Settings as TestPatternConfig).FrameRate;
+            
+            this.PrepareImage(config.FrameSource);
 
-            this.PrepareImage();
-           
+            this.fps = config.FrameRate;
             this.__timer = new MultimediaTimer()
             {
                 Interval = 1000 / this.fps,
@@ -32,7 +34,24 @@ namespace TestPatterns
             };
             this.__timer.Elapsed += (s, e) => this.ProduceFrame();
             this.__timer.Start();
+            this.Device.Settings.PropertyChanged += Settings_PropertyChanged;
         }
+
+        private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var config = this.Device.Settings as TestPatternConfig;
+
+            if (e.PropertyName == null || e.PropertyName.Equals(nameof(config.FrameRate)))
+            {
+                this.UpdateFrameRate(config.FrameRate);
+            }
+
+            if (e.PropertyName == null || e.PropertyName.Equals(nameof(config.FrameSource)))
+            {
+                this.PrepareImage(config.FrameSource);
+            }
+        }
+
         public TestPatternSource Device { get; protected set; }
         public override ChannelMetadata Metadata => new VideoChannelMetadata()
         {
@@ -44,31 +63,31 @@ namespace TestPatterns
             BytesPerPixel = this.bitmap.Format.BitsPerPixel / 8
         };
 
-        private void PrepareImage()
+        private void PrepareImage(string imageName)
         {
-            this.bitmap = new BitmapImage(new Uri("pack://application:,,,/TestPatterns;component/Patterns/PM5544_with_non-PAL_signals.png"));
+            this.bitmap = new BitmapImage(new Uri($"pack://application:,,,/TestPatterns;component/Patterns/{imageName}"));
             this.bitmap.Freeze();
+        }
+
+        private void UpdateFrameRate(int frameRate)
+        {
+            if (frameRate != this.fps)
+            {
+                this.fps = frameRate;
+                this.__timer.Stop();
+                this.__timer.Interval = 1000 / this.fps;
+                this.__timer.Start();
+            }
         }
 
         private BitmapImage bitmap;
         private MultimediaTimer __timer;
-        private int currentFrameId;
+        private long currentFrameId;
         private byte[] _copyBuffer;
         private void ProduceFrame()
         {
             if (!this.Enabled)
                 return;
-
-            var config = this.Device.Settings as TestPatternConfig;
-
-            if (config.FrameRate != this.fps)
-            {
-                this.fps = config.FrameRate;
-                this.__timer.Stop();
-                this.__timer.Interval = 1000 / this.fps;
-                this.__timer.Start();
-            }
-
 
             var meta = new VideoChannelFrameMetadata()
             {
