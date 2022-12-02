@@ -75,7 +75,7 @@ namespace TestPatterns
 
         private int _numSamples;
         private readonly MultimediaTimer _timer;
-        private int _currentFrameId;
+        private long _currentFrameId;
         private float[] _copyBuffer;
         private void ProduceFrame()
         {
