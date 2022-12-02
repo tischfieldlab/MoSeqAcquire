@@ -33,7 +33,7 @@
             <ComboBox Style="{StaticResource MaterialDesignComboBox}"
                       ItemsSource="{Binding Path=Choices}"
                       SelectedValue="{Binding Path=Value}"
-                      DisplayMemberPath="{Binding Path=ChoicesDisplayPath}"
+                      DisplayMemberPath="{Binding Path=ChoicesDisplayPath}"                     
                       SelectedValuePath="{Binding Path=ChoicesValuePath}"
                       Background="{DynamicResource MaterialDesignPaper}" />
         </DataTemplate>
