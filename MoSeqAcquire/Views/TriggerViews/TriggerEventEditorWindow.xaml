@@ -16,7 +16,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Edit Trigger Configuration" Height="450" Width="800">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -74,56 +74,14 @@
                             <dragablz:InterTabController />
                         </dragablz:TabablzControl.InterTabController>
                         <TabItem Header="Basic Info">
-                            <StackPanel >
+                            <StackPanel>
                                 <TextBox Text="{Binding Path=Name}" 
                                      Margin="16" 
-                                     materialDesign:HintAssist.Hint="Trigger Name" 
-                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                                     materialDesign:HintAssist.Hint="Trigger Name"
+                                     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}" />
 
-                                <!--<ComboBox ItemsSource="{Binding Path=DataContext.AvailableEventTriggerTypes, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                      SelectedValue="{Binding Path=EventType}"
-                                      SelectedValuePath="EventType"
-                                      DisplayMemberPath="Name" 
-                                      materialDesign:HintAssist.Hint="Triggering Event" 
-                                      materialDesign:HintAssist.IsFloating="True"
-                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      Margin="16" />
                                 
-                                <StackPanel Margin="16">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Is this action critical?" Margin="0,0,32,0" />
-                                        <ToggleButton IsChecked="{Binding Path=IsCritical}" 
-                                                  HorizontalAlignment="Center"
-                                                  ToolTip="Critical"
-                                                  Style="{StaticResource MaterialDesignSwitchToggleButton}" />
-                                    </StackPanel>
-                                    <TextBlock Margin="0,8" 
-                                           FontSize="10"
-                                           Foreground="{DynamicResource MaterialDesignBodyLight}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=IsCritical}" Value="true">
-                                                        <Setter Property="Text" Value="A fault will cause the recording to abort." />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Path=IsCritical}" Value="false">
-                                                        <Setter Property="Text" Value="A fault will NOT cause the recording to abort." />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                                <StackPanel Margin="16">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Action Priority" Margin="0,0,32,0" VerticalAlignment="Center" />
-                                        <mah:NumericUpDown Value="{Binding Path=Priority, Mode=TwoWay}" />
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding Path=Priority, Mode=OneWay, StringFormat={}Trigger will be executed with priority {0}}" 
-                                               Margin="0,8" 
-                                               FontSize="10"
-                                               Foreground="{DynamicResource MaterialDesignBodyLight}" />
-                                </StackPanel>-->
                             </StackPanel>
                         </TabItem>
                         <TabItem Header="Settings">

@@ -85,6 +85,7 @@
                      VerticalContentAlignment="Center"
                      Name="SearchTextBox"
                      HorizontalAlignment="Stretch"
+                     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                      materialDesign:HintAssist.Hint="Search"
                      />
             <!-- 
