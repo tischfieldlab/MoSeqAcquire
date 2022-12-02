@@ -52,11 +52,11 @@
                                     </DataTrigger>
 									<DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Completed}">
                                         <Setter Property="Kind" Value="Check" />
-                                        <Setter Property="Foreground" Value="{StaticResource PrimaryHueDarkBrush}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkBrush}" />
                                     </DataTrigger>
 									<DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Faulted}">
                                         <Setter Property="Kind" Value="WarningOutline" />
-                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignValidationErrorBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -77,7 +77,7 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Faulted}">
                                         <Setter Property="Text" Value="Trigger has faulted" />
-                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignValidationErrorBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -154,7 +154,7 @@
                                                            TextAlignment="Center">
                                                     No triggers events or actions have been added yet. Would you like to 
                                                     <Hyperlink Command="{Binding Path=DataContext.Commands.AddTriggerEvent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                                               Style="{StaticResource MaterialDesignBody1Hyperlink}" 
+                                                               Style="{DynamicResource MaterialDesignBody1Hyperlink}" 
                                                                TextDecorations="underline">
                                                         add one
                                                     </Hyperlink>?
@@ -215,7 +215,7 @@
                                                     <DataTrigger Binding="{Binding Path=Event.State}" Value="{x:Static tvm:TriggerEventState.Faulted}">
                                                         <Setter Property="Kind" Value="WarningOutline" />
                                                         <Setter Property="ToolTip" Value="Trigger event faulted during execution" />
-                                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
+                                                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignValidationErrorBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -282,7 +282,7 @@
                                                                     <DataTrigger Binding="{Binding Path=State}" Value="{x:Static tvm:TriggerActionState.Faulted}">
                                                                         <Setter Property="Kind" Value="WarningOutline" />
                                                                         <Setter Property="ToolTip" Value="Trigger faulted during execution" />
-                                                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}" />
+                                                                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignValidationErrorBrush}" />
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
@@ -305,7 +305,7 @@
                                                                  ToolTip="Trigger is marked as critical"
 
                                                                  Width="16" Height="16" 
-                                                                 Foreground="{StaticResource SecondaryHueMidBrush}"
+                                                                 Foreground="{DynamicResource SecondaryHueMidBrush}"
                                                                  VerticalAlignment="Center">
                                                             <materialDesign:PackIcon.Style>
                                                                 <Style TargetType="materialDesign:PackIcon">
