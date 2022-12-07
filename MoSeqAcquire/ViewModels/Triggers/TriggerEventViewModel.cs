@@ -133,10 +133,10 @@ namespace MoSeqAcquire.ViewModels.Triggers
             this.State = TriggerEventState.Faulted;
 
             // App.Current.Services.GetService<RecordingManagerViewModel>().AbortRecording();
-            MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.StateMessage,
+            /*MessageBox.Show("The recording was aborted because a Critical Trigger Action faulted:\n" + this.StateMessage,
                             "Recording Aborted!",
                             MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation);
+                            MessageBoxImage.Exclamation);*/
         }
 
 

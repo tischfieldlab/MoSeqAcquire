@@ -259,10 +259,11 @@
                                                 <Button DockPanel.Dock="Left" Style="{StaticResource MaterialDesignFlatButton}"
                                                         VerticalAlignment="Center" Margin="8,0,16,0"
                                                         Name="TriggerStatusButton"
-                                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
-                                                    <Button.CommandParameter>
+                                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                        CommandParameter="{StaticResource TriggerActionStatusDialogTemplate}">
+                                                    <!--<Button.CommandParameter>
                                                         <ContentPresenter ContentTemplate="{StaticResource TriggerActionStatusDialogTemplate}" />
-                                                    </Button.CommandParameter>
+                                                    </Button.CommandParameter>-->
                                                     <materialDesign:PackIcon Width="24" Height="24" >
                                                         <materialDesign:PackIcon.Style>
                                                             <Style TargetType="materialDesign:PackIcon">
