@@ -37,7 +37,7 @@ namespace MoSeqAcquire.Models.Triggers
         }
         protected void OnExecutionFaulted(Exception exception, string output = "")
         {
-            this.ExecutionStarted?.Invoke(this, new TriggerEventFaultedEventArgs()
+            this.ExecutionFaulted?.Invoke(this, new TriggerEventFaultedEventArgs()
             {
                 Output = output,
                 Exception = exception,
