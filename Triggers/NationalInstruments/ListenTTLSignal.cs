@@ -52,13 +52,13 @@ namespace NationalInstruments
 
         public override void Start()
         {
+            this.OnExecutionStarted();
             this.backgroundListenTaskCancellationTokenSource = new CancellationTokenSource();
             CancellationToken ct = backgroundListenTaskCancellationTokenSource.Token;
             this.backgroundListenTask = System.Threading.Tasks.Task.Run(() => this.ListenForTTL(ct), ct)
+                .ContinueWith((antecedant) => this.OnExecutionFaulted(antecedant.Exception.InnerException, antecedant.Exception.InnerException.Message), TaskContinuationOptions.OnlyOnFaulted)
                 .ContinueWith((antecedant) => this.Cleanup())
-                .ContinueWith((antecedant) => this.OnExecutionFinished(""), TaskContinuationOptions.OnlyOnRanToCompletion)
-                .ContinueWith((antecedant) => this.OnExecutionFaulted(antecedant.Exception, antecedant.Exception.Message), TaskContinuationOptions.OnlyOnFaulted);
-            this.OnExecutionStarted();
+                .ContinueWith((antecedant) => this.OnExecutionFinished(""), TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         public override void Stop()
